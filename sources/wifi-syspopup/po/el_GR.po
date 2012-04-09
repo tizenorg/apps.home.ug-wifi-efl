@@ -1,0 +1,9 @@
+msgid "IDS_CST_BODY_INPUT_PASSWORD"
+msgstr "Εισαγωγή κωδικού πρόσβασης"
+
+msgid "IDS_ST_BODY_SHOW_PASSWORD"
+msgstr "Εμφάνιση κωδικού πρόσβασης"
+
+msgid "IDS_WIFI_HEADER_SELECT_NETWORK"
+msgstr "Επιλογή δικτύου"
+

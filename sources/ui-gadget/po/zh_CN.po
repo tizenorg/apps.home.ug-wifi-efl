@@ -1,0 +1,90 @@
+msgid "IDS_ST_BODY_EXCELLENT"
+msgstr "棒极了"
+
+msgid "IDS_ST_BODY_GOOD_M_STRENGTH"
+msgstr "好"
+
+msgid "IDS_ST_BODY_SCAN"
+msgstr "扫描"
+
+msgid "IDS_WIFI_BODY_CONNECTED"
+msgstr "已连接"
+
+msgid "IDS_WIFI_BODY_CONNECTING_ING"
+msgstr "连接中..."
+
+msgid "IDS_WIFI_BODY_DISCONNECTING_ING"
+msgstr "正在断开..."
+
+msgid "IDS_WIFI_BODY_DYNAMIC_IP"
+msgstr "动态 IP"
+
+msgid "IDS_WIFI_BODY_NO_APS"
+msgstr "没有Ap"
+
+msgid "IDS_WIFI_BODY_SECURITY_TYPE"
+msgstr "安全类型"
+
+msgid "IDS_WIFI_BODY_STATIC_IP"
+msgstr "静态IP"
+
+msgid "IDS_WIFI_HEADER_HIDDEN_NETWORK"
+msgstr "隐藏的网络"
+
+msgid "IDS_WIFI_POP_ACTIVATING_WI_FI_ING"
+msgstr "正在激活WLAN..."
+
+msgid "IDS_WIFI_POP_DEACTIVATING_WI_FI_ING"
+msgstr "正在取消WLAN..."
+
+msgid "IDS_WIFI_POP_SEARCHING_ING"
+msgstr "正在搜索"
+
+msgid "IDS_WIFI_POP_SELECT_NETWORK"
+msgstr "选择网络"
+
+msgid "IDS_WIFI_SK_FORGET"
+msgstr "忘记"
+
+msgid "IDS_CST_BODY_INPUT_PASSWORD"
+msgstr "输入密码"
+
+msgid "IDS_ST_BODY_SHOW_PASSWORD"
+msgstr "显示密码"
+
+msgid "IDS_WIFI_HEADER_PROXY_ADDRESS"
+msgstr "代理服务器地址"
+
+msgid "IDS_WIFI_BODY_SIGNAL_STRENGTH"
+msgstr "信号强度"
+
+msgid "IDS_WIFI_BODY_IP_ADDRESS"
+msgstr "IP 地址"
+
+msgid "IDS_WIFI_BODY_SUBNET_MASK"
+msgstr "子网时标"
+
+msgid "IDS_WIFI_BODY_GATEWAY"
+msgstr "网关"
+
+msgid "IDS_WIFI_BODY_DNS_1"
+msgstr "DNS 1"
+
+msgid "IDS_WIFI_BODY_DNS_2"
+msgstr "DNS 2"
+
+msgid "IDS_WIFI_BODY_SECURITYTYPE_WEP"
+msgstr "WEP"
+
+msgid "IDS_ST_POP_DEACTIVATING_ING"
+msgstr "正在取消..."
+
+msgid "IDS_WIFI_BODY_CONFIGURATION_NO_SECURITY"
+msgstr "不安全"
+
+msgid "IDS_ST_BODY_NETWORK_NOTIFICATION"
+msgstr "网络通知"
+
+msgid "IDS_WIFI_HEADER_SELECT_NETWORK"
+msgstr "选择网络"
+
