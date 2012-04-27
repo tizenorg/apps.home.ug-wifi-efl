@@ -96,6 +96,7 @@ static int _add_list_item(Evas_Object* view_list, char* title, char* description
 			ELM_GENLIST_ITEM_NONE,
 			NULL,
 			NULL);
+	elm_genlist_item_select_mode_set(it, ELM_OBJECT_SELECT_MODE_DISPLAY_ONLY);
 
 	return TRUE;
 }

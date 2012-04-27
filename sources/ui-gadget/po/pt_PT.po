@@ -88,3 +88,9 @@ msgstr "Notificação de rede"
 msgid "IDS_WIFI_HEADER_SELECT_NETWORK"
 msgstr "Seleccionar rede"
 
+msgid "IDS_WIFI_POP_FORGETTING_ACCESS_POINT_WILL_PREVENT_FUTURE_AUTOMATIC_CONNECTION_CONTINUE_Q"
+msgstr "O esquecimento do ponto de acesso impedirá a ligação automática futura. Continuar?"
+
+msgid "IDS_WIFI_BODY_WEAK_M_STRENGTH"
+msgstr "Fraca"
+

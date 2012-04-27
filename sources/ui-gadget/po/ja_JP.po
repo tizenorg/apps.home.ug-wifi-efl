@@ -80,11 +80,17 @@ msgid "IDS_ST_POP_DEACTIVATING_ING"
 msgstr "解除中…"
 
 msgid "IDS_WIFI_BODY_CONFIGURATION_NO_SECURITY"
-msgstr "セキュリティ​なし"
+msgstr "セキュリティ保護なし"
 
 msgid "IDS_ST_BODY_NETWORK_NOTIFICATION"
 msgstr "ネットワーク​通知"
 
 msgid "IDS_WIFI_HEADER_SELECT_NETWORK"
 msgstr "ネットワーク​を​選択"
+
+msgid "IDS_WIFI_POP_FORGETTING_ACCESS_POINT_WILL_PREVENT_FUTURE_AUTOMATIC_CONNECTION_CONTINUE_Q"
+msgstr "アクセス​ポイント​の接続情報​を​消去​する​と、​自動​接続​が​できなくなります。​続行​しますか？"
+
+msgid "IDS_WIFI_BODY_WEAK_M_STRENGTH"
+msgstr "弱い"
 

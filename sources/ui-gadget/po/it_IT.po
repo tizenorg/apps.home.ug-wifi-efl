@@ -8,7 +8,7 @@ msgid "IDS_ST_BODY_SCAN"
 msgstr "Scansione"
 
 msgid "IDS_WIFI_BODY_CONNECTED"
-msgstr "Collegato"
+msgstr "Connesso"
 
 msgid "IDS_WIFI_BODY_CONNECTING_ING"
 msgstr "Connessione..."
@@ -87,4 +87,10 @@ msgstr "Notifica di rete"
 
 msgid "IDS_WIFI_HEADER_SELECT_NETWORK"
 msgstr "Selezione rete"
+
+msgid "IDS_WIFI_POP_FORGETTING_ACCESS_POINT_WILL_PREVENT_FUTURE_AUTOMATIC_CONNECTION_CONTINUE_Q"
+msgstr "Se si dimentica il punto di accesso, non sarà possibile connettersi automaticamente in futuro. Continuare?"
+
+msgid "IDS_WIFI_BODY_WEAK_M_STRENGTH"
+msgstr "Debole"
 

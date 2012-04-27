@@ -67,8 +67,6 @@ typedef enum {
 	I18N_TYPE_Connected,
 	I18N_TYPE_Disconnecting,
 	I18N_TYPE_Connection_Lost,
-	I18N_TYPE_IP_configuration_failed,
-	I18N_TYPE_Authentication_failed_Check_your_password,
 	I18N_TYPE_Network_notification,
 	I18N_TYPE_Select_network,
 	I18N_TYPE_Input_password,
@@ -84,9 +82,6 @@ typedef enum {
 	I18N_TYPE_Hidden_AP,
 	I18N_TYPE_No_AP,
 	I18N_TYPE_Security_type,
-	I18N_TYPE_Input_AP_name,
-	I18N_TYPE_Network_popup,
-	I18N_TYPE_You_can_connect_to_a_specific_AP_via_AP_list_popup,
 	I18N_TYPE_Autonomous_connection_to_s_will_be_turned_off_Continue,
 	I18N_TYPE_MAX
 } I18N_TYPES;

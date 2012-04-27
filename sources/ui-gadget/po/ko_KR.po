@@ -44,7 +44,7 @@ msgid "IDS_WIFI_POP_SELECT_NETWORK"
 msgstr "네트워크를 선택하세요"
 
 msgid "IDS_WIFI_SK_FORGET"
-msgstr "네트워크 저장 안 함"
+msgstr "저장 안 함"
 
 msgid "IDS_CST_BODY_INPUT_PASSWORD"
 msgstr "비밀번호를 입력하세요"
@@ -80,11 +80,17 @@ msgid "IDS_ST_POP_DEACTIVATING_ING"
 msgstr "해제 중..."
 
 msgid "IDS_WIFI_BODY_CONFIGURATION_NO_SECURITY"
-msgstr "보안 설정이 없습니다"
+msgstr "보안 기능 사용하지 않음"
 
 msgid "IDS_ST_BODY_NETWORK_NOTIFICATION"
 msgstr "네트워크 알림"
 
 msgid "IDS_WIFI_HEADER_SELECT_NETWORK"
 msgstr "네트워크 선택"
+
+msgid "IDS_WIFI_POP_FORGETTING_ACCESS_POINT_WILL_PREVENT_FUTURE_AUTOMATIC_CONNECTION_CONTINUE_Q"
+msgstr "액세스 포인트 정보를 기억하지 않으면 이후 자동 연결을 방지할 수 있습니다. 계속할까요?"
+
+msgid "IDS_WIFI_BODY_WEAK_M_STRENGTH"
+msgstr "약함"
 

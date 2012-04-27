@@ -28,8 +28,6 @@
 
 int view_alerts_powering_on_show(void);
 int view_alerts_connection_fail_show(void);
-int view_alerts_connection_fail_ip_assign_show(void);
-int view_alerts_connection_fail_security_show(void);
 int view_alerts_connection_fail_timeout_show(void);
 int view_alerts_password_length_error_show(void);
 

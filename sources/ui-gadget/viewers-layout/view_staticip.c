@@ -506,16 +506,11 @@ void view_staticip()
 
 	Elm_Object_Item *navi_it = elm_naviframe_item_push(navi_frame, sc(PACKAGE, I18N_TYPE_Static_IP), NULL, NULL, layout, NULL);
 
-	Evas_Object *toolbar = elm_toolbar_add(navi_frame);
-	elm_toolbar_shrink_mode_set(toolbar, ELM_TOOLBAR_SHRINK_EXPAND);
-
-	elm_toolbar_item_append(toolbar, NULL, NULL, NULL, NULL);
-	elm_toolbar_item_append(toolbar,
-										WIFI_APP_ICON_PATH_DONE,
-										sc(PACKAGE, I18N_TYPE_Done),
-										(Evas_Smart_Cb) static_done_cb,
-										NULL);
-	elm_object_item_part_content_set(navi_it, "optionheader", toolbar);
+	Evas_Object *button_done = elm_button_add(navi_frame);
+	elm_object_style_set(button_done, "naviframe/title/default");
+	elm_object_text_set(button_done, sc(PACKAGE, I18N_TYPE_Done));
+	evas_object_smart_callback_add(button_done, "clicked", (Evas_Smart_Cb) static_done_cb, NULL);
+	elm_object_item_part_content_set(navi_it, "title_right_btn", button_done);
 
 	Evas_Object* button_back = elm_object_item_part_content_get(navi_it, "prev_btn");
 	elm_object_focus_allow_set(button_back, EINA_TRUE);

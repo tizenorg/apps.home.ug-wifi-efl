@@ -11,10 +11,10 @@ msgid "IDS_WIFI_BODY_CONNECTED"
 msgstr "Connecté"
 
 msgid "IDS_WIFI_BODY_CONNECTING_ING"
-msgstr "Connexion ..."
+msgstr "Connexion..."
 
 msgid "IDS_WIFI_BODY_DISCONNECTING_ING"
-msgstr "Déconnexion ..."
+msgstr "Déconnexion..."
 
 msgid "IDS_WIFI_BODY_DYNAMIC_IP"
 msgstr "IP dynamique"
@@ -38,7 +38,7 @@ msgid "IDS_WIFI_POP_DEACTIVATING_WI_FI_ING"
 msgstr "Désactivation Wi-Fi..."
 
 msgid "IDS_WIFI_POP_SEARCHING_ING"
-msgstr "Recherche ..."
+msgstr "Recherche..."
 
 msgid "IDS_WIFI_POP_SELECT_NETWORK"
 msgstr "Sélectionner un réseau"
@@ -87,4 +87,10 @@ msgstr "Notification réseau"
 
 msgid "IDS_WIFI_HEADER_SELECT_NETWORK"
 msgstr "Sélectionner un réseau"
+
+msgid "IDS_WIFI_POP_FORGETTING_ACCESS_POINT_WILL_PREVENT_FUTURE_AUTOMATIC_CONNECTION_CONTINUE_Q"
+msgstr "Si vous oubliez le point d'accès, la connexion automatique sera désactivée. Continuer ?"
+
+msgid "IDS_WIFI_BODY_WEAK_M_STRENGTH"
+msgstr "Faible"
 

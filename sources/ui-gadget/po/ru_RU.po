@@ -88,3 +88,9 @@ msgstr "Уведомление о сетях"
 msgid "IDS_WIFI_HEADER_SELECT_NETWORK"
 msgstr "Выбор сети"
 
+msgid "IDS_WIFI_POP_FORGETTING_ACCESS_POINT_WILL_PREVENT_FUTURE_AUTOMATIC_CONNECTION_CONTINUE_Q"
+msgstr "Удаление данных о точке доступа предотвратит автоматическое подключение в будущем. Продолжить?"
+
+msgid "IDS_WIFI_BODY_WEAK_M_STRENGTH"
+msgstr "Слабый"
+

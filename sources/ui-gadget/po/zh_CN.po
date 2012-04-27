@@ -88,3 +88,9 @@ msgstr "网络通知"
 msgid "IDS_WIFI_HEADER_SELECT_NETWORK"
 msgstr "选择网络"
 
+msgid "IDS_WIFI_POP_FORGETTING_ACCESS_POINT_WILL_PREVENT_FUTURE_AUTOMATIC_CONNECTION_CONTINUE_Q"
+msgstr "忘记接入点将阻止将来自动连接。继续？"
+
+msgid "IDS_WIFI_BODY_WEAK_M_STRENGTH"
+msgstr "弱"
+

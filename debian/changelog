@@ -1,3 +1,14 @@
+wifi-efl-ug (0.4.23) unstable; urgency=low
+
+  * Fix TIZEN_SDK bugs
+  * N_SE-696 : Set only display option to items in dhcp view
+  * N_SE-697 : Modify the button position in staticip view
+  * N_SE-701 : Apply Multi language for forget alert popup
+  * Git: pkgs/s/sg-wifi-efl
+  * Tag: wifi-efl-ug_0.4.23
+
+ -- Sanghoon Cho <sanghoon80.cho@samsung.com>  Thu, 19 Apr 2012 14:16:38 +0900
+
 wifi-efl-ug (0.4.22) unstable; urgency=low
 
   * Fix a button position - EAP view

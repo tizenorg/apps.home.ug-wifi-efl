@@ -14,7 +14,7 @@ msgid "IDS_WIFI_BODY_CONNECTING_ING"
 msgstr "Verbinden..."
 
 msgid "IDS_WIFI_BODY_DISCONNECTING_ING"
-msgstr "Verbinding wordt verbroken..."
+msgstr "Verbinding verbreken..."
 
 msgid "IDS_WIFI_BODY_DYNAMIC_IP"
 msgstr "Dynamische IP"
@@ -87,4 +87,10 @@ msgstr "Netwerkmelding"
 
 msgid "IDS_WIFI_HEADER_SELECT_NETWORK"
 msgstr "Netwerk kiezen"
+
+msgid "IDS_WIFI_POP_FORGETTING_ACCESS_POINT_WILL_PREVENT_FUTURE_AUTOMATIC_CONNECTION_CONTINUE_Q"
+msgstr "Als u het toegangspunt niet opgeeft, kunt u later niet automatisch verbinden. Doorgaan?"
+
+msgid "IDS_WIFI_BODY_WEAK_M_STRENGTH"
+msgstr "Zwak"
 

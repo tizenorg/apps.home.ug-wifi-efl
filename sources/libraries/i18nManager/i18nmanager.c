@@ -108,6 +108,8 @@ char* i18n_manager_get_text(const char *pkg_name, I18N_TYPES type)
 		return apply_i18n(pkg_name, I18N_MODE_SELF_MADE, "IDS_ST_BODY_EXCELLENT");
 	case I18N_TYPE_Good:
 		return apply_i18n(pkg_name, I18N_MODE_SELF_MADE, "IDS_ST_BODY_GOOD_M_STRENGTH");
+	case I18N_TYPE_Week:
+		return apply_i18n(pkg_name, I18N_MODE_SELF_MADE, "IDS_WIFI_BODY_WEAK_M_STRENGTH");
 	case I18N_TYPE_Disconnecting:
 		return apply_i18n(pkg_name, I18N_MODE_SELF_MADE, "IDS_WIFI_BODY_DISCONNECTING_ING");
 	case I18N_TYPE_Hidden_AP:
@@ -142,21 +144,9 @@ char* i18n_manager_get_text(const char *pkg_name, I18N_TYPES type)
 		return apply_i18n(pkg_name, I18N_MODE_SELF_MADE, "IDS_CST_BODY_INPUT_PASSWORD");
 	case I18N_TYPE_Show_password:
 		return apply_i18n(pkg_name, I18N_MODE_SELF_MADE, "IDS_ST_BODY_SHOW_PASSWORD");
-
-	case I18N_TYPE_Week:
-		return gettext("Weak");
-	case I18N_TYPE_IP_configuration_failed:
-		return gettext("IP configuration failed");
-	case I18N_TYPE_Authentication_failed_Check_your_password:
-		return gettext("Authentication failed Check your password");
-	case I18N_TYPE_Input_AP_name:
-		return gettext("Input AP name");
-	case I18N_TYPE_Network_popup:
-		return gettext("Network popup");
-	case I18N_TYPE_You_can_connect_to_a_specific_AP_via_AP_list_popup:
-		return gettext("You can connect to a specific AP<br>via AP list poup");
 	case I18N_TYPE_Autonomous_connection_to_s_will_be_turned_off_Continue:
-		return gettext("Autonomous connecting to<br>%s<br>will be turned off.<br>Continue?");
+		return apply_i18n(pkg_name, I18N_MODE_SELF_MADE, "IDS_WIFI_POP_FORGETTING_ACCESS_POINT_WILL_PREVENT_FUTURE_AUTOMATIC_CONNECTION_CONTINUE_Q");
+
 	case I18N_TYPE_WPA_PSK:
 		return gettext("WPA-PSK");
 	case I18N_TYPE_WPA2_PSK:

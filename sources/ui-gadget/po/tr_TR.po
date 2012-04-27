@@ -88,3 +88,9 @@ msgstr "Ağ bildirimi"
 msgid "IDS_WIFI_HEADER_SELECT_NETWORK"
 msgstr "Şebeke seçimi"
 
+msgid "IDS_WIFI_POP_FORGETTING_ACCESS_POINT_WILL_PREVENT_FUTURE_AUTOMATIC_CONNECTION_CONTINUE_Q"
+msgstr "Erişim noktasını unutmak ileride otomatik bağlantıyı engeller. Devam edilsin mi?"
+
+msgid "IDS_WIFI_BODY_WEAK_M_STRENGTH"
+msgstr "Zayıf"
+

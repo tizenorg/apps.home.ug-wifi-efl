@@ -77,7 +77,7 @@ msgid "IDS_WIFI_BODY_SECURITYTYPE_WEP"
 msgstr "WEP"
 
 msgid "IDS_ST_POP_DEACTIVATING_ING"
-msgstr "Deaktiviere..."
+msgstr "Wird deaktiviert..."
 
 msgid "IDS_WIFI_BODY_CONFIGURATION_NO_SECURITY"
 msgstr "Keine Sicherheit"
@@ -87,4 +87,10 @@ msgstr "Netzbenachrichtigung"
 
 msgid "IDS_WIFI_HEADER_SELECT_NETWORK"
 msgstr "Netz auswählen"
+
+msgid "IDS_WIFI_POP_FORGETTING_ACCESS_POINT_WILL_PREVENT_FUTURE_AUTOMATIC_CONNECTION_CONTINUE_Q"
+msgstr "Durch Vergessen des Zugangspunkts werden automatische Verbindungen in Zukunft vermieden. Fortfahren?"
+
+msgid "IDS_WIFI_BODY_WEAK_M_STRENGTH"
+msgstr "Schwach"
 

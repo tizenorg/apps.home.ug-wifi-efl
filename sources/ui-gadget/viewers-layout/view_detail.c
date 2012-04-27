@@ -187,8 +187,8 @@ static void forget_sk_cb(void *data, Evas_Object *obj, void *event_info)
 
 	Evas_Object* popup = elm_popup_add((Evas_Object *)data);
 	evas_object_size_hint_weight_set(popup, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
-	char buffer[100];
-	sprintf(buffer, sc(PACKAGE, I18N_TYPE_Autonomous_connection_to_s_will_be_turned_off_Continue), _detail_data->ssid);
+	char buffer[200];
+	snprintf(buffer, sizeof(buffer), sc(PACKAGE, I18N_TYPE_Autonomous_connection_to_s_will_be_turned_off_Continue), _detail_data->ssid);
 	elm_object_text_set(popup, buffer);
 	Evas_Object *btn_yes = elm_button_add(popup);
 	elm_object_text_set(btn_yes, sc(PACKAGE, I18N_TYPE_Yes));

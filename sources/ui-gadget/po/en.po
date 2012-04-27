@@ -88,3 +88,9 @@ msgstr "Network notification"
 msgid "IDS_WIFI_HEADER_SELECT_NETWORK"
 msgstr "Select network"
 
+msgid "IDS_WIFI_POP_FORGETTING_ACCESS_POINT_WILL_PREVENT_FUTURE_AUTOMATIC_CONNECTION_CONTINUE_Q"
+msgstr "Forgetting access point will prevent future automatic connection. Continue?"
+
+msgid "IDS_WIFI_BODY_WEAK_M_STRENGTH"
+msgstr "Weak"
+

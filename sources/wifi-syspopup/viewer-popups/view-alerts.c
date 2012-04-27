@@ -74,7 +74,7 @@ int view_alerts_powering_on_show(void)
 	elm_box_pack_end(box, progressbar);
 
 	Evas_Object *label = elm_label_add(box);
-	elm_object_style_set(label, "popup_description/default");
+	elm_object_style_set(label, "popup/default");
 	evas_object_size_hint_weight_set(label, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
 	evas_object_size_hint_align_set(label, EVAS_HINT_FILL, EVAS_HINT_FILL);
 	elm_object_text_set(label, sc(PACKAGE, I18N_TYPE_Activating));
@@ -109,61 +109,6 @@ int view_alerts_connection_fail_show(void)
 	elm_object_text_set(app_state->alertpopup, "Connection attempt failed.<br>Try again.");
 	elm_popup_timeout_set(app_state->alertpopup, 2.0f);
 	evas_object_smart_callback_add(app_state->alertpopup, "timeout", _timeout_cb, NULL);
-	evas_object_size_hint_weight_set(app_state->alertpopup, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
-	evas_object_show(app_state->alertpopup);
-
-	__COMMON_FUNC_EXIT__;
-
-	return TRUE;
-}
-
-int view_alerts_connection_fail_ip_assign_show(void)
-{
-	__COMMON_FUNC_ENTER__;
-
-	if (WIFI_SYSPOPUP_SUPPORT_QUICKPANEL == app_state->wifi_syspopup_support) {
-		__COMMON_FUNC_EXIT__;
-
-		return TRUE;
-	}
-
-	if (NULL != app_state->alertpopup) {
-		evas_object_del(app_state->alertpopup);
-		app_state->alertpopup = NULL;
-	}
-
-	app_state->alertpopup = elm_popup_add(app_state->win_main);
-	elm_object_text_set(app_state->alertpopup, sc(PACKAGE, I18N_TYPE_IP_configuration_failed));
-	elm_popup_timeout_set(app_state->alertpopup, 2.0f);
-	evas_object_smart_callback_add(app_state->alertpopup, "timeout", _timeout_cb, NULL);
-	evas_object_size_hint_weight_set(app_state->alertpopup, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
-	evas_object_show(app_state->alertpopup);
-
-	__COMMON_FUNC_EXIT__;
-
-	return TRUE;
-}
-
-int view_alerts_connection_fail_security_show(void)
-{
-	__COMMON_FUNC_ENTER__;
-
-	if (WIFI_SYSPOPUP_SUPPORT_QUICKPANEL == app_state->wifi_syspopup_support) {
-		__COMMON_FUNC_EXIT__;
-
-		return TRUE;
-	}
-
-	if (NULL != app_state->alertpopup) {
-		evas_object_del(app_state->alertpopup);
-		app_state->alertpopup = NULL;
-	}
-
-	app_state->alertpopup = elm_popup_add(app_state->win_main);
-	elm_object_text_set(app_state->alertpopup, sc(PACKAGE, I18N_TYPE_Authentication_failed_Check_your_password));
-	elm_popup_timeout_set(app_state->alertpopup, 2.0f);
-	evas_object_smart_callback_add(app_state->alertpopup, "timeout", _timeout_cb, NULL);
-
 	evas_object_size_hint_weight_set(app_state->alertpopup, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
 	evas_object_show(app_state->alertpopup);
 

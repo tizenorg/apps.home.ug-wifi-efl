@@ -44,7 +44,7 @@ msgid "IDS_WIFI_POP_SELECT_NETWORK"
 msgstr "選擇網路"
 
 msgid "IDS_WIFI_SK_FORGET"
-msgstr "忘記"
+msgstr "清除"
 
 msgid "IDS_CST_BODY_INPUT_PASSWORD"
 msgstr "輸入密碼"
@@ -87,4 +87,10 @@ msgstr "網路通知"
 
 msgid "IDS_WIFI_HEADER_SELECT_NETWORK"
 msgstr "選擇網路"
+
+msgid "IDS_WIFI_POP_FORGETTING_ACCESS_POINT_WILL_PREVENT_FUTURE_AUTOMATIC_CONNECTION_CONTINUE_Q"
+msgstr "不儲存Wi-Fi連接點以防止系統自動連接。要繼續嗎？"
+
+msgid "IDS_WIFI_BODY_WEAK_M_STRENGTH"
+msgstr "弱"
 
