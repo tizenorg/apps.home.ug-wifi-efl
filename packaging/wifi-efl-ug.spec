@@ -7,6 +7,7 @@ Release:    1
 Group:      App/Network
 License:    Samsung Proprietary License
 Source0:    %{name}-%{version}.tar.gz
+Source1001: packaging/wifi-efl-ug.manifest 
 
 BuildRequires: cmake
 BuildRequires: gettext-tools
@@ -48,6 +49,7 @@ Wi-Fi System popup
 %define PREFIX /opt/ug
 
 %build
+cp %{SOURCE1001} .
 export LDFLAGS+="-Wl,--rpath=$PREFIX/lib -Wl,--as-needed"
 LDFLAGS="$LDFLAGS"
 cmake . -DCMAKE_INSTALL_PREFIX=$PREFIX
@@ -70,6 +72,7 @@ vconftool set -t int db/wifi/enable_quick_start 1 -g 6519 -i
 %postun -p /sbin/ldconfig
 
 %files
+%manifest wifi-efl-ug.manifest
 %defattr(-,root,root,-)
 /opt/ug/lib/libug-wifi-efl-UG.so
 /opt/ug/lib/libug-wifi-efl-UG.so.0.1.0
@@ -78,6 +81,7 @@ vconftool set -t int db/wifi/enable_quick_start 1 -g 6519 -i
 /opt/ug/res/locale/*/LC_MESSAGES/*.mo
 
 %files -n net.wifi-qs
+%manifest wifi-efl-ug.manifest
 %defattr(-,root,root,-)
 %{_prefix}/bin/wifi-qs
 /opt/share/applications/net.wifi-qs.desktop
