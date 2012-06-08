@@ -1,0 +1,9 @@
+Name=Wi-Fi System Popup
+Type=Application
+Exec=/usr/bin/wifi-qs
+Icon=NULL
+Comment=wifi-qs
+nodisplay=true
+x-tizen-taskmanage=false
+x-tizen-removable=false
+Version=0.1.0

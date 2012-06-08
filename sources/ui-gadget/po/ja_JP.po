@@ -1,0 +1,96 @@
+msgid "IDS_ST_BODY_EXCELLENT"
+msgstr "優秀"
+
+msgid "IDS_ST_BODY_GOOD_M_STRENGTH"
+msgstr "強"
+
+msgid "IDS_ST_BODY_SCAN"
+msgstr "スキャン"
+
+msgid "IDS_WIFI_BODY_CONNECTED"
+msgstr "接続しました。"
+
+msgid "IDS_WIFI_BODY_CONNECTING_ING"
+msgstr "接続中..."
+
+msgid "IDS_WIFI_BODY_DISCONNECTING_ING"
+msgstr "切断中..."
+
+msgid "IDS_WIFI_BODY_DYNAMIC_IP"
+msgstr "ダイナミックIP"
+
+msgid "IDS_WIFI_BODY_NO_APS"
+msgstr "アプリケーション​なし"
+
+msgid "IDS_WIFI_BODY_SECURITY_TYPE"
+msgstr "セキュリティタイプ"
+
+msgid "IDS_WIFI_BODY_STATIC_IP"
+msgstr "静的​IP"
+
+msgid "IDS_WIFI_HEADER_HIDDEN_NETWORK"
+msgstr "非表示​ネットワーク"
+
+msgid "IDS_WIFI_POP_ACTIVATING_WI_FI_ING"
+msgstr "Wi-Fi​を​起動中..."
+
+msgid "IDS_WIFI_POP_DEACTIVATING_WI_FI_ING"
+msgstr "Wi-Fi​を​無効に​して​います..."
+
+msgid "IDS_WIFI_POP_SEARCHING_ING"
+msgstr "検索中..."
+
+msgid "IDS_WIFI_POP_SELECT_NETWORK"
+msgstr "ネットワーク​を​選択​"
+
+msgid "IDS_WIFI_SK_FORGET"
+msgstr "切断"
+
+msgid "IDS_CST_BODY_INPUT_PASSWORD"
+msgstr "パスワードを​入力してください"
+
+msgid "IDS_ST_BODY_SHOW_PASSWORD"
+msgstr "パスワード​を​表示"
+
+msgid "IDS_WIFI_HEADER_PROXY_ADDRESS"
+msgstr "プロキシ​アドレス"
+
+msgid "IDS_WIFI_BODY_SIGNAL_STRENGTH"
+msgstr "電波​強度"
+
+msgid "IDS_WIFI_BODY_IP_ADDRESS"
+msgstr "IP​アドレス"
+
+msgid "IDS_WIFI_BODY_SUBNET_MASK"
+msgstr "サブネット​マスク"
+
+msgid "IDS_WIFI_BODY_GATEWAY"
+msgstr "ゲートウェイ"
+
+msgid "IDS_WIFI_BODY_DNS_1"
+msgstr "DNS 1"
+
+msgid "IDS_WIFI_BODY_DNS_2"
+msgstr "DNS 2"
+
+msgid "IDS_WIFI_BODY_SECURITYTYPE_WEP"
+msgstr "WEP"
+
+msgid "IDS_ST_POP_DEACTIVATING_ING"
+msgstr "解除中…"
+
+msgid "IDS_WIFI_BODY_CONFIGURATION_NO_SECURITY"
+msgstr "セキュリティ保護なし"
+
+msgid "IDS_ST_BODY_NETWORK_NOTIFICATION"
+msgstr "ネットワーク​通知"
+
+msgid "IDS_WIFI_HEADER_SELECT_NETWORK"
+msgstr "ネットワーク​を​選択"
+
+msgid "IDS_WIFI_POP_FORGETTING_ACCESS_POINT_WILL_PREVENT_FUTURE_AUTOMATIC_CONNECTION_CONTINUE_Q"
+msgstr "アクセス​ポイント​の接続情報​を​消去​する​と、​自動​接続​が​できなくなります。​続行​しますか？"
+
+msgid "IDS_WIFI_BODY_WEAK_M_STRENGTH"
+msgstr "弱い"
+

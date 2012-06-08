@@ -1,0 +1,9 @@
+msgid "IDS_CST_BODY_INPUT_PASSWORD"
+msgstr "パスワードを​入力してください"
+
+msgid "IDS_ST_BODY_SHOW_PASSWORD"
+msgstr "パスワード​を​表示"
+
+msgid "IDS_WIFI_HEADER_SELECT_NETWORK"
+msgstr "ネットワーク​を​選択"
+

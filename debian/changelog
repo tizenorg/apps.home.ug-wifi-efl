@@ -1,0 +1,8 @@
+wifi-efl-ug (0.4.26) unstable; urgency=low
+
+  * Update boiler plate
+  * Git: pkgs/s/sg-wifi-efl
+  * Tag: wifi-efl-ug_0.4.26
+
+ -- Sanghoon Cho <sanghoon80.cho@samsung.com>  Wed, 02 May 2012 17:14:46 +0900
+

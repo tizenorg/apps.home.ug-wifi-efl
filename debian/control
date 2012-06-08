@@ -1,0 +1,46 @@
+Source: wifi-efl-ug
+Section: net
+Priority: extra
+Maintainer: Sanghoon Cho <sanghoon80.cho@samsung.com>, Danny Jeongseok Seo <s.seo@samsung.com>
+Uploaders: Sanghoon Cho <sanghoon80.cho@samsung.com>, Danny Jeongseok Seo <s.seo@samsung.com>
+Build-Depends: 	debhelper (>= 5), 
+		libappcore-efl-dev, 
+		libelm-dev, 
+		libglib2.0-dev, 
+		libslp-utilx-dev, 
+		libslp-setting-dev, 
+		libui-gadget-dev, 
+		libedje-dev,
+		libslp-sensor-dev, 
+		libnetwork-dev,
+		syspopup-dev,
+		syspopup-caller-dev
+Standards-Version: 3.7.2
+
+Package: wifi-efl-ug
+Section: net
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description: Wi-Fi UI Gadget
+
+Package: wifi-efl-ug-dbg
+Section: net-debug
+Architecture: any
+Depends: wifi-efl-ug
+Description: Wi-Fi UI Gadget (dbg)
+
+Package: net.wifi-qs
+Section: application
+Architecture: any
+XB-Generate-Docs: no
+XB-Public-Package: no
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description: Wi-Fi System popup
+
+Package: net.wifi-qs-dbg
+Section: debug
+Architecture: any
+XB-Generate-Docs: no
+XB-Public-Package: no
+Depends: net.wifi-qs
+Description: Wi-Fi System popup (dbg)

@@ -1,0 +1,9 @@
+msgid "IDS_CST_BODY_INPUT_PASSWORD"
+msgstr "Inserisci password"
+
+msgid "IDS_ST_BODY_SHOW_PASSWORD"
+msgstr "Mostra password"
+
+msgid "IDS_WIFI_HEADER_SELECT_NETWORK"
+msgstr "Selezione rete"
+

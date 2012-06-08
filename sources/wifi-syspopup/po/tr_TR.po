@@ -1,0 +1,9 @@
+msgid "IDS_CST_BODY_INPUT_PASSWORD"
+msgstr "Şifre giriniz"
+
+msgid "IDS_ST_BODY_SHOW_PASSWORD"
+msgstr "Parolayı göster"
+
+msgid "IDS_WIFI_HEADER_SELECT_NETWORK"
+msgstr "Şebeke seçimi"
+

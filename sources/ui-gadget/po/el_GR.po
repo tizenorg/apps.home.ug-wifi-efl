@@ -1,0 +1,96 @@
+msgid "IDS_ST_BODY_EXCELLENT"
+msgstr "Τέλεια"
+
+msgid "IDS_ST_BODY_GOOD_M_STRENGTH"
+msgstr "Καλό"
+
+msgid "IDS_ST_BODY_SCAN"
+msgstr "Σάρωση"
+
+msgid "IDS_WIFI_BODY_CONNECTED"
+msgstr "Συνδέθηκε"
+
+msgid "IDS_WIFI_BODY_CONNECTING_ING"
+msgstr "Σύνδεση..."
+
+msgid "IDS_WIFI_BODY_DISCONNECTING_ING"
+msgstr "Αποσύνδεση..."
+
+msgid "IDS_WIFI_BODY_DYNAMIC_IP"
+msgstr "Δυναμικό IP"
+
+msgid "IDS_WIFI_BODY_NO_APS"
+msgstr "Δεν υπάρχουν AP"
+
+msgid "IDS_WIFI_BODY_SECURITY_TYPE"
+msgstr "Τύπος ασφαλείας"
+
+msgid "IDS_WIFI_BODY_STATIC_IP"
+msgstr "Στατικό IP"
+
+msgid "IDS_WIFI_HEADER_HIDDEN_NETWORK"
+msgstr "Κρυφό δίκτυο"
+
+msgid "IDS_WIFI_POP_ACTIVATING_WI_FI_ING"
+msgstr "Ενεργοποίηση Wi-Fi..."
+
+msgid "IDS_WIFI_POP_DEACTIVATING_WI_FI_ING"
+msgstr "Απενεργοποίηση Wi-Fi..."
+
+msgid "IDS_WIFI_POP_SEARCHING_ING"
+msgstr "Αναζήτηση..."
+
+msgid "IDS_WIFI_POP_SELECT_NETWORK"
+msgstr "Επιλογή δικτύου"
+
+msgid "IDS_WIFI_SK_FORGET"
+msgstr "Εξαίρεσε"
+
+msgid "IDS_CST_BODY_INPUT_PASSWORD"
+msgstr "Εισαγωγή κωδικού πρόσβασης"
+
+msgid "IDS_ST_BODY_SHOW_PASSWORD"
+msgstr "Εμφάνιση κωδικού πρόσβασης"
+
+msgid "IDS_WIFI_HEADER_PROXY_ADDRESS"
+msgstr "Διεύθ.διακ.μεσολάβ."
+
+msgid "IDS_WIFI_BODY_SIGNAL_STRENGTH"
+msgstr "Ισχύς σήματος"
+
+msgid "IDS_WIFI_BODY_IP_ADDRESS"
+msgstr "Διεύθυνση IP"
+
+msgid "IDS_WIFI_BODY_SUBNET_MASK"
+msgstr "Μάσκα υποδικτύου"
+
+msgid "IDS_WIFI_BODY_GATEWAY"
+msgstr "Πύλη"
+
+msgid "IDS_WIFI_BODY_DNS_1"
+msgstr "DNS1"
+
+msgid "IDS_WIFI_BODY_DNS_2"
+msgstr "DNS2"
+
+msgid "IDS_WIFI_BODY_SECURITYTYPE_WEP"
+msgstr "WEP"
+
+msgid "IDS_ST_POP_DEACTIVATING_ING"
+msgstr "Απενεργοποίηση.."
+
+msgid "IDS_WIFI_BODY_CONFIGURATION_NO_SECURITY"
+msgstr "Καμία ασφάλεια"
+
+msgid "IDS_ST_BODY_NETWORK_NOTIFICATION"
+msgstr "Ειδοποίηση δικτύου"
+
+msgid "IDS_WIFI_HEADER_SELECT_NETWORK"
+msgstr "Επιλογή δικτύου"
+
+msgid "IDS_WIFI_POP_FORGETTING_ACCESS_POINT_WILL_PREVENT_FUTURE_AUTOMATIC_CONNECTION_CONTINUE_Q"
+msgstr "Η μη απομνημόνευση του σημείου πρόσβασης θα κάνει αδύνατη την αυτόματη σύνδεση στο μέλλον. Συνέχεια;"
+
+msgid "IDS_WIFI_BODY_WEAK_M_STRENGTH"
+msgstr "Ασθενές"
+
