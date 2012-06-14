@@ -21,7 +21,6 @@ pkg_check_modules(pkgs REQUIRED
 		elementary 
 		glib-2.0 
 		utilX 
-		UI-idlecapture 
 		ui-gadget 
 		x11 
 		sensor
