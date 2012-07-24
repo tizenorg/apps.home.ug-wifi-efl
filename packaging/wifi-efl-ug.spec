@@ -2,10 +2,10 @@
 
 Name:       wifi-efl-ug
 Summary:    Wi-Fi UI Gadget
-Version:    0.4.23
+Version:    0.4.25
 Release:    1
 Group:      App/Network
-License:    Samsung Proprietary License
+License:    Flora Software License
 Source0:    %{name}-%{version}.tar.gz
 Source1001: packaging/wifi-efl-ug.manifest 
 
