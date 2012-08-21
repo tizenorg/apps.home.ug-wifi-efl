@@ -1,8 +1,8 @@
 Source: wifi-efl-ug
 Section: net
 Priority: extra
-Maintainer: Sanghoon Cho <sanghoon80.cho@samsung.com>, Danny Jeongseok Seo <s.seo@samsung.com>
-Uploaders: Sanghoon Cho <sanghoon80.cho@samsung.com>, Danny Jeongseok Seo <s.seo@samsung.com>
+Maintainer: Sanghoon Cho <sanghoon80.cho@samsung.com>, Danny Jeongseok Seo <s.seo@samsung.com>, Praveen C <pravin.c@samsung.com>
+Uploaders: Sanghoon Cho <sanghoon80.cho@samsung.com>, Danny Jeongseok Seo <s.seo@samsung.com>, Praveen C <pravin.c@samsung.com>
 Build-Depends: 	debhelper (>= 5), 
 		libappcore-efl-dev, 
 		libelm-dev, 

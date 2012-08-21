@@ -1,18 +1,21 @@
 /*
-  * Copyright 2012  Samsung Electronics Co., Ltd
-  *
-  * Licensed under the Flora License, Version 1.0 (the "License");
-  * you may not use this file except in compliance with the License.
-  * You may obtain a copy of the License at
-  *
-  *    http://www.tizenopensource.org/license
-  *
-  * Unless required by applicable law or agreed to in writing, software
-  * distributed under the License is distributed on an "AS IS" BASIS,
-  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  * See the License for the specific language governing permissions and
-  * limitations under the License.
-  */
+*  Wi-Fi UG
+*
+* Copyright 2012  Samsung Electronics Co., Ltd
+
+* Licensed under the Flora License, Version 1.0 (the "License");
+* you may not use this file except in compliance with the License.
+* You may obtain a copy of the License at
+
+* http://www.tizenopensource.org/license
+
+* Unless required by applicable law or agreed to in writing, software
+* distributed under the License is distributed on an "AS IS" BASIS,
+* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+* See the License for the specific language governing permissions and
+* limitations under the License.
+*
+*/
 
 
 
@@ -51,37 +54,31 @@ void connman_profile_manager_destroy()
 
 int connman_profile_manager_profile_cache(int count)
 {
-	int num_of_profiles = 0;
-	net_profile_info_t *profiles = NULL;
+	int *p_num_of_profiles = 0;
+	net_profile_info_t** p_profile_table;
+	net_profile_info_t* old_profile_table;
 	connman_profile_manager *profile_manager = NULL;
 
 	INFO_LOG(COMMON_NAME_LIB, "connman_profile_manager_profile_cache");
 
-	net_get_profile_list(NET_DEVICE_WIFI, &profiles, &num_of_profiles);
-	if (num_of_profiles == 0) {
-		INFO_LOG(COMMON_NAME_LIB, "count = 0");
-		return FALSE;
-	}
-
-	if (count < num_of_profiles && count > 0)
-		num_of_profiles = count;
-
-	INFO_LOG(COMMON_NAME_LIB, "count = %d", num_of_profiles);
-
 	profile_manager = connman_profile_manager_get_singleton();
-	if (profile_manager->profile_table) {
-		g_free(profile_manager->profile_table);
-		profile_manager->profile_table = NULL;
+	old_profile_table = profile_manager->profile_table;
+	profile_manager->profile_table = NULL;
+
+	p_num_of_profiles = &(profile_manager->profile_num);
+	p_profile_table = &(profile_manager->profile_table);
+
+	net_get_profile_list(NET_DEVICE_WIFI, p_profile_table, p_num_of_profiles);
+	g_free(old_profile_table);
+	if (*p_num_of_profiles == 0) {
+		INFO_LOG(COMMON_NAME_LIB, "count = 0");
+	} else if (count < *p_num_of_profiles && count > 0) {
+		*p_num_of_profiles = count;
 	}
 
-	profile_manager->profile_table = (net_profile_info_t*)malloc(num_of_profiles*sizeof(net_profile_info_t));
-	memcpy(profile_manager->profile_table, profiles, num_of_profiles*sizeof(net_profile_info_t));
-	profile_manager->profile_num = num_of_profiles;
+	INFO_LOG(COMMON_NAME_LIB, "count = %d", *p_num_of_profiles);
 
-	if (profiles)
-		g_free(profiles);
-
-	return num_of_profiles;
+	return *p_num_of_profiles;
 }
 
 int connman_profile_manager_scanned_profile_table_size_get(void)
@@ -132,26 +129,11 @@ int connman_profile_manager_disconnected_ssid_set(const char *profile_name)
 	return TRUE;
 }
 
-int connman_profile_manager_profile_modify(net_profile_info_t new_profile)
+int connman_profile_manager_profile_modify(net_profile_info_t *new_profile)
 {
-	net_profile_info_t profile;
-	if (net_get_profile_info(new_profile.ProfileName, &profile) != NET_ERR_NONE) {
-		return 0;
-	}
+	new_profile->ProfileInfo.Wlan.net_info.ProxyMethod = NET_PROXY_TYPE_MANUAL;
 
-	profile.ProfileInfo.Wlan.net_info.IpConfigType = new_profile.ProfileInfo.Wlan.net_info.IpConfigType;
-	if (profile.ProfileInfo.Wlan.net_info.IpConfigType == NET_IP_CONFIG_TYPE_STATIC) {
-		profile.ProfileInfo.Wlan.net_info.IpAddr.Data.Ipv4 = new_profile.ProfileInfo.Wlan.net_info.IpAddr.Data.Ipv4;
-		profile.ProfileInfo.Wlan.net_info.SubnetMask.Data.Ipv4 = new_profile.ProfileInfo.Wlan.net_info.SubnetMask.Data.Ipv4;
-		profile.ProfileInfo.Wlan.net_info.GatewayAddr.Data.Ipv4 = new_profile.ProfileInfo.Wlan.net_info.GatewayAddr.Data.Ipv4;
-		profile.ProfileInfo.Wlan.net_info.DnsAddr[0].Data.Ipv4 = new_profile.ProfileInfo.Wlan.net_info.DnsAddr[0].Data.Ipv4;
-		profile.ProfileInfo.Wlan.net_info.DnsAddr[1].Data.Ipv4 = new_profile.ProfileInfo.Wlan.net_info.DnsAddr[1].Data.Ipv4;
-	}
-
-	profile.ProfileInfo.Wlan.net_info.ProxyMethod = NET_PROXY_TYPE_MANUAL;
-	strncpy(profile.ProfileInfo.Wlan.net_info.ProxyAddr, new_profile.ProfileInfo.Wlan.net_info.ProxyAddr, WLAN_PROXY_LEN_MAX);
-
-	int ret = net_modify_profile(new_profile.ProfileName, &profile);
+	int ret = net_modify_profile(new_profile->ProfileName, new_profile);
 	if (ret != NET_ERR_NONE) {
 		INFO_LOG(COMMON_NAME_ERR, "Failed to modify profile - %d\n", ret);
 		return 0;

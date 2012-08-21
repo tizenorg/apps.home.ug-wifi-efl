@@ -21,7 +21,7 @@ pkg_check_modules(pkgs REQUIRED
 		elementary 
 		glib-2.0 
 		utilX 
-		ui-gadget 
+		ui-gadget-1
 		x11 
 		sensor
 		syspopup
@@ -49,7 +49,7 @@ INCLUDE_DIRECTORIES(
 #engine includes
 		${ENGINE_INCLUDES})
 
+ADD_SUBDIRECTORY(po)
 ADD_SUBDIRECTORY(sources/ui-gadget)
 ADD_SUBDIRECTORY(sources/wifi-syspopup)
-
 

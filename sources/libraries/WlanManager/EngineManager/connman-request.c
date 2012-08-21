@@ -1,18 +1,21 @@
 /*
-  * Copyright 2012  Samsung Electronics Co., Ltd
-  *
-  * Licensed under the Flora License, Version 1.0 (the "License");
-  * you may not use this file except in compliance with the License.
-  * You may obtain a copy of the License at
-  *
-  *    http://www.tizenopensource.org/license
-  *
-  * Unless required by applicable law or agreed to in writing, software
-  * distributed under the License is distributed on an "AS IS" BASIS,
-  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  * See the License for the specific language governing permissions and
-  * limitations under the License.
-  */
+*  Wi-Fi UG
+*
+* Copyright 2012  Samsung Electronics Co., Ltd
+
+* Licensed under the Flora License, Version 1.0 (the "License");
+* you may not use this file except in compliance with the License.
+* You may obtain a copy of the License at
+
+* http://www.tizenopensource.org/license
+
+* Unless required by applicable law or agreed to in writing, software
+* distributed under the License is distributed on an "AS IS" BASIS,
+* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+* See the License for the specific language governing permissions and
+* limitations under the License.
+*
+*/
 
 
 
@@ -46,14 +49,14 @@ int connman_request_deregister(void)
 
 int connman_request_power_on(void)
 {
-	int ret = NET_ERR_NONE;
-
-	ret = net_wifi_power_on();
+	int ret = net_wifi_power_on();
 	INFO_LOG(COMMON_NAME_LIB,"network_wifi_power_on ret: %d", ret);
 
 	switch (ret){
 		case NET_ERR_NONE:
 			return WLAN_MANAGER_ERR_NONE;
+		case NET_ERR_IN_PROGRESS:
+			return WLAN_MANAGER_ERR_IN_PROGRESS;
 		default:
 			return WLAN_MANAGER_ERR_UNKNOWN;
 	}
@@ -61,9 +64,7 @@ int connman_request_power_on(void)
 
 int connman_request_power_off(void)
 {
-	int ret = NET_ERR_NONE;
-
-	ret = net_wifi_power_off();
+	int ret = net_wifi_power_off();
 	INFO_LOG(COMMON_NAME_LIB, "network_wifi_power_off ret: %d", ret);
 
 	switch (ret){
@@ -76,12 +77,26 @@ int connman_request_power_off(void)
 
 int connman_request_connection_open(const char* profile_name)
 {
-	int ret = NET_ERR_NONE;
-	ret = net_open_connection_with_profile(profile_name);	
+	int ret = net_open_connection_with_profile(profile_name);
 	INFO_LOG(COMMON_NAME_LIB, "connman_request_connection_open ret: %d", ret);
 	
 	switch (ret){
 		case NET_ERR_NONE:
+		case NET_ERR_IN_PROGRESS:
+			return WLAN_MANAGER_ERR_NONE;
+		default:
+			return WLAN_MANAGER_ERR_UNKNOWN;
+	}
+}
+
+int connman_request_specific_scan(const char *ssid)
+{
+	int ret = net_specific_scan_wifi(ssid);
+	INFO_LOG(COMMON_NAME_LIB,"net_specific_scan_wifi ret: %d", ret);
+
+	switch (ret) {
+		case NET_ERR_NONE:
+		case NET_ERR_IN_PROGRESS:
 			return WLAN_MANAGER_ERR_NONE;
 		default:
 			return WLAN_MANAGER_ERR_UNKNOWN;
@@ -89,9 +104,8 @@ int connman_request_connection_open(const char* profile_name)
 }
 
 int connman_request_connection_open_hidden_ap(net_wifi_connection_info_t* conninfo)
-	{
-	int ret = NET_ERR_NONE;
-	ret = net_open_connection_with_wifi_info(conninfo);
+{
+	int ret = net_open_connection_with_wifi_info(conninfo);
 	switch (ret){
 		case NET_ERR_NONE:
 			return WLAN_MANAGER_ERR_NONE;
@@ -102,8 +116,7 @@ int connman_request_connection_open_hidden_ap(net_wifi_connection_info_t* connin
 
 int connman_request_connection_close(const char* profile_name)
 {
-	int ret = NET_ERR_NONE;
-	ret = net_close_connection(profile_name);
+	int ret = net_close_connection(profile_name);
 
 	switch (ret) {
 	case NET_ERR_NONE:
@@ -115,8 +128,7 @@ int connman_request_connection_close(const char* profile_name)
 
 int connman_request_delete_profile(const char* profile_name)
 {
-	int ret = NET_ERR_NONE;
-	ret = net_delete_profile(profile_name);
+	int ret = net_delete_profile(profile_name);
 	switch (ret){
 		case NET_ERR_NONE:
 			return WLAN_MANAGER_ERR_NONE;
@@ -127,10 +139,10 @@ int connman_request_delete_profile(const char* profile_name)
 
 int connman_request_scan()
 {
-	int ret = NET_ERR_NONE;
-	ret = net_scan_wifi();
+	int ret = net_scan_wifi();
 	switch (ret){
 		case NET_ERR_NONE:
+		case NET_ERR_IN_PROGRESS:
 			return WLAN_MANAGER_ERR_NONE;
 		default:
 			return WLAN_MANAGER_ERR_UNKNOWN;
@@ -139,9 +151,7 @@ int connman_request_scan()
 
 int connman_request_scan_mode_set(net_wifi_background_scan_mode_t scan_mode)
 {
-	int ret = NET_ERR_NONE;
-
-	ret = net_wifi_set_background_scan_mode(scan_mode);
+	int ret = net_wifi_set_background_scan_mode(scan_mode);
 	INFO_LOG(COMMON_NAME_LIB, "net_wifi_set_background_scan_mode ret: %d", ret);
 
 	switch (ret) {
@@ -179,10 +189,9 @@ int connman_request_state_get(const char* profile_name)
 {
 	__COMMON_FUNC_ENTER__;
 
-	int ret = NET_ERR_NONE;
 	net_wifi_state_t state;
+	int ret = net_get_wifi_state(&state, (net_profile_name_t *)profile_name);
 
-	ret = net_get_wifi_state(&state, (net_profile_name_t *)profile_name);
 	switch (ret) {
 	case NET_ERR_NONE:
 		if (WIFI_OFF == state) {

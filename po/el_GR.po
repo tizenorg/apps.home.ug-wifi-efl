@@ -1,0 +1,204 @@
+msgid "IDS_ST_BODY_EXCELLENT"
+msgstr "Τέλεια"
+
+msgid "IDS_ST_BODY_GOOD_M_STRENGTH"
+msgstr "Καλό"
+
+msgid "IDS_ST_BODY_SCAN"
+msgstr "Σάρωση"
+
+msgid "IDS_WIFI_BODY_CONNECTED"
+msgstr "Συνδέθηκε"
+
+msgid "IDS_WIFI_BODY_CONNECTING_ING"
+msgstr "Σύνδεση..."
+
+msgid "IDS_WIFI_BODY_DISCONNECTING_ING"
+msgstr "Αποσύνδεση..."
+
+msgid "IDS_WIFI_BODY_DYNAMIC_IP"
+msgstr "Δυναμικό IP"
+
+msgid "IDS_WIFI_BODY_NO_APS"
+msgstr "Δεν υπάρχουν AP"
+
+msgid "IDS_WIFI_BODY_SECURITY_TYPE"
+msgstr "Τύπος ασφαλείας"
+
+msgid "IDS_WIFI_BODY_STATIC_IP"
+msgstr "Στατικό IP"
+
+msgid "IDS_WIFI_HEADER_HIDDEN_NETWORK"
+msgstr "Κρυφό δίκτυο"
+
+msgid "IDS_WIFI_POP_ACTIVATING_WI_FI_ING"
+msgstr "Ενεργοποίηση Wi-Fi..."
+
+msgid "IDS_WIFI_POP_DEACTIVATING_WI_FI_ING"
+msgstr "Απενεργοποίηση Wi-Fi..."
+
+msgid "IDS_WIFI_POP_SEARCHING_ING"
+msgstr "Αναζήτηση..."
+
+msgid "IDS_WIFI_POP_SELECT_NETWORK"
+msgstr "Επιλογή δικτύου"
+
+msgid "IDS_WIFI_SK_FORGET"
+msgstr "Εξαίρεσε"
+
+msgid "IDS_CST_BODY_INPUT_PASSWORD"
+msgstr "Εισαγωγή κωδικού πρόσβασης"
+
+msgid "IDS_ST_BODY_SHOW_PASSWORD"
+msgstr "Εμφάνιση κωδικού πρόσβασης"
+
+msgid "IDS_WIFI_HEADER_PROXY_ADDRESS"
+msgstr "Διεύθ.διακ.μεσολάβ."
+
+msgid "IDS_WIFI_BODY_SIGNAL_STRENGTH"
+msgstr "Ισχύς σήματος"
+
+msgid "IDS_WIFI_BODY_IP_ADDRESS"
+msgstr "Διεύθυνση IP"
+
+msgid "IDS_WIFI_BODY_SUBNET_MASK"
+msgstr "Μάσκα υποδικτύου"
+
+msgid "IDS_WIFI_BODY_GATEWAY"
+msgstr "Πύλη"
+
+msgid "IDS_WIFI_BODY_DNS_1"
+msgstr "DNS1"
+
+msgid "IDS_WIFI_BODY_DNS_2"
+msgstr "DNS2"
+
+msgid "IDS_WIFI_BODY_SECURITYTYPE_WEP"
+msgstr "WEP"
+
+msgid "IDS_ST_POP_DEACTIVATING_ING"
+msgstr "Απενεργοποίηση.."
+
+msgid "IDS_WIFI_BODY_CONFIGURATION_NO_SECURITY"
+msgstr "Καμία ασφάλεια"
+
+msgid "IDS_ST_BODY_NETWORK_NOTIFICATION"
+msgstr "Ειδοποίηση δικτύου"
+
+msgid "IDS_WIFI_HEADER_SELECT_NETWORK"
+msgstr "Επιλογή δικτύου"
+
+msgid "IDS_WIFI_BODY_WEAK_M_STRENGTH"
+msgstr "Ασθενές"
+
+msgid "IDS_WIFI_POP_OPEN"
+msgstr "Άνοιγμα"
+
+msgid "IDS_ST_BODY_WPS_AVAILABLE"
+msgstr "Υπάρχει διαθέσιμο WPS"
+
+msgid "IDS_ST_BODY_SECURED_ABB_M_WIFI_AP_SUMMARY"
+msgstr "Ασφαλές"
+
+msgid "IDS_ST_BODY_OBTAINING_IP_ADDRESS_ING"
+msgstr "Γίνεται λήψη διεύθυνσης IP..."
+
+msgid "IDS_WIFI_BODY_CHANNEL"
+msgstr "Κανάλι"
+
+msgid "IDS_WIFI_BODY_MAC_ADDRESS"
+msgstr "Διεύθυνση MAC"
+
+msgid "IDS_WIFI_BODY_PROXY_PORT"
+msgstr "Θύρα proxy"
+
+msgid "IDS_ST_BODY_WI_FI_NETWORKS"
+msgstr "Δίκτυα Wi-Fi"
+
+msgid "IDS_ST_BODY_NOTIFY_ME_WHEN_AN_OPEN_NETWORK_IS_AVAILABLE"
+msgstr "Να ειδοποιούμαι όταν υπάρχει διαθέσιμο ανοικτό δίκτυο"
+
+msgid "IDS_ST_BODY_ADD_WI_FI_NETWORK"
+msgstr "Προσθήκη δικτύου Wi-Fi"
+
+msgid "IDS_ST_BODY_NETWORK_SSID"
+msgstr "SSID δικτύου"
+
+msgid "IDS_WIFI_POP_AUTOMATIC_CONNECTION_NETWORK_WILL_DISABLED_CONTINUE_Q_MSG"
+msgstr "Η αυτόματη σύνδεση σε αυτό το δίκτυο θα απενεργοποιηθεί. Συνέχεια;"
+
+msgid "IDS_WIFI_BODY_EAP_METHOD"
+msgstr "Μέθοδος EAP"
+
+msgid "IDS_WIFI_BODY_EAP"
+msgstr "EAP"
+
+msgid "IDS_COM_BODY_PHASE_2_AUTHENTICATION"
+msgstr "2η φάση ελέγχου ταυτότητας"
+
+msgid "IDS_WIFI_BODY_CONNECT"
+msgstr "Σύνδεση"
+
+msgid "IDS_WIFI_BODY_GATEWAY_ADDRESS"
+msgstr "Διεύθυνση πύλης"
+
+msgid "IDS_WIFI_POP_PRESS_WPS_ON_YOUR_WI_FI_ACCESS_POINT_WITHIN_PD_MINUTES"
+msgstr "Πιέστε το WPS του σημείου πρόσβασης Wi-Fi εντός %d λεπτών"
+
+msgid "IDS_WIFI_BODY_ENTER_PASSWORD"
+msgstr "Εισαγωγή κωδικού"
+
+msgid "IDS_WIFI_BODY_CA_CERTIFICATE"
+msgstr "Πιστοποιητικό CA"
+
+msgid "IDS_WIFI_BODY_UNSPECIFIED"
+msgstr "Ακαθόριστο"
+
+msgid "IDS_WIFI_BODY_USER_CERTIFICATE_ABB"
+msgstr "Πιστοπ. χρήστη"
+
+msgid "IDS_WIFI_BODY_IDENTITY"
+msgstr "Ταυτότητα"
+
+msgid "IDS_WIFI_BODY_ANONYMOUS_IDENTITY"
+msgstr "Άγνωστη ταυτότητα"
+
+msgid "IDS_WIFI_BODY_UNKNOWN"
+msgstr "Άγνωστο"
+
+msgid "IDS_WIFI_BODY_ENTER_SSID"
+msgstr "Εισαγωγή στο SSID"
+
+msgid "IDS_WIFI_HEADER_PASSWORD"
+msgstr "Κωδικός πρόσβασης"
+
+msgid "IDS_WIFI_BODY_PROVISIONING"
+msgstr "Παροχή"
+
+msgid "IDS_WIFI_BODY_WPS_BUTTON_CONNECTION"
+msgstr "Σύνδεση κουμπιού WPS"
+
+msgid "IDS_WIFI_OPT_FIND_HIDDEN_NETWORK"
+msgstr "Εύρεση κρυφού δικτύου"
+
+msgid "IDS_ST_BODY_PRESS_WPS_ON_YOUR_WI_FI_ACCESS_POINT_WITHIN_2_MINUTES"
+msgstr "Πιέστε το WPS του σημείου πρόσβασης Wi-Fi εντός 2 λεπτών"
+
+msgid "IDS_WIFI_BUTTON_CANCEL"
+msgstr "Ακύρωση"
+
+msgid "IDS_WIFI_BODY_SSID"
+msgstr "SSID"
+
+msgid "IDS_WIFI_BODY_ENTER_IDENTITY"
+msgstr "Εισαγάγετε ταυτότητα"
+
+msgid "IDS_WIFI_BODY_ENTER_ANONYMOUS_IDENTITY"
+msgstr "Εισαγάγετε άγνωστη ταυτότητα"
+
+msgid "IDS_WIFI_BODY_ENTER_YOUR_IDENTITY"
+msgstr "Εισαγάγετε την ταυτότητά σας"
+
+msgid "IDS_WIFI_HEADER_ENTER_PASSWORD"
+msgstr "Εισαγωγή κωδικού"
+

@@ -1,9 +1,0 @@
-msgid "IDS_CST_BODY_INPUT_PASSWORD"
-msgstr "Wachtwoord ingeven"
-
-msgid "IDS_ST_BODY_SHOW_PASSWORD"
-msgstr "Wachtwoord tonen"
-
-msgid "IDS_WIFI_HEADER_SELECT_NETWORK"
-msgstr "Netwerk kiezen"
-

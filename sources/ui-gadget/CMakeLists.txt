@@ -14,20 +14,21 @@ SET(SRCS
 	../libraries/i18nManager/i18nmanager.c
 	../libraries/appcoreWrapper/appcoreWrapper.c
 	../libraries/WlanManager/wlan-manager/wlan_manager.c
+	../libraries/Common/common_pswd_popup.c
+	../libraries/Common/common_utils.c
+	../libraries/Common/common_ip_info.c
+	../libraries/Common/common_eap_connect.c
+	../libraries/Common/common_datamodel.c
 	${ENGINE_SOURCES}
 	wifi-efl-UG.c
-	viewers-layout/popup.c
 	viewers-layout/viewer_manager.c 
 	viewers-layout/wifi_viewer_list.c
 	viewers-layout/view_detail.c
-	viewers-layout/view_detail_datamodel.c
-	viewers-layout/view_dhcpip.c
-	viewers-layout/view_staticip.c
-	viewers-layout/view_ime_password.c
 	viewers-layout/view_ime_hidden.c
-	viewers-layout/view_eap.c
 	wifi-wlan-callbacks.c
-	wifi-ui-list-callbacks.c)
+	wifi-ui-list-callbacks.c
+	motion_control.c
+	winset_popup.c)
 
 FOREACH(flag ${pkgs_CFLAGS})
 	SET(EXTRA_CFLAGS "${EXTRA_CFLAGS} ${flag}")
@@ -54,6 +55,4 @@ INSTALL(TARGETS ${PROJECT_NAME} DESTINATION /opt/ug/lib)
 # install image files
 INSTALL(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/../../resources/images/ DESTINATION /opt/ug/res/images/wifi-efl-UG FILES_MATCHING PATTERN "*.png")
 INSTALL(FILES ${CMAKE_CURRENT_SOURCE_DIR}/edcs/wifi_ug_edj_etc.edj DESTINATION /opt/ug/res/edje/wifi-efl-UG)
-
-ADD_SUBDIRECTORY(po)
 

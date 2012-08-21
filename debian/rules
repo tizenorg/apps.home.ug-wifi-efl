@@ -88,7 +88,17 @@ clean:
 
 	rm -rf debian/*.install
 
-	dh_clean 
+	rm -f ../wifi-efl-ug_*.deb
+	rm -f ../wifi-efl-ug-*.deb
+	rm -f ../wifi-efl-ug_*.changes
+	rm -f ../wifi-efl-ug_*.dsc
+	rm -f ../wifi-efl-ug_*.changes
+	rm -f ../wifi-efl-ug_*.tar.gz
+
+	rm -f ../net.wifi-qs_*.deb
+	rm -f ../net.wifi-qs-*.deb
+
+	dh_clean
 
 dev_clean:
 	dh_testdir

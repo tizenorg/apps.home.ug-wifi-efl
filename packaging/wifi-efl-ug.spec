@@ -1,11 +1,11 @@
-#sbs-git:slp/pkgs/s/sg-wifi-efl wifi-efl-ug
+#sbs-git:magnolia/apps/home/ug-wifi-efl
 
 Name:       wifi-efl-ug
 Summary:    Wi-Fi UI Gadget
-Version:    0.4.25
+Version:    0.4.56_6
 Release:    1
 Group:      App/Network
-License:    Flora Software License
+License:    Flora License
 Source0:    %{name}-%{version}.tar.gz
 
 BuildRequires: cmake
@@ -18,7 +18,7 @@ BuildRequires: pkgconfig(appcore-efl)
 BuildRequires: pkgconfig(elementary)
 BuildRequires: pkgconfig(glib-2.0)
 BuildRequires: pkgconfig(utilX)
-BuildRequires: pkgconfig(ui-gadget)
+BuildRequires: pkgconfig(ui-gadget-1)
 BuildRequires: pkgconfig(x11)
 BuildRequires: pkgconfig(sensor)
 BuildRequires: pkgconfig(syspopup)
@@ -53,6 +53,7 @@ cmake . -DCMAKE_INSTALL_PREFIX=$PREFIX
 make %{?jobs:-j%jobs}
 
 %install
+rm -rf %{buildroot}
 %make_install
 
 %post
@@ -79,7 +80,7 @@ vconftool set -t int db/wifi/enable_quick_start 1 -g 6519 -i
 %files -n net.wifi-qs
 %defattr(-,root,root,-)
 %{_prefix}/bin/wifi-qs
-/opt/share/applications/net.wifi-qs.desktop
+%{_prefix}/share/packages/net.wifi-qs.xml
 %{_prefix}/share/process-info/wifi-qs.ini
 %{_prefix}/share/icon/*.png
-%{_prefix}/share/locale/*/LC_MESSAGES/wifi-qs.mo
+%{_prefix}/share/locale/*/LC_MESSAGES/*.mo

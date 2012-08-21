@@ -1,9 +1,0 @@
-msgid "IDS_CST_BODY_INPUT_PASSWORD"
-msgstr "輸入密碼"
-
-msgid "IDS_ST_BODY_SHOW_PASSWORD"
-msgstr "顯示密碼"
-
-msgid "IDS_WIFI_HEADER_SELECT_NETWORK"
-msgstr "選擇網路"
-

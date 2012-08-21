@@ -1,18 +1,21 @@
 /*
-  * Copyright 2012  Samsung Electronics Co., Ltd
-  *
-  * Licensed under the Flora License, Version 1.0 (the "License");
-  * you may not use this file except in compliance with the License.
-  * You may obtain a copy of the License at
-  *
-  *    http://www.tizenopensource.org/license
-  *
-  * Unless required by applicable law or agreed to in writing, software
-  * distributed under the License is distributed on an "AS IS" BASIS,
-  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  * See the License for the specific language governing permissions and
-  * limitations under the License.
-  */
+*  Wi-Fi UG
+*
+* Copyright 2012  Samsung Electronics Co., Ltd
+
+* Licensed under the Flora License, Version 1.0 (the "License");
+* you may not use this file except in compliance with the License.
+* You may obtain a copy of the License at
+
+* http://www.tizenopensource.org/license
+
+* Unless required by applicable law or agreed to in writing, software
+* distributed under the License is distributed on an "AS IS" BASIS,
+* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+* See the License for the specific language governing permissions and
+* limitations under the License.
+*
+*/
 
 
 
@@ -119,7 +122,7 @@ int wlan_manager_forget(const char *profile_name)
 	return 1;
 }
 
-void wlan_manager_set_refresh_callback(void *func)
+void wlan_manager_set_refresh_callback(wlan_manager_ui_refresh_func_t func)
 {
 	wlan_manager_object* manager_object = wlan_manager_get_singleton();
 	manager_object->refresh_func = func;
@@ -143,7 +146,10 @@ int wlan_manager_destroy()
 	if (ret == WLAN_MANAGER_ERR_NONE) {
 		connman_profile_manager_destroy();
 	}
-
+	if (manager_object) {
+		g_free(manager_object);
+		manager_object = NULL;
+	}
 	return ret;
 }
 
@@ -284,7 +290,14 @@ int wlan_manager_request_cancel_connecting(const char *profile_name)
 
 int wlan_manager_request_scan(void)
 {
-	return connman_request_scan();
+	if (WLAN_MANAGER_ERR_NONE == connman_request_scan()) {
+		/* Since the scan request was success, lets reset the ui refresh and scan update blocked flags. */
+		manager_object->b_scan_blocked = FALSE;
+		manager_object->b_ui_refresh = FALSE;
+		return WLAN_MANAGER_ERR_NONE;
+	} else {
+		return WLAN_MANAGER_ERR_UNKNOWN;
+	}
 }
 
 int wlan_manager_request_profile_add(const char *profile_name, int security_mode, void *authdata)
@@ -314,7 +327,7 @@ void* wlan_manager_profile_table_get()
 	return connman_profile_manager_profile_table_get();
 }
 
-int wlan_manager_profile_modify_by_device_info(net_profile_info_t profile)
+int wlan_manager_profile_modify_by_device_info(net_profile_info_t *profile)
 {
 	if (connman_profile_manager_profile_modify(profile)) {
 		DEBUG_LOG(COMMON_NAME_LIB, "Success - profile modify");
@@ -333,7 +346,7 @@ int wlan_manager_scanned_profile_refresh_with_count(int count)
 	int ret = connman_profile_manager_profile_cache(count);
 	if (ret > 0) {
 		DEBUG_LOG(COMMON_NAME_LIB, "success %d profiles update", count);
-		manager_object->refresh_func(FALSE);
+		manager_object->refresh_func();
 	}
 
 	__COMMON_FUNC_EXIT__;
@@ -342,37 +355,45 @@ int wlan_manager_scanned_profile_refresh_with_count(int count)
 	return FALSE;
 }
 
-void wlan_manager_scanned_profile_refresh(boolean view_update)
+void wlan_manager_scanned_profile_refresh(void)
 {
 	__COMMON_FUNC_ENTER__;
 
-	int ret = connman_profile_manager_profile_cache(0);
-	if (ret > 0) {
+	if (FALSE == manager_object->b_scan_blocked) {
+		connman_profile_manager_profile_cache(0);
+		manager_object->refresh_func();
 		DEBUG_LOG(COMMON_NAME_LIB, "success profiles update");
-		if (view_update)
-			manager_object->refresh_func(TRUE);
+	} else {
+		manager_object->b_ui_refresh = TRUE;
+		DEBUG_LOG(COMMON_NAME_LIB, "Scan update is blocked");
 	}
-
 	__COMMON_FUNC_EXIT__;
 }
 
 STRENGTH_TYPES wlan_manager_get_signal_strength(int rssi)
 {
-	if (rssi > WLAN_RSSI_LEVEL_EXCELLENT) {
+	/* Wi-Fi Signal Strength Display (dB / ConnMan normalized value)
+	 *
+	 * Excellent :	-63 ~		/ 57 ~
+	 * Good:		-74 ~ -64	/ 46 ~ 56
+	 * Weak:		-82 ~ -75	/ 38 ~ 45
+	 * Very weak:		~ -83	/    ~ 37
+	 */
+	if (rssi >= 57)
 		return SIGNAL_STRENGTH_TYPE_EXCELLENT;
-	} else if (rssi > WLAN_RSSI_LEVEL_GOOD) {
+	else if (rssi >= 46)
 		return SIGNAL_STRENGTH_TYPE_GOOD;
-	} else if (rssi > WLAN_RSSI_LEVEL_WEAK) {
+	else if (rssi >= 38)
 		return SIGNAL_STRENGTH_TYPE_WEAK;
-	} else {
+	else
 		return SIGNAL_STRENGTH_TYPE_VERY_WEAK;
-	}
 }
 
 void* wlan_manager_profile_device_info_blank_create()
 {
+	__COMMON_FUNC_ENTER__;
 	wifi_device_info_t *di_s0 = NULL;
-	di_s0 = malloc(sizeof(wifi_device_info_t));
+	di_s0 = g_malloc0(sizeof(wifi_device_info_t));
 
 	if (di_s0 == NULL) {
 		ERROR_LOG(UG_NAME_NORMAL, "Error!!! Failed to allocate memory\n");
@@ -382,19 +403,14 @@ void* wlan_manager_profile_device_info_blank_create()
 
 	char No_AP_found[] = "No AP found";
 
-	memset(di_s0, 0x0, sizeof(wifi_device_info_t));
-	di_s0->ssid = malloc(sizeof(No_AP_found));
-
-	if (di_s0->ssid == NULL) {
+	di_s0->ssid = g_strdup(No_AP_found);
+	if (NULL == di_s0->ssid) {
 		g_free(di_s0);
 		di_s0 = NULL;
 		ERROR_LOG(UG_NAME_NORMAL, "Error!!! Failed to allocate memory\n");
-		__COMMON_FUNC_EXIT__;
-		return NULL;
 	}
 
-	strncpy(di_s0->ssid, No_AP_found, sizeof(No_AP_found));
-
+	__COMMON_FUNC_EXIT__;
 	return (void*) di_s0;
 }
 
@@ -450,6 +466,34 @@ void wlan_manager_reset_connected_AP(void)
 	INFO_LOG(UG_NAME_REQ, "clear connected AP information\n");
 }
 
+static Eina_Bool _refresh_ui(void *data)
+{
+	connman_profile_manager_profile_cache(0);
+	manager_object->refresh_func();
+	manager_object->b_scan_blocked = FALSE;
+	manager_object->b_ui_refresh = FALSE;
+	return ECORE_CALLBACK_CANCEL;
+}
+
+void wlan_manager_enable_scan_result_update(void)
+{
+	if (TRUE == manager_object->b_scan_blocked) {
+		if (TRUE == manager_object->b_ui_refresh) {
+			DEBUG_LOG(COMMON_NAME_LIB, "Refresh the UI with last scan update");
+
+			/* We delay the rendering inorder to get smooth effect of popup close */
+			ecore_idler_add(_refresh_ui, NULL);
+		} else {
+			manager_object->b_scan_blocked = FALSE;
+		}
+	}
+}
+
+void wlan_manager_disable_scan_result_update(void)
+{
+	manager_object->b_scan_blocked = TRUE;
+}
+
 const char *wlan_manager_get_connected_profile(void)
 {
 	wlan_manager_object* obj = wlan_manager_get_singleton();
@@ -464,13 +508,14 @@ const char *wlan_manager_get_connected_ssid(void)
 	return (const char *)obj->connected_AP.ssid;
 }
 
-int wlan_manager_network_syspopup_message(const char *title, const char *content)
+int wlan_manager_network_syspopup_message(const char *title, const char *content, const char *type)
 {
 	int ret = 0;
 	bundle *b = bundle_create();
 
 	bundle_add(b, "_SYSPOPUP_TITLE_", title);
 	bundle_add(b, "_SYSPOPUP_CONTENT_", content);
+	bundle_add(b, "_SYSPOPUP_TYPE_", type);
 
 	ret = syspopup_launch("net-popup", b);
 	bundle_free(b);

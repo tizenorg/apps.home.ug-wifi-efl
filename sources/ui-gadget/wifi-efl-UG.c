@@ -1,53 +1,49 @@
 /*
-  * Copyright 2012  Samsung Electronics Co., Ltd
-  *
-  * Licensed under the Flora License, Version 1.0 (the "License");
-  * you may not use this file except in compliance with the License.
-  * You may obtain a copy of the License at
-  *
-  *    http://www.tizenopensource.org/license
-  *
-  * Unless required by applicable law or agreed to in writing, software
-  * distributed under the License is distributed on an "AS IS" BASIS,
-  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  * See the License for the specific language governing permissions and
-  * limitations under the License.
-  */
+*  Wi-Fi UG
+*
+* Copyright 2012  Samsung Electronics Co., Ltd
 
+* Licensed under the Flora License, Version 1.0 (the "License");
+* you may not use this file except in compliance with the License.
+* You may obtain a copy of the License at
 
+* http://www.tizenopensource.org/license
+
+* Unless required by applicable law or agreed to in writing, software
+* distributed under the License is distributed on an "AS IS" BASIS,
+* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+* See the License for the specific language governing permissions and
+* limitations under the License.
+*
+*/
 
 #ifndef UG_MODULE_API
 #define UG_MODULE_API __attribute__ ((visibility("default")))
 #endif
 
 
-#include <ui-gadget-module.h>
 #include "wifi.h"
 #include "wlan_manager.h"
-#include "popup.h"
+#include "winset_popup.h"
 #include "viewer_manager.h"
 #include "wifi-engine-callback.h"
 #include "i18nmanager.h"
 #include "wifi-setting.h"
 #include "view_detail.h"
-#include "view_dhcpip.h"
-#include "view_staticip.h"
-#include "view_ime_password.h"
 #include "view_ime_hidden.h"
-
+#include "motion_control.h"
 
 static int wifi_exit_end = FALSE;
 
-struct wifi_appdata *app_state = NULL;
+wifi_appdata *ug_app_state = NULL;
 
 struct ug_data 
 {
 	Evas_Object *base;
-	struct ui_gadget *ug;
+	ui_gadget_h ug;
 };
 
-
-static void *on_create(struct ui_gadget *ug, enum ug_mode mode, bundle *data, void *priv)
+static void *on_create(ui_gadget_h ug, enum ug_mode mode, service_h service, void *priv)
 {
 	__COMMON_FUNC_ENTER__;
 
@@ -56,61 +52,73 @@ static void *on_create(struct ui_gadget *ug, enum ug_mode mode, bundle *data, vo
 		return NULL;
 	}
 
-	app_state = (struct wifi_appdata *) g_malloc0(sizeof(struct wifi_appdata));
-	assertm_if(NULL == app_state, "Err!! app_state == NULL");
-	memset(app_state, 0x0, sizeof(struct wifi_appdata));
+	ug_app_state = (wifi_appdata *) g_malloc0(sizeof(wifi_appdata));
+	assertm_if(NULL == ug_app_state, "Err!! ug_app_state == NULL");
+	memset(ug_app_state, 0x0, sizeof(wifi_appdata));
 
 	struct ug_data *ugd;
 	ugd = (struct ug_data*)priv;
 	ugd->ug = ug;
 
-	if (NULL != data) {
+	if (NULL != service) {
 		INFO_LOG(UG_NAME_NORMAL, "message load from caller");
 
-		const char* force_connected = (const char*) bundle_get_val(data,"back-button-show-force-when-connected");
-		INFO_LOG(UG_NAME_NORMAL, "* bundle:back-button-show-force-when-connected [%s]", force_connected);
+		char *caller = NULL;
+		if (service_get_extra_data(service, UG_CALLER, &caller)) {
+			ERROR_LOG(UG_NAME_NORMAL, "Failed to get service extra data");
+			return NULL;
+		}
 
-		if (force_connected != NULL) {
-			if(strcmp(force_connected, "TRUE")==0) {
-				app_state->bundle_back_button_show_force_when_connected = EINA_TRUE;
+		if (caller != NULL) {
+			INFO_LOG(UG_NAME_NORMAL, "caller = [%s]", caller);
+			if (strcmp(caller, "pwlock") == 0) {
+				ug_app_state->ug_type = UG_VIEW_SETUP_WIZARD;
+				service_get_extra_data(service, "lbutton", &ug_app_state->lbutton_setup_wizard);
+				service_get_extra_data(service, "rbutton_skip", &ug_app_state->rbutton_setup_wizard_skip);
+				service_get_extra_data(service, "rbutton_next", &ug_app_state->rbutton_setup_wizard_next);
+				service_get_extra_data(service, "lbutton_icon", &ug_app_state->lbutton_setup_wizard_prev_icon);
+				service_get_extra_data(service, "rbutton_skip_icon", &ug_app_state->rbutton_setup_wizard_skip_icon);
+				service_get_extra_data(service, "scan_icon", &ug_app_state->rbutton_setup_wizard_scan_icon);
+				service_get_extra_data(service, "rbutton_next_icon", &ug_app_state->rbutton_setup_wizard_next_icon);
+			} else {
+				ug_app_state->ug_type = UG_VIEW_DEFAULT;
 			}
+
+			free(caller);
 		} else {
-			app_state->bundle_back_button_show_force_when_connected = EINA_FALSE;
+			INFO_LOG(UG_NAME_NORMAL, "caller is not defined");
+			ug_app_state->ug_type = UG_VIEW_DEFAULT;
 		}
 	} else {
-		INFO_LOG(UG_NAME_NORMAL, "I don`t know about my caller, I will just call him < Setting");
-		app_state->bundle_back_button_show_force_when_connected = EINA_FALSE;
+		INFO_LOG(UG_NAME_NORMAL, "caller is not defined");
+		ug_app_state->ug_type = UG_VIEW_DEFAULT;
 	}
-
-	INFO_LOG(UG_NAME_NORMAL, "bundle process end");
-	INFO_LOG(UG_NAME_NORMAL, "back button show when connected force set [%d]", app_state->bundle_back_button_show_force_when_connected);
 
 	bindtextdomain(PACKAGE, LOCALEDIR);
 
-	app_state->win_main = ug_get_parent_layout(ug);
-	assertm_if( NULL == app_state->win_main, "Err!! win_main == NULL");
+	ug_app_state->win_main = ug_get_parent_layout(ug);
+	assertm_if( NULL == ug_app_state->win_main, "Err!! win_main == NULL");
 
-	elm_win_conformant_set(app_state->win_main, TRUE);
-	app_state->gadget= ugd;
-	app_state->ug = ug;
+	elm_win_conformant_set(ug_app_state->win_main, TRUE);
+	ug_app_state->gadget= ugd;
+	ug_app_state->ug = ug;
 
 	if (wifi_setting_value_set(VCONFKEY_WIFI_UG_RUN_STATE, VCONFKEY_WIFI_UG_RUN_STATE_ON_FOREGROUND) < 0) {
 		INFO_LOG(UG_NAME_ERR, "[Error]Failed to set vconf - VCONFKEY_WIFI_UG_RUN_STATE_ON_FOREGROUND");
 	}
 
-	evas_object_show(app_state->win_main);
-	elm_win_indicator_mode_set(app_state->win_main, ELM_WIN_INDICATOR_SHOW);
+	evas_object_show(ug_app_state->win_main);
+	elm_win_indicator_mode_set(ug_app_state->win_main, ELM_WIN_INDICATOR_SHOW);
 
 	memset(&g_pending_call, 0, sizeof(wifi_pending_call_info_t));
 
-	Evas_Object* base = viewer_manager_create(app_state->win_main);
+	Evas_Object* base = viewer_manager_create(ug_app_state->win_main);
 	assertm_if(NULL == base, "Err!! main_layout == NULL");
 	ugd->base = base;
 
-	winset_popup_create(app_state->win_main);
+	ug_app_state->popup_manager = winset_popup_manager_create(ug_app_state->win_main, PACKAGE);
 
-	app_state->bAlive = EINA_TRUE;
-	app_state->current_view = VIEW_MAIN;
+	ug_app_state->bAlive = EINA_TRUE;
 
 	wlan_manager_create();
 	wlan_manager_set_message_callback(wlan_engine_callback);
@@ -120,10 +128,10 @@ static void *on_create(struct ui_gadget *ug, enum ug_mode mode, bundle *data, vo
 	case WLAN_MANAGER_ERR_NONE:
 		break;
 	case WLAN_MANAGER_ERR_ALREADY_REGISTERED:
-		winset_popup_mode_set(NULL, POPUP_MODE_REGISTER_FAILED, POPUP_OPTION_NONE);
+		winset_popup_mode_set(ug_app_state->popup_manager, POPUP_OPTION_REGISTER_FAILED_UNKNOWN, NULL);
 		return ugd->base;
 	case WLAN_MANAGER_ERR_UNKNOWN:
-		winset_popup_mode_set(NULL, POPUP_MODE_REGISTER_FAILED, POPUP_OPTION_REGISTER_FAILED_COMMUNICATION_FAILED);
+		winset_popup_mode_set(ug_app_state->popup_manager, POPUP_OPTION_REGISTER_FAILED_COMMUNICATION_FAILED, NULL);
 		return ugd->base;
 	default:
 		__COMMON_FUNC_EXIT__;
@@ -135,94 +143,102 @@ static void *on_create(struct ui_gadget *ug, enum ug_mode mode, bundle *data, vo
 	case WLAN_MANAGER_OFF:
 		ERROR_LOG(UG_NAME_NORMAL, "current state is wifi-off\n");
 		viewer_manager_header_mode_set(HEADER_MODE_OFF);
+		viewer_manager_show(VIEWER_WINSET_SEARCHING);
 		viewer_manager_hide(VIEWER_WINSET_SUB_CONTENTS);
 		break;
 	case WLAN_MANAGER_CONNECTING:
-		ERROR_LOG(UG_NAME_NORMAL, "current state is wifi-connecting\n");
 	case WLAN_MANAGER_UNCONNECTED:
-		ERROR_LOG(UG_NAME_NORMAL, "current state is wifi-on\n");
-		viewer_manager_header_mode_set(HEADER_MODE_SEARCHING);
-		viewer_manager_hide(VIEWER_WINSET_SEARCHING);
-		viewer_manager_show(VIEWER_WINSET_SUB_CONTENTS);
-		if (connman_request_scan_mode_set(WIFI_BGSCAN_MODE_PERIODIC) == WLAN_MANAGER_ERR_NONE) {
-			DEBUG_LOG(UG_NAME_REQ, "Set BG scan mode - PERIODIC");
-		}
-		break;
 	case WLAN_MANAGER_CONNECTED:
-		ERROR_LOG(UG_NAME_NORMAL, "current state is wifi-connected\n");
+		connman_request_scan_mode_set(WIFI_BGSCAN_MODE_PERIODIC);
 		viewer_manager_header_mode_set(HEADER_MODE_SEARCHING);
 		viewer_manager_hide(VIEWER_WINSET_SEARCHING);
 		viewer_manager_show(VIEWER_WINSET_SUB_CONTENTS);
-		if (connman_request_scan_mode_set(WIFI_BGSCAN_MODE_PERIODIC) == WLAN_MANAGER_ERR_NONE) {
-			DEBUG_LOG(UG_NAME_REQ, "Set BG scan mode - PERIODIC");
-		}
 		break;
 	case WLAN_MANAGER_ERROR:
 	default:
-		winset_popup_mode_set(NULL, POPUP_MODE_ETC, POPUP_OPTION_ETC_WLAN_STATE_GET_ERROR);
+		winset_popup_mode_set(ug_app_state->popup_manager, POPUP_OPTION_ETC_WLAN_STATE_GET_ERROR, NULL);
 		break;
 	}
+
+	motion_create(ug_app_state->win_main);
 
 	__COMMON_FUNC_EXIT__;
 	return ugd->base;
 }
 
-static void on_start(struct ui_gadget *ug, bundle *data, void *priv)
+static Eina_Bool load_initial_ap_list(void *data)
 {
-	__COMMON_FUNC_ENTER__;
-	if(app_state->bAlive)
-		ecore_idler_add((Ecore_Task_Cb)wlan_manager_scanned_profile_refresh_with_count, (void *)8);
-	__COMMON_FUNC_EXIT__;
+	wlan_manager_scanned_profile_refresh_with_count((int)data);
+	return ECORE_CALLBACK_CANCEL;
 }
 
-static void on_pause(struct ui_gadget *ug, bundle *data, void *priv)
+static void on_start(ui_gadget_h ug, service_h service, void *priv)
 {
 	__COMMON_FUNC_ENTER__;
+	ecore_idler_add(load_initial_ap_list, (void *)8);
+
+	motion_start();
+
+	__COMMON_FUNC_EXIT__;
+	return;
+}
+
+static void on_pause(ui_gadget_h ug, service_h service, void *priv)
+{
+	__COMMON_FUNC_ENTER__;
+	motion_stop();
+
+	if (connman_request_scan_mode_set(WIFI_BGSCAN_MODE_EXPONENTIAL) == WLAN_MANAGER_ERR_NONE) {
+		DEBUG_LOG(UG_NAME_REQ, "Set BG scan mode - EXPONENTIAL");
+	}
+
 	if (wifi_setting_value_set(VCONFKEY_WIFI_UG_RUN_STATE, VCONFKEY_WIFI_UG_RUN_STATE_ON_BACKGROUND) < 0) {
 		INFO_LOG(UG_NAME_NORMAL, "Failed to set vconf - VCONFKEY_WIFI_UG_RUN_STATE_ON_BACKGROUND");
 	}
 	__COMMON_FUNC_EXIT__;
 }
 
-static void on_resume(struct ui_gadget *ug, bundle *data, void *priv)
+static void on_resume(ui_gadget_h ug, service_h service, void *priv)
 {
 	__COMMON_FUNC_ENTER__;
+	motion_start();
+
+	if (connman_request_scan_mode_set(WIFI_BGSCAN_MODE_PERIODIC) == WLAN_MANAGER_ERR_NONE) {
+		DEBUG_LOG(UG_NAME_REQ, "Set BG scan mode - PERIODIC");
+	}
+
 	if (wifi_setting_value_set(VCONFKEY_WIFI_UG_RUN_STATE, VCONFKEY_WIFI_UG_RUN_STATE_ON_FOREGROUND) < 0) {
 		INFO_LOG(UG_NAME_NORMAL, "Failed to set vconf - VCONFKEY_WIFI_UG_RUN_STATE_ON_FOREGROUND");
 	}
 	__COMMON_FUNC_EXIT__;
 }
 
-static void on_destroy(struct ui_gadget *ug, bundle *data, void *priv)
+static void on_destroy(ui_gadget_h ug, service_h service, void *priv)
 {
 	__COMMON_FUNC_ENTER__;
-
 	if (wifi_setting_value_set(VCONFKEY_WIFI_UG_RUN_STATE, VCONFKEY_WIFI_UG_RUN_STATE_OFF) < 0) {
 		INFO_LOG(UG_NAME_NORMAL, "Failed to set vconf - VCONFKEY_WIFI_UG_RUN_STATE_OFF");
 	}
-
 	if (!ug || !priv){
 		__COMMON_FUNC_EXIT__;
 		return;
 	}
 
+	motion_destroy();
+
 	wifi_exit();
-
 	struct ug_data* ugd = priv;
-
 	if(ugd->base){
 		evas_object_del(ugd->base);
 		ugd->base = NULL;
 	}
-
-	__COMMON_FUNC_EXIT__;
 }
 
-static void on_message(struct ui_gadget *ug, bundle *msg, bundle *data, void *priv)
+static void on_message(ui_gadget_h ug, service_h msg, service_h service, void *priv)
 {
 }
 
-static void on_event(struct ui_gadget *ug, enum ug_event event, bundle *data, void *priv)
+static void on_event(ui_gadget_h ug, enum ug_event event, service_h service, void *priv)
 {
 	switch (event) {
 		case UG_EVENT_LOW_MEMORY:
@@ -244,7 +260,7 @@ static void on_event(struct ui_gadget *ug, enum ug_event event, bundle *data, vo
 	}
 }
 
-static void on_key_event(struct ui_gadget *ug, enum ug_key_event event, bundle *data, void *priv)
+static void on_key_event(ui_gadget_h ug, enum ug_key_event event, service_h service, void *priv)
 {
 	__COMMON_FUNC_ENTER__;
 
@@ -257,18 +273,11 @@ static void on_key_event(struct ui_gadget *ug, enum ug_key_event event, bundle *
 			INFO_LOG(UG_NAME_NORMAL, "UG_KEY_EVENT_END");
 
 			/* popup key event determine */
-			Evas_Object* det = winset_popup_content_get(NULL);
-		
-			if(det == NULL) {
-				INFO_LOG(UG_NAME_NORMAL, "No POPUP");
-			} else {
-				INFO_LOG(UG_NAME_NORMAL, "POPUP Removed");
-				winset_popup_timer_remove();
-				winset_popup_content_clear();
-				return;
-			}
-			
-			if(app_state->current_view == VIEW_MAIN) {
+			winset_popup_hide_popup(ug_app_state->popup_manager);
+
+			Evas_Object* navi_frame = viewer_manager_get_naviframe();
+			view_manager_view_type_t top_view_id = (view_manager_view_type_t)evas_object_data_get(navi_frame, SCREEN_TYPE_ID_KEY);
+			if(VIEW_MANAGER_VIEW_TYPE_MAIN == top_view_id) {
 				INFO_LOG(UG_NAME_NORMAL, "same");
 			} else {
 				INFO_LOG(UG_NAME_NORMAL, "differ");
@@ -349,7 +358,8 @@ int wifi_exit()
 	}
 
 	DEBUG_LOG(UG_NAME_NORMAL, "* popup manager destroying...");
-	winset_popup_destroy(NULL);
+	winset_popup_manager_destroy(ug_app_state->popup_manager);
+	ug_app_state->popup_manager = NULL;
 	DEBUG_LOG(UG_NAME_NORMAL, "* wlan manager destroying...");
 	wlan_manager_destroy();
 	DEBUG_LOG(UG_NAME_NORMAL, "* view_main destroying...");
@@ -357,8 +367,8 @@ int wifi_exit()
 	DEBUG_LOG(UG_NAME_NORMAL, "* manager destroy complete");
 
 	struct ug_data *ugd;
-	ugd = app_state->gadget;
-	app_state->bAlive = EINA_FALSE;
+	ugd = ug_app_state->gadget;
+	ug_app_state->bAlive = EINA_FALSE;
 
 	if(g_pending_call.is_handled == FALSE)
 	{

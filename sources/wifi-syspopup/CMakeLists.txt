@@ -14,9 +14,13 @@ SET(SRCS
 	../libraries/i18nManager/i18nmanager.c
 	../libraries/appcoreWrapper/appcoreWrapper.c
 	../libraries/WlanManager/wlan-manager/wlan_manager.c
+	../libraries/Common/common_pswd_popup.c
+	../libraries/Common/common_ip_info.c
+	../libraries/Common/common_eap_connect.c
+	../libraries/Common/common_utils.c
+	../libraries/Common/common_datamodel.c
 	${ENGINE_SOURCES}
 	viewer-popups/view-main.c
-	viewer-popups/view-password.c
 	viewer-popups/view-alerts.c
 	wifi-syspopup.c 
 	wifi-syspopup-engine-callback.c)
@@ -46,11 +50,8 @@ INSTALL(FILES ${CMAKE_CURRENT_SOURCE_DIR}/../../resources/images/37_wifi_icon_lo
 INSTALL(FILES ${CMAKE_CURRENT_SOURCE_DIR}/../../resources/images/37_wifi_icon_lock_02.png DESTINATION /usr/share/icon)
 INSTALL(FILES ${CMAKE_CURRENT_SOURCE_DIR}/../../resources/images/37_wifi_icon_lock_03.png DESTINATION /usr/share/icon)
 
-# install desktop file & icon
-CONFIGURE_FILE(${CMAKE_CURRENT_SOURCE_DIR}/net.${PROJECT_NAME}.desktop.in ${CMAKE_CURRENT_SOURCE_DIR}/net.${PROJECT_NAME}.desktop)
-INSTALL(FILES ${CMAKE_CURRENT_SOURCE_DIR}/net.${PROJECT_NAME}.desktop DESTINATION /opt/share/applications/)
+INSTALL(FILES ${CMAKE_CURRENT_SOURCE_DIR}/net.${PROJECT_NAME}.xml DESTINATION /usr/share/packages/)
 
 # install ini file
 INSTALL(FILES ${CMAKE_CURRENT_SOURCE_DIR}/${PROJECT_NAME}.ini DESTINATION /usr/share/process-info)
 
-ADD_SUBDIRECTORY(po)

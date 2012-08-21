@@ -1,18 +1,21 @@
 /*
-  * Copyright 2012  Samsung Electronics Co., Ltd
-  *
-  * Licensed under the Flora License, Version 1.0 (the "License");
-  * you may not use this file except in compliance with the License.
-  * You may obtain a copy of the License at
-  *
-  *    http://www.tizenopensource.org/license
-  *
-  * Unless required by applicable law or agreed to in writing, software
-  * distributed under the License is distributed on an "AS IS" BASIS,
-  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  * See the License for the specific language governing permissions and
-  * limitations under the License.
-  */
+*  Wi-Fi UG
+*
+* Copyright 2012  Samsung Electronics Co., Ltd
+
+* Licensed under the Flora License, Version 1.0 (the "License");
+* you may not use this file except in compliance with the License.
+* You may obtain a copy of the License at
+
+* http://www.tizenopensource.org/license
+
+* Unless required by applicable law or agreed to in writing, software
+* distributed under the License is distributed on an "AS IS" BASIS,
+* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+* See the License for the specific language governing permissions and
+* limitations under the License.
+*
+*/
 
 
 
@@ -46,7 +49,8 @@ typedef enum {
 	WLAN_MANAGER_ERR_CONNECT_PASSWORD_NEEDED,
 	WLAN_MANAGER_ERR_CONNECT_EAP_SEC_TYPE,
 	WLAN_MANAGER_ERR_MOBILE_HOTSPOT_OCCUPIED,
-	WLAN_MANAGER_ERR_NOSERVICE
+	WLAN_MANAGER_ERR_NOSERVICE,
+	WLAN_MANAGER_ERR_IN_PROGRESS,
 } WLAN_MANAGER_ERR_TYPE;
 
 typedef enum {
@@ -122,6 +126,8 @@ typedef enum {
 	WLAN_MANAGER_RESPONSE_TYPE_CONNECTION_FAIL_TIMEOUT,
 	WLAN_MANAGER_RESPONSE_TYPE_CONNECTION_FAIL_UNKNOWN,
 	WLAN_MANAGER_RESPONSE_TYPE_CONNECTION_FAIL_UNKNOWN_METHOD,
+	WLAN_MANAGER_RESPONSE_TYPE_CONNECTION_CONNECT_FAILED,
+	WLAN_MANAGER_RESPONSE_TYPE_CONNECTION_INVALID_KEY,
 	WLAN_MANAGER_RESPONSE_TYPE_DISCONNECTION_OK,
 	WLAN_MANAGER_RESPONSE_TYPE_POWER_ON_OK,
 	WLAN_MANAGER_RESPONSE_TYPE_POWER_ON_NOT_SUPPORTED,
@@ -136,10 +142,13 @@ typedef enum {
 	WLAN_MANAGER_RESPONSE_TYPE_DISCONNECTION_IND,
 	WLAN_MANAGER_RESPONSE_TYPE_SCAN_RESULT_IND,
 	WLAN_MANAGER_RESPONSE_TYPE_MAC_ID_IND,
+	WLAN_MANAGER_RESPONSE_TYPE_SPECIFIC_SCAN_OK,
+	WLAN_MANAGER_RESPONSE_TYPE_SPECIFIC_SCAN_FAIL,
+	WLAN_MANAGER_RESPONSE_TYPE_SPECIFIC_SCAN_IND,
 	WLAN_MANAGER_RESPONSE_TYPE_MAX
 } WLAN_MANAGER_RESPONSE_TYPES;
 
-#define WLAN_RSSI_LEVEL_EXCELLENT	64
+#define WLAN_RSSI_LEVEL_EXCELLENT		64
 #define WLAN_RSSI_LEVEL_GOOD			59
 #define WLAN_RSSI_LEVEL_WEAK			34
 
@@ -156,9 +165,11 @@ wifi_pending_call_info_t	g_pending_call;
 typedef struct _wifi_device_info_t {
 	char* profile_name;
 	char* ssid;
+	char* ap_status_txt;
+	char* ap_image_path;
 	int ipconfigtype;
 	int rssi;
-	int security_mode;
+	wlan_security_mode_type_t security_mode;
 	boolean wps_mode;
 } wifi_device_info_t;
 
@@ -168,7 +179,7 @@ typedef struct {
 } callback_data;
 
 typedef struct {
-	char* password;
+	const char* password;
 	char* category;
 	char* subcategory;
 	char* username;
@@ -197,12 +208,15 @@ struct access_point_info {
 	char* ssid;
 };
 
+typedef void (*wlan_manager_ui_refresh_func_t)(void);
+
 /** It should be hide to others */
 typedef struct wlan_manager_object {
 
 	void (*message_func)(void *user_data, void *data);
-	void (*refresh_func)(int is_scan);
-
+	wlan_manager_ui_refresh_func_t refresh_func;
+	boolean b_scan_blocked;
+	boolean b_ui_refresh;
 	/* AP SSID  & saved profile */
 	/** should be changed to DEVICE_OBJECT **/
 	struct access_point_info connected_AP;
@@ -223,10 +237,12 @@ int wlan_manager_start();
 
 int wlan_manager_state_get(char* profile_name);
 void wlan_manager_set_message_callback(void *func);
-void wlan_manager_set_refresh_callback(void *func);
+void wlan_manager_set_refresh_callback(wlan_manager_ui_refresh_func_t func);
 
 void wlan_manager_set_connected_AP(const net_profile_info_t *profile);
 void wlan_manager_reset_connected_AP(void);
+void wlan_manager_enable_scan_result_update(void);
+void wlan_manager_disable_scan_result_update(void);
 const char *wlan_manager_get_connected_profile(void);
 const char *wlan_manager_get_connected_ssid(void);
 
@@ -249,17 +265,17 @@ void *wlan_manager_profile_table_get();
 
 // * profile add/modify/delete
 int wlan_manager_request_profile_add(const char *profile_name, int security_mode, void* authdata);
-int wlan_manager_profile_modify_by_device_info(net_profile_info_t profiles);
+int wlan_manager_profile_modify_by_device_info(net_profile_info_t *profiles);
 
 STRENGTH_TYPES wlan_manager_get_signal_strength(int rssi);
 
 //// profile refresh /////////////////////////////////////////////
-void wlan_manager_scanned_profile_refresh(boolean view_update);
+void wlan_manager_scanned_profile_refresh(void);
 int wlan_manager_scanned_profile_refresh_with_count(int count);
 int wlan_manager_profile_scanned_length_get();
 void *wlan_manager_profile_device_info_blank_create(void);
 
-int wlan_manager_network_syspopup_message(const char *title, const char *content);
+int wlan_manager_network_syspopup_message(const char *title, const char *content, const char *type);
 
 #ifdef __cplusplus
 }

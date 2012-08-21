@@ -1,18 +1,21 @@
 /*
-  * Copyright 2012  Samsung Electronics Co., Ltd
-  *
-  * Licensed under the Flora License, Version 1.0 (the "License");
-  * you may not use this file except in compliance with the License.
-  * You may obtain a copy of the License at
-  *
-  *    http://www.tizenopensource.org/license
-  *
-  * Unless required by applicable law or agreed to in writing, software
-  * distributed under the License is distributed on an "AS IS" BASIS,
-  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  * See the License for the specific language governing permissions and
-  * limitations under the License.
-  */
+*  Wi-Fi UG
+*
+* Copyright 2012  Samsung Electronics Co., Ltd
+
+* Licensed under the Flora License, Version 1.0 (the "License");
+* you may not use this file except in compliance with the License.
+* You may obtain a copy of the License at
+
+* http://www.tizenopensource.org/license
+
+* Unless required by applicable law or agreed to in writing, software
+* distributed under the License is distributed on an "AS IS" BASIS,
+* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+* See the License for the specific language governing permissions and
+* limitations under the License.
+*
+*/
 
 
 
@@ -28,8 +31,13 @@ extern "C"
 
 
 #include "common.h"
+#include "common_pswd_popup.h"
+#include "view_ime_hidden.h"
+#include "common_eap_connect.h"
+#include "winset_popup.h"
 #include "wlan_manager.h"
 #include "viewer_manager.h"
+#include <ui-gadget-module.h>
 
 #define PACKAGE "ug-wifi-efl-UG"
 #define LOCALEDIR "/opt/ug/res/locale"
@@ -41,31 +49,38 @@ extern "C"
 
 #define WIFI_UG_FAKE_ICON_PATH FACTORYFS"/res/edje/wifi-efl-UG/wifi_ug_edj_etc.edj"
 
+#define UG_CALLER "caller"
 #define UG_MAIN_MESSAGE_DESTROY 1
 
 typedef enum {
-	VIEW_MAIN=0,
-	VIEW_PASSWORD,
-	VIEW_DETAIL,
-	VIEW_HIDDEN_AP,
-	VIEW_STATIC_IP,
-	VIEW_DHCP_IP
-} VIEW_TYPE;
+	UG_VIEW_DEFAULT = 0,
+	UG_VIEW_SETUP_WIZARD
+} UG_TYPE;
 
-
-struct wifi_appdata {
+typedef struct {
 	/* ui gadget object */
 	void* gadget;
-	struct ui_gadget* ug;
-	Eina_Bool bundle_back_button_show_force_when_connected;
+	ui_gadget_h ug;
 
 	//Basic Evas_Objects
 	Evas_Object *win_main;
 	Evas *evas;
+	pswd_popup_t *passpopup;
+	hiddep_ap_popup_data_t *hidden_ap_popup;
 
-	VIEW_TYPE current_view;
+	UG_TYPE ug_type;
 	Eina_Bool bAlive;
-};
+
+	char *lbutton_setup_wizard;
+	char *rbutton_setup_wizard_next;
+	char *rbutton_setup_wizard_skip;
+	char *rbutton_setup_wizard_next_icon;
+	char *rbutton_setup_wizard_scan_icon;
+	char *rbutton_setup_wizard_skip_icon;
+	char *lbutton_setup_wizard_prev_icon;
+	popup_manager_object_t *popup_manager;
+	common_eap_connect_data_t *eap_view;
+} wifi_appdata ;
 
 int wifi_exit();
 
