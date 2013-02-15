@@ -1,0 +1,207 @@
+msgid "IDS_WIFI_BODY_CONNECTED"
+msgstr "Conectat"
+
+msgid "IDS_WIFI_BODY_CONNECTING_ING"
+msgstr "Conectare"
+
+msgid "IDS_WIFI_BODY_STATIC_IP"
+msgstr "IP static"
+
+msgid "IDS_WIFI_POP_ACTIVATING_WI_FI_ING"
+msgstr "Se activează Wi-Fi..."
+
+msgid "IDS_WIFI_SK_FORGET"
+msgstr "Revocare"
+
+msgid "IDS_WIFI_BODY_IP_ADDRESS"
+msgstr "Adresă IP"
+
+msgid "IDS_WIFI_BODY_SUBNET_MASK"
+msgstr "Mască subreţea"
+
+msgid "IDS_WIFI_BODY_DNS_1"
+msgstr "DNS1"
+
+msgid "IDS_WIFI_BODY_DNS_2"
+msgstr "DNS2"
+
+msgid "IDS_ST_BODY_NETWORK_NOTIFICATION"
+msgstr "Notificare reţea"
+
+msgid "IDS_WIFI_POP_OPEN"
+msgstr "Deschidere"
+
+msgid "IDS_ST_BODY_SECURED_ABB_M_WIFI_AP_SUMMARY"
+msgstr "Securizat"
+
+msgid "IDS_WIFI_BODY_MAC_ADDRESS"
+msgstr "Adresă MAC"
+
+msgid "IDS_WIFI_BODY_PROXY_PORT"
+msgstr "Port proxy"
+
+msgid "IDS_ST_BODY_EXCELLENT"
+msgstr "Excelent"
+
+msgid "IDS_ST_BODY_GOOD_M_STRENGTH"
+msgstr "Bun"
+
+msgid "IDS_ST_BODY_SCAN"
+msgstr "Căutare"
+
+msgid "IDS_ST_BODY_WI_FI_NETWORKS"
+msgstr "Reţele Wi-Fi"
+
+msgid "IDS_WIFI_BODY_DISCONNECTING_ING"
+msgstr "Deconectare"
+
+msgid "IDS_WIFI_BODY_DYNAMIC_IP"
+msgstr "Adresă IP dinamică"
+
+msgid "IDS_WIFI_BODY_NO_APS"
+msgstr "Niciun AP"
+
+msgid "IDS_WIFI_BODY_SECURITY_TYPE"
+msgstr "Tip de securitate"
+
+msgid "IDS_WIFI_HEADER_HIDDEN_NETWORK"
+msgstr "Reţea ascunsă"
+
+msgid "IDS_WIFI_POP_DEACTIVATING_WI_FI_ING"
+msgstr "Se dezactivează Wi-Fi..."
+
+msgid "IDS_WIFI_POP_SEARCHING_ING"
+msgstr "Căutare..."
+
+msgid "IDS_WIFI_POP_SELECT_NETWORK"
+msgstr "Selectare reţea"
+
+msgid "IDS_WIFI_BODY_EAP_METHOD"
+msgstr "Metodă EAP"
+
+msgid "IDS_WIFI_BODY_EAP"
+msgstr "EAP"
+
+msgid "IDS_WIFI_BODY_GATEWAY_ADDRESS"
+msgstr "Adresă gateway"
+
+msgid "IDS_WIFI_BODY_ENTER_PASSWORD"
+msgstr "Introduceţi parola"
+
+msgid "IDS_WIFI_BODY_CA_CERTIFICATE"
+msgstr "Certificat CA"
+
+msgid "IDS_WIFI_BODY_UNSPECIFIED"
+msgstr "Nespecificat"
+
+msgid "IDS_WIFI_BODY_USER_CERTIFICATE_ABB"
+msgstr "Certif. utiliz."
+
+msgid "IDS_WIFI_BODY_IDENTITY"
+msgstr "Identitate"
+
+msgid "IDS_WIFI_BODY_ANONYMOUS_IDENTITY"
+msgstr "Identitate anonimă"
+
+msgid "IDS_WIFI_BODY_ENTER_IDENTITY"
+msgstr "Introducere identitate"
+
+msgid "IDS_WIFI_BODY_ENTER_ANONYMOUS_IDENTITY"
+msgstr "Introducere identitate anonimă"
+
+msgid "IDS_CST_BODY_INPUT_PASSWORD"
+msgstr "Introduceţi parola"
+
+msgid "IDS_ST_BODY_SHOW_PASSWORD"
+msgstr "Afişare parolă"
+
+msgid "IDS_WIFI_HEADER_PROXY_ADDRESS"
+msgstr "Adresă proxy"
+
+msgid "IDS_WIFI_BODY_SIGNAL_STRENGTH"
+msgstr "Putere semnal"
+
+msgid "IDS_WIFI_BODY_GATEWAY"
+msgstr "Gateway"
+
+msgid "IDS_WIFI_BODY_SECURITYTYPE_WEP"
+msgstr "WEP"
+
+msgid "IDS_ST_POP_DEACTIVATING_ING"
+msgstr "Dezactivare..."
+
+msgid "IDS_WIFI_BODY_CONFIGURATION_NO_SECURITY"
+msgstr "Fără securitate"
+
+msgid "IDS_WIFI_HEADER_SELECT_NETWORK"
+msgstr "Selectare reţea"
+
+msgid "IDS_WIFI_BODY_WEAK_M_STRENGTH"
+msgstr "Slabă"
+
+msgid "IDS_ST_BODY_WPS_AVAILABLE"
+msgstr "WPS disponibil"
+
+msgid "IDS_ST_BODY_OBTAINING_IP_ADDRESS_ING"
+msgstr "Se obţine adresa IP..."
+
+msgid "IDS_WIFI_BODY_CHANNEL"
+msgstr "Canal"
+
+msgid "IDS_ST_BODY_NOTIFY_ME_WHEN_AN_OPEN_NETWORK_IS_AVAILABLE"
+msgstr "Notificare disponibilitate reţea deschisă"
+
+msgid "IDS_ST_BODY_ADD_WI_FI_NETWORK"
+msgstr "Adăugare reţea Wi-Fi"
+
+msgid "IDS_ST_BODY_NETWORK_SSID"
+msgstr "SSID reţea"
+
+msgid "IDS_WIFI_POP_AUTOMATIC_CONNECTION_NETWORK_WILL_DISABLED_CONTINUE_Q_MSG"
+msgstr "Va fi dezactivată conectarea automată la această reţea. Continuaţi?"
+
+msgid "IDS_COM_BODY_PHASE_2_AUTHENTICATION"
+msgstr "Autentificare în faza 2"
+
+msgid "IDS_WIFI_BODY_CONNECT"
+msgstr "Conectare"
+
+msgid "IDS_WIFI_POP_PRESS_WPS_ON_YOUR_WI_FI_ACCESS_POINT_WITHIN_PD_MINUTES"
+msgstr "Apăsaţi pe WPS pe punctul dvs. de acces Wi-Fi în interval de %d minute"
+
+msgid "IDS_WIFI_BODY_UNKNOWN"
+msgstr "Necunoscut"
+
+msgid "IDS_WIFI_BODY_ENTER_SSID"
+msgstr "Introducere SSID"
+
+msgid "IDS_WIFI_HEADER_PASSWORD"
+msgstr "Parolă"
+
+msgid "IDS_WIFI_BODY_PROVISIONING"
+msgstr "Asigurare acces"
+
+msgid "IDS_WIFI_BODY_WPS_BUTTON_CONNECTION"
+msgstr "Buton conexiune WPS"
+
+msgid "IDS_WIFI_OPT_FIND_HIDDEN_NETWORK"
+msgstr "Găsire reţea ascunsă"
+
+msgid "IDS_ST_BODY_PRESS_WPS_ON_YOUR_WI_FI_ACCESS_POINT_WITHIN_2_MINUTES"
+msgstr "Apăsaţi pe WPS pe punctul de acces Wi-Fi în interval de 2 minute"
+
+msgid "IDS_WIFI_BUTTON_CANCEL"
+msgstr "Anulare"
+
+msgid "IDS_WIFI_BODY_SSID"
+msgstr "SSID"
+
+msgid "IDS_WIFI_BODY_ENTER_YOUR_IDENTITY"
+msgstr "Introduceţi identitatea dvs."
+
+msgid "IDS_WIFI_HEADER_ENTER_PASSWORD"
+msgstr "Introduceţi parola"
+
+msgid "IDS_WIFI_BODY_NOTIFY_WHEN_WI_FI_NETWORK_IS_FOUND"
+msgstr "Notificare la găsirea reţelei Wi-Fi"
+

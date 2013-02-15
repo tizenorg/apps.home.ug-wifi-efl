@@ -1,0 +1,207 @@
+msgid "IDS_WIFI_BODY_CONNECTED"
+msgstr "जोड़ा गया"
+
+msgid "IDS_WIFI_BODY_CONNECTING_ING"
+msgstr "जोड़ा जा रहा है…"
+
+msgid "IDS_WIFI_BODY_STATIC_IP"
+msgstr "स्थिर आईपी"
+
+msgid "IDS_WIFI_POP_ACTIVATING_WI_FI_ING"
+msgstr "Wi-Fi सक्रिय हो रहा है..."
+
+msgid "IDS_WIFI_SK_FORGET"
+msgstr "भूल जाएँ"
+
+msgid "IDS_WIFI_BODY_IP_ADDRESS"
+msgstr "IP पता"
+
+msgid "IDS_WIFI_BODY_SUBNET_MASK"
+msgstr "सबनेट मास्क"
+
+msgid "IDS_WIFI_BODY_DNS_1"
+msgstr "DNS 1"
+
+msgid "IDS_WIFI_BODY_DNS_2"
+msgstr "DNS 2"
+
+msgid "IDS_ST_BODY_NETWORK_NOTIFICATION"
+msgstr "नेटवर्क नोटिफ़िकेशन"
+
+msgid "IDS_WIFI_POP_OPEN"
+msgstr "खोलें"
+
+msgid "IDS_ST_BODY_SECURED_ABB_M_WIFI_AP_SUMMARY"
+msgstr "सुरक्षित"
+
+msgid "IDS_WIFI_BODY_MAC_ADDRESS"
+msgstr "MAC पते"
+
+msgid "IDS_WIFI_BODY_PROXY_PORT"
+msgstr "प्रॉक्‍सी पोर्ट"
+
+msgid "IDS_ST_BODY_EXCELLENT"
+msgstr "उत्तम"
+
+msgid "IDS_ST_BODY_GOOD_M_STRENGTH"
+msgstr "अच्छा"
+
+msgid "IDS_ST_BODY_SCAN"
+msgstr "स्‍कैन"
+
+msgid "IDS_ST_BODY_WI_FI_NETWORKS"
+msgstr "Wi-Fi नेटवर्क्स"
+
+msgid "IDS_WIFI_BODY_DISCONNECTING_ING"
+msgstr "डिस्कनेक्ट हो रहा है..."
+
+msgid "IDS_WIFI_BODY_DYNAMIC_IP"
+msgstr "डायनामिक आईपी"
+
+msgid "IDS_WIFI_BODY_NO_APS"
+msgstr "APs नहीं"
+
+msgid "IDS_WIFI_BODY_SECURITY_TYPE"
+msgstr "सुरक्षा प्रकार"
+
+msgid "IDS_WIFI_HEADER_HIDDEN_NETWORK"
+msgstr "छुपा नेटवर्क"
+
+msgid "IDS_WIFI_POP_DEACTIVATING_WI_FI_ING"
+msgstr "Wi-Fi निष्क्रिय हो रहा है…"
+
+msgid "IDS_WIFI_POP_SEARCHING_ING"
+msgstr "खोज रहा है..."
+
+msgid "IDS_WIFI_POP_SELECT_NETWORK"
+msgstr "नेटवर्क चुनें"
+
+msgid "IDS_WIFI_BODY_EAP_METHOD"
+msgstr "EAP विधि"
+
+msgid "IDS_WIFI_BODY_EAP"
+msgstr "EAP"
+
+msgid "IDS_WIFI_BODY_GATEWAY_ADDRESS"
+msgstr "गेटवे पता"
+
+msgid "IDS_WIFI_BODY_ENTER_PASSWORD"
+msgstr "पासवर्ड प्रविष्ट करें"
+
+msgid "IDS_WIFI_BODY_CA_CERTIFICATE"
+msgstr "CA प्रमाणपत्र"
+
+msgid "IDS_WIFI_BODY_UNSPECIFIED"
+msgstr "अनिर्दिष्‍ट"
+
+msgid "IDS_WIFI_BODY_USER_CERTIFICATE_ABB"
+msgstr "उपभोक्ता प्रमाणपत्र"
+
+msgid "IDS_WIFI_BODY_IDENTITY"
+msgstr "पहचानें"
+
+msgid "IDS_WIFI_BODY_ANONYMOUS_IDENTITY"
+msgstr "अज्ञात पहचान"
+
+msgid "IDS_WIFI_BODY_ENTER_IDENTITY"
+msgstr "पहचान दर्ज करें"
+
+msgid "IDS_WIFI_BODY_ENTER_ANONYMOUS_IDENTITY"
+msgstr "अज्ञात पहचान दर्ज करें"
+
+msgid "IDS_CST_BODY_INPUT_PASSWORD"
+msgstr "पासवर्ड इनपुट करें"
+
+msgid "IDS_ST_BODY_SHOW_PASSWORD"
+msgstr "पासवर्ड दिखाएँ"
+
+msgid "IDS_WIFI_HEADER_PROXY_ADDRESS"
+msgstr "प्रॉक्‍सी पता"
+
+msgid "IDS_WIFI_BODY_SIGNAL_STRENGTH"
+msgstr "संकेत सामर्थ्य"
+
+msgid "IDS_WIFI_BODY_GATEWAY"
+msgstr "गेटवे"
+
+msgid "IDS_WIFI_BODY_SECURITYTYPE_WEP"
+msgstr "WEP"
+
+msgid "IDS_ST_POP_DEACTIVATING_ING"
+msgstr "निष्क्रिय हो रहा है…"
+
+msgid "IDS_WIFI_BODY_CONFIGURATION_NO_SECURITY"
+msgstr "कोई सुरक्षा नहीं"
+
+msgid "IDS_WIFI_HEADER_SELECT_NETWORK"
+msgstr "नेटवर्क चुनें"
+
+msgid "IDS_WIFI_BODY_WEAK_M_STRENGTH"
+msgstr "दुर्बल"
+
+msgid "IDS_ST_BODY_WPS_AVAILABLE"
+msgstr "WPS उपलब्‍ध"
+
+msgid "IDS_ST_BODY_OBTAINING_IP_ADDRESS_ING"
+msgstr "IP पता मिल रहा है..."
+
+msgid "IDS_WIFI_BODY_CHANNEL"
+msgstr "चैनल"
+
+msgid "IDS_ST_BODY_NOTIFY_ME_WHEN_AN_OPEN_NETWORK_IS_AVAILABLE"
+msgstr "ज़ब ओपन नेटवर्क उपलब्‍ध हो तो मुझे सूचित करें"
+
+msgid "IDS_ST_BODY_ADD_WI_FI_NETWORK"
+msgstr "WI-FI नेटवर्क जोड़ें"
+
+msgid "IDS_ST_BODY_NETWORK_SSID"
+msgstr "नेटवर्क SSID"
+
+msgid "IDS_WIFI_POP_AUTOMATIC_CONNECTION_NETWORK_WILL_DISABLED_CONTINUE_Q_MSG"
+msgstr "इस नेटवर्क के साथ स्वचालित कनेक्शन अक्षम हो जाएगा। जारी रखें?"
+
+msgid "IDS_COM_BODY_PHASE_2_AUTHENTICATION"
+msgstr "फ़ेज 2 प्रमाणीकरण"
+
+msgid "IDS_WIFI_BODY_CONNECT"
+msgstr "जोड़ें"
+
+msgid "IDS_WIFI_POP_PRESS_WPS_ON_YOUR_WI_FI_ACCESS_POINT_WITHIN_PD_MINUTES"
+msgstr "%d मिनटों के अंदर आप के वाई-फाई अभिगम पॉइंट पर डब्ल्यूपीएस दबाएँ"
+
+msgid "IDS_WIFI_BODY_UNKNOWN"
+msgstr "अज्ञात"
+
+msgid "IDS_WIFI_BODY_ENTER_SSID"
+msgstr "एसएसआईडी प्रविष्ट करें"
+
+msgid "IDS_WIFI_HEADER_PASSWORD"
+msgstr "पासवर्ड"
+
+msgid "IDS_WIFI_BODY_PROVISIONING"
+msgstr "प्रावधान"
+
+msgid "IDS_WIFI_BODY_WPS_BUTTON_CONNECTION"
+msgstr "WPS बटन कनेक्‍शन"
+
+msgid "IDS_WIFI_OPT_FIND_HIDDEN_NETWORK"
+msgstr "छुपा नेटवर्क ढूँढें"
+
+msgid "IDS_ST_BODY_PRESS_WPS_ON_YOUR_WI_FI_ACCESS_POINT_WITHIN_2_MINUTES"
+msgstr "2 मिनटों के अंदर आप के Wi-Fi ऍक्सेस पॉइंट पर WPS दबाएँ"
+
+msgid "IDS_WIFI_BUTTON_CANCEL"
+msgstr "रद्द"
+
+msgid "IDS_WIFI_BODY_SSID"
+msgstr "एसएसआईडी"
+
+msgid "IDS_WIFI_BODY_ENTER_YOUR_IDENTITY"
+msgstr "अपनी पहचान दर्ज करें"
+
+msgid "IDS_WIFI_HEADER_ENTER_PASSWORD"
+msgstr "पासवर्ड प्रविष्ट करें"
+
+msgid "IDS_WIFI_BODY_NOTIFY_WHEN_WI_FI_NETWORK_IS_FOUND"
+msgstr "Wi-Fi नेटवर्क के प्राप्त होने पर सूचित करें"
+

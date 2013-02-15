@@ -1,0 +1,207 @@
+msgid "IDS_WIFI_BODY_CONNECTED"
+msgstr "Povezano"
+
+msgid "IDS_WIFI_BODY_CONNECTING_ING"
+msgstr "Povezujem..."
+
+msgid "IDS_WIFI_BODY_STATIC_IP"
+msgstr "Statični IP"
+
+msgid "IDS_WIFI_POP_ACTIVATING_WI_FI_ING"
+msgstr "Vklapljanje Wi-Fi..."
+
+msgid "IDS_WIFI_SK_FORGET"
+msgstr "Pozabi"
+
+msgid "IDS_WIFI_BODY_IP_ADDRESS"
+msgstr "IP naslov"
+
+msgid "IDS_WIFI_BODY_SUBNET_MASK"
+msgstr "Maska podomrežja"
+
+msgid "IDS_WIFI_BODY_DNS_1"
+msgstr "DNS 1"
+
+msgid "IDS_WIFI_BODY_DNS_2"
+msgstr "DNS 2"
+
+msgid "IDS_ST_BODY_NETWORK_NOTIFICATION"
+msgstr "Obvestilo o omrežju"
+
+msgid "IDS_WIFI_POP_OPEN"
+msgstr "Odprto omrežje"
+
+msgid "IDS_ST_BODY_SECURED_ABB_M_WIFI_AP_SUMMARY"
+msgstr "Zaščiteno"
+
+msgid "IDS_WIFI_BODY_MAC_ADDRESS"
+msgstr "Naslov MAC"
+
+msgid "IDS_WIFI_BODY_PROXY_PORT"
+msgstr "Vrata strežnika proxy"
+
+msgid "IDS_ST_BODY_EXCELLENT"
+msgstr "Čudovito"
+
+msgid "IDS_ST_BODY_GOOD_M_STRENGTH"
+msgstr "Dober"
+
+msgid "IDS_ST_BODY_SCAN"
+msgstr "Preišči"
+
+msgid "IDS_ST_BODY_WI_FI_NETWORKS"
+msgstr "Omrežja Wi-Fi"
+
+msgid "IDS_WIFI_BODY_DISCONNECTING_ING"
+msgstr "Prekinjam"
+
+msgid "IDS_WIFI_BODY_DYNAMIC_IP"
+msgstr "Dinamični IP"
+
+msgid "IDS_WIFI_BODY_NO_APS"
+msgstr "Brez Aps"
+
+msgid "IDS_WIFI_BODY_SECURITY_TYPE"
+msgstr "Vrsta zaščite"
+
+msgid "IDS_WIFI_HEADER_HIDDEN_NETWORK"
+msgstr "Skrito omrežje"
+
+msgid "IDS_WIFI_POP_DEACTIVATING_WI_FI_ING"
+msgstr "Izklapljanje Wi-Fi..."
+
+msgid "IDS_WIFI_POP_SEARCHING_ING"
+msgstr "Iščem"
+
+msgid "IDS_WIFI_POP_SELECT_NETWORK"
+msgstr "Izberi omrežje"
+
+msgid "IDS_WIFI_BODY_EAP_METHOD"
+msgstr "Način EAP"
+
+msgid "IDS_WIFI_BODY_EAP"
+msgstr "EAP"
+
+msgid "IDS_WIFI_BODY_GATEWAY_ADDRESS"
+msgstr "Naslov prehoda"
+
+msgid "IDS_WIFI_BODY_ENTER_PASSWORD"
+msgstr "Vnesite geslo"
+
+msgid "IDS_WIFI_BODY_CA_CERTIFICATE"
+msgstr "Certifikat CA"
+
+msgid "IDS_WIFI_BODY_UNSPECIFIED"
+msgstr "Ni določeno"
+
+msgid "IDS_WIFI_BODY_USER_CERTIFICATE_ABB"
+msgstr "Uporab.certifikat"
+
+msgid "IDS_WIFI_BODY_IDENTITY"
+msgstr "Identiteta"
+
+msgid "IDS_WIFI_BODY_ANONYMOUS_IDENTITY"
+msgstr "Anonimna identiteta"
+
+msgid "IDS_WIFI_BODY_ENTER_IDENTITY"
+msgstr "Vnesite identiteto"
+
+msgid "IDS_WIFI_BODY_ENTER_ANONYMOUS_IDENTITY"
+msgstr "Vnesite anonimno identiteto"
+
+msgid "IDS_CST_BODY_INPUT_PASSWORD"
+msgstr "Vnesite geslo"
+
+msgid "IDS_ST_BODY_SHOW_PASSWORD"
+msgstr "Prikaži geslo"
+
+msgid "IDS_WIFI_HEADER_PROXY_ADDRESS"
+msgstr "Naslov strežnika proxy"
+
+msgid "IDS_WIFI_BODY_SIGNAL_STRENGTH"
+msgstr "Moč signala"
+
+msgid "IDS_WIFI_BODY_GATEWAY"
+msgstr "Prehod"
+
+msgid "IDS_WIFI_BODY_SECURITYTYPE_WEP"
+msgstr "WEP"
+
+msgid "IDS_ST_POP_DEACTIVATING_ING"
+msgstr "Izključujem..."
+
+msgid "IDS_WIFI_BODY_CONFIGURATION_NO_SECURITY"
+msgstr "Ni zaščite"
+
+msgid "IDS_WIFI_HEADER_SELECT_NETWORK"
+msgstr "Izberi omrežje"
+
+msgid "IDS_WIFI_BODY_WEAK_M_STRENGTH"
+msgstr "Šibko"
+
+msgid "IDS_ST_BODY_WPS_AVAILABLE"
+msgstr "WPS je na voljo"
+
+msgid "IDS_ST_BODY_OBTAINING_IP_ADDRESS_ING"
+msgstr "Pridobivanje naslova IP ..."
+
+msgid "IDS_WIFI_BODY_CHANNEL"
+msgstr "Kanal"
+
+msgid "IDS_ST_BODY_NOTIFY_ME_WHEN_AN_OPEN_NETWORK_IS_AVAILABLE"
+msgstr "Obvesti me, ko bo na voljo odprto omrežje"
+
+msgid "IDS_ST_BODY_ADD_WI_FI_NETWORK"
+msgstr "Dodaj omrežje Wi-Fi"
+
+msgid "IDS_ST_BODY_NETWORK_SSID"
+msgstr "SSID omrežja"
+
+msgid "IDS_WIFI_POP_AUTOMATIC_CONNECTION_NETWORK_WILL_DISABLED_CONTINUE_Q_MSG"
+msgstr "Samodejna povezava v to omrežje bo onemogočena. Nadaljujem?"
+
+msgid "IDS_COM_BODY_PHASE_2_AUTHENTICATION"
+msgstr "Faza 2 overitve"
+
+msgid "IDS_WIFI_BODY_CONNECT"
+msgstr "Poveži"
+
+msgid "IDS_WIFI_POP_PRESS_WPS_ON_YOUR_WI_FI_ACCESS_POINT_WITHIN_PD_MINUTES"
+msgstr "Pritisnite WPS na dostopni točki Wi-Fi v %d minutah"
+
+msgid "IDS_WIFI_BODY_UNKNOWN"
+msgstr "Neznano"
+
+msgid "IDS_WIFI_BODY_ENTER_SSID"
+msgstr "Vnesite SSID"
+
+msgid "IDS_WIFI_HEADER_PASSWORD"
+msgstr "Geslo"
+
+msgid "IDS_WIFI_BODY_PROVISIONING"
+msgstr "Omogočanje uporabe"
+
+msgid "IDS_WIFI_BODY_WPS_BUTTON_CONNECTION"
+msgstr "Povezava gumba WPS"
+
+msgid "IDS_WIFI_OPT_FIND_HIDDEN_NETWORK"
+msgstr "Poišči skrito omrežje"
+
+msgid "IDS_ST_BODY_PRESS_WPS_ON_YOUR_WI_FI_ACCESS_POINT_WITHIN_2_MINUTES"
+msgstr "Pritisnite WPS na dostopni točki Wi-Fi v 2 minutah"
+
+msgid "IDS_WIFI_BUTTON_CANCEL"
+msgstr "Prekliči"
+
+msgid "IDS_WIFI_BODY_SSID"
+msgstr "SSID"
+
+msgid "IDS_WIFI_BODY_ENTER_YOUR_IDENTITY"
+msgstr "Vnesite svojo identiteto"
+
+msgid "IDS_WIFI_HEADER_ENTER_PASSWORD"
+msgstr "Vnesite geslo"
+
+msgid "IDS_WIFI_BODY_NOTIFY_WHEN_WI_FI_NETWORK_IS_FOUND"
+msgstr "Obvestilo, ko je najdeno omrežje Wi-Fi"
+

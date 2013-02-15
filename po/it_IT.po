@@ -1,0 +1,207 @@
+msgid "IDS_WIFI_BODY_CONNECTED"
+msgstr "Connesso"
+
+msgid "IDS_WIFI_BODY_CONNECTING_ING"
+msgstr "Connessione..."
+
+msgid "IDS_WIFI_BODY_STATIC_IP"
+msgstr "IP statico"
+
+msgid "IDS_WIFI_POP_ACTIVATING_WI_FI_ING"
+msgstr "Attivazione Wi-Fi in corso"
+
+msgid "IDS_WIFI_SK_FORGET"
+msgstr "Rimuovi"
+
+msgid "IDS_WIFI_BODY_IP_ADDRESS"
+msgstr "Indirizzo IP"
+
+msgid "IDS_WIFI_BODY_SUBNET_MASK"
+msgstr "Maschera di sottorete"
+
+msgid "IDS_WIFI_BODY_DNS_1"
+msgstr "DNS 1"
+
+msgid "IDS_WIFI_BODY_DNS_2"
+msgstr "DNS 2"
+
+msgid "IDS_ST_BODY_NETWORK_NOTIFICATION"
+msgstr "Notifica di rete"
+
+msgid "IDS_WIFI_POP_OPEN"
+msgstr "Non protetta"
+
+msgid "IDS_ST_BODY_SECURED_ABB_M_WIFI_AP_SUMMARY"
+msgstr "Protetto"
+
+msgid "IDS_WIFI_BODY_MAC_ADDRESS"
+msgstr "Indirizzo MAC"
+
+msgid "IDS_WIFI_BODY_PROXY_PORT"
+msgstr "Porta"
+
+msgid "IDS_ST_BODY_EXCELLENT"
+msgstr "Eccellente"
+
+msgid "IDS_ST_BODY_GOOD_M_STRENGTH"
+msgstr "Buono"
+
+msgid "IDS_ST_BODY_SCAN"
+msgstr "Scansione"
+
+msgid "IDS_ST_BODY_WI_FI_NETWORKS"
+msgstr "Reti Wi-Fi"
+
+msgid "IDS_WIFI_BODY_DISCONNECTING_ING"
+msgstr "Disconnessione..."
+
+msgid "IDS_WIFI_BODY_DYNAMIC_IP"
+msgstr "IP dinamico"
+
+msgid "IDS_WIFI_BODY_NO_APS"
+msgstr "Nessuna rete Wi-Fi"
+
+msgid "IDS_WIFI_BODY_SECURITY_TYPE"
+msgstr "Tipo protezione"
+
+msgid "IDS_WIFI_HEADER_HIDDEN_NETWORK"
+msgstr "Rete nascosta"
+
+msgid "IDS_WIFI_POP_DEACTIVATING_WI_FI_ING"
+msgstr "Disattivazione Wi-Fi in corso"
+
+msgid "IDS_WIFI_POP_SEARCHING_ING"
+msgstr "Ricerca..."
+
+msgid "IDS_WIFI_POP_SELECT_NETWORK"
+msgstr "Selezione rete"
+
+msgid "IDS_WIFI_BODY_EAP_METHOD"
+msgstr "Metodo EAP"
+
+msgid "IDS_WIFI_BODY_EAP"
+msgstr "EAP"
+
+msgid "IDS_WIFI_BODY_GATEWAY_ADDRESS"
+msgstr "Indirizzo gateway"
+
+msgid "IDS_WIFI_BODY_ENTER_PASSWORD"
+msgstr "Inserisci password"
+
+msgid "IDS_WIFI_BODY_CA_CERTIFICATE"
+msgstr "Certificato CA"
+
+msgid "IDS_WIFI_BODY_UNSPECIFIED"
+msgstr "Non specificato"
+
+msgid "IDS_WIFI_BODY_USER_CERTIFICATE_ABB"
+msgstr "Certific. utente"
+
+msgid "IDS_WIFI_BODY_IDENTITY"
+msgstr "Identità"
+
+msgid "IDS_WIFI_BODY_ANONYMOUS_IDENTITY"
+msgstr "Identità anonima"
+
+msgid "IDS_WIFI_BODY_ENTER_IDENTITY"
+msgstr "Inserisci identità"
+
+msgid "IDS_WIFI_BODY_ENTER_ANONYMOUS_IDENTITY"
+msgstr "Inserisci identità anonima"
+
+msgid "IDS_CST_BODY_INPUT_PASSWORD"
+msgstr "Inserisci password"
+
+msgid "IDS_ST_BODY_SHOW_PASSWORD"
+msgstr "Mostra password"
+
+msgid "IDS_WIFI_HEADER_PROXY_ADDRESS"
+msgstr "Indirizzo proxy"
+
+msgid "IDS_WIFI_BODY_SIGNAL_STRENGTH"
+msgstr "Potenza del segnale"
+
+msgid "IDS_WIFI_BODY_GATEWAY"
+msgstr "Gateway"
+
+msgid "IDS_WIFI_BODY_SECURITYTYPE_WEP"
+msgstr "WEP"
+
+msgid "IDS_ST_POP_DEACTIVATING_ING"
+msgstr "Disattivazione..."
+
+msgid "IDS_WIFI_BODY_CONFIGURATION_NO_SECURITY"
+msgstr "Nessuna protezione"
+
+msgid "IDS_WIFI_HEADER_SELECT_NETWORK"
+msgstr "Selezione rete"
+
+msgid "IDS_WIFI_BODY_WEAK_M_STRENGTH"
+msgstr "Debole"
+
+msgid "IDS_ST_BODY_WPS_AVAILABLE"
+msgstr "Disponibile WPS"
+
+msgid "IDS_ST_BODY_OBTAINING_IP_ADDRESS_ING"
+msgstr "Ottenimento indirizzo IP in corso..."
+
+msgid "IDS_WIFI_BODY_CHANNEL"
+msgstr "Canale"
+
+msgid "IDS_ST_BODY_NOTIFY_ME_WHEN_AN_OPEN_NETWORK_IS_AVAILABLE"
+msgstr "Notifica reti Wi-Fi disponibili"
+
+msgid "IDS_ST_BODY_ADD_WI_FI_NETWORK"
+msgstr "Aggiungi rete Wi-Fi"
+
+msgid "IDS_ST_BODY_NETWORK_SSID"
+msgstr "SSID di rete"
+
+msgid "IDS_WIFI_POP_AUTOMATIC_CONNECTION_NETWORK_WILL_DISABLED_CONTINUE_Q_MSG"
+msgstr "La connessione automatica a questa rete sarà disattivata. Continuare?"
+
+msgid "IDS_COM_BODY_PHASE_2_AUTHENTICATION"
+msgstr "Autenticazione fase 2"
+
+msgid "IDS_WIFI_BODY_CONNECT"
+msgstr "Connetti"
+
+msgid "IDS_WIFI_POP_PRESS_WPS_ON_YOUR_WI_FI_ACCESS_POINT_WITHIN_PD_MINUTES"
+msgstr "Premere WPS sul punto di accesso Wi-Fi entro %d minuti"
+
+msgid "IDS_WIFI_BODY_UNKNOWN"
+msgstr "Sconosciuto"
+
+msgid "IDS_WIFI_BODY_ENTER_SSID"
+msgstr "Inserisci SSID"
+
+msgid "IDS_WIFI_HEADER_PASSWORD"
+msgstr "Password"
+
+msgid "IDS_WIFI_BODY_PROVISIONING"
+msgstr "Provisioning"
+
+msgid "IDS_WIFI_BODY_WPS_BUTTON_CONNECTION"
+msgstr "Connessione tasto WPS"
+
+msgid "IDS_WIFI_OPT_FIND_HIDDEN_NETWORK"
+msgstr "Trova rete nascosta"
+
+msgid "IDS_ST_BODY_PRESS_WPS_ON_YOUR_WI_FI_ACCESS_POINT_WITHIN_2_MINUTES"
+msgstr "Premi WPS sul punto di accesso Wi-Fi entro 2 minuti"
+
+msgid "IDS_WIFI_BUTTON_CANCEL"
+msgstr "Annulla"
+
+msgid "IDS_WIFI_BODY_SSID"
+msgstr "SSID"
+
+msgid "IDS_WIFI_BODY_ENTER_YOUR_IDENTITY"
+msgstr "Inserisci l'identità"
+
+msgid "IDS_WIFI_HEADER_ENTER_PASSWORD"
+msgstr "Inserisci password"
+
+msgid "IDS_WIFI_BODY_NOTIFY_WHEN_WI_FI_NETWORK_IS_FOUND"
+msgstr "Notifica al rilevamento della rete Wi-Fi"
+

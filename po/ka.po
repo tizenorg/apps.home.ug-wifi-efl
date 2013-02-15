@@ -1,0 +1,207 @@
+msgid "IDS_WIFI_BODY_CONNECTED"
+msgstr "დაკავშირებულია"
+
+msgid "IDS_WIFI_BODY_CONNECTING_ING"
+msgstr "უკავშირდება..."
+
+msgid "IDS_WIFI_BODY_STATIC_IP"
+msgstr "სტატიკური IP"
+
+msgid "IDS_WIFI_POP_ACTIVATING_WI_FI_ING"
+msgstr "აქტიურდება Wi-Fi..."
+
+msgid "IDS_WIFI_SK_FORGET"
+msgstr "დავიწყება"
+
+msgid "IDS_WIFI_BODY_IP_ADDRESS"
+msgstr "IP მისამართი"
+
+msgid "IDS_WIFI_BODY_SUBNET_MASK"
+msgstr "ქვექსელის ნიღაბი"
+
+msgid "IDS_WIFI_BODY_DNS_1"
+msgstr "DNS 1"
+
+msgid "IDS_WIFI_BODY_DNS_2"
+msgstr "DNS 2"
+
+msgid "IDS_ST_BODY_NETWORK_NOTIFICATION"
+msgstr "ქსელის შეტყობინება"
+
+msgid "IDS_WIFI_POP_OPEN"
+msgstr "გახსნა"
+
+msgid "IDS_ST_BODY_SECURED_ABB_M_WIFI_AP_SUMMARY"
+msgstr "დაცული"
+
+msgid "IDS_WIFI_BODY_MAC_ADDRESS"
+msgstr "MAC მისამართი"
+
+msgid "IDS_WIFI_BODY_PROXY_PORT"
+msgstr "პროქსი სერვერის პორტი"
+
+msgid "IDS_ST_BODY_EXCELLENT"
+msgstr "ბრწყინვალეა"
+
+msgid "IDS_ST_BODY_GOOD_M_STRENGTH"
+msgstr "კარგი"
+
+msgid "IDS_ST_BODY_SCAN"
+msgstr "სკანირება"
+
+msgid "IDS_ST_BODY_WI_FI_NETWORKS"
+msgstr "Wi-Fi ქსელები"
+
+msgid "IDS_WIFI_BODY_DISCONNECTING_ING"
+msgstr "გამორთვა..."
+
+msgid "IDS_WIFI_BODY_DYNAMIC_IP"
+msgstr "დინამიკური IP"
+
+msgid "IDS_WIFI_BODY_NO_APS"
+msgstr "APs არ არის"
+
+msgid "IDS_WIFI_BODY_SECURITY_TYPE"
+msgstr "დაცვის ტიპი"
+
+msgid "IDS_WIFI_HEADER_HIDDEN_NETWORK"
+msgstr "დაფარული ქსელი"
+
+msgid "IDS_WIFI_POP_DEACTIVATING_WI_FI_ING"
+msgstr "თავიდან აქტიურდება Wi-Fi..."
+
+msgid "IDS_WIFI_POP_SEARCHING_ING"
+msgstr "იძებნება..."
+
+msgid "IDS_WIFI_POP_SELECT_NETWORK"
+msgstr "ქსელის შერჩევა"
+
+msgid "IDS_WIFI_BODY_EAP_METHOD"
+msgstr "EAP მეთოდი"
+
+msgid "IDS_WIFI_BODY_EAP"
+msgstr "EAP"
+
+msgid "IDS_WIFI_BODY_GATEWAY_ADDRESS"
+msgstr "გასასვლელის მისამართი"
+
+msgid "IDS_WIFI_BODY_ENTER_PASSWORD"
+msgstr "პაროლის შეყვანა"
+
+msgid "IDS_WIFI_BODY_CA_CERTIFICATE"
+msgstr "CA სერთიფიკატი"
+
+msgid "IDS_WIFI_BODY_UNSPECIFIED"
+msgstr "დაუზუსტებელი"
+
+msgid "IDS_WIFI_BODY_USER_CERTIFICATE_ABB"
+msgstr "მომხ. სერთიფიკატი"
+
+msgid "IDS_WIFI_BODY_IDENTITY"
+msgstr "პირადობა"
+
+msgid "IDS_WIFI_BODY_ANONYMOUS_IDENTITY"
+msgstr "ანონიმური პირადობა"
+
+msgid "IDS_WIFI_BODY_ENTER_IDENTITY"
+msgstr "შეიყვანეთ საიდენტიფიკაციო ინფორმაცია"
+
+msgid "IDS_WIFI_BODY_ENTER_ANONYMOUS_IDENTITY"
+msgstr "შეიყვანეთ ანონიმური საიდენტიფიკაციო ინფორმაცია"
+
+msgid "IDS_CST_BODY_INPUT_PASSWORD"
+msgstr "ჩაწერეთ პაროლი"
+
+msgid "IDS_ST_BODY_SHOW_PASSWORD"
+msgstr "გამოჩნდეს პაროლი"
+
+msgid "IDS_WIFI_HEADER_PROXY_ADDRESS"
+msgstr "პროქსი სერვერის მისამართი"
+
+msgid "IDS_WIFI_BODY_SIGNAL_STRENGTH"
+msgstr "სიგნალის სიძლიერე"
+
+msgid "IDS_WIFI_BODY_GATEWAY"
+msgstr "გასასვლელი"
+
+msgid "IDS_WIFI_BODY_SECURITYTYPE_WEP"
+msgstr "WEP"
+
+msgid "IDS_ST_POP_DEACTIVATING_ING"
+msgstr "გამორთვა..."
+
+msgid "IDS_WIFI_BODY_CONFIGURATION_NO_SECURITY"
+msgstr "არაა უსაფრთხო"
+
+msgid "IDS_WIFI_HEADER_SELECT_NETWORK"
+msgstr "ქსელის შერჩევა"
+
+msgid "IDS_WIFI_BODY_WEAK_M_STRENGTH"
+msgstr "სუსტი"
+
+msgid "IDS_ST_BODY_WPS_AVAILABLE"
+msgstr "WPS მისაწვდომია"
+
+msgid "IDS_ST_BODY_OBTAINING_IP_ADDRESS_ING"
+msgstr "მიმდინარეობს IP მისამართის მიღება..."
+
+msgid "IDS_WIFI_BODY_CHANNEL"
+msgstr "არხი"
+
+msgid "IDS_ST_BODY_NOTIFY_ME_WHEN_AN_OPEN_NETWORK_IS_AVAILABLE"
+msgstr "მსურს მივიღო შეტყობინება, როცა ღია ქსელი მისაწვდომი იქნება"
+
+msgid "IDS_ST_BODY_ADD_WI_FI_NETWORK"
+msgstr "Wi-Fi ქსელის დამატება"
+
+msgid "IDS_ST_BODY_NETWORK_SSID"
+msgstr "SSID ქსელი"
+
+msgid "IDS_WIFI_POP_AUTOMATIC_CONNECTION_NETWORK_WILL_DISABLED_CONTINUE_Q_MSG"
+msgstr "ამ ქსელთან ავტომატური დაკავშირება გამოირთვება. განაგრძობთ?"
+
+msgid "IDS_COM_BODY_PHASE_2_AUTHENTICATION"
+msgstr "ფაზა 2-ის ავტორიზაცია"
+
+msgid "IDS_WIFI_BODY_CONNECT"
+msgstr "დაკავშირება"
+
+msgid "IDS_WIFI_POP_PRESS_WPS_ON_YOUR_WI_FI_ACCESS_POINT_WITHIN_PD_MINUTES"
+msgstr "მაქსიმუმ %d წუთში დააჭირეთ WPS–ს თქვენი Wi-Fi წვდომის წერტილზე"
+
+msgid "IDS_WIFI_BODY_UNKNOWN"
+msgstr "უცნობი"
+
+msgid "IDS_WIFI_BODY_ENTER_SSID"
+msgstr "SSID შეტანა"
+
+msgid "IDS_WIFI_HEADER_PASSWORD"
+msgstr "პაროლი"
+
+msgid "IDS_WIFI_BODY_PROVISIONING"
+msgstr "მომზადება"
+
+msgid "IDS_WIFI_BODY_WPS_BUTTON_CONNECTION"
+msgstr "WPS ღილაკით დაკავშირება"
+
+msgid "IDS_WIFI_OPT_FIND_HIDDEN_NETWORK"
+msgstr "ფარული ქსელის ძებნა"
+
+msgid "IDS_ST_BODY_PRESS_WPS_ON_YOUR_WI_FI_ACCESS_POINT_WITHIN_2_MINUTES"
+msgstr "მაქსიმუმ 2 წუთში დააჭირეთ WPS-ს თქვენს Wi-Fi წვდომის წერტილზე"
+
+msgid "IDS_WIFI_BUTTON_CANCEL"
+msgstr "გაუქმება"
+
+msgid "IDS_WIFI_BODY_SSID"
+msgstr "SSID"
+
+msgid "IDS_WIFI_BODY_ENTER_YOUR_IDENTITY"
+msgstr "შეიყვანეთ თქვენი საიდენტიფიკაციო ინფორმაცია"
+
+msgid "IDS_WIFI_HEADER_ENTER_PASSWORD"
+msgstr "პაროლის შეყვანა"
+
+msgid "IDS_WIFI_BODY_NOTIFY_WHEN_WI_FI_NETWORK_IS_FOUND"
+msgstr "შეტყობინება მოვიდეს, როდესაც მოიძებნება Wi-Fi ქსელი"
+
