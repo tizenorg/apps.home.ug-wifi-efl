@@ -1,0 +1,207 @@
+msgid "IDS_WIFI_BODY_CONNECTED"
+msgstr "Ansluten"
+
+msgid "IDS_WIFI_BODY_CONNECTING_ING"
+msgstr "Ansluter..."
+
+msgid "IDS_WIFI_BODY_STATIC_IP"
+msgstr "Statisk IP"
+
+msgid "IDS_WIFI_POP_ACTIVATING_WI_FI_ING"
+msgstr "Aktiverar Wi-Fi..."
+
+msgid "IDS_WIFI_SK_FORGET"
+msgstr "Glöm"
+
+msgid "IDS_WIFI_BODY_IP_ADDRESS"
+msgstr "IP-adress"
+
+msgid "IDS_WIFI_BODY_SUBNET_MASK"
+msgstr "Nätmask"
+
+msgid "IDS_WIFI_BODY_DNS_1"
+msgstr "DNS 1"
+
+msgid "IDS_WIFI_BODY_DNS_2"
+msgstr "DNS 2"
+
+msgid "IDS_ST_BODY_NETWORK_NOTIFICATION"
+msgstr "Nätverksmeddelande"
+
+msgid "IDS_WIFI_POP_OPEN"
+msgstr "Öppen"
+
+msgid "IDS_ST_BODY_SECURED_ABB_M_WIFI_AP_SUMMARY"
+msgstr "Skyddad"
+
+msgid "IDS_WIFI_BODY_MAC_ADDRESS"
+msgstr "MAC-adress"
+
+msgid "IDS_WIFI_BODY_PROXY_PORT"
+msgstr "Proxyport"
+
+msgid "IDS_ST_BODY_EXCELLENT"
+msgstr "Utmärkt"
+
+msgid "IDS_ST_BODY_GOOD_M_STRENGTH"
+msgstr "Bra"
+
+msgid "IDS_ST_BODY_SCAN"
+msgstr "Sök"
+
+msgid "IDS_ST_BODY_WI_FI_NETWORKS"
+msgstr "Wi-Fi-nätverk"
+
+msgid "IDS_WIFI_BODY_DISCONNECTING_ING"
+msgstr "Kopplar från..."
+
+msgid "IDS_WIFI_BODY_DYNAMIC_IP"
+msgstr "Dynamisk IP"
+
+msgid "IDS_WIFI_BODY_NO_APS"
+msgstr "Inga APs"
+
+msgid "IDS_WIFI_BODY_SECURITY_TYPE"
+msgstr "Säkerhetstyp"
+
+msgid "IDS_WIFI_HEADER_HIDDEN_NETWORK"
+msgstr "Dolt nät"
+
+msgid "IDS_WIFI_POP_DEACTIVATING_WI_FI_ING"
+msgstr "Avaktiverar Wi-Fi..."
+
+msgid "IDS_WIFI_POP_SEARCHING_ING"
+msgstr "Söker..."
+
+msgid "IDS_WIFI_POP_SELECT_NETWORK"
+msgstr "Välj nät"
+
+msgid "IDS_WIFI_BODY_EAP_METHOD"
+msgstr "EAP-metod"
+
+msgid "IDS_WIFI_BODY_EAP"
+msgstr "EAP"
+
+msgid "IDS_WIFI_BODY_GATEWAY_ADDRESS"
+msgstr "Gateway-adress"
+
+msgid "IDS_WIFI_BODY_ENTER_PASSWORD"
+msgstr "Ange lösenord"
+
+msgid "IDS_WIFI_BODY_CA_CERTIFICATE"
+msgstr "CA-certifikat"
+
+msgid "IDS_WIFI_BODY_UNSPECIFIED"
+msgstr "Ospecificerad"
+
+msgid "IDS_WIFI_BODY_USER_CERTIFICATE_ABB"
+msgstr "Användarcert."
+
+msgid "IDS_WIFI_BODY_IDENTITY"
+msgstr "Identitet"
+
+msgid "IDS_WIFI_BODY_ANONYMOUS_IDENTITY"
+msgstr "Anonym identitet"
+
+msgid "IDS_WIFI_BODY_ENTER_IDENTITY"
+msgstr "Ange identitet"
+
+msgid "IDS_WIFI_BODY_ENTER_ANONYMOUS_IDENTITY"
+msgstr "Ange anonym identitet"
+
+msgid "IDS_CST_BODY_INPUT_PASSWORD"
+msgstr "Ange lösenord"
+
+msgid "IDS_ST_BODY_SHOW_PASSWORD"
+msgstr "Visa lösenord"
+
+msgid "IDS_WIFI_HEADER_PROXY_ADDRESS"
+msgstr "Proxy-adress"
+
+msgid "IDS_WIFI_BODY_SIGNAL_STRENGTH"
+msgstr "Signalstyrka"
+
+msgid "IDS_WIFI_BODY_GATEWAY"
+msgstr "Gateway"
+
+msgid "IDS_WIFI_BODY_SECURITYTYPE_WEP"
+msgstr "WEP"
+
+msgid "IDS_ST_POP_DEACTIVATING_ING"
+msgstr "Deaktiverar..."
+
+msgid "IDS_WIFI_BODY_CONFIGURATION_NO_SECURITY"
+msgstr "Ingen säkerhet"
+
+msgid "IDS_WIFI_HEADER_SELECT_NETWORK"
+msgstr "Välj nätverk"
+
+msgid "IDS_WIFI_BODY_WEAK_M_STRENGTH"
+msgstr "Svag"
+
+msgid "IDS_ST_BODY_WPS_AVAILABLE"
+msgstr "WPS är tillgängligt"
+
+msgid "IDS_ST_BODY_OBTAINING_IP_ADDRESS_ING"
+msgstr "Hämtar IP-adress..."
+
+msgid "IDS_WIFI_BODY_CHANNEL"
+msgstr "Kanal"
+
+msgid "IDS_ST_BODY_NOTIFY_ME_WHEN_AN_OPEN_NETWORK_IS_AVAILABLE"
+msgstr "Meddela mig när ett öppet nätverk är tillgängligt"
+
+msgid "IDS_ST_BODY_ADD_WI_FI_NETWORK"
+msgstr "Lägg till Wi-Fi-nätverk"
+
+msgid "IDS_ST_BODY_NETWORK_SSID"
+msgstr "Nätverks-SSID"
+
+msgid "IDS_WIFI_POP_AUTOMATIC_CONNECTION_NETWORK_WILL_DISABLED_CONTINUE_Q_MSG"
+msgstr "Automatisk anslutning till det här nätverket avaktiveras. Fortsätta?"
+
+msgid "IDS_COM_BODY_PHASE_2_AUTHENTICATION"
+msgstr "Fas 2-autentisering"
+
+msgid "IDS_WIFI_BODY_CONNECT"
+msgstr "Anslut"
+
+msgid "IDS_WIFI_POP_PRESS_WPS_ON_YOUR_WI_FI_ACCESS_POINT_WITHIN_PD_MINUTES"
+msgstr "Tryck på WPS på Wi-Fi-åtkomstpunkten inom %d minuter"
+
+msgid "IDS_WIFI_BODY_UNKNOWN"
+msgstr "Okänd"
+
+msgid "IDS_WIFI_BODY_ENTER_SSID"
+msgstr "Ange SSID"
+
+msgid "IDS_WIFI_HEADER_PASSWORD"
+msgstr "Lösenord"
+
+msgid "IDS_WIFI_BODY_PROVISIONING"
+msgstr "Åtkomst"
+
+msgid "IDS_WIFI_BODY_WPS_BUTTON_CONNECTION"
+msgstr "WPS-knappsanslutning"
+
+msgid "IDS_WIFI_OPT_FIND_HIDDEN_NETWORK"
+msgstr "Hitta dolt nätverk"
+
+msgid "IDS_ST_BODY_PRESS_WPS_ON_YOUR_WI_FI_ACCESS_POINT_WITHIN_2_MINUTES"
+msgstr "Tryck på WPS på Wi-Fi-åtkomstpunkten inom 2 minuter"
+
+msgid "IDS_WIFI_BUTTON_CANCEL"
+msgstr "Avbryt"
+
+msgid "IDS_WIFI_BODY_SSID"
+msgstr "SSID"
+
+msgid "IDS_WIFI_BODY_ENTER_YOUR_IDENTITY"
+msgstr "Ange din identitet"
+
+msgid "IDS_WIFI_HEADER_ENTER_PASSWORD"
+msgstr "Ange lösenord"
+
+msgid "IDS_WIFI_BODY_NOTIFY_WHEN_WI_FI_NETWORK_IS_FOUND"
+msgstr "Meddela mig när ett Wi-Fi-nätverk hittats"
+

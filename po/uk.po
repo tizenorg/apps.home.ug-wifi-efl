@@ -1,0 +1,207 @@
+msgid "IDS_WIFI_BODY_CONNECTED"
+msgstr "З'єднано"
+
+msgid "IDS_WIFI_BODY_CONNECTING_ING"
+msgstr "З'єднання..."
+
+msgid "IDS_WIFI_BODY_STATIC_IP"
+msgstr "Статична IP-адреса"
+
+msgid "IDS_WIFI_POP_ACTIVATING_WI_FI_ING"
+msgstr "Активація Wi-Fi..."
+
+msgid "IDS_WIFI_SK_FORGET"
+msgstr "Забути"
+
+msgid "IDS_WIFI_BODY_IP_ADDRESS"
+msgstr "IP-адреса"
+
+msgid "IDS_WIFI_BODY_SUBNET_MASK"
+msgstr "Маска підмережі"
+
+msgid "IDS_WIFI_BODY_DNS_1"
+msgstr "DNS 1"
+
+msgid "IDS_WIFI_BODY_DNS_2"
+msgstr "DNS 2"
+
+msgid "IDS_ST_BODY_NETWORK_NOTIFICATION"
+msgstr "Сповіщення мережі"
+
+msgid "IDS_WIFI_POP_OPEN"
+msgstr "Відкрита"
+
+msgid "IDS_ST_BODY_SECURED_ABB_M_WIFI_AP_SUMMARY"
+msgstr "Захищені"
+
+msgid "IDS_WIFI_BODY_MAC_ADDRESS"
+msgstr "MAC-адреса"
+
+msgid "IDS_WIFI_BODY_PROXY_PORT"
+msgstr "Порт проксі"
+
+msgid "IDS_ST_BODY_EXCELLENT"
+msgstr "Відмінно"
+
+msgid "IDS_ST_BODY_GOOD_M_STRENGTH"
+msgstr "Хороший"
+
+msgid "IDS_ST_BODY_SCAN"
+msgstr "Сканувати"
+
+msgid "IDS_ST_BODY_WI_FI_NETWORKS"
+msgstr "Мережі Wi-Fi"
+
+msgid "IDS_WIFI_BODY_DISCONNECTING_ING"
+msgstr "Роз'єднання..."
+
+msgid "IDS_WIFI_BODY_DYNAMIC_IP"
+msgstr "Динамічна IP-адреса"
+
+msgid "IDS_WIFI_BODY_NO_APS"
+msgstr "Немає APs"
+
+msgid "IDS_WIFI_BODY_SECURITY_TYPE"
+msgstr "Тип захисту"
+
+msgid "IDS_WIFI_HEADER_HIDDEN_NETWORK"
+msgstr "Прихована мережа"
+
+msgid "IDS_WIFI_POP_DEACTIVATING_WI_FI_ING"
+msgstr "Деактивація Wi-Fi..."
+
+msgid "IDS_WIFI_POP_SEARCHING_ING"
+msgstr "Пошук..."
+
+msgid "IDS_WIFI_POP_SELECT_NETWORK"
+msgstr "Вибрати мережу"
+
+msgid "IDS_WIFI_BODY_EAP_METHOD"
+msgstr "Метод EAP"
+
+msgid "IDS_WIFI_BODY_EAP"
+msgstr "EAP"
+
+msgid "IDS_WIFI_BODY_GATEWAY_ADDRESS"
+msgstr "Адреса шлюзу"
+
+msgid "IDS_WIFI_BODY_ENTER_PASSWORD"
+msgstr "Введіть пароль"
+
+msgid "IDS_WIFI_BODY_CA_CERTIFICATE"
+msgstr "Сертифікат CA"
+
+msgid "IDS_WIFI_BODY_UNSPECIFIED"
+msgstr "Не визначено"
+
+msgid "IDS_WIFI_BODY_USER_CERTIFICATE_ABB"
+msgstr "Серт. користувача"
+
+msgid "IDS_WIFI_BODY_IDENTITY"
+msgstr "Ідентифікація"
+
+msgid "IDS_WIFI_BODY_ANONYMOUS_IDENTITY"
+msgstr "Анонімна ідентифікація"
+
+msgid "IDS_WIFI_BODY_ENTER_IDENTITY"
+msgstr "Введіть ідентифікатор"
+
+msgid "IDS_WIFI_BODY_ENTER_ANONYMOUS_IDENTITY"
+msgstr "Введіть анонімний ідентифікатор"
+
+msgid "IDS_CST_BODY_INPUT_PASSWORD"
+msgstr "Введіть пароль"
+
+msgid "IDS_ST_BODY_SHOW_PASSWORD"
+msgstr "Показати пароль"
+
+msgid "IDS_WIFI_HEADER_PROXY_ADDRESS"
+msgstr "Адреса проксі"
+
+msgid "IDS_WIFI_BODY_SIGNAL_STRENGTH"
+msgstr "Потужність сигналу"
+
+msgid "IDS_WIFI_BODY_GATEWAY"
+msgstr "Шлюз"
+
+msgid "IDS_WIFI_BODY_SECURITYTYPE_WEP"
+msgstr "WEP"
+
+msgid "IDS_ST_POP_DEACTIVATING_ING"
+msgstr "Деактивація..."
+
+msgid "IDS_WIFI_BODY_CONFIGURATION_NO_SECURITY"
+msgstr "Немає безпеки"
+
+msgid "IDS_WIFI_HEADER_SELECT_NETWORK"
+msgstr "Вибрати мережу"
+
+msgid "IDS_WIFI_BODY_WEAK_M_STRENGTH"
+msgstr "Слабкий"
+
+msgid "IDS_ST_BODY_WPS_AVAILABLE"
+msgstr "WPS доступно"
+
+msgid "IDS_ST_BODY_OBTAINING_IP_ADDRESS_ING"
+msgstr "Отримання IP-адреси..."
+
+msgid "IDS_WIFI_BODY_CHANNEL"
+msgstr "Канал"
+
+msgid "IDS_ST_BODY_NOTIFY_ME_WHEN_AN_OPEN_NETWORK_IS_AVAILABLE"
+msgstr "Сповістити про доступність відкритої мережі"
+
+msgid "IDS_ST_BODY_ADD_WI_FI_NETWORK"
+msgstr "Додати мережу Wi-Fi"
+
+msgid "IDS_ST_BODY_NETWORK_SSID"
+msgstr "Мережа SSID"
+
+msgid "IDS_WIFI_POP_AUTOMATIC_CONNECTION_NETWORK_WILL_DISABLED_CONTINUE_Q_MSG"
+msgstr "Автоматичне підключення до цієї мережі буде вимкнено. Продовжити?"
+
+msgid "IDS_COM_BODY_PHASE_2_AUTHENTICATION"
+msgstr "Аутентифікація фази 2"
+
+msgid "IDS_WIFI_BODY_CONNECT"
+msgstr "З'єднати"
+
+msgid "IDS_WIFI_POP_PRESS_WPS_ON_YOUR_WI_FI_ACCESS_POINT_WITHIN_PD_MINUTES"
+msgstr "Натисніть кнопку WPS на точці доступу Wi-Fi протягом %d хвилин"
+
+msgid "IDS_WIFI_BODY_UNKNOWN"
+msgstr "Невідомо"
+
+msgid "IDS_WIFI_BODY_ENTER_SSID"
+msgstr "Ввести SSID"
+
+msgid "IDS_WIFI_HEADER_PASSWORD"
+msgstr "Пароль"
+
+msgid "IDS_WIFI_BODY_PROVISIONING"
+msgstr "Підготовка"
+
+msgid "IDS_WIFI_BODY_WPS_BUTTON_CONNECTION"
+msgstr "З’єднання з використанням кнопки WPS"
+
+msgid "IDS_WIFI_OPT_FIND_HIDDEN_NETWORK"
+msgstr "Пошук прихованої мережі"
+
+msgid "IDS_ST_BODY_PRESS_WPS_ON_YOUR_WI_FI_ACCESS_POINT_WITHIN_2_MINUTES"
+msgstr "Натисніть кнопку WPS на точці доступу Wi-Fi протягом 2 хвилин"
+
+msgid "IDS_WIFI_BUTTON_CANCEL"
+msgstr "Скасув."
+
+msgid "IDS_WIFI_BODY_SSID"
+msgstr "SSID"
+
+msgid "IDS_WIFI_BODY_ENTER_YOUR_IDENTITY"
+msgstr "Введіть свій ідентифікатор"
+
+msgid "IDS_WIFI_HEADER_ENTER_PASSWORD"
+msgstr "Введіть пароль"
+
+msgid "IDS_WIFI_BODY_NOTIFY_WHEN_WI_FI_NETWORK_IS_FOUND"
+msgstr "Сповіщати в разі знаходження мережі Wi-Fi"
+

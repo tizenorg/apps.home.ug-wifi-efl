@@ -1,0 +1,207 @@
+msgid "IDS_WIFI_BODY_CONNECTED"
+msgstr "Tilkoblet"
+
+msgid "IDS_WIFI_BODY_CONNECTING_ING"
+msgstr "Kobler til..."
+
+msgid "IDS_WIFI_BODY_STATIC_IP"
+msgstr "Statisk IP"
+
+msgid "IDS_WIFI_POP_ACTIVATING_WI_FI_ING"
+msgstr "Aktiverer Wi-Fi..."
+
+msgid "IDS_WIFI_SK_FORGET"
+msgstr "Glem"
+
+msgid "IDS_WIFI_BODY_IP_ADDRESS"
+msgstr "IP-adresse"
+
+msgid "IDS_WIFI_BODY_SUBNET_MASK"
+msgstr "Subnettmaske"
+
+msgid "IDS_WIFI_BODY_DNS_1"
+msgstr "DNS 1"
+
+msgid "IDS_WIFI_BODY_DNS_2"
+msgstr "DNS 2"
+
+msgid "IDS_ST_BODY_NETWORK_NOTIFICATION"
+msgstr "Nettverksvarsel"
+
+msgid "IDS_WIFI_POP_OPEN"
+msgstr "Åpen"
+
+msgid "IDS_ST_BODY_SECURED_ABB_M_WIFI_AP_SUMMARY"
+msgstr "Sikret"
+
+msgid "IDS_WIFI_BODY_MAC_ADDRESS"
+msgstr "MAC-adresse"
+
+msgid "IDS_WIFI_BODY_PROXY_PORT"
+msgstr "Proxy-port"
+
+msgid "IDS_ST_BODY_EXCELLENT"
+msgstr "Supert"
+
+msgid "IDS_ST_BODY_GOOD_M_STRENGTH"
+msgstr "God"
+
+msgid "IDS_ST_BODY_SCAN"
+msgstr "Skann"
+
+msgid "IDS_ST_BODY_WI_FI_NETWORKS"
+msgstr "Wi-Fi-nettverk"
+
+msgid "IDS_WIFI_BODY_DISCONNECTING_ING"
+msgstr "Kobler fra..."
+
+msgid "IDS_WIFI_BODY_DYNAMIC_IP"
+msgstr "Dynamisk IP"
+
+msgid "IDS_WIFI_BODY_NO_APS"
+msgstr "Ingen AP-er"
+
+msgid "IDS_WIFI_BODY_SECURITY_TYPE"
+msgstr "Sikkerhetstype"
+
+msgid "IDS_WIFI_HEADER_HIDDEN_NETWORK"
+msgstr "Skjult nettverk"
+
+msgid "IDS_WIFI_POP_DEACTIVATING_WI_FI_ING"
+msgstr "Deaktiverer Wi-Fi..."
+
+msgid "IDS_WIFI_POP_SEARCHING_ING"
+msgstr "Søker..."
+
+msgid "IDS_WIFI_POP_SELECT_NETWORK"
+msgstr "Velg nettverk"
+
+msgid "IDS_WIFI_BODY_EAP_METHOD"
+msgstr "EAP-metode"
+
+msgid "IDS_WIFI_BODY_EAP"
+msgstr "EAP"
+
+msgid "IDS_WIFI_BODY_GATEWAY_ADDRESS"
+msgstr "Gateway-adresse"
+
+msgid "IDS_WIFI_BODY_ENTER_PASSWORD"
+msgstr "Angi passord"
+
+msgid "IDS_WIFI_BODY_CA_CERTIFICATE"
+msgstr "CA-sertifikat"
+
+msgid "IDS_WIFI_BODY_UNSPECIFIED"
+msgstr "Uspesifisert"
+
+msgid "IDS_WIFI_BODY_USER_CERTIFICATE_ABB"
+msgstr "Brukersertifikat"
+
+msgid "IDS_WIFI_BODY_IDENTITY"
+msgstr "Identitet"
+
+msgid "IDS_WIFI_BODY_ANONYMOUS_IDENTITY"
+msgstr "Anonym identitet"
+
+msgid "IDS_WIFI_BODY_ENTER_IDENTITY"
+msgstr "Angi identitet"
+
+msgid "IDS_WIFI_BODY_ENTER_ANONYMOUS_IDENTITY"
+msgstr "Angi anonym identitet"
+
+msgid "IDS_CST_BODY_INPUT_PASSWORD"
+msgstr "Skriv inn passord"
+
+msgid "IDS_ST_BODY_SHOW_PASSWORD"
+msgstr "Vis passord"
+
+msgid "IDS_WIFI_HEADER_PROXY_ADDRESS"
+msgstr "Proxy-adresse"
+
+msgid "IDS_WIFI_BODY_SIGNAL_STRENGTH"
+msgstr "Signalstyrke"
+
+msgid "IDS_WIFI_BODY_GATEWAY"
+msgstr "Gateway"
+
+msgid "IDS_WIFI_BODY_SECURITYTYPE_WEP"
+msgstr "WEP"
+
+msgid "IDS_ST_POP_DEACTIVATING_ING"
+msgstr "Deaktiverer..."
+
+msgid "IDS_WIFI_BODY_CONFIGURATION_NO_SECURITY"
+msgstr "Ingen sikkerhet"
+
+msgid "IDS_WIFI_HEADER_SELECT_NETWORK"
+msgstr "Velg nettverk"
+
+msgid "IDS_WIFI_BODY_WEAK_M_STRENGTH"
+msgstr "Svak"
+
+msgid "IDS_ST_BODY_WPS_AVAILABLE"
+msgstr "WPS tilgjengelig"
+
+msgid "IDS_ST_BODY_OBTAINING_IP_ADDRESS_ING"
+msgstr "Henter IP-adresse..."
+
+msgid "IDS_WIFI_BODY_CHANNEL"
+msgstr "Kanal"
+
+msgid "IDS_ST_BODY_NOTIFY_ME_WHEN_AN_OPEN_NETWORK_IS_AVAILABLE"
+msgstr "Varsle meg når et åpent nettverk er tilgjengelig"
+
+msgid "IDS_ST_BODY_ADD_WI_FI_NETWORK"
+msgstr "Legg til Wi-Fi-nettverk"
+
+msgid "IDS_ST_BODY_NETWORK_SSID"
+msgstr "Nettverks-SSID"
+
+msgid "IDS_WIFI_POP_AUTOMATIC_CONNECTION_NETWORK_WILL_DISABLED_CONTINUE_Q_MSG"
+msgstr "Automatisk tilkobling til dette nettverket vil bli deaktivert. Fortsette?"
+
+msgid "IDS_COM_BODY_PHASE_2_AUTHENTICATION"
+msgstr "Fase 2 godkjenning"
+
+msgid "IDS_WIFI_BODY_CONNECT"
+msgstr "Koble til"
+
+msgid "IDS_WIFI_POP_PRESS_WPS_ON_YOUR_WI_FI_ACCESS_POINT_WITHIN_PD_MINUTES"
+msgstr "Trykk på WPS på Wi-Fi-tilgangspunktet innen %d minutter"
+
+msgid "IDS_WIFI_BODY_UNKNOWN"
+msgstr "Ukjent"
+
+msgid "IDS_WIFI_BODY_ENTER_SSID"
+msgstr "Angi SSID"
+
+msgid "IDS_WIFI_HEADER_PASSWORD"
+msgstr "Passord"
+
+msgid "IDS_WIFI_BODY_PROVISIONING"
+msgstr "Tilgang"
+
+msgid "IDS_WIFI_BODY_WPS_BUTTON_CONNECTION"
+msgstr "WPS-knapptilkobling"
+
+msgid "IDS_WIFI_OPT_FIND_HIDDEN_NETWORK"
+msgstr "Finn skjult nettverk"
+
+msgid "IDS_ST_BODY_PRESS_WPS_ON_YOUR_WI_FI_ACCESS_POINT_WITHIN_2_MINUTES"
+msgstr "Trykk på WPS på Wi-Fi-tilgangspunktet innen 2 minutter"
+
+msgid "IDS_WIFI_BUTTON_CANCEL"
+msgstr "Avbryt"
+
+msgid "IDS_WIFI_BODY_SSID"
+msgstr "SSID"
+
+msgid "IDS_WIFI_BODY_ENTER_YOUR_IDENTITY"
+msgstr "Angi din identitet"
+
+msgid "IDS_WIFI_HEADER_ENTER_PASSWORD"
+msgstr "Angi passord"
+
+msgid "IDS_WIFI_BODY_NOTIFY_WHEN_WI_FI_NETWORK_IS_FOUND"
+msgstr "Varsle når Wi-Fi-nettverk blir funnet"
+

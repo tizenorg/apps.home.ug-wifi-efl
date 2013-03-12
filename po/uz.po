@@ -1,0 +1,207 @@
+msgid "IDS_WIFI_BODY_CONNECTED"
+msgstr "Ulangan"
+
+msgid "IDS_WIFI_BODY_CONNECTING_ING"
+msgstr "Ulanmoqda..."
+
+msgid "IDS_WIFI_BODY_STATIC_IP"
+msgstr "Statik IP"
+
+msgid "IDS_WIFI_POP_ACTIVATING_WI_FI_ING"
+msgstr "Wi-Fi faollashtirilmoqda..."
+
+msgid "IDS_WIFI_SK_FORGET"
+msgstr "Unutish"
+
+msgid "IDS_WIFI_BODY_IP_ADDRESS"
+msgstr "IP-manzil"
+
+msgid "IDS_WIFI_BODY_SUBNET_MASK"
+msgstr "Tagtarmoq maskasi"
+
+msgid "IDS_WIFI_BODY_DNS_1"
+msgstr "DNS 1"
+
+msgid "IDS_WIFI_BODY_DNS_2"
+msgstr "DNS 2"
+
+msgid "IDS_ST_BODY_NETWORK_NOTIFICATION"
+msgstr "Tarmoq bildirishnomasi"
+
+msgid "IDS_WIFI_POP_OPEN"
+msgstr "Ochish"
+
+msgid "IDS_ST_BODY_SECURED_ABB_M_WIFI_AP_SUMMARY"
+msgstr "Himoyalangan"
+
+msgid "IDS_WIFI_BODY_MAC_ADDRESS"
+msgstr "MAC manzili"
+
+msgid "IDS_WIFI_BODY_PROXY_PORT"
+msgstr "Proksi porti"
+
+msgid "IDS_ST_BODY_EXCELLENT"
+msgstr "A’lo"
+
+msgid "IDS_ST_BODY_GOOD_M_STRENGTH"
+msgstr "Yaxshi"
+
+msgid "IDS_ST_BODY_SCAN"
+msgstr "Qidirish"
+
+msgid "IDS_ST_BODY_WI_FI_NETWORKS"
+msgstr "Wi-Fi tarmoqlar"
+
+msgid "IDS_WIFI_BODY_DISCONNECTING_ING"
+msgstr "Uzilmoqda..."
+
+msgid "IDS_WIFI_BODY_DYNAMIC_IP"
+msgstr "Dinamik IP"
+
+msgid "IDS_WIFI_BODY_NO_APS"
+msgstr "APs yo‘q"
+
+msgid "IDS_WIFI_BODY_SECURITY_TYPE"
+msgstr "Xavfsizlik turi"
+
+msgid "IDS_WIFI_HEADER_HIDDEN_NETWORK"
+msgstr "Yashirin tarmoq"
+
+msgid "IDS_WIFI_POP_DEACTIVATING_WI_FI_ING"
+msgstr "Wi-Fi o‘chirilmoqda..."
+
+msgid "IDS_WIFI_POP_SEARCHING_ING"
+msgstr "Qidirilmoqda..."
+
+msgid "IDS_WIFI_POP_SELECT_NETWORK"
+msgstr "Tarmoq tanlang"
+
+msgid "IDS_WIFI_BODY_EAP_METHOD"
+msgstr "EAP uslub"
+
+msgid "IDS_WIFI_BODY_EAP"
+msgstr "EAP"
+
+msgid "IDS_WIFI_BODY_GATEWAY_ADDRESS"
+msgstr "Shluz manzili"
+
+msgid "IDS_WIFI_BODY_ENTER_PASSWORD"
+msgstr "Parol kiriting"
+
+msgid "IDS_WIFI_BODY_CA_CERTIFICATE"
+msgstr "CA sertifikati"
+
+msgid "IDS_WIFI_BODY_UNSPECIFIED"
+msgstr "Aniqlanmagan"
+
+msgid "IDS_WIFI_BODY_USER_CERTIFICATE_ABB"
+msgstr "User certificate"
+
+msgid "IDS_WIFI_BODY_IDENTITY"
+msgstr "Identifikatsiya"
+
+msgid "IDS_WIFI_BODY_ANONYMOUS_IDENTITY"
+msgstr "Anonim identifikatsiya"
+
+msgid "IDS_WIFI_BODY_ENTER_IDENTITY"
+msgstr "Identifikatsiyani kiriting"
+
+msgid "IDS_WIFI_BODY_ENTER_ANONYMOUS_IDENTITY"
+msgstr "Anonim identifikatsiyani kiriting"
+
+msgid "IDS_CST_BODY_INPUT_PASSWORD"
+msgstr "Parol kiriting"
+
+msgid "IDS_ST_BODY_SHOW_PASSWORD"
+msgstr "Parol ko‘rsatilsin"
+
+msgid "IDS_WIFI_HEADER_PROXY_ADDRESS"
+msgstr "Proksi manzili"
+
+msgid "IDS_WIFI_BODY_SIGNAL_STRENGTH"
+msgstr "Signal quvvati"
+
+msgid "IDS_WIFI_BODY_GATEWAY"
+msgstr "Shluz"
+
+msgid "IDS_WIFI_BODY_SECURITYTYPE_WEP"
+msgstr "WEP"
+
+msgid "IDS_ST_POP_DEACTIVATING_ING"
+msgstr "O‘chirilmoqda..."
+
+msgid "IDS_WIFI_BODY_CONFIGURATION_NO_SECURITY"
+msgstr "Xavfsizlik yo‘q"
+
+msgid "IDS_WIFI_HEADER_SELECT_NETWORK"
+msgstr "Tarmoq tanlash"
+
+msgid "IDS_WIFI_BODY_WEAK_M_STRENGTH"
+msgstr "Kuchsiz"
+
+msgid "IDS_ST_BODY_WPS_AVAILABLE"
+msgstr "WPS mavjud"
+
+msgid "IDS_ST_BODY_OBTAINING_IP_ADDRESS_ING"
+msgstr "IP-manzillar olinmoqda..."
+
+msgid "IDS_WIFI_BODY_CHANNEL"
+msgstr "Kanal"
+
+msgid "IDS_ST_BODY_NOTIFY_ME_WHEN_AN_OPEN_NETWORK_IS_AVAILABLE"
+msgstr "Ochiq tarmoqdan foydalanish mumkin bo‘lganda, menga xabar berilsin"
+
+msgid "IDS_ST_BODY_ADD_WI_FI_NETWORK"
+msgstr "Wi-Fi tarmoq qo‘shish"
+
+msgid "IDS_ST_BODY_NETWORK_SSID"
+msgstr "Tarmoq SSID"
+
+msgid "IDS_WIFI_POP_AUTOMATIC_CONNECTION_NETWORK_WILL_DISABLED_CONTINUE_Q_MSG"
+msgstr "Ushbu tarmoqqa avtomatik ulanish o‘chiriladi. Davom ettirilsinmi?"
+
+msgid "IDS_COM_BODY_PHASE_2_AUTHENTICATION"
+msgstr "Bosqich 2 tekshiruvi"
+
+msgid "IDS_WIFI_BODY_CONNECT"
+msgstr "Ulanish"
+
+msgid "IDS_WIFI_POP_PRESS_WPS_ON_YOUR_WI_FI_ACCESS_POINT_WITHIN_PD_MINUTES"
+msgstr "Wi-Fi kirishda WPSni %d daqiqa bosib turing"
+
+msgid "IDS_WIFI_BODY_UNKNOWN"
+msgstr "Noma’lum"
+
+msgid "IDS_WIFI_BODY_ENTER_SSID"
+msgstr "SSID kiriting"
+
+msgid "IDS_WIFI_HEADER_PASSWORD"
+msgstr "Parol"
+
+msgid "IDS_WIFI_BODY_PROVISIONING"
+msgstr "Initsializatsiyalash"
+
+msgid "IDS_WIFI_BODY_WPS_BUTTON_CONNECTION"
+msgstr "WPS tugma ulanishi"
+
+msgid "IDS_WIFI_OPT_FIND_HIDDEN_NETWORK"
+msgstr "Yashirin tarmoqni topish"
+
+msgid "IDS_ST_BODY_PRESS_WPS_ON_YOUR_WI_FI_ACCESS_POINT_WITHIN_2_MINUTES"
+msgstr "Wi-Fi kirishda WPSni 2 daqiqa bosib turing"
+
+msgid "IDS_WIFI_BUTTON_CANCEL"
+msgstr "Bekor q."
+
+msgid "IDS_WIFI_BODY_SSID"
+msgstr "SSID"
+
+msgid "IDS_WIFI_BODY_ENTER_YOUR_IDENTITY"
+msgstr "Identifikatsiyani kiriting"
+
+msgid "IDS_WIFI_HEADER_ENTER_PASSWORD"
+msgstr "Parol kiriting"
+
+msgid "IDS_WIFI_BODY_NOTIFY_WHEN_WI_FI_NETWORK_IS_FOUND"
+msgstr "Wi-Fi tarmoq topilganda, menga yordam berilsin"
+
