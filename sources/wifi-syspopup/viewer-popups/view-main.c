@@ -32,41 +32,43 @@ extern wifi_object* syspopup_app_state;
 static Evas_Object* list = NULL;
 static Elm_Genlist_Item_Class itc;
 
-static ITEM_CONNECTION_MODES view_main_state_get()
+static ITEM_CONNECTION_MODES view_main_state_get(void)
 {
-	return (ITEM_CONNECTION_MODES)evas_object_data_get(list, QS_POPUP_CONNECTION_STATE);
+	ITEM_CONNECTION_MODES state;
+
+	state = (ITEM_CONNECTION_MODES)evas_object_data_get(
+			list, QS_POPUP_CONNECTION_STATE);
+
+	return state;
 }
 
 static void view_main_state_set(ITEM_CONNECTION_MODES state)
 {
-	return evas_object_data_set(list, QS_POPUP_CONNECTION_STATE, (const void *)state);
+	evas_object_data_set(list, QS_POPUP_CONNECTION_STATE, (const void *)state);
 }
 
-static void _popup_ok_cb(void *data, Evas_Object *obj, void *event_info)
+static void __popup_ok_cb(void *data, Evas_Object *obj, void *event_info)
 {
 	__COMMON_FUNC_ENTER__;
-	if (!syspopup_app_state->passpopup) {
+
+	wifi_ap_h ap = NULL;
+	int password_len = 0;
+	const char* password = NULL;
+	wifi_security_type_e sec_type = WIFI_SECURITY_TYPE_NONE;
+
+	if (syspopup_app_state->passpopup == NULL)
 		return;
-	}
-	assertm_if(NULL == obj, "obj is NULL!!");
-	assertm_if(NULL == event_info, "event_info is NULL!!");
 
-	wifi_ap_h ap = common_pswd_popup_get_ap(syspopup_app_state->passpopup);
-	wifi_security_type_e sec_type;
+	ap = passwd_popup_get_ap(syspopup_app_state->passpopup);
+	password = passwd_popup_get_txt(syspopup_app_state->passpopup);
+	password_len = strlen(password);
+
 	wifi_ap_get_security_type(ap, &sec_type);
-
-	char* password = NULL;
-	int len_password = 0;
-	int ret = WLAN_MANAGER_ERR_UNKNOWN;
-	password = common_pswd_popup_get_txt(syspopup_app_state->passpopup);
-	len_password = strlen(password);
-	INFO_LOG(SP_NAME_NORMAL, "* password len [%d]", len_password);
 
 	switch (sec_type) {
 	case WIFI_SECURITY_TYPE_WEP:
-		if (len_password == 5 || len_password == 13 || len_password == 26 || len_password == 10) {
-			ret = wlan_manager_connect_with_password(ap, password);
-		} else {
+		if (password_len != 5 && password_len != 13 &&
+				password_len != 26 && password_len != 10) {
 			view_alerts_popup_show(WEP_WRONG_PASSWORD_LEN_ERR_MSG_STR);
 			goto popup_ok_exit;
 		}
@@ -74,57 +76,56 @@ static void _popup_ok_cb(void *data, Evas_Object *obj, void *event_info)
 
 	case WIFI_SECURITY_TYPE_WPA_PSK:
 	case WIFI_SECURITY_TYPE_WPA2_PSK:
-		if (len_password < 8 || len_password > 63) {
+		if (password_len < 8 || password_len > 63) {
 			view_alerts_popup_show(WPA_WRONG_PASSWORD_LEN_ERR_MSG_STR);
 			goto popup_ok_exit;
-		} else {
-			ret = wlan_manager_connect_with_password(ap, password);
 		}
 		break;
 
 	default:
-		ret = WLAN_MANAGER_ERR_UNKNOWN;
-		ERROR_LOG(SP_NAME_ERR, "Fatal: Wrong security type : %d", sec_type);
+		ERROR_LOG(SP_NAME_ERR, "Wrong security mode: %d", sec_type);
+		passwd_popup_free(syspopup_app_state->passpopup);
 		break;
 	}
 
-	common_pswd_popup_destroy(syspopup_app_state->passpopup);
+	wlan_manager_connect_with_password(ap, password);
+
+	passwd_popup_free(syspopup_app_state->passpopup);
 	syspopup_app_state->passpopup = NULL;
 
 popup_ok_exit:
-	g_free(password);
+	g_free((gpointer)password);
 
 	__COMMON_FUNC_EXIT__;
 }
 
-static void _popup_cancel_cb(void *data, Evas_Object *obj, void *event_info)
+static void __popup_cancel_cb(void *data, Evas_Object *obj, void *event_info)
 {
 	__COMMON_FUNC_ENTER__;
 
-	INFO_LOG(SP_NAME_NORMAL, "button cancel");
+	if (syspopup_app_state->passpopup == NULL)
+		return;
 
-	common_pswd_popup_destroy(syspopup_app_state->passpopup);
+	passwd_popup_free(syspopup_app_state->passpopup);
 	syspopup_app_state->passpopup = NULL;
 
 	__COMMON_FUNC_EXIT__;
 }
 
-static void _wps_pbc_popup_cancel_connecting(void* data, Evas_Object* obj, void* event_info)
+static void __wps_pbc_popup_cancel_connecting(void *data, Evas_Object *obj,
+		void *event_info)
 {
-	if (!syspopup_app_state->passpopup) {
+	if (syspopup_app_state->passpopup == NULL)
 		return;
-	}
 
-	wifi_ap_h ap = common_pswd_popup_get_ap(syspopup_app_state->passpopup);
-	int ret = wlan_manager_request_disconnection(ap);
-	if (ret == WLAN_MANAGER_ERR_NONE) {
-		INFO_LOG(SP_NAME_NORMAL, "WPS conection cancelled successfully for AP[0x%x]", ap);
-	} else {
-		ERROR_LOG(SP_NAME_ERR, "Error!!! wlan_manager_request_disconnection failed for AP[0x%x]", ap);
-	}
-	common_pswd_popup_destroy(syspopup_app_state->passpopup);
+	wifi_ap_h ap = passwd_popup_get_ap(syspopup_app_state->passpopup);
+
+	int ret = wlan_manager_disconnect(ap);
+	if (ret != WLAN_MANAGER_ERR_NONE)
+		ERROR_LOG(SP_NAME_ERR, "Failed WPS PBC cancellation [0x%x]", ap);
+
+	passwd_popup_free(syspopup_app_state->passpopup);
 	syspopup_app_state->passpopup = NULL;
-	return;
 }
 
 static void _wps_btn_cb(void* data, Evas_Object* obj, void* event_info)
@@ -134,47 +135,68 @@ static void _wps_btn_cb(void* data, Evas_Object* obj, void* event_info)
 		return;
 	}
 
-	wifi_ap_h ap = common_pswd_popup_get_ap(syspopup_app_state->passpopup);
-	int ret = wlan_manager_request_wps_connection(ap);
+	wifi_ap_h ap = passwd_popup_get_ap(syspopup_app_state->passpopup);
+	int ret = wlan_manager_wps_connect(ap);
 	if (ret == WLAN_MANAGER_ERR_NONE) {
-		common_pswd_popup_pbc_popup_create(syspopup_app_state->passpopup, _wps_pbc_popup_cancel_connecting, NULL);
+		create_pbc_popup(syspopup_app_state->passpopup, __wps_pbc_popup_cancel_connecting, NULL);
 	} else {
-		ERROR_LOG(SP_NAME_ERR, "Error!!! wlan_manager_request_wps_connection failed");
+		ERROR_LOG(SP_NAME_ERR, "wlan_manager_wps_connect failed");
 		wifi_ap_destroy(ap);
 	}
+
 	__COMMON_FUNC_EXIT__;
 }
 
-static void __view_main_request_connection(syspopup_genlist_data_t *gdata)
+static void __view_main_wifi_connect(syspopup_genlist_data_t *gdata)
 {
-	if (!gdata)
-		return;
+	int rv;
+	bool favorite = false;
+	wifi_device_info_t *device_info;
+	pswd_popup_create_req_data_t popup_info;
+	wifi_security_type_e sec_type = WIFI_SECURITY_TYPE_NONE;
 
-	int ret = WLAN_MANAGER_ERR_UNKNOWN;
-	ret = wlan_manager_request_connection(gdata->dev_info->ap);
-	switch (ret) {
-	case WLAN_MANAGER_ERR_NONE:
-		INFO_LOG( SP_NAME_NORMAL, "ERROR_NONE");
-		view_main_state_set(ITEM_CONNECTION_MODE_CONNECTING);
+	retm_if(NULL == gdata);
+
+	device_info = gdata->dev_info;
+	retm_if(NULL == device_info);
+
+	wifi_ap_is_favorite(device_info->ap, &favorite);
+
+	if (favorite == true) {
+		rv = wlan_manager_connect(device_info->ap);
+		return;
+	}
+
+	wifi_ap_get_security_type(device_info->ap, &sec_type);
+
+	switch (sec_type) {
+	case WIFI_SECURITY_TYPE_NONE:
+		rv = wlan_manager_connect(device_info->ap);
 		break;
-	case WLAN_MANAGER_ERR_CONNECT_PASSWORD_NEEDED:
-		INFO_LOG( SP_NAME_NORMAL, "Password view will show up");
-		pswd_popup_create_req_data_t	popup_info;
+
+	case WIFI_SECURITY_TYPE_WEP:
+	case WIFI_SECURITY_TYPE_WPA_PSK:
+	case WIFI_SECURITY_TYPE_WPA2_PSK:
 		memset(&popup_info, 0, sizeof(pswd_popup_create_req_data_t));
+
 		popup_info.title = gdata->dev_info->ssid;
-		popup_info.ok_cb = _popup_ok_cb;
-		popup_info.cancel_cb = _popup_cancel_cb;
+		popup_info.ok_cb = __popup_ok_cb;
+		popup_info.cancel_cb = __popup_cancel_cb;
 		popup_info.show_wps_btn = gdata->dev_info->wps_mode;
 		popup_info.wps_btn_cb = _wps_btn_cb;
 		popup_info.ap = gdata->dev_info->ap;
 		popup_info.cb_data = NULL;
-		syspopup_app_state->passpopup = common_pswd_popup_create(syspopup_app_state->layout_main, PACKAGE, &popup_info);
+		syspopup_app_state->passpopup = create_passwd_popup(
+				syspopup_app_state->layout_main, PACKAGE, &popup_info);
 		break;
-	case WLAN_MANAGER_ERR_CONNECT_EAP_SEC_TYPE:
-		syspopup_app_state->eap_popup = create_eap_connect_popup(syspopup_app_state->layout_main, PACKAGE, gdata->dev_info);
+
+	case WIFI_SECURITY_TYPE_EAP:
+		syspopup_app_state->eap_popup = create_eap_popup(
+				syspopup_app_state->layout_main, PACKAGE, gdata->dev_info);
 		break;
+
 	default:
-		ERROR_LOG( SP_NAME_NORMAL, "errro code [%d]", ret);
+		ERROR_LOG(SP_NAME_NORMAL, "Unknown security type [%d]", sec_type);
 		break;
 	}
 }
@@ -198,45 +220,26 @@ Elm_Object_Item *__view_main_get_item_in_mode(ITEM_CONNECTION_MODES mode)
 	return NULL;
 }
 
-static void _gl_sel(void *data, Evas_Object *obj, void *event_info)
+static void __gl_sel(void *data, Evas_Object *obj, void *event_info)
 {
 	__COMMON_FUNC_ENTER__;
+
 	assertm_if(NULL == data, "data is NULL!!");
 	assertm_if(NULL == obj, "obj is NULL!!");
 	assertm_if(NULL == event_info, "event_info is NULL!!");
+
 	Elm_Object_Item *item = (Elm_Object_Item *)event_info;
 	ITEM_CONNECTION_MODES state = view_main_state_get();
 	syspopup_genlist_data_t *gdata = (syspopup_genlist_data_t *)data;
 
-	if (ITEM_CONNECTION_MODE_OFF == state) {
-		INFO_LOG(SP_NAME_NORMAL, "item state: off");
-		__view_main_request_connection(gdata);
-		elm_genlist_item_update(item);
-	} else 	if (ITEM_CONNECTION_MODE_CONNECTING == state) {
-		if (ITEM_CONNECTION_MODE_CONNECTING == gdata->connection_mode) { // Connecting Item Selected
-			if (WLAN_MANAGER_ERR_NONE == wlan_manager_request_disconnection(gdata->dev_info->ap)) {
-				view_main_state_set(ITEM_CONNECTION_MODE_DISCONNECTING);
-				gdata->connection_mode = ITEM_CONNECTION_MODE_DISCONNECTING;
-				elm_genlist_item_update(item);
-			}
-		} else {  // Item Selected while other item is in connecting state
-#if 0	// Enable this later when two connect requests is supported by libnet.
-			Elm_Object_Item *connecting_it = __view_main_get_item_in_mode(ITEM_CONNECTION_MODE_CONNECTING);
-			view_main_state_set(ITEM_CONNECTION_MODE_OFF);
-			__view_main_request_connection(gdata);
-			if (connecting_it) {
-				syspopup_genlist_data_t *connecting_gdata = elm_object_item_data_get(connecting_it);
-				if (connecting_gdata && WLAN_MANAGER_ERR_NONE == wlan_manager_request_disconnection(connecting_gdata->dev_info->ap)) {
-					gdata->connection_mode = ITEM_CONNECTION_MODE_OFF;
-					elm_genlist_item_update(connecting_it);
-				}
-			} else {
-				ERROR_LOG(SP_NAME_NORMAL, "Could not find connecting item");
-			}
-#endif
-		}
-	} else {
-		INFO_LOG(SP_NAME_NORMAL, "In wrong state, nothing can do" );
+	switch (state) {
+	case ITEM_CONNECTION_MODE_OFF:
+		__view_main_wifi_connect(gdata);
+		break;
+
+	case ITEM_CONNECTION_MODE_CONNECTING:
+	default:
+		break;
 	}
 
 	elm_genlist_item_selected_set(item, EINA_FALSE);
@@ -253,6 +256,8 @@ static char *_gl_text_get(void *data, Evas_Object *obj, const char *part)
 	assertm_if(NULL == part, "part param is NULL!!");
 
 	syspopup_genlist_data_t *gdata = (syspopup_genlist_data_t *) data;
+	retvm_if(NULL == gdata, NULL);
+
 	if (!strncmp(part, "elm.text.1", strlen(part))) {
 		ret = gdata->dev_info->ssid;
 		if (ret == NULL) {
@@ -261,7 +266,7 @@ static char *_gl_text_get(void *data, Evas_Object *obj, const char *part)
 	} else if (!strncmp(part, "elm.text.2", strlen(part))) {
 		if (ITEM_CONNECTION_MODE_CONNECTING == gdata->connection_mode) {
 			ret = sc(PACKAGE, I18N_TYPE_Connecting);
-		} else if (ITEM_CONNECTION_MODE_DISCONNECTING == gdata->connection_mode) {
+		} else if (ITEM_CONNECTION_MODE_CONNECTING == gdata->connection_mode) {
 			ret = sc(PACKAGE, I18N_TYPE_Disconnecting);
 		} else {
 			ret = gdata->dev_info->ap_status_txt;
@@ -290,24 +295,31 @@ static Evas_Object *_gl_content_get(void *data, Evas_Object *obj, const char *pa
 	Evas_Object* icon = NULL;
 
 	if (!strncmp(part, "elm.icon.1", strlen(part))) {
+		char *temp_str = NULL;
 		icon = elm_image_add(obj);
-		elm_image_file_set(icon, gdata->dev_info->ap_image_path, NULL);
+		if (FALSE == gdata->highlighted)
+			temp_str = g_strdup_printf("%s.png", gdata->dev_info->ap_image_path);
+		else
+			temp_str = g_strdup_printf("%s_press.png", gdata->dev_info->ap_image_path);
+		elm_image_file_set(icon, temp_str, NULL);
+		g_free(temp_str);
 		evas_object_size_hint_aspect_set(icon, EVAS_ASPECT_CONTROL_VERTICAL, 5, 5);
 	} else if (!strncmp(part, "elm.icon.2", strlen(part))) {
 		switch (gdata->connection_mode) {
 		case ITEM_CONNECTION_MODE_OFF:
-		default:
 			break;
+
 		case ITEM_CONNECTION_MODE_CONNECTING:
-		case ITEM_CONNECTION_MODE_DISCONNECTING:
 			icon = elm_progressbar_add(obj);
 			elm_object_style_set(icon, "list_process");
 			evas_object_size_hint_align_set(icon, EVAS_HINT_FILL, 0.5);
 			evas_object_size_hint_weight_set(icon, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
 			elm_progressbar_pulse(icon, TRUE);
 			break;
-		}
 
+		default:
+			break;
+		}
 	}
 
 	__COMMON_FUNC_EXIT__;
@@ -335,6 +347,30 @@ static void _gl_list_del(void* data, Evas_Object* obj)
 	return;
 }
 
+static void _gl_highlighted(void *data, Evas_Object *obj, void *event_info)
+{
+	Elm_Object_Item *item = (Elm_Object_Item *)event_info;
+	if (item) {
+		syspopup_genlist_data_t *gdata = (syspopup_genlist_data_t *)elm_object_item_data_get(item);
+		if (gdata) {
+			gdata->highlighted = TRUE;
+			elm_genlist_item_fields_update(item, "elm.icon.1", ELM_GENLIST_ITEM_FIELD_CONTENT);
+		}
+	}
+}
+
+static void _gl_unhighlighted(void *data, Evas_Object *obj, void *event_info)
+{
+	Elm_Object_Item *item = (Elm_Object_Item *)event_info;
+	if (item) {
+		syspopup_genlist_data_t *gdata = (syspopup_genlist_data_t *)elm_object_item_data_get(item);
+		if (gdata) {
+			gdata->highlighted = FALSE;
+			elm_genlist_item_fields_update(item, "elm.icon.1", ELM_GENLIST_ITEM_FIELD_CONTENT);
+		}
+	}
+}
+
 Evas_Object *view_main_create(Evas_Object* parent)
 {
 	__COMMON_FUNC_ENTER__;
@@ -345,6 +381,9 @@ Evas_Object *view_main_create(Evas_Object* parent)
 
 	evas_object_size_hint_weight_set(list, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
 	evas_object_size_hint_align_set(list, EVAS_HINT_FILL, EVAS_HINT_FILL);
+
+	evas_object_smart_callback_add(list, "highlighted", _gl_highlighted, NULL);
+	evas_object_smart_callback_add(list, "unhighlighted", _gl_unhighlighted, NULL);
 
 	__COMMON_FUNC_EXIT__;
 
@@ -441,7 +480,9 @@ static wifi_device_info_t *view_main_item_device_info_create(wifi_ap_h ap)
 	}
 	wifi_device->security_mode = common_utils_get_sec_mode(sec_type);
 	wifi_device->ap_status_txt = common_utils_get_ap_security_type_info_txt(PACKAGE, wifi_device);
-	wifi_device->ap_image_path = common_utils_get_device_icon(WIFI_SP_ICON_PATH, wifi_device);
+	common_utils_get_device_icon(WIFI_SP_ICON_PATH,
+			wifi_device,
+			&wifi_device->ap_image_path);
 
 	__COMMON_FUNC_EXIT__;
 	return wifi_device;
@@ -465,7 +506,7 @@ static bool view_main_wifi_found_ap_cb(wifi_ap_h ap, void* user_data)
 	if (WIFI_CONNECTION_STATE_ASSOCIATION == state ||
 			WIFI_CONNECTION_STATE_CONFIGURATION == state) {
 		gdata->connection_mode = ITEM_CONNECTION_MODE_CONNECTING;
-		gdata->it = elm_genlist_item_append(list, &itc, gdata, NULL, ELM_GENLIST_ITEM_NONE, _gl_sel, gdata);
+		gdata->it = elm_genlist_item_append(list, &itc, gdata, NULL, ELM_GENLIST_ITEM_NONE, __gl_sel, gdata);
 		*profile_size += 1;
 		view_main_state_set(ITEM_CONNECTION_MODE_CONNECTING);
 
@@ -474,7 +515,7 @@ static bool view_main_wifi_found_ap_cb(wifi_ap_h ap, void* user_data)
 
 	gdata->connection_mode = ITEM_CONNECTION_MODE_OFF;
 	gdata->it = elm_genlist_item_append(list, &itc, gdata, NULL,
-			ELM_GENLIST_ITEM_NONE, _gl_sel, gdata);
+			ELM_GENLIST_ITEM_NONE, __gl_sel, gdata);
 	*profile_size += 1;
 
 	return true;
@@ -486,6 +527,8 @@ Eina_Bool view_main_show(void *data)
 
 	if (list == NULL) {
 		ERROR_LOG( SP_NAME_NORMAL, "list is NULL!!" );
+
+		__COMMON_FUNC_EXIT__;
 		return ECORE_CALLBACK_CANCEL;
 	}
 
@@ -510,11 +553,13 @@ Eina_Bool view_main_show(void *data)
 	INFO_LOG(SP_NAME_NORMAL, "profiles list count [%d]\n", profiles_list_size);
 	if (profiles_list_size <= 0) {
 		WARN_LOG(SP_NAME_NORMAL, "scan size is ZERO");
+
+		__COMMON_FUNC_EXIT__;
 		return ECORE_CALLBACK_CANCEL;
 	}
 
 	evas_object_show(list);
-	__COMMON_FUNC_EXIT__;
 
+	__COMMON_FUNC_EXIT__;
 	return ECORE_CALLBACK_CANCEL;
 }

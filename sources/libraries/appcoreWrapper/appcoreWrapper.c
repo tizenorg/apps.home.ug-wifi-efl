@@ -23,7 +23,7 @@
 #include "common.h"
 #include "appcoreWrapper.h"
 
-void appcore_win_del(void *data, Evas_Object *obj, void *event)
+static void __appcore_win_del(void *data, Evas_Object *obj, void *event)
 {
 	INFO_LOG(UG_NAME_NORMAL, "win_del");
 	elm_exit();
@@ -39,7 +39,7 @@ Evas_Object* appcore_create_win(const char *name)
 		elm_win_title_set(eo, name);
 		elm_win_borderless_set(eo, EINA_TRUE);
 		evas_object_smart_callback_add(eo, "delete,request",
-				(Evas_Smart_Cb)appcore_win_del, NULL);
+				__appcore_win_del, NULL);
 		ecore_x_window_size_get(ecore_x_window_root_first_get(),
 				&w, &h);
 		evas_object_resize(eo, w, h);

@@ -17,8 +17,8 @@
  *
  */
 
-#ifndef __COMMON_INVALID_PASSWORD_H__
-#define __COMMON_INVALID_PASSWORD_H__
+#ifndef __WLAN_ALTERNATIVE_CONNECTION_H__
+#define __WLAN_ALTERNATIVE_CONNECTION_H__
 
 #ifdef __cplusplus
 extern "C"
@@ -26,14 +26,13 @@ extern "C"
 #endif
 
 #include <glib.h>
+#include <wifi.h>
 
-int _common_register_invalid_password_popup(void);
-int _common_deregister_invalid_password_popup(void);
-
-gboolean _common_is_invalid_password(void);
+int wlan_connect(wifi_ap_h ap, wifi_connected_cb callback, void *user_data);
+void wlan_validate_alt_connection(void);
 
 #ifdef __cplusplus
 }
 #endif
 
-#endif /* __COMMON_INVALID_PASSWORD_H__ */
+#endif /* __WLAN_ALTERNATIVE_CONNECTION_H__ */

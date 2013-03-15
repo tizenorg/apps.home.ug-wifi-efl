@@ -61,11 +61,11 @@ int connman_request_specific_scan(const char *ssid)
 int connman_request_scan_mode_set(net_wifi_background_scan_mode_t scan_mode)
 {
 	int ret = net_wifi_set_background_scan_mode(scan_mode);
-	INFO_LOG(COMMON_NAME_LIB, "net_wifi_set_background_scan_mode ret: %d", ret);
 
 	switch (ret) {
 	case NET_ERR_NONE:
 		return WLAN_MANAGER_ERR_NONE;
+
 	default:
 		return WLAN_MANAGER_ERR_UNKNOWN;
 	}

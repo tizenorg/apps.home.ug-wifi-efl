@@ -23,8 +23,8 @@
 #include "common.h"
 #include "wlan_manager.h"
 #include "common_utils.h"
+#include "wlan_connection.h"
 #include "wifi-engine-callback.h"
-#include "common_invalid_password.h"
 
 typedef enum {
 	WLAN_MANAGER_REQ_TYPE_ACTIVATE,
@@ -52,9 +52,10 @@ wlan_mgr_req_data_t bg_scan_req_data;
 static void wlan_manager_register_cbs(void);
 static void wlan_manager_deregister_cbs(void);
 
-static wlan_manager_object* manager_object = NULL;
+static wlan_manager_object *manager_object = NULL;
+static time_t g_last_scan_time = 0;
 
-wlan_manager_object* wlan_manager_get_singleton(void)
+wlan_manager_object *wlan_manager_get_singleton(void)
 {
 	if (NULL == manager_object) {
 		manager_object = g_new0(wlan_manager_object, 1);
@@ -70,22 +71,22 @@ void wlan_manager_set_refresh_callback(wlan_manager_ui_refresh_func_t func)
 	manager_object->refresh_func = func;
 }
 
-
-void* wlan_manager_create()
+void *wlan_manager_create(void)
 {
 	wlan_manager_get_singleton();
+
 	return NULL;
 }
 
-int wlan_manager_destroy()
+int wlan_manager_destroy(void)
 {
 	int ret = WLAN_MANAGER_ERR_NONE;
 
-	_common_deregister_invalid_password_popup();
+	wifi_unset_device_state_changed_cb();
 
 	wlan_manager_deregister_cbs();
 
-	wifi_deinitialize();
+	ret = wifi_deinitialize();
 
 	if (manager_object != NULL) {
 		g_free(manager_object);
@@ -95,45 +96,61 @@ int wlan_manager_destroy()
 	return ret;
 }
 
-int wlan_manager_start()
+int wlan_manager_start(void)
 {
 	__COMMON_FUNC_ENTER__;
+
+	int ret = WLAN_MANAGER_ERR_NONE;
+
 	switch (wifi_initialize()) {
 	case WIFI_ERROR_NONE:
 		/* Register the callbacks */
 		wlan_manager_register_cbs();
 		break;
+
 	case WIFI_ERROR_INVALID_OPERATION:
 		/* Register the callbacks */
 		wlan_manager_register_cbs();
-		return WLAN_MANAGER_ERR_ALREADY_REGISTERED;
+		ret = WLAN_MANAGER_ERR_ALREADY_REGISTERED;
+		break;
+
 	default:
-		return WLAN_MANAGER_ERR_UNKNOWN;
+		ret = WLAN_MANAGER_ERR_UNKNOWN;
+		break;
 	}
-	return WLAN_MANAGER_ERR_NONE;
+
+	__COMMON_FUNC_EXIT__;
+
+	return ret;
 }
 
 int wlan_manager_forget(wifi_ap_h ap)
 {
 	wifi_forget_ap(ap);
+
 	return WLAN_MANAGER_ERR_NONE;
 }
 
-static void wlan_manager_device_state_changed_cb(wifi_device_state_e state, void *user_data)
+static void wlan_manager_device_state_changed_cb(
+		wifi_device_state_e state, void *user_data)
 {
 	__COMMON_FUNC_ENTER__;
+
 	wlan_mgr_event_info_t event_info;
 	memset(&event_info, 0, sizeof(event_info));
+
 	switch (state) {
 	case WIFI_DEVICE_STATE_ACTIVATED:
 		wlan_manager_enable_scan_result_update();
 		wlan_manager_register_cbs();
 		event_info.event_type = WLAN_MANAGER_RESPONSE_TYPE_POWER_ON_OK;
 		break;
+
 	case WIFI_DEVICE_STATE_DEACTIVATED:
 		wlan_manager_deregister_cbs();
 		event_info.event_type = WLAN_MANAGER_RESPONSE_TYPE_POWER_OFF_OK;
 		break;
+
 	default:
 		return;
 	}
@@ -141,17 +158,12 @@ static void wlan_manager_device_state_changed_cb(wifi_device_state_e state, void
 	manager_object->message_func(&event_info, user_data);
 
 	__COMMON_FUNC_EXIT__;
-	return;
 }
 
-static void wlan_manager_connection_state_changed_cb(wifi_connection_state_e state, wifi_ap_h ap, void *user_data)
+static void wlan_manager_connection_state_changed_cb(
+		wifi_connection_state_e state, wifi_ap_h ap, void *user_data)
 {
 	__COMMON_FUNC_ENTER__;
-
-	if (TRUE == manager_object->b_scan_blocked) {
-		__COMMON_FUNC_EXIT__;
-		return;
-	}
 
 	wlan_mgr_event_info_t event_info;
 	memset(&event_info, 0, sizeof(event_info));
@@ -183,15 +195,10 @@ static void wlan_manager_rssi_level_changed_cb(
 {
 	__COMMON_FUNC_ENTER__;
 
-	if (TRUE == manager_object->b_scan_blocked) {
-		__COMMON_FUNC_EXIT__;
-		return;
-	}
-
 	wlan_mgr_event_info_t event_info;
 
 	memset(&event_info, 0, sizeof(event_info));
-	event_info.event_type = WLAN_MANAGER_RESPONSE_TYPE_UPDATE_SIG_STR;
+	event_info.event_type = WLAN_MANAGER_RESPONSE_TYPE_UPDATE_WIFI_RSSI;
 	event_info.rssi_level = rssi_level;
 
 	manager_object->message_func(&event_info, user_data);
@@ -206,6 +213,8 @@ static void wlan_manager_specific_scan_finished_cb(
 
 	wlan_mgr_event_info_t event_info;
 	memset(&event_info, 0, sizeof(event_info));
+
+	wifi_unset_specific_scan_cb();
 
 	if (WIFI_ERROR_NONE == error_code) {
 		event_info.event_type = WLAN_MANAGER_RESPONSE_TYPE_SPECIFIC_SCAN_OK;
@@ -236,22 +245,12 @@ static void wlan_manager_network_event_cb(
 
 	switch (req_data->req_type) {
 	case WLAN_MANAGER_REQ_TYPE_ACTIVATE:
-		if (WIFI_ERROR_NONE == error_code) {
-			wlan_manager_enable_scan_result_update();
-			wlan_manager_register_cbs();
-			event_info.event_type = WLAN_MANAGER_RESPONSE_TYPE_POWER_ON_OK;
-		} else
-			goto exit;
-
-		break;
 	case WLAN_MANAGER_REQ_TYPE_DEACTIVATE:
-		if (WIFI_ERROR_NONE == error_code) {
-			wlan_manager_deregister_cbs();
-			event_info.event_type = WLAN_MANAGER_RESPONSE_TYPE_POWER_OFF_OK;
-		} else
-			goto exit;
+		/* We will send POWER_ON_OK / POWER_OFF_OK response when we receive
+		 * device state change. Lets just clean up the request data now.
+		 */
+		goto exit;
 
-		break;
 	case WLAN_MANAGER_REQ_TYPE_SCAN:
 		if (WIFI_ERROR_NONE == error_code)
 			event_info.event_type = WLAN_MANAGER_RESPONSE_TYPE_SCAN_OK;
@@ -259,6 +258,7 @@ static void wlan_manager_network_event_cb(
 			goto exit;
 
 		break;
+
 	case WLAN_MANAGER_REQ_TYPE_SPECIFIC_SCAN:
 		if (WIFI_ERROR_NONE == error_code)
 			event_info.event_type = WLAN_MANAGER_RESPONSE_TYPE_SPECIFIC_SCAN_OK;
@@ -266,6 +266,7 @@ static void wlan_manager_network_event_cb(
 			event_info.event_type = WLAN_MANAGER_RESPONSE_TYPE_SPECIFIC_SCAN_FAIL;
 
 		break;
+
 	case WLAN_MANAGER_REQ_TYPE_BG_SCAN:
 		if (WIFI_ERROR_NONE == error_code) {
 			event_info.event_type = WLAN_MANAGER_RESPONSE_TYPE_SCAN_RESULT_IND;
@@ -273,13 +274,12 @@ static void wlan_manager_network_event_cb(
 		}
 
 		return;	// The request data is static. So returning here.
+
 	case WLAN_MANAGER_REQ_TYPE_CONNECT:
 		event_info.ap = req_data->ap;
 
-		_common_deregister_invalid_password_popup();
-
 		if (WIFI_ERROR_NONE != error_code) {
-			if (_common_is_invalid_password() == TRUE)
+			if (error_code == WIFI_ERROR_INVALID_KEY)
 				event_info.event_type =
 						WLAN_MANAGER_RESPONSE_TYPE_CONNECTION_INVALID_KEY;
 			else
@@ -289,6 +289,7 @@ static void wlan_manager_network_event_cb(
 			goto exit;
 
 		break;
+
 	case WLAN_MANAGER_REQ_TYPE_WPS_CONNECT:
 		event_info.ap = req_data->ap;
 
@@ -298,6 +299,7 @@ static void wlan_manager_network_event_cb(
 			goto exit;
 
 		break;
+
 	default:
 		goto exit;
 	}
@@ -316,6 +318,7 @@ exit:
 static void wlan_manager_register_cbs(void)
 {
 	__COMMON_FUNC_ENTER__;
+
 	wifi_set_device_state_changed_cb(wlan_manager_device_state_changed_cb, NULL);
 	wifi_set_connection_state_changed_cb(wlan_manager_connection_state_changed_cb, NULL);
 	wifi_set_rssi_level_changed_cb(wlan_manager_rssi_level_changed_cb, NULL);
@@ -332,12 +335,24 @@ static void wlan_manager_register_cbs(void)
 static void wlan_manager_deregister_cbs(void)
 {
 	__COMMON_FUNC_ENTER__;
-//	wifi_unset_device_state_changed_cb();
+
+	/* NOTE:
+	 * We don't deregister the device state change cb here.
+	 * We need to continue to listen to the device state change, because it is
+	 * possible that the WiFi could be powered on / off from multiple entry
+	 * points like example: Quick panel WiFi icon, Wi-Fi UG, Setting Menu.
+	 *
+	 * We will deregister the device state change cb only on wlan manager
+	 * detsroy.
+	 */
+
+
 	wifi_unset_background_scan_cb();
 	wifi_unset_connection_state_changed_cb();
 	wifi_unset_rssi_level_changed_cb();
 	wifi_unset_specific_scan_cb();
 	connman_request_deregister();
+
 	__COMMON_FUNC_EXIT__;
 }
 
@@ -448,34 +463,32 @@ int wlan_manager_state_get(void)
 	return ret_val;
 }
 
-int wlan_manager_request_power_on(void)
+int wlan_manager_power_on(void)
 {
 	__COMMON_FUNC_ENTER__;
 
 	INFO_LOG(UG_NAME_REQ, "power on");
 
 	int ret = 0;
-	int hot_spot_mode =
+	int tethering =
 			common_util_get_system_registry("memory/mobile_hotspot/mode");
-	if (hot_spot_mode < 0) {
-		INFO_LOG(COMMON_NAME_LIB, "FAILED to get the mobile hotspot mode");
-		__COMMON_FUNC_EXIT__;
-		return WLAN_MANAGER_ERR_UNKNOWN;
-	} else if (VCONFKEY_MOBILE_HOTSPOT_MODE_WIFI & hot_spot_mode) {
-		INFO_LOG(COMMON_NAME_LIB, "mobile_hotspot wifi ON");
+	if (tethering < 0)
+		INFO_LOG(COMMON_NAME_LIB, "Fail to get tethering state");
+	else if (VCONFKEY_MOBILE_HOTSPOT_MODE_WIFI & tethering) {
+		INFO_LOG(COMMON_NAME_LIB, "Wi-Fi tethering is ON");
 
 		__COMMON_FUNC_EXIT__;
-		return WLAN_MANAGER_ERR_MOBILE_HOTSPOT_OCCUPIED;
+		return WLAN_MANAGER_ERR_WIFI_TETHERING_OCCUPIED;
 	}
-
-	INFO_LOG(UG_NAME_REQ, "Mobile hotspot mode = %d\n", hot_spot_mode);
 
 	wlan_mgr_req_data_t *req_data = g_new0(wlan_mgr_req_data_t, 1);
 	req_data->req_type = WLAN_MANAGER_REQ_TYPE_ACTIVATE;
 	ret = wifi_activate(wlan_manager_network_event_cb, req_data);
 	if (WIFI_ERROR_NONE != ret) {
 		ERROR_LOG(UG_NAME_REQ, "Power on request. Error Reason [%d]", ret);
+
 		g_free(req_data);
+
 		__COMMON_FUNC_EXIT__;
 		return WLAN_MANAGER_ERR_UNKNOWN;
 	}
@@ -484,15 +497,19 @@ int wlan_manager_request_power_on(void)
 	return WLAN_MANAGER_ERR_NONE;
 }
 
-int wlan_manager_request_power_off(void)
+int wlan_manager_power_off(void)
 {
 	__COMMON_FUNC_ENTER__;
+
 	wlan_mgr_req_data_t *req_data = g_new0(wlan_mgr_req_data_t, 1);
 	req_data->req_type = WLAN_MANAGER_REQ_TYPE_DEACTIVATE;
+
 	int ret = wifi_deactivate(wlan_manager_network_event_cb, req_data);
 	if (WIFI_ERROR_NONE != ret) {
 		ERROR_LOG(UG_NAME_REQ, "Power off request. Error Reason [%d]", ret);
+
 		g_free(req_data);
+
 		__COMMON_FUNC_EXIT__;
 		return WLAN_MANAGER_ERR_UNKNOWN;
 	}
@@ -501,69 +518,21 @@ int wlan_manager_request_power_off(void)
 	return WLAN_MANAGER_ERR_NONE;
 }
 
-int wlan_manager_request_wps_connection(wifi_ap_h ap)
+int wlan_manager_wps_connect(wifi_ap_h ap)
 {
 	__COMMON_FUNC_ENTER__;
+
 	wlan_mgr_req_data_t *req_data = g_new0(wlan_mgr_req_data_t, 1);
 	req_data->req_type = WLAN_MANAGER_REQ_TYPE_WPS_CONNECT;
 	wifi_ap_clone(&(req_data->ap), ap);
 
-	int ret = wifi_connect_by_wps_pbc(req_data->ap, wlan_manager_network_event_cb, req_data);
+	int ret = wifi_connect_by_wps_pbc(req_data->ap,
+			wlan_manager_network_event_cb, req_data);
 	if (WIFI_ERROR_NONE != ret) {
 		ERROR_LOG(UG_NAME_REQ, "WPS Connect failed. Error Reason [%d]", ret);
-		wifi_ap_destroy(req_data->ap);
-		g_free(req_data);
-		__COMMON_FUNC_EXIT__;
-		return WLAN_MANAGER_ERR_UNKNOWN;
-	}
-
-	__COMMON_FUNC_EXIT__;
-	return WLAN_MANAGER_ERR_NONE;
-}
-
-int wlan_manager_request_connection(wifi_ap_h ap)
-{
-	__COMMON_FUNC_ENTER__;
-
-	bool favourite;
-	int ret = wifi_ap_is_favorite(ap, &favourite);
-	wifi_security_type_e sec_type;
-	if (WIFI_ERROR_NONE != ret) {
-		__COMMON_FUNC_EXIT__;
-		return WLAN_MANAGER_ERR_NOSERVICE;
-	}
-
-	if (false == favourite) {
-		if (WIFI_ERROR_NONE != wifi_ap_get_security_type(ap, &sec_type)) {
-			__COMMON_FUNC_EXIT__;
-			return WLAN_MANAGER_ERR_NOSERVICE;
-		}
-
-		if (WIFI_SECURITY_TYPE_EAP == sec_type) {
-			__COMMON_FUNC_EXIT__;
-			return WLAN_MANAGER_ERR_CONNECT_EAP_SEC_TYPE;
-		} else if (WIFI_SECURITY_TYPE_NONE == sec_type) {
-			/* Allow Open APs to connect */
-		} else {
-			__COMMON_FUNC_EXIT__;
-			return WLAN_MANAGER_ERR_CONNECT_PASSWORD_NEEDED;
-		}
-	}
-
-	INFO_LOG(UG_NAME_REQ, "All OK to connect to ap[0x%x]", ap);
-
-	wlan_mgr_req_data_t *req_data = g_new0(wlan_mgr_req_data_t, 1);
-	req_data->req_type = WLAN_MANAGER_REQ_TYPE_CONNECT;
-	wifi_ap_clone(&(req_data->ap), ap);
-
-	_common_register_invalid_password_popup();
-	ret = wifi_connect(req_data->ap, wlan_manager_network_event_cb, req_data);
-	if (WIFI_ERROR_NONE != ret) {
-		_common_deregister_invalid_password_popup();
-
-		ERROR_LOG(UG_NAME_REQ, "Connect failed. Error Reason [%d]", ret);
 
 		wifi_ap_destroy(req_data->ap);
+
 		g_free(req_data);
 
 		__COMMON_FUNC_EXIT__;
@@ -574,75 +543,66 @@ int wlan_manager_request_connection(wifi_ap_h ap)
 	return WLAN_MANAGER_ERR_NONE;
 }
 
-int wlan_manager_connect_with_password(wifi_ap_h ap, const char *pass_phrase)
-{
-	__COMMON_FUNC_ENTER__;
-	if (!ap) {
-		ERROR_LOG(UG_NAME_SCAN, "AP handler is NULL");
-		return WLAN_MANAGER_ERR_INVALID_PARAM;
-	}
-
-	int ret = wifi_ap_set_passphrase(ap, pass_phrase);
-	if (WIFI_ERROR_NONE != ret) {
-		__COMMON_FUNC_EXIT__;
-		return WLAN_MANAGER_ERR_UNKNOWN;
-	}
-
-	wlan_mgr_req_data_t *req_data = g_new0(wlan_mgr_req_data_t, 1);
-	req_data->req_type = WLAN_MANAGER_REQ_TYPE_CONNECT;
-	wifi_ap_clone(&(req_data->ap), ap);
-
-	_common_register_invalid_password_popup();
-	ret = wifi_connect(req_data->ap, wlan_manager_network_event_cb, req_data);
-	if (WIFI_ERROR_NONE != ret) {
-		_common_deregister_invalid_password_popup();
-
-		ERROR_LOG(UG_NAME_REQ, "Connect failed. Error Reason [%d]", ret);
-
-		wifi_ap_destroy(req_data->ap);
-		g_free(req_data);
-
-		__COMMON_FUNC_EXIT__;
-		return WLAN_MANAGER_ERR_UNKNOWN;
-	}
-
-	__COMMON_FUNC_EXIT__;
-	return WLAN_MANAGER_ERR_NONE;
-}
-
-int wlan_manager_connect_with_wifi_info(wifi_ap_h ap)
+int wlan_manager_connect(wifi_ap_h ap)
 {
 	__COMMON_FUNC_ENTER__;
 
 	int ret;
 
-	INFO_LOG(UG_NAME_REQ, "All OK to connect to ap[0x%x]", ap);
+	if (ap == NULL)
+		return WLAN_MANAGER_ERR_NOSERVICE;
 
 	wlan_mgr_req_data_t *req_data = g_new0(wlan_mgr_req_data_t, 1);
 	req_data->req_type = WLAN_MANAGER_REQ_TYPE_CONNECT;
 	wifi_ap_clone(&(req_data->ap), ap);
 
-	_common_register_invalid_password_popup();
-	ret = wifi_connect(req_data->ap, wlan_manager_network_event_cb, req_data);
-	if (WIFI_ERROR_NONE != ret) {
-		_common_deregister_invalid_password_popup();
-
+	ret = wlan_connect(req_data->ap, wlan_manager_network_event_cb, req_data);
+	if (ret != WIFI_ERROR_NONE) {
 		ERROR_LOG(UG_NAME_REQ, "Connect failed. Error Reason [%d]", ret);
 
 		wifi_ap_destroy(req_data->ap);
 		g_free(req_data);
-
-		__COMMON_FUNC_EXIT__;
-		return WLAN_MANAGER_ERR_UNKNOWN;
 	}
 
 	__COMMON_FUNC_EXIT__;
-	return WLAN_MANAGER_ERR_NONE;
+	return ret;
 }
 
-int wlan_manager_request_disconnection(wifi_ap_h ap)
+int wlan_manager_connect_with_password(wifi_ap_h ap, const char *pass_phrase)
 {
 	__COMMON_FUNC_ENTER__;
+
+	int ret;
+
+	if (ap == NULL)
+		return WLAN_MANAGER_ERR_INVALID_PARAM;
+
+	ret = wifi_ap_set_passphrase(ap, pass_phrase);
+	if (ret != WIFI_ERROR_NONE) {
+		__COMMON_FUNC_EXIT__;
+		return ret;
+	}
+
+	wlan_mgr_req_data_t *req_data = g_new0(wlan_mgr_req_data_t, 1);
+	req_data->req_type = WLAN_MANAGER_REQ_TYPE_CONNECT;
+	wifi_ap_clone(&(req_data->ap), ap);
+
+	ret = wlan_connect(req_data->ap, wlan_manager_network_event_cb, req_data);
+	if (ret != WIFI_ERROR_NONE) {
+		ERROR_LOG(UG_NAME_REQ, "Connect failed. Error Reason [%d]", ret);
+
+		wifi_ap_destroy(req_data->ap);
+		g_free(req_data);
+	}
+
+	__COMMON_FUNC_EXIT__;
+	return ret;
+}
+
+int wlan_manager_disconnect(wifi_ap_h ap)
+{
+	__COMMON_FUNC_ENTER__;
+
 	int ret;
 
 	INFO_LOG(UG_NAME_REQ, "Request disconnection for ap [0x%x]", ap);
@@ -650,6 +610,7 @@ int wlan_manager_request_disconnection(wifi_ap_h ap)
 	ret = wifi_disconnect(ap, NULL, NULL);
 	if (WIFI_ERROR_NONE != ret) {
 		ERROR_LOG(UG_NAME_REQ, "Disconnect failed. Error Reason [%d]", ret);
+
 		__COMMON_FUNC_EXIT__;
 		return WLAN_MANAGER_ERR_UNKNOWN;
 	}
@@ -658,7 +619,7 @@ int wlan_manager_request_disconnection(wifi_ap_h ap)
 	return WLAN_MANAGER_ERR_NONE;
 }
 
-int wlan_manager_request_scan(void)
+int wlan_manager_scan(void)
 {
 	__COMMON_FUNC_ENTER__;
 
@@ -685,7 +646,7 @@ int wlan_manager_request_scan(void)
 	return ret;
 }
 
-int wlan_manager_request_specific_scan(const char *ssid, void *user_data)
+int wlan_manager_scan_with_ssid(const char *ssid, void *user_data)
 {
 	__COMMON_FUNC_ENTER__;
 
@@ -709,27 +670,17 @@ int wlan_manager_request_specific_scan(const char *ssid, void *user_data)
 	return ret;
 }
 
-int wlan_manager_scanned_profile_refresh_with_count(int count)
-{
-	__COMMON_FUNC_ENTER__;
-
-	manager_object->refresh_func();
-
-	__COMMON_FUNC_EXIT__;
-	return 0;
-}
-
 void wlan_manager_scanned_profile_refresh(void)
 {
 	__COMMON_FUNC_ENTER__;
 
-	if (FALSE == manager_object->b_scan_blocked) {
+	if (FALSE == manager_object->b_scan_blocked)
 		manager_object->refresh_func();
-		DEBUG_LOG(COMMON_NAME_LIB, "success profiles update");
-	} else {
+	else
 		manager_object->b_ui_refresh = TRUE;
-		DEBUG_LOG(COMMON_NAME_LIB, "Scan update is blocked");
-	}
+
+	wlan_manager_set_last_scan_time();
+
 	__COMMON_FUNC_EXIT__;
 }
 
@@ -742,20 +693,20 @@ STRENGTH_TYPES wlan_manager_get_signal_strength(int rssi)
 	 * Weak:		-82 ~ -75	/ 38 ~ 45
 	 * Very weak:		~ -83	/    ~ 37
 	 */
-	if (rssi >= 57) {
+	if (rssi >= 57)
 		return SIGNAL_STRENGTH_TYPE_EXCELLENT;
-	} else if (rssi >= 46) {
+	else if (rssi >= 46)
 		return SIGNAL_STRENGTH_TYPE_GOOD;
-	} else if (rssi >= 38) {
+	else if (rssi >= 38)
 		return SIGNAL_STRENGTH_TYPE_WEAK;
-	} else {
+	else
 		return SIGNAL_STRENGTH_TYPE_VERY_WEAK;
-	}
 }
 
 wifi_device_info_t* wlan_manager_profile_device_info_blank_create()
 {
 	__COMMON_FUNC_ENTER__;
+
 	wifi_device_info_t *di_s0 = g_new0(wifi_device_info_t, 1);
 
 	if (di_s0 == NULL) {
@@ -780,41 +731,64 @@ wifi_device_info_t* wlan_manager_profile_device_info_blank_create()
 static Eina_Bool _refresh_ui(void *data)
 {
 	manager_object->refresh_func();
+
 	manager_object->b_scan_blocked = FALSE;
 	manager_object->b_ui_refresh = FALSE;
+
 	return ECORE_CALLBACK_CANCEL;
 }
 
 void wlan_manager_enable_scan_result_update(void)
 {
+	__COMMON_FUNC_ENTER__;
+
 	if (TRUE == manager_object->b_scan_blocked) {
 		if (TRUE == manager_object->b_ui_refresh) {
 			DEBUG_LOG(COMMON_NAME_LIB, "Refresh the UI with last scan update");
 
-			/* We delay the rendering inorder to get smooth effect of popup close */
+			/* Delayed rendering in order to get smooth effect of popup close */
 			ecore_idler_add(_refresh_ui, NULL);
-		} else {
+		} else
 			manager_object->b_scan_blocked = FALSE;
-		}
 	}
+
+	__COMMON_FUNC_EXIT__;
 }
 
 void wlan_manager_disable_scan_result_update(void)
 {
+	__COMMON_FUNC_ENTER__;
+
 	manager_object->b_scan_blocked = TRUE;
+
+	__COMMON_FUNC_EXIT__;
 }
 
 char *wlan_manager_get_connected_ssid(void)
 {
 	wifi_ap_h ap;
 	char *essid = NULL;
+	int ret;
 
 	wifi_get_connected_ap(&ap);
 	if (ap) {
-		wifi_ap_get_essid(ap, &essid);
+		ret = wifi_ap_get_essid(ap, &essid);
+		if (ret != WIFI_ERROR_NONE)
+			ERROR_LOG(UG_NAME_REQ, "Power on request. Error Reason [%d]", ret);
 	}
 
 	wifi_ap_destroy(ap);
 
 	return essid;
+}
+
+void wlan_manager_set_last_scan_time(void)
+{
+	g_last_scan_time = time(NULL);
+	return;
+}
+
+time_t wlan_manager_get_last_scan_time(void)
+{
+	return g_last_scan_time;
 }

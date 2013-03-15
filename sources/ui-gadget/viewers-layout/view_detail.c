@@ -45,20 +45,23 @@ static void forget_sk_cb(void *data, Evas_Object *obj, void *event_info);
 ///////////////////////////////////////////////////////////////
 // implementation
 ///////////////////////////////////////////////////////////////
-
-static char* _view_detail_grouptitle_text_get(void *data, Evas_Object *obj, const char *part)
+static char *_view_detail_grouptitle_text_get(void *data,
+		Evas_Object *obj, const char *part)
 {
 	__COMMON_FUNC_ENTER__;
-	char *ret = NULL;
-	assertm_if(NULL == obj, "NULL!!");
-	assertm_if(NULL == part, "NULL!!");
-	assertm_if(NULL == data, "NULL!!");
 
-	view_detail_data *detail_data = (view_detail_data *)data;
+	retvm_if(NULL == part, NULL);
+
+	char *ret = NULL;
+
 	if (!strncmp(part, "elm.text.2", strlen(part))) {
 		ret = (char*) g_strdup(sc(PACKAGE, I18N_TYPE_Name));
 	} else if (!strncmp(part, "elm.text.1", strlen(part))) {
-		wifi_ap_get_essid(detail_data->ap, &ret);
+		view_detail_data *detail_data = (view_detail_data *)data;
+		retvm_if(NULL == detail_data, NULL);
+
+		if (wifi_ap_get_essid(detail_data->ap, &ret) != WIFI_ERROR_NONE)
+			ret = NULL;
 	}
 
 	__COMMON_FUNC_EXIT__;
@@ -67,11 +70,10 @@ static char* _view_detail_grouptitle_text_get(void *data, Evas_Object *obj, cons
 
 static Evas_Object *_view_detail_grouptitle_content_get(void *data, Evas_Object *obj, const char *part)
 {
+	retvm_if(NULL == data || NULL == part, NULL);
+
 	view_detail_data *detail_data = (view_detail_data *)data;
 	Evas_Object* icon = NULL;
-	assertm_if(NULL == obj, "NULL!!");
-	assertm_if(NULL == data, "NULL!!");
-	assertm_if(NULL == part, "NULL!!");
 
 	if (detail_data->ap_image_path == NULL) {
 		/* if there is no ap_image_path (NO AP Found situation) */
@@ -79,7 +81,8 @@ static Evas_Object *_view_detail_grouptitle_content_get(void *data, Evas_Object 
 	} else if (!strncmp(part, "elm.icon", strlen(part))) {
 		/* for strength */
 		icon = elm_image_add(obj);
-		assertm_if(NULL == icon, "NULL!!");
+		retvm_if(NULL == icon, NULL);
+
 		elm_image_file_set(icon, detail_data->ap_image_path, NULL);
 	}
 
@@ -89,6 +92,7 @@ static Evas_Object *_view_detail_grouptitle_content_get(void *data, Evas_Object 
 static void _remove_all(view_detail_data *_detail_data)
 {
 	__COMMON_FUNC_ENTER__;
+
 	if(_detail_data) {
 		if (_detail_data->eap_info_list) {
 			eap_info_remove(_detail_data->eap_info_list);
@@ -103,47 +107,74 @@ static void _remove_all(view_detail_data *_detail_data)
 
 		g_free(_detail_data->ap_image_path);
 		g_free(_detail_data);
+
 		_detail_data = NULL;
 	}
 
 	__COMMON_FUNC_EXIT__;
 }
 
+static gboolean __forget_wifi_ap(gpointer data)
+{
+	__COMMON_FUNC_ENTER__;
+
+	wifi_ap_h ap = (wifi_ap_h)data;
+
+	wlan_manager_forget(ap);
+
+	wifi_ap_destroy(ap);
+
+	__COMMON_FUNC_EXIT__;
+	return FALSE;
+}
+
 static void ok_cb(void *data, Evas_Object *obj, void *event_info)
 {
 	__COMMON_FUNC_ENTER__;
-	if(view_detail_end == TRUE) {
+
+	wifi_ap_h ap = NULL;
+	view_detail_data *_detail_data;
+
+	if (view_detail_end == TRUE)
 		return;
-	}
+
 	view_detail_end = TRUE;
-	view_detail_data *_detail_data = (view_detail_data *)data;
-	assertm_if(NULL == _detail_data, "NULL!!");
+	_detail_data = (view_detail_data *)data;
+	retm_if(NULL == _detail_data);
+
+	wifi_ap_clone(&ap, _detail_data->ap);
 
 	evas_object_del(_detail_data->forget_confirm_popup);
 	_detail_data->forget_confirm_popup = NULL;
-	wlan_manager_forget(_detail_data->ap);
+
 	_remove_all(_detail_data);
+
 	elm_naviframe_item_pop(viewer_manager_get_naviframe());
 
+	g_idle_add(__forget_wifi_ap, (gpointer)ap);
+
 	__COMMON_FUNC_EXIT__;
-	return;
 }
 
 static void cancel_cb(void *data, Evas_Object *obj, void *event_info)
 {
 	__COMMON_FUNC_ENTER__;
+
 	view_detail_data *_detail_data = (view_detail_data *)data;
-	assertm_if(NULL == _detail_data, "NULL!!");
+	retm_if(NULL == _detail_data);
+
 	evas_object_del(_detail_data->forget_confirm_popup);
 	_detail_data->forget_confirm_popup = NULL;
+
 	__COMMON_FUNC_EXIT__;
 }
 
 static void forget_sk_cb(void *data, Evas_Object *obj, void *event_info)
 {
 	__COMMON_FUNC_ENTER__;
+
 	view_detail_data *_detail_data = (view_detail_data *)data;
-	assertm_if(NULL == _detail_data, "NULL!!");
+	retm_if(NULL == _detail_data);
 
 	if (!_detail_data->forget_confirm_popup) {
 		popup_btn_info_t popup_data;
@@ -173,7 +204,7 @@ static void title_back_btn_sk_cb(void *data, Evas_Object *obj, void *event_info)
 	}
 	view_detail_end = TRUE;
 	view_detail_data *_detail_data = (view_detail_data *)data;
-	assertm_if(NULL == _detail_data, "NULL!!");
+	retm_if(NULL == _detail_data);
 
 	if (_detail_data->eap_info_list)
 		eap_info_save_data(_detail_data->eap_info_list);
@@ -193,7 +224,7 @@ static void detailview_sk_cb(void *data, Evas_Object *obj, void *event_info)
 	view_detail_end = TRUE;
 
 	view_detail_data *_detail_data = (view_detail_data *)data;
-	assertm_if(NULL == _detail_data, "NULL!!");
+	retm_if(NULL == _detail_data);
 
 	if (_detail_data->eap_info_list)
 		eap_info_save_data(_detail_data->eap_info_list);
@@ -246,35 +277,36 @@ void view_detail(wifi_device_info_t *device_info, Evas_Object *win_main)
 {
 	__COMMON_FUNC_ENTER__;
 
-	bool favourite = 0;
+	bool favorite = 0;
 	wifi_ap_h ap;
 	static Elm_Genlist_Item_Class grouptitle_itc;
 
 	if (device_info == NULL) {
-		ERROR_LOG(UG_NAME_NORMAL, "Failed : device_info is NULL");
+		ERROR_LOG(UG_NAME_NORMAL, "Failed: device_info is NULL");
 		return;
 	}
 	Evas_Object *layout = NULL;
 	Evas_Object* navi_frame = viewer_manager_get_naviframe();
 	if (navi_frame == NULL) {
-		ERROR_LOG(UG_NAME_NORMAL, "Failed : get naviframe");
+		ERROR_LOG(UG_NAME_NORMAL, "Failed to get naviframe");
 		return;
 	}
 
 	view_detail_end = FALSE;
 
 	view_detail_data *_detail_data = g_new0(view_detail_data, 1);
-	assertm_if(NULL == _detail_data, "NULL!!");
+	retm_if(NULL == _detail_data);
 
 	_detail_data->ap = ap = device_info->ap;
-	wifi_ap_is_favorite(ap, &favourite);
+	wifi_ap_is_favorite(ap, &favorite);
 	_detail_data->ap_image_path = g_strdup(device_info->ap_image_path);
 	layout = common_utils_create_layout(navi_frame);
 	evas_object_show(layout);
 
-	Evas_Object* detailview_list = elm_genlist_add(layout);
+	Evas_Object *detailview_list = elm_genlist_add(layout);
+	retm_if(NULL == detailview_list);
+
 	elm_object_style_set(detailview_list, "dialogue");
-	assertm_if(NULL == detailview_list, "NULL!!");
 	_detail_data->view_detail_list = detailview_list;
 
 	grouptitle_itc.item_style = "dialogue/2text.1icon.5";
@@ -306,7 +338,7 @@ void view_detail(wifi_device_info_t *device_info, Evas_Object *win_main)
 
 	_detail_data->win = win_main;
 
-	if (favourite) {
+	if (favorite) {
 		/* Toolbar Forget button */
 		Evas_Object* forget_button = elm_button_add(navi_frame);
 		elm_object_style_set(forget_button, "naviframe/toolbar/default");
@@ -327,7 +359,7 @@ void view_detail(wifi_device_info_t *device_info, Evas_Object *win_main)
 	if (WIFI_SECURITY_TYPE_EAP == type) {
 		wifi_connection_state_e connection_state;
 		wifi_ap_get_connection_state(ap, &connection_state);
-		if (favourite || WIFI_CONNECTION_STATE_CONNECTED == connection_state) {
+		if (favorite || WIFI_CONNECTION_STATE_CONNECTED == connection_state) {
 			_detail_data->eap_info_list = eap_info_append_items(ap, detailview_list, PACKAGE, __view_detail_imf_ctxt_evnt_cb, navi_it);
 		}
 	}

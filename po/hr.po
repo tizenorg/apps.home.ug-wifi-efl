@@ -205,3 +205,6 @@ msgstr "Unesite šifru"
 msgid "IDS_WIFI_BODY_NOTIFY_WHEN_WI_FI_NETWORK_IS_FOUND"
 msgstr "Obavijesti kad je Wi-Fi mreža pronađena"
 
+msgid "IDS_ST_BODY_HUNCHANGED"
+msgstr "(nepromijenjeno)"
+

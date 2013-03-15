@@ -70,14 +70,17 @@ Elm_Object_Item *common_utils_add_dialogue_separator(
 		Evas_Object* genlist, const char *separator_style);
 char *common_utils_get_ap_security_type_info_txt(
 		const char *pkg_name, wifi_device_info_t *device_info);
-char *common_utils_get_device_icon(
-		const char *image_path_dir, wifi_device_info_t *device_info);
+void common_utils_get_device_icon(const char *image_path_dir,
+		wifi_device_info_t *device_info, char **icon_path);
+char *common_utils_get_rssi_text(
+		const char *str_pkg_name, int rssi);
 Evas_Object *common_utils_entry_layout_get_entry(Evas_Object *layout);
 char *common_utils_entry_layout_get_text(Evas_Object *layout);
 Evas_Object *common_utils_add_edit_box(Evas_Object *parent,
 		common_utils_entry_info_t *entry_info);
 void common_utils_set_edit_box_imf_panel_evnt_cb(Elm_Object_Item *item,
 		imf_ctxt_panel_cb_t input_panel_cb,	void *user_data);
+void common_utils_edit_box_focus_set(Elm_Object_Item *item, Eina_Bool focus_set);
 
 void common_utils_entry_password_set(Evas_Object *layout, Eina_Bool pswd_set);
 Elm_Object_Item *common_utils_add_2_line_txt_disabled_item(
@@ -98,7 +101,6 @@ wlan_security_mode_type_t common_utils_get_sec_mode(
 		wifi_security_type_e sec_type);
 int common_utils_send_message_to_net_popup(const char *title,
 		const char *content, const char *type, const char *ssid);
-void __common_popup_size_get(Ecore_IMF_Context *target_imf, int *width, int *height);
 
 int common_util_set_system_registry(const char *key, int value);
 int common_util_get_system_registry(const char *key);

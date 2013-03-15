@@ -18,12 +18,13 @@
  */
 
 #include "ug_wifi.h"
-#include "wlan_manager.h"
-#include "viewer_manager.h"
-#include "winset_popup.h"
-#include "wifi-engine-callback.h"
 #include "viewer_list.h"
+#include "wlan_manager.h"
+#include "winset_popup.h"
 #include "motion_control.h"
+#include "viewer_manager.h"
+#include "wlan_connection.h"
+#include "wifi-engine-callback.h"
 
 extern wifi_appdata *ug_app_state;
 
@@ -36,8 +37,8 @@ void wlan_engine_callback(wlan_mgr_event_info_t *event_info, void *user_data)
 		return;
 	}
 
-	Elm_Object_Item* target_item = NULL;
-	ug_genlist_data_t* gdata = NULL;
+	Elm_Object_Item *target_item = NULL;
+	ug_genlist_data_t *gdata = NULL;
 
 	int header_state = -1;
 	header_state = viewer_manager_header_mode_get();
@@ -68,13 +69,13 @@ void wlan_engine_callback(wlan_mgr_event_info_t *event_info, void *user_data)
 				if (!target_item ||
 					!(gdata = (ug_genlist_data_t *)elm_object_item_data_get(target_item))) {
 					ERROR_LOG(UG_NAME_RESP, "Error!!! Fatal: Unable to add a connecting/connected item with item data[0x%x].", gdata);
-					__COMMON_FUNC_EXIT__;
-					return;
+
+					goto exit;
 				}
 			} else {
 				ERROR_LOG(UG_NAME_RESP, "Fatal: target_item or gdata is NULL");
-				__COMMON_FUNC_EXIT__;
-				return;
+
+				goto exit;
 			}
 
 		}
@@ -83,7 +84,6 @@ void wlan_engine_callback(wlan_mgr_event_info_t *event_info, void *user_data)
 	/* All OK to process the response */
 	switch (event_info->event_type) {
 	case WLAN_MANAGER_RESPONSE_TYPE_POWER_ON_OK:
-		connman_request_scan_mode_set(WIFI_BGSCAN_MODE_PERIODIC);
 		viewer_manager_header_mode_set(HEADER_MODE_SEARCHING);
 		viewer_manager_show(VIEWER_WINSET_SEARCHING);
 		viewer_manager_show(VIEWER_WINSET_SUB_CONTENTS);
@@ -111,7 +111,7 @@ void wlan_engine_callback(wlan_mgr_event_info_t *event_info, void *user_data)
 				HEADER_MODE_OFF == header_state)
 			break;
 
-		viewer_manager_hidden_disable_set(FALSE);
+		viewer_manager_update_hidden_btn();
 		viewer_manager_hide(VIEWER_WINSET_SEARCHING);
 		/* fall through */
 	case WLAN_MANAGER_RESPONSE_TYPE_SCAN_RESULT_IND:
@@ -120,24 +120,24 @@ void wlan_engine_callback(wlan_mgr_event_info_t *event_info, void *user_data)
 		break;
 
 	case WLAN_MANAGER_RESPONSE_TYPE_CONNECTING:
-		target_item = viewer_manager_move_item_to_top(target_item);
-		viewer_manager_update_ap_handle(target_item, event_info->ap);
 		viewer_manager_header_mode_set(HEADER_MODE_CONNECTING);
-		viewer_list_item_radio_mode_set(target_item, VIEWER_ITEM_RADIO_MODE_CONNECTING);
-		viewer_manager_scroll_to_top();
+
+		viewer_manager_refresh_ap_info(target_item);
+		viewer_list_item_radio_mode_set(target_item,
+								VIEWER_ITEM_RADIO_MODE_CONNECTING);
 		break;
 
 	case WLAN_MANAGER_RESPONSE_TYPE_CONNECTION_OK:
 	case WLAN_MANAGER_RESPONSE_TYPE_WPS_ENROLL_OK:
-		target_item = viewer_manager_move_item_to_top(target_item);
-		viewer_manager_update_ap_handle(target_item, event_info->ap);
-		viewer_list_item_radio_mode_set(target_item , VIEWER_ITEM_RADIO_MODE_CONNECTED);
 		viewer_manager_header_mode_set(HEADER_MODE_CONNECTED);
-		viewer_manager_scroll_to_top();
+
+		viewer_manager_refresh_ap_info(target_item);
+		viewer_list_item_radio_mode_set(target_item,
+								VIEWER_ITEM_RADIO_MODE_CONNECTED);
 
 		if (ug_app_state->passpopup) {
 			/* This is needed to remove the PBC timer popup */
-			common_pswd_popup_destroy(ug_app_state->passpopup);
+			passwd_popup_free(ug_app_state->passpopup);
 			ug_app_state->passpopup = NULL;
 		}
 		break;
@@ -145,16 +145,16 @@ void wlan_engine_callback(wlan_mgr_event_info_t *event_info, void *user_data)
 	case WLAN_MANAGER_RESPONSE_TYPE_CONNECTION_CONNECT_FAILED:
 	case WLAN_MANAGER_RESPONSE_TYPE_WPS_ENROLL_FAIL:
 		viewer_manager_header_mode_set(HEADER_MODE_ON);
-		viewer_list_item_radio_mode_set(target_item , VIEWER_ITEM_RADIO_MODE_OFF);
+		viewer_list_item_radio_mode_set(target_item, VIEWER_ITEM_RADIO_MODE_OFF);
 
 		if (ug_app_state->passpopup) {
-			common_pswd_popup_destroy(ug_app_state->passpopup);
+			passwd_popup_free(ug_app_state->passpopup);
 			ug_app_state->passpopup = NULL;
 		}
 		break;
 
 	case WLAN_MANAGER_RESPONSE_TYPE_DISCONNECTION_OK:
-		viewer_manager_update_ap_handle(target_item, event_info->ap);
+		viewer_manager_refresh_ap_info(target_item);
 		viewer_list_item_radio_mode_set(target_item, VIEWER_ITEM_RADIO_MODE_OFF);
 		viewer_manager_header_mode_set(HEADER_MODE_ON);
 		break;
@@ -175,8 +175,8 @@ void wlan_engine_callback(wlan_mgr_event_info_t *event_info, void *user_data)
 		viewer_manager_specific_scan_response_hlr(event_info->bss_info_list, user_data);
 		break;
 
-	case WLAN_MANAGER_RESPONSE_TYPE_UPDATE_SIG_STR:
-		viewer_manager_update_connected_ap_sig_str();
+	case WLAN_MANAGER_RESPONSE_TYPE_UPDATE_WIFI_RSSI:
+		viewer_manager_update_rssi();
 		break;
 
 	case WLAN_MANAGER_RESPONSE_TYPE_CONNECTION_INVALID_KEY:
@@ -188,12 +188,16 @@ void wlan_engine_callback(wlan_mgr_event_info_t *event_info, void *user_data)
 		break;
 	}
 
+exit:
+	wlan_validate_alt_connection();
 	__COMMON_FUNC_EXIT__;
 }
 
 void wlan_engine_refresh_callback(void)
 {
 	__COMMON_FUNC_ENTER__;
+
 	viewer_manager_refresh();
+
 	__COMMON_FUNC_EXIT__;
 }

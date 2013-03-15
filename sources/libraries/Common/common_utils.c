@@ -25,9 +25,6 @@
 #include "common_utils.h"
 #include "i18nmanager.h"
 
-#define POPUP_HEAD_AREA 134
-#define POPUP_BUTTON_AREA 80
-
 typedef struct {
 	char *title_str;
 	char *info_str;
@@ -115,40 +112,49 @@ char *common_utils_get_ap_security_type_info_txt(const char *pkg_name, wifi_devi
 	return status_txt;
 }
 
-char *common_utils_get_device_icon(const char *image_path_dir, wifi_device_info_t *device_info)
+void common_utils_get_device_icon(const char *image_path_dir, wifi_device_info_t *device_info, char **icon_path)
 {
-	char tmp_str[MAX_DEVICE_ICON_PATH_STR_LEN] = {'\0', };
-	char *ret;
+	char buf[MAX_DEVICE_ICON_PATH_STR_LEN] = {'\0', };
 
-	g_strlcpy(tmp_str, image_path_dir, sizeof(tmp_str));
-	g_strlcat(tmp_str, "/37_wifi_icon", sizeof(tmp_str));
+	g_strlcpy(buf, image_path_dir, sizeof(buf));
+	g_strlcat(buf, "/37_wifi_icon", sizeof(buf));
 
 	if (device_info->security_mode != WLAN_SEC_MODE_NONE) {
-		g_strlcat(tmp_str, "_lock", sizeof(tmp_str));
+		g_strlcat(buf, "_lock", sizeof(buf));
 	}
 
 	switch (wlan_manager_get_signal_strength(device_info->rssi)) {
 	case SIGNAL_STRENGTH_TYPE_EXCELLENT:
-		g_strlcat(tmp_str, "_03", sizeof(tmp_str));
+		g_strlcat(buf, "_03", sizeof(buf));
 		break;
 	case SIGNAL_STRENGTH_TYPE_GOOD:
-		g_strlcat(tmp_str, "_02", sizeof(tmp_str));
+		g_strlcat(buf, "_02", sizeof(buf));
 		break;
 	case SIGNAL_STRENGTH_TYPE_WEAK:
-		g_strlcat(tmp_str, "_01", sizeof(tmp_str));
+		g_strlcat(buf, "_01", sizeof(buf));
 		break;
 	case SIGNAL_STRENGTH_TYPE_VERY_WEAK:
 	case SIGNAL_STRENGTH_TYPE_NULL:
 	default:
-		g_strlcat(tmp_str, "_00", sizeof(tmp_str));
+		g_strlcat(buf, "_00", sizeof(buf));
 		break;
 	}
 
-	/* Adding .png to the end of file */
-	g_strlcat(tmp_str, ".png", sizeof(tmp_str));
+	if (icon_path) {
+		*icon_path = g_strdup_printf("%s", buf);
+	}
+}
 
-	ret = g_strdup(tmp_str);
-	return ret;
+char *common_utils_get_rssi_text(const char *str_pkg_name, int rssi)
+{
+	switch (wlan_manager_get_signal_strength(rssi)) {
+	case SIGNAL_STRENGTH_TYPE_EXCELLENT:
+		return g_strdup(sc(str_pkg_name, I18N_TYPE_Excellent));
+	case SIGNAL_STRENGTH_TYPE_GOOD:
+		return g_strdup(sc(str_pkg_name, I18N_TYPE_Good));
+	default:
+		return g_strdup(sc(str_pkg_name, I18N_TYPE_Week));
+	}
 }
 
 Evas_Object *common_utils_entry_layout_get_entry(Evas_Object *layout)
@@ -168,36 +174,6 @@ void common_utils_entry_password_set(Evas_Object *layout, Eina_Bool pswd_set)
 	elm_entry_password_set(entry, pswd_set);
 }
 
-void __common_popup_size_get(Ecore_IMF_Context *target_imf, int *width, int *height)
-{
-	__COMMON_FUNC_ENTER__;
-
-	int window_width, window_height;
-	int start_x, start_y, imf_width, imf_height;
-	int rotate_angle;
-	float resize_scale = 0.7f;
-
-	rotate_angle = common_utils_get_rotate_angle(APPCORE_RM_UNKNOWN);
-	ecore_x_window_size_get(ecore_x_window_root_first_get(), &window_width, &window_height);
-
-	*width = window_width;
-
-	if (rotate_angle == 0 || rotate_angle == 180)
-	{
-		*height = window_height * resize_scale;
-	}else
-		*height = window_width;
-
-	if (target_imf != NULL) {
-		ecore_imf_context_input_panel_geometry_get(target_imf, &start_x, &start_y, &imf_width, &imf_height);
-		*height = start_y * resize_scale;
-	}
-
-	*height = *height-POPUP_HEAD_AREA-POPUP_BUTTON_AREA;
-
-	__COMMON_FUNC_EXIT__;
-}
-
 void common_utils_set_edit_box_imf_panel_evnt_cb(Elm_Object_Item *item,
 						imf_ctxt_panel_cb_t input_panel_cb, void *user_data)
 {
@@ -211,10 +187,32 @@ void common_utils_set_edit_box_imf_panel_evnt_cb(Elm_Object_Item *item,
 	entry_info->input_panel_cb_data = user_data;
 	Evas_Object *entry = common_utils_entry_layout_get_entry(entry_info->layout);
 	Ecore_IMF_Context *imf_ctxt = elm_entry_imf_context_get(entry);
-	if (imf_ctxt) {
-		ecore_imf_context_input_panel_event_callback_add(imf_ctxt, ECORE_IMF_INPUT_PANEL_STATE_EVENT, entry_info->input_panel_cb, entry_info->input_panel_cb_data);
+	if (imf_ctxt && entry_info->input_panel_cb) {
+		/* Deleting the previously attached callback */
+		ecore_imf_context_input_panel_event_callback_del(imf_ctxt,
+				ECORE_IMF_INPUT_PANEL_STATE_EVENT,
+				entry_info->input_panel_cb);
+		ecore_imf_context_input_panel_event_callback_add(imf_ctxt,
+				ECORE_IMF_INPUT_PANEL_STATE_EVENT,
+				entry_info->input_panel_cb,
+				entry_info->input_panel_cb_data);
 		DEBUG_LOG(UG_NAME_NORMAL, "set the imf ctxt cbs");
 	}
+
+	__COMMON_FUNC_EXIT__;
+	return;
+}
+
+void common_utils_edit_box_focus_set(Elm_Object_Item *item, Eina_Bool focus_set)
+{
+	__COMMON_FUNC_ENTER__;
+	common_utils_entry_info_t *entry_info;
+	entry_info = elm_object_item_data_get(item);
+	if (!entry_info)
+		return;
+
+	Evas_Object *entry = common_utils_entry_layout_get_entry(entry_info->layout);
+	elm_object_focus_set(entry, focus_set);
 
 	__COMMON_FUNC_EXIT__;
 	return;
@@ -245,16 +243,14 @@ Elm_Object_Item *common_utils_add_2_line_txt_disabled_item(Evas_Object* view_lis
 
 char *common_utils_get_list_item_entry_txt(Elm_Object_Item *entry_item)
 {
-	common_utils_entry_info_t *entry_info = (common_utils_entry_info_t *)elm_object_item_data_get(entry_item);
+	common_utils_entry_info_t *entry_info =
+			(common_utils_entry_info_t *)elm_object_item_data_get(entry_item);
 	if (entry_info == NULL)
 		return NULL;
 
-	DEBUG_LOG(UG_NAME_NORMAL, "entry_info = 0x%x", entry_info);
+	DEBUG_LOG(UG_NAME_NORMAL, "entry_info: 0x%x", entry_info);
 
-	if (entry_info->entry_txt)
-		return g_strdup(entry_info->entry_txt);
-	else
-		return NULL;
+	return g_strdup(entry_info->entry_txt);
 }
 
 Evas_Object *common_utils_create_radio_button(Evas_Object *parent, const int value)
@@ -286,6 +282,12 @@ Evas_Object *common_utils_create_layout(Evas_Object *navi_frame)
 	return layout;
 }
 
+static void __common_utils_del_popup(void *data, Evas_Object *obj, void *event_info)
+{
+	Evas_Object *popup = (Evas_Object *)data;
+	evas_object_del(popup);
+}
+
 Evas_Object *common_utils_show_info_popup(Evas_Object *parent, popup_btn_info_t *popup_data)
 {
 	__COMMON_FUNC_ENTER__;
@@ -302,7 +304,7 @@ Evas_Object *common_utils_show_info_popup(Evas_Object *parent, popup_btn_info_t 
 		if (popup_data->btn1_cb) {
 			evas_object_smart_callback_add(btn_1, "clicked", popup_data->btn1_cb, popup_data->btn1_data);
 		} else {	// set the default callback
-			evas_object_smart_callback_add(btn_1, "clicked", (Evas_Smart_Cb)evas_object_del, popup);
+			evas_object_smart_callback_add(btn_1, "clicked", __common_utils_del_popup, popup);
 		}
 	}
 	if (popup_data->btn2_txt) {
@@ -314,7 +316,7 @@ Evas_Object *common_utils_show_info_popup(Evas_Object *parent, popup_btn_info_t 
 		if (popup_data->btn2_cb) {
 			evas_object_smart_callback_add(btn_2, "clicked", popup_data->btn2_cb, popup_data->btn2_data);
 		} else {	// set the default callback
-			evas_object_smart_callback_add(btn_2, "clicked", (Evas_Smart_Cb)evas_object_del, popup);
+			evas_object_smart_callback_add(btn_2, "clicked", __common_utils_del_popup, popup);
 		}
 	}
 	evas_object_show(popup);
@@ -342,7 +344,7 @@ Evas_Object *common_utils_show_info_timeout_popup(Evas_Object *win,
 	elm_object_text_set(popup, info_text);
 	elm_popup_timeout_set(popup, timeout);
 	evas_object_smart_callback_add(popup, "timeout",
-									(Evas_Smart_Cb)evas_object_del, popup);
+			__common_utils_del_popup, popup);
 	evas_object_size_hint_weight_set(popup, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
 	elm_popup_orient_set(popup, ELM_POPUP_ORIENT_CENTER);
 	evas_object_show(popup);

@@ -1,0 +1,6 @@
+e17 $1 rw
+$1 dbus rwx
+$1 pulseaudio rwxat
+$1 system::vconf rwxat
+$1 system::media rwxat
+$1 device::app_logging w

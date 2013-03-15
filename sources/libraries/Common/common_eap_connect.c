@@ -120,14 +120,13 @@ struct common_eap_connect_data {
 	ip_info_list_t *ip_info_list;
 	Evas_Object* navi_frame;
 
-	int visible_area_width;
-	int visible_area_height;
+	int key_status;
 };
 
 static void _gl_eap_provision_sel(void *data, Evas_Object *obj, void *event_info);
 static void _gl_eap_auth_sel(void *data, Evas_Object *obj, void *event_info);
-static void _create_and_update_list_items_based_on_rules(eap_type_t new_type, common_eap_connect_data_t *eap_data);
-static void _delete_eap_entry_items(common_eap_connect_data_t *eap_data);
+static void _create_and_update_list_items_based_on_rules(eap_type_t new_type, eap_connect_data_t *eap_data);
+static void _delete_eap_entry_items(eap_connect_data_t *eap_data);
 static eap_type_t __common_eap_connect_popup_get_eap_type(wifi_ap_h ap);
 static eap_auth_t __common_eap_connect_popup_get_auth_type(wifi_ap_h ap);
 static wifi_eap_type_e __common_eap_connect_popup_get_wlan_eap_type(eap_type_t eap_type);
@@ -141,7 +140,7 @@ static void _gl_editbox_sel_cb(void *data, Evas_Object *obj, void *event_info)
 
 static void _gl_eap_type_sel(void *data, Evas_Object *obj, void *event_info)
 {
-	common_eap_connect_data_t *eap_data = (common_eap_connect_data_t *) data;
+	eap_connect_data_t *eap_data = (eap_connect_data_t *) data;
 	Elm_Object_Item *item = (Elm_Object_Item *)event_info;
 	Eina_Bool expanded = EINA_FALSE;
 	if (item)
@@ -158,7 +157,7 @@ static void _gl_eap_type_sel(void *data, Evas_Object *obj, void *event_info)
 
 static void _gl_eap_type_sub_sel(void *data, Evas_Object *obj, void *event_info)
 {
-	common_eap_connect_data_t *eap_data = (common_eap_connect_data_t *) data;
+	eap_connect_data_t *eap_data = (eap_connect_data_t *) data;
 	Elm_Object_Item *item = (Elm_Object_Item *)event_info;
 	Elm_Object_Item *parent_item = elm_genlist_item_parent_get(item);
 
@@ -185,7 +184,7 @@ static void _gl_eap_type_sub_sel(void *data, Evas_Object *obj, void *event_info)
 
 static void _gl_eap_provision_sel(void *data, Evas_Object *obj, void *event_info)
 {
-	common_eap_connect_data_t *eap_data = (common_eap_connect_data_t *) data;
+	eap_connect_data_t *eap_data = (eap_connect_data_t *) data;
 	Elm_Object_Item *item = (Elm_Object_Item *)event_info;
 	Eina_Bool expanded = EINA_FALSE;
 	if (item)
@@ -215,7 +214,7 @@ static void _gl_eap_provision_sub_sel(void *data, Evas_Object *obj, void *event_
 
 static void _gl_eap_auth_sel(void *data, Evas_Object *obj, void *event_info)
 {
-	common_eap_connect_data_t *eap_data = (common_eap_connect_data_t *) data;
+	eap_connect_data_t *eap_data = (eap_connect_data_t *) data;
 	Elm_Object_Item *item = (Elm_Object_Item *)event_info;
 	Eina_Bool expanded = EINA_FALSE;
 	if (item)
@@ -231,7 +230,7 @@ static void _gl_eap_auth_sel(void *data, Evas_Object *obj, void *event_info)
 
 static void _gl_eap_auth_sub_sel(void *data, Evas_Object *obj, void *event_info)
 {
-	common_eap_connect_data_t *eap_data = (common_eap_connect_data_t *) data;
+	eap_connect_data_t *eap_data = (eap_connect_data_t *) data;
 	Elm_Object_Item *item = (Elm_Object_Item *)event_info;
 	Elm_Object_Item *parent_item = elm_genlist_item_parent_get(item);
 	eap_auth_t selected_item_index = elm_genlist_item_index_get(item) - elm_genlist_item_index_get(parent_item) - 1;
@@ -246,7 +245,7 @@ static void _gl_eap_auth_sub_sel(void *data, Evas_Object *obj, void *event_info)
 
 static char *_gl_eap_type_text_get(void *data, Evas_Object *obj, const char *part)
 {
-	common_eap_connect_data_t *eap_data = (common_eap_connect_data_t *)data;
+	eap_connect_data_t *eap_data = (eap_connect_data_t *)data;
 	eap_type_t sel_sub_item_id = __common_eap_connect_popup_get_eap_type(eap_data->ap);
 	DEBUG_LOG(UG_NAME_NORMAL, "current selected subitem = %d", sel_sub_item_id);
 
@@ -262,18 +261,17 @@ static char *_gl_eap_type_text_get(void *data, Evas_Object *obj, const char *par
 static char *_gl_eap_subtext_get(void *data, Evas_Object *obj, const char *part)
 {
 	wlan_eap_type_t eap_type  = (wlan_eap_type_t)elm_radio_state_value_get(data);
-	if (!strcmp(part, "elm.text")) {
+
+	if (!strcmp(part, "elm.text"))
 		return g_strdup(list_eap_type[eap_type].name);
-	}
 
 	return NULL;
 }
 
 static Evas_Object *_gl_eap_content_get(void *data, Evas_Object *obj, const char *part)
 {
-	if (!strcmp(part, "elm.icon") || !strcmp(part, "elm.swallow.icon")) {
+	if (!strcmp(part, "elm.icon") || !strcmp(part, "elm.swallow.icon"))
 		return data;
-	}
 
 	return NULL;
 }
@@ -281,11 +279,12 @@ static Evas_Object *_gl_eap_content_get(void *data, Evas_Object *obj, const char
 static void _gl_eap_type_sub_menu_item_del(void *data, Evas_Object *obj)
 {
 	evas_object_unref(data);
+	return;
 }
 
 static char *_gl_eap_provision_text_get(void *data, Evas_Object *obj, const char *part)
 {
-	common_eap_connect_data_t *eap_data = (common_eap_connect_data_t *)data;
+	eap_connect_data_t *eap_data = (eap_connect_data_t *)data;
 	int sel_sub_item_id = 0;
 
 	/* TODO: Fetch the EAP provision. No CAPI available now. */
@@ -322,11 +321,12 @@ static Evas_Object *_gl_eap_provision_content_get(void *data, Evas_Object *obj, 
 static void _gl_eap_provision_sub_menu_item_del(void *data, Evas_Object *obj)
 {
 	evas_object_unref(data);
+	return;
 }
 
 static char *_gl_eap_auth_text_get(void *data, Evas_Object *obj, const char *part)
 {
-	common_eap_connect_data_t *eap_data = (common_eap_connect_data_t *)data;
+	eap_connect_data_t *eap_data = (eap_connect_data_t *)data;
 	eap_auth_t sel_sub_item_id = __common_eap_connect_popup_get_auth_type(eap_data->ap);
 	if (!strcmp(part, "elm.text.1")) {
 		return g_strdup(list_eap_auth[sel_sub_item_id].name);
@@ -359,11 +359,12 @@ static Evas_Object *_gl_eap_auth_content_get(void *data, Evas_Object *obj, const
 static void _gl_eap_auth_sub_menu_item_del(void *data, Evas_Object *obj)
 {
 	evas_object_unref(data);
+	return;
 }
 
 static char *_gl_eap_ca_cert_text_get(void *data, Evas_Object *obj, const char *part)
 {
-	common_eap_connect_data_t *eap_data = (common_eap_connect_data_t *)data;
+	eap_connect_data_t *eap_data = (eap_connect_data_t *)data;
 	if (!strcmp(part, "elm.text.2")) {
 		return g_strdup(sc(eap_data->str_pkg_name, I18N_TYPE_Ca_Certificate));
 	} else if (!strcmp(part, "elm.text.1")) {
@@ -375,7 +376,7 @@ static char *_gl_eap_ca_cert_text_get(void *data, Evas_Object *obj, const char *
 
 static char *_gl_eap_user_cert_text_get(void *data, Evas_Object *obj, const char *part)
 {
-	common_eap_connect_data_t *eap_data = (common_eap_connect_data_t *)data;
+	eap_connect_data_t *eap_data = (eap_connect_data_t *)data;
 	if (!strcmp(part, "elm.text.2")) {
 		return g_strdup(sc(eap_data->str_pkg_name, I18N_TYPE_User_Certificate));
 	} else if (!strcmp(part, "elm.text.1")) {
@@ -395,7 +396,6 @@ static void _gl_eap_entry_cursor_changed_cb(void* data, Evas_Object* obj, void* 
 	if (entry_info) {
 		g_free(entry_info->entry_txt);
 		entry_info->entry_txt = NULL;
-
 		char *entry_text = elm_entry_markup_to_utf8(elm_entry_entry_get(obj));
 
 		if (entry_text != NULL && entry_text[0] != '\0')
@@ -504,10 +504,14 @@ static Evas_Object *_gl_eap_entry_item_content_get(void *data, Evas_Object *obj,
 	memset(&digits_filter_data, 0, sizeof(Elm_Entry_Filter_Accept_Set));
 	digits_filter_data.accepted = accepted;
 	elm_entry_markup_filter_append(entry, elm_entry_filter_accept_set, &digits_filter_data);
+	elm_entry_context_menu_disabled_set(entry, EINA_TRUE);
 
 	Ecore_IMF_Context *imf_ctxt = elm_entry_imf_context_get(entry);
-	if (imf_ctxt) {
-		ecore_imf_context_input_panel_event_callback_add(imf_ctxt, ECORE_IMF_INPUT_PANEL_STATE_EVENT, entry_info->input_panel_cb, entry_info->input_panel_cb_data);
+	if (imf_ctxt && entry_info->input_panel_cb) {
+		ecore_imf_context_input_panel_event_callback_add(imf_ctxt,
+				ECORE_IMF_INPUT_PANEL_STATE_EVENT,
+				entry_info->input_panel_cb,
+				entry_info->input_panel_cb_data);
 		DEBUG_LOG(UG_NAME_NORMAL, "set the imf ctxt cbs");
 	}
 
@@ -551,7 +555,7 @@ static void _gl_eap_entry_item_del(void *data, Evas_Object *obj)
 static void _gl_exp(void *data, Evas_Object *obj, void *event_info)
 {
 	Evas_Object *radio;
-	common_eap_connect_data_t *eap_data = (common_eap_connect_data_t *)data;
+	eap_connect_data_t *eap_data = (eap_connect_data_t *)data;
 	Elm_Object_Item *item = (Elm_Object_Item *)event_info;
 	Elm_Object_Item *sub_item = NULL;
 	Evas_Object *gl = elm_object_item_widget_get(item);
@@ -560,7 +564,10 @@ static void _gl_exp(void *data, Evas_Object *obj, void *event_info)
 		return;
 	}
 
-	evas_object_focus_set(gl, EINA_TRUE);
+	common_utils_edit_box_focus_set(eap_data->eap_id_item, EINA_FALSE);
+	common_utils_edit_box_focus_set(eap_data->eap_anonyid_item, EINA_FALSE);
+	common_utils_edit_box_focus_set(eap_data->eap_pw_item, EINA_FALSE);
+	ip_info_close_all_keypads(eap_data->ip_info_list);
 
 	int i = 0;
 	eap_type_t eap_type;
@@ -675,6 +682,8 @@ static void __common_eap_connect_popup_init_item_class(void *data)
 	g_eap_entry_itc.func.content_get = _gl_eap_entry_item_content_get;
 	g_eap_entry_itc.func.state_get = NULL;
 	g_eap_entry_itc.func.del = _gl_eap_entry_item_del;
+
+	return;
 }
 
 static void __common_eap_connect_imf_ctxt_evnt_cb(void *data, Ecore_IMF_Context *ctx, int value)
@@ -689,35 +698,47 @@ static void __common_eap_connect_imf_ctxt_evnt_cb(void *data, Ecore_IMF_Context 
 		DEBUG_LOG(UG_NAME_NORMAL, "Key pad is now close");
 		elm_object_item_signal_emit(data, "elm,state,sip,hidden", "");
 	}
+	return;
 }
 
-static void __common_eap_connect_imf_ctxt_evnt_resize_cb(void *data, Ecore_IMF_Context *ctx, int value)
+static void __common_eap_connect_im_ctxt_evnt_resize_cb(void *data, Ecore_IMF_Context *ctx, int value)
 {
 	__COMMON_FUNC_ENTER__;
 
 	if (!data)
 		return;
 
-	if (value == ECORE_IMF_INPUT_PANEL_STATE_WILL_SHOW)
-		return;
+	int rotate_angle = common_utils_get_rotate_angle(APPCORE_RM_UNKNOWN);
 
-	common_eap_connect_data_t *eap_data = (common_eap_connect_data_t *)data;
-	Evas_Object *box = elm_object_content_get(eap_data->popup);
+	eap_connect_data_t *eap_data = (eap_connect_data_t *)data;
+	eap_data->key_status = value;
 
-	__common_popup_size_get(ctx, &eap_data->visible_area_width, &eap_data->visible_area_height);
-	evas_object_size_hint_min_set(box, eap_data->visible_area_width * elm_config_scale_get(), 
-			eap_data->visible_area_height * elm_config_scale_get());
+	eap_view_rotate_popup(eap_data, rotate_angle);
 
 	__COMMON_FUNC_EXIT__;
+	return;
 }
 
-static void __common_eap_view_set_imf_ctxt_evnt_cb(common_eap_connect_data_t *eap_data)
+static void __common_eap_popup_set_imf_ctxt_evnt_cb(eap_connect_data_t *eap_data)
 {
 	if (!eap_data)
 		return;
 
-	Elm_Object_Item *navi_it = elm_naviframe_top_item_get(eap_data->navi_frame);
+	if (eap_data->eap_id_item)
+		common_utils_set_edit_box_imf_panel_evnt_cb(eap_data->eap_id_item, __common_eap_connect_im_ctxt_evnt_resize_cb, eap_data);
+	if (eap_data->eap_anonyid_item)
+		common_utils_set_edit_box_imf_panel_evnt_cb(eap_data->eap_anonyid_item, __common_eap_connect_im_ctxt_evnt_resize_cb, eap_data);
+	if (eap_data->eap_pw_item)
+		common_utils_set_edit_box_imf_panel_evnt_cb(eap_data->eap_pw_item, __common_eap_connect_im_ctxt_evnt_resize_cb, eap_data);
 
+	return;
+}
+
+static void __common_eap_view_set_imf_ctxt_evnt_cb(eap_connect_data_t *eap_data)
+{
+	if (!eap_data)
+		return;
+	Elm_Object_Item *navi_it = elm_naviframe_top_item_get(eap_data->navi_frame);
 	if (!navi_it)
 		return;
 
@@ -727,26 +748,14 @@ static void __common_eap_view_set_imf_ctxt_evnt_cb(common_eap_connect_data_t *ea
 		common_utils_set_edit_box_imf_panel_evnt_cb(eap_data->eap_anonyid_item, __common_eap_connect_imf_ctxt_evnt_cb, navi_it);
 	if (eap_data->eap_pw_item)
 		common_utils_set_edit_box_imf_panel_evnt_cb(eap_data->eap_pw_item, __common_eap_connect_imf_ctxt_evnt_cb, navi_it);
-}
 
-static void __common_eap_popup_set_imf_ctxt_evnt_cb(common_eap_connect_data_t *eap_data)
-{
-	if (!eap_data)
-		return;
-
-	if (eap_data->eap_id_item)
-		common_utils_set_edit_box_imf_panel_evnt_cb(eap_data->eap_id_item, __common_eap_connect_imf_ctxt_evnt_resize_cb, eap_data);
-	if (eap_data->eap_anonyid_item)
-		common_utils_set_edit_box_imf_panel_evnt_cb(eap_data->eap_anonyid_item, __common_eap_connect_imf_ctxt_evnt_resize_cb, eap_data);
-	if (eap_data->eap_pw_item)
-		common_utils_set_edit_box_imf_panel_evnt_cb(eap_data->eap_pw_item, __common_eap_connect_imf_ctxt_evnt_resize_cb, eap_data);
+	return;
 }
 
 /* 
  * This creates EAP type, Auth type, CA certificate, User certificate, User Id, Anonymous Id and Password items.
  */
-
-static void _create_and_update_list_items_based_on_rules(eap_type_t new_type, common_eap_connect_data_t *eap_data)
+static void _create_and_update_list_items_based_on_rules(eap_type_t new_type, eap_connect_data_t *eap_data)
 {
 	__COMMON_FUNC_ENTER__;
 	Evas_Object* view_list = eap_data->genlist;
@@ -835,14 +844,15 @@ static void _create_and_update_list_items_based_on_rules(eap_type_t new_type, co
 
 		if (eap_data->popup) {	/* Popup */
 			__common_eap_popup_set_imf_ctxt_evnt_cb(eap_data);
-		} else {			 	/* View */
+		} else {				/* View */
 			__common_eap_view_set_imf_ctxt_evnt_cb(eap_data);
 		}
 	}
 	__COMMON_FUNC_EXIT__;
+	return;
 }
 
-void _delete_eap_entry_items(common_eap_connect_data_t *eap_data)
+void _delete_eap_entry_items(eap_connect_data_t *eap_data)
 {
 	__COMMON_FUNC_ENTER__;
 	elm_object_item_del(eap_data->eap_auth_item);
@@ -858,6 +868,7 @@ void _delete_eap_entry_items(common_eap_connect_data_t *eap_data)
 	elm_object_item_del(eap_data->eap_pw_item);
 	eap_data->eap_pw_item = NULL;
 	__COMMON_FUNC_EXIT__;
+	return;
 }
 
 static Evas_Object* _create_list(Evas_Object* parent, void *data)
@@ -865,7 +876,7 @@ static Evas_Object* _create_list(Evas_Object* parent, void *data)
 	__COMMON_FUNC_ENTER__;
 	assertm_if(NULL == parent, "NULL!!");
 
-	common_eap_connect_data_t *eap_data = (common_eap_connect_data_t *)data;
+	eap_connect_data_t *eap_data = (eap_connect_data_t *)data;
 	const char* parent_view_name = evas_object_name_get(parent);
 	Evas_Object* view_list = NULL;
 
@@ -902,48 +913,71 @@ static Evas_Object* _create_list(Evas_Object* parent, void *data)
 	return view_list;
 }
 
-static void __common_eap_connect_cleanup(common_eap_connect_data_t *eap_data)
+static void __eap_view_title_clicked_cb(void *data, Evas_Object *obj, void *event_info)
 {
-	if (eap_data  != NULL) {
-		ip_info_remove(eap_data->ip_info_list);
-		eap_data->ip_info_list = NULL;
-		evas_object_del(eap_data->genlist);
-		wifi_ap_destroy(eap_data->ap);
-		eap_data->ap = NULL;
-		evas_object_del(radio_main);
-		radio_main = NULL;
-		if (NULL == eap_data->navi_frame) {
-			evas_object_del(eap_data->popup);
-			/* Lets enable the scan updates */
-			wlan_manager_enable_scan_result_update();
-		}
-		g_free(eap_data);
+	Evas_Object *label;
+	Elm_Object_Item *navi_it = event_info;
 
-	}
-}
-
-static void __common_eap_connect_destroy(void *data,  Evas_Object *obj, void *event_info)
-{
-	__COMMON_FUNC_ENTER__;
-	common_eap_connect_data_t *eap_data = (common_eap_connect_data_t *) data;
-	__common_eap_connect_cleanup(eap_data);
-	__COMMON_FUNC_EXIT__;
-}
-
-static void __common_eap_connect_done_cb(void *data,  Evas_Object *obj, void *event_info)
-{
-	__COMMON_FUNC_ENTER__;
-	common_eap_connect_data_t *eap_data = (common_eap_connect_data_t *)data;
-
-	if(eap_data->eap_done_ok == TRUE) {
+	if (navi_it == NULL)
 		return;
+
+	label = elm_object_item_part_content_get(navi_it, "elm.swallow.title");
+	if (label == NULL)
+		return;
+
+	elm_label_slide_go(label);
+}
+
+static void __common_eap_connect_cleanup(eap_connect_data_t *eap_data)
+{
+	if (eap_data == NULL)
+		return;
+
+	ip_info_remove(eap_data->ip_info_list);
+	eap_data->ip_info_list = NULL;
+
+	evas_object_del(eap_data->genlist);
+
+	wifi_ap_destroy(eap_data->ap);
+	eap_data->ap = NULL;
+
+	evas_object_del(radio_main);
+	radio_main = NULL;
+
+	if (eap_data->navi_frame) {
+		evas_object_smart_callback_del(eap_data->navi_frame, "title,clicked",
+				__eap_view_title_clicked_cb);
+
+		elm_naviframe_item_pop(eap_data->navi_frame);
+	} else {
+		evas_object_hide(eap_data->popup);
+		evas_object_del(eap_data->popup);
 	}
-	eap_data->eap_done_ok = TRUE;
 
-	char* str_id = NULL;
-	char* str_pw = NULL;
+	wlan_manager_enable_scan_result_update();
+}
 
+static void __common_eap_connect_destroy(void *data,  Evas_Object *obj,
+		void *event_info)
+{
+	__common_eap_connect_cleanup((eap_connect_data_t *)data);
+}
+
+static void __common_eap_connect_done_cb(void *data,  Evas_Object *obj,
+		void *event_info)
+{
+	__COMMON_FUNC_ENTER__;
+
+	char *str_id = NULL;
+	char *str_pw = NULL;
 	wifi_eap_type_e eap_type;
+
+	eap_connect_data_t *eap_data = (eap_connect_data_t *)data;
+
+	if (eap_data->eap_done_ok == TRUE)
+		return;
+
+	eap_data->eap_done_ok = TRUE;
 
 	wifi_ap_set_eap_ca_cert_file(eap_data->ap, "");
 	wifi_ap_set_eap_client_cert_file(eap_data->ap, "");
@@ -954,34 +988,36 @@ static void __common_eap_connect_done_cb(void *data,  Evas_Object *obj, void *ev
 	case WIFI_EAP_TYPE_PEAP:
 	case WIFI_EAP_TYPE_TTLS:
 		str_id = common_utils_get_list_item_entry_txt(eap_data->eap_id_item);
-		if (!str_id || strlen(str_id) <= 0) {
-			common_utils_show_info_ok_popup(eap_data->win, eap_data->str_pkg_name, EAP_CHECK_YOUR_ID_STR);
+		if (str_id == NULL || str_id[0] == '\0') {
+			common_utils_show_info_ok_popup(eap_data->win,
+					eap_data->str_pkg_name, EAP_CHECK_YOUR_ID_STR);
 			eap_data->eap_done_ok = FALSE;
+
 			__COMMON_FUNC_EXIT__;
 			return;
 		}
 
 		str_pw = common_utils_get_list_item_entry_txt(eap_data->eap_pw_item);
-		if (!str_pw || strlen(str_pw) <= 0) {
-			common_utils_show_info_ok_popup(eap_data->win, eap_data->str_pkg_name, EAP_CHECK_YOUR_PASWD_STR);
+		if (str_pw == NULL || str_pw[0] == '\0') {
+			common_utils_show_info_ok_popup(eap_data->win,
+					eap_data->str_pkg_name, EAP_CHECK_YOUR_PASWD_STR);
 			eap_data->eap_done_ok = FALSE;
+
 			__COMMON_FUNC_EXIT__;
 			return;
 		}
 
-		char *temp_str = common_utils_get_list_item_entry_txt(eap_data->eap_anonyid_item);
-		/* TODO: Set the anonymous id. CAPI not yet available.  */
+		char *temp_str = common_utils_get_list_item_entry_txt(
+											eap_data->eap_anonyid_item);
+		/* TODO: Supporting anonymous id. */
+
 		g_free(temp_str);
 
 		wifi_ap_set_eap_passphrase(eap_data->ap, str_id, str_pw);
 		break;
 
 	case WIFI_EAP_TYPE_TLS:
-//		g_strlcpy(p_conn_info->security_info.authentication.eap.username, str_id, NETPM_WLAN_USERNAME_LEN);
-//		g_strlcpy(p_conn_info->security_info.authentication.eap.password, str_pw, NETPM_WLAN_USERNAME_LEN);
-		wifi_ap_set_eap_ca_cert_file(eap_data->ap, "/mnt/ums/Certification/ca2.pem");
-		wifi_ap_set_eap_client_cert_file(eap_data->ap, "/mnt/ums/Certification/user2.pem");
-		wifi_ap_set_eap_private_key_info(eap_data->ap, "/mnt/ums/Certification/user2.prv", "wifi");
+		/* TODO: Correct TLS */
 		break;
 
 	case WIFI_EAP_TYPE_SIM:
@@ -989,24 +1025,16 @@ static void __common_eap_connect_done_cb(void *data,  Evas_Object *obj, void *ev
 		break;
 
 	default:
-		/* This case should never occur */
-		ERROR_LOG(UG_NAME_NORMAL, "Err!");
+		ERROR_LOG(UG_NAME_NORMAL, "Unknown EAP method %d", eap_type);
 		break;
 	}
 
 	/* Before we proceed to make a connection, lets save the entered IP data */
 	ip_info_save_data(eap_data->ip_info_list);
 
-	int ret = wlan_manager_connect_with_wifi_info(eap_data->ap);
-	if (WLAN_MANAGER_ERR_NONE != ret) {
-		ERROR_LOG(UG_NAME_NORMAL, "EAP connect request failed!!! Err = %d", ret);
-	}
+	wlan_manager_connect(eap_data->ap);
 
-	if (eap_data->navi_frame) {
-		eap_view_close(eap_data);
-	} else {
-		__common_eap_connect_destroy(eap_data, NULL, NULL);
-	}
+	__common_eap_connect_cleanup(eap_data);
 
 	__COMMON_FUNC_EXIT__;
 }
@@ -1030,7 +1058,7 @@ static Eina_Bool __common_eap_connect_show_ime(void *data)
 
 static Eina_Bool __common_eap_connect_load_ip_info_list_cb(void *data)
 {
-	common_eap_connect_data_t *eap_data = (common_eap_connect_data_t *)data;
+	eap_connect_data_t *eap_data = (eap_connect_data_t *)data;
 	Elm_Object_Item *navi_it = NULL;
 	Evas_Object *list = NULL;
 
@@ -1047,7 +1075,7 @@ static Eina_Bool __common_eap_connect_load_ip_info_list_cb(void *data)
 		Evas_Object *box = elm_object_content_get(eap_data->popup);
 		Eina_List *box_childs = elm_box_children_get(box);
 		list = eina_list_nth(box_childs, 0);
-		eap_data->ip_info_list = ip_info_append_items(eap_data->ap, eap_data->str_pkg_name, list, __common_eap_connect_imf_ctxt_evnt_resize_cb, eap_data);
+		eap_data->ip_info_list = ip_info_append_items(eap_data->ap, eap_data->str_pkg_name, list, __common_eap_connect_im_ctxt_evnt_resize_cb, eap_data);
 	}
 
 	/* Add a separator */
@@ -1058,80 +1086,107 @@ static Eina_Bool __common_eap_connect_load_ip_info_list_cb(void *data)
 	return ECORE_CALLBACK_CANCEL;
 }
 
-common_eap_connect_data_t *create_eap_connect_view(Evas_Object *win_main, Evas_Object *navi_frame, const char *pkg_name, wifi_device_info_t *device_info)
+eap_connect_data_t *create_eap_view(Evas_Object *win_main,
+		Evas_Object *navi_frame, const char *pkg_name,
+		wifi_device_info_t *device_info)
 {
 	__COMMON_FUNC_ENTER__;
 
-	if (!win_main || !device_info || !pkg_name)
+	/* Create eap connect view */
+	Elm_Object_Item *navi_it = NULL;
+	Evas_Object *back_btn = NULL;
+	Evas_Object *connect_btn = NULL;
+	Evas_Object *layout = NULL;
+	Evas_Object *list = NULL;
+	Evas_Object *label = NULL;
+
+	if (win_main == NULL || device_info == NULL || pkg_name == NULL)
 		return NULL;
 
-	common_eap_connect_data_t *eap_data = g_new0(common_eap_connect_data_t, 1);
+	eap_connect_data_t *eap_data = g_new0(eap_connect_data_t, 1);
 	eap_data->str_pkg_name = pkg_name;
 	eap_data->win = win_main;
 
 	/* Clone the WiFi AP handle */
 	wifi_ap_clone(&(eap_data->ap), device_info->ap);
 
-	/* Create eap connect view */
-	Elm_Object_Item* navi_it;
-	Evas_Object* button_back;
-	Evas_Object *connect_button;
-	Evas_Object *layout;
-	Evas_Object *list = NULL;
-
 	eap_data->navi_frame = navi_frame;
+	evas_object_smart_callback_add(eap_data->navi_frame, "title,clicked",
+			__eap_view_title_clicked_cb, NULL);
 
 	layout = common_utils_create_layout(navi_frame);
+
 	/* Create an EAP connect view list */
 	list = _create_list(layout, eap_data);
 	elm_object_part_content_set(layout, "elm.swallow.content", list);
-	navi_it = elm_naviframe_item_push(navi_frame, device_info->ssid, NULL, NULL, layout, NULL);
-	evas_object_data_set(navi_frame, SCREEN_TYPE_ID_KEY, (void *)VIEW_MANAGER_VIEW_TYPE_EAP);
-
-	/* Tool bar Connect button */
-	connect_button = elm_button_add(navi_frame);
-	elm_object_style_set(connect_button, "naviframe/toolbar/default");
-	elm_object_text_set(connect_button, sc(pkg_name, I18N_TYPE_Connect));
-	evas_object_smart_callback_add(connect_button, "clicked", __common_eap_connect_done_cb, eap_data);
-	elm_object_item_part_content_set(navi_it, "toolbar_button1", connect_button);
 
 	/* Tool bar Back button */
-	button_back = elm_object_item_part_content_get(navi_it, "prev_btn");
-	evas_object_smart_callback_add(button_back, "clicked", __common_eap_connect_destroy, eap_data);
+	back_btn = elm_button_add(navi_frame);
+	elm_object_style_set(back_btn, "naviframe/end_btn/default");
+	evas_object_smart_callback_add(back_btn, "clicked",
+			__common_eap_connect_destroy, eap_data);
+
+	navi_it = elm_naviframe_item_push(navi_frame, NULL, back_btn, NULL,
+			layout, NULL);
+	evas_object_data_set(navi_frame, SCREEN_TYPE_ID_KEY,
+			(void *)VIEW_MANAGER_VIEW_TYPE_EAP);
+
+	/* Set the label style, slide mode & text */
+	label = elm_label_add(navi_frame);
+	elm_object_style_set(label, "naviframe_title");
+	elm_label_slide_mode_set(label, ELM_LABEL_SLIDE_MODE_ALWAYS);
+	elm_label_wrap_width_set(label, 1);
+	elm_label_ellipsis_set(label, EINA_TRUE);
+	elm_object_text_set(label, device_info->ssid);
+	evas_object_show(label);
+	elm_object_item_part_content_set(navi_it, "elm.swallow.title", label);
+
+	/* Tool bar Connect button */
+	connect_btn = elm_button_add(navi_frame);
+	elm_object_style_set(connect_btn, "naviframe/toolbar/default");
+	elm_object_text_set(connect_btn, sc(pkg_name, I18N_TYPE_Connect));
+	evas_object_smart_callback_add(connect_btn, "clicked",
+			__common_eap_connect_done_cb, eap_data);
+	elm_object_item_part_content_set(navi_it, "toolbar_button1",
+			connect_btn);
 
 	/* Append ip info items and add a seperator */
 	ecore_idler_add(__common_eap_connect_load_ip_info_list_cb, eap_data);
 
 	/* Title Connect button */
-	connect_button = elm_button_add(navi_frame);
-	elm_object_style_set(connect_button, "naviframe/toolbar/default");
-	elm_object_text_set(connect_button, sc(pkg_name, I18N_TYPE_Connect));
-	evas_object_smart_callback_add(connect_button, "clicked", __common_eap_connect_done_cb, eap_data);
-	elm_object_item_part_content_set(navi_it, "title_toolbar_button1", connect_button);
+	connect_btn = elm_button_add(navi_frame);
+	elm_object_style_set(connect_btn, "naviframe/toolbar/default");
+	elm_object_text_set(connect_btn, sc(pkg_name, I18N_TYPE_Connect));
+	evas_object_smart_callback_add(connect_btn, "clicked",
+			__common_eap_connect_done_cb, eap_data);
+	elm_object_item_part_content_set(navi_it, "title_toolbar_button1",
+			connect_btn);
 
 	/* Title Back button */
-	button_back = elm_button_add(navi_frame);
-	elm_object_style_set(button_back, "naviframe/back_btn/default");
-	evas_object_smart_callback_add(button_back, "clicked", (Evas_Smart_Cb)eap_view_close, eap_data);
-	elm_object_item_part_content_set(navi_it, "title_prev_btn", button_back);
+	back_btn = elm_button_add(navi_frame);
+	elm_object_style_set(back_btn, "naviframe/back_btn/default");
+	evas_object_smart_callback_add(back_btn, "clicked",
+			__common_eap_connect_destroy, eap_data);
+	elm_object_item_part_content_set(navi_it, "title_prev_btn", back_btn);
 
 	/* Register imf event cbs */
 	__common_eap_view_set_imf_ctxt_evnt_cb(eap_data);
 
 	__COMMON_FUNC_EXIT__;
-
 	return eap_data;
 }
 
-common_eap_connect_data_t *create_eap_connect_popup(Evas_Object *win_main, const char *pkg_name, wifi_device_info_t *device_info)
+eap_connect_data_t *create_eap_popup(Evas_Object *win_main,
+		const char *pkg_name, wifi_device_info_t *device_info)
 {
 	__COMMON_FUNC_ENTER__;
 
 	Evas_Object *list = NULL;
-	if (!win_main || !device_info || !pkg_name)
+
+	if (win_main == NULL || device_info == NULL || pkg_name == NULL)
 		return NULL;
 
-	common_eap_connect_data_t *eap_data = g_new0(common_eap_connect_data_t, 1);
+	eap_connect_data_t *eap_data = g_new0(eap_connect_data_t, 1);
 	eap_data->str_pkg_name = pkg_name;
 	eap_data->win = win_main;
 
@@ -1143,10 +1198,8 @@ common_eap_connect_data_t *create_eap_connect_popup(Evas_Object *win_main, const
 	Evas_Object *box;
 	Evas_Object *btn;
 	int rotate_angle;
-	int visible_area_height;
-	int visible_area_width;
 
-	/* Lets disable the scan updates so that the UI is not refreshed un necessarily */
+	/* Lets disable the scan updates so that the UI is not refreshed unnecessarily */
 	wlan_manager_disable_scan_result_update();
 
 	eap_data->popup = popup = elm_popup_add(win_main);
@@ -1158,12 +1211,14 @@ common_eap_connect_data_t *create_eap_connect_popup(Evas_Object *win_main, const
 	btn = elm_button_add(popup);
 	elm_object_text_set(btn, sc(pkg_name, I18N_TYPE_Connect));
 	elm_object_part_content_set(popup, "button1", btn);
-	evas_object_smart_callback_add(btn, "clicked", __common_eap_connect_done_cb, eap_data);
+	evas_object_smart_callback_add(btn, "clicked",
+			__common_eap_connect_done_cb, eap_data);
 
 	btn = elm_button_add(popup);
 	elm_object_text_set(btn, sc(pkg_name, I18N_TYPE_Cancel));
 	elm_object_part_content_set(popup, "button2", btn);
-	evas_object_smart_callback_add(btn, "clicked", __common_eap_connect_destroy, eap_data);
+	evas_object_smart_callback_add(btn, "clicked",
+			__common_eap_connect_destroy, eap_data);
 
 	/* Create and add a box into the layout. */
 	box = elm_box_add(popup);
@@ -1171,9 +1226,13 @@ common_eap_connect_data_t *create_eap_connect_popup(Evas_Object *win_main, const
 	evas_object_size_hint_align_set(box, EVAS_HINT_FILL, 0.0);
 
 	rotate_angle = common_utils_get_rotate_angle(APPCORE_RM_UNKNOWN);
+	if (0 == rotate_angle || 180 == rotate_angle)
+		evas_object_size_hint_min_set(box, -1,
+				DEVICE_PICKER_POPUP_H * elm_config_scale_get());
+	else
+		evas_object_size_hint_min_set(box, -1,
+				DEVICE_PICKER_POPUP_LN_H * elm_config_scale_get());
 
-	__common_popup_size_get(NULL ,&visible_area_width, &visible_area_height);
-	evas_object_size_hint_min_set(box, visible_area_width * elm_config_scale_get(), visible_area_height * elm_config_scale_get());
 	evas_object_name_set(box, EAP_CONNECT_POPUP);
 
 	/* Create an EAP connect view list */
@@ -1182,13 +1241,14 @@ common_eap_connect_data_t *create_eap_connect_popup(Evas_Object *win_main, const
 	/* Append ip info items and add a seperator */
 	ecore_idler_add(__common_eap_connect_load_ip_info_list_cb, eap_data);
 
-
 	/* Pack the list into the box */
 	elm_box_pack_end(box, list);
 	elm_object_content_set(popup, box);
 	evas_object_show(list);
 	evas_object_show(box);
 	evas_object_show(popup);
+
+	__common_eap_popup_set_imf_ctxt_evnt_cb(eap_data);
 
 	__COMMON_FUNC_EXIT__;
 
@@ -1340,9 +1400,12 @@ static eap_auth_t __common_eap_connect_popup_get_auth_type(wifi_ap_h ap)
 /* This creates Auth type, ID, Anonymous Id and Password items
  * This function should be called after creating the EAP type item
  */
-eap_info_list_t *eap_info_append_items(wifi_ap_h ap, Evas_Object* view_list, const char *str_pkg_name, imf_ctxt_panel_cb_t input_panel_cb,	void *input_panel_cb_data)
+eap_info_list_t *eap_info_append_items(wifi_ap_h ap, Evas_Object* view_list,
+		const char *str_pkg_name, imf_ctxt_panel_cb_t input_panel_cb,
+		void *input_panel_cb_data)
 {
 	__COMMON_FUNC_ENTER__;
+
 	eap_type_t eap_type;
 	eap_auth_t auth_type;
 	char *temp_str = NULL;
@@ -1423,16 +1486,11 @@ eap_info_list_t *eap_info_append_items(wifi_ap_h ap, Evas_Object* view_list, con
 		g_eap_entry_itc.func.state_get = NULL;
 		g_eap_entry_itc.func.del = _gl_eap_entry_item_del;
 
-		/* TODO: Fetch the password. CAPI not available. */
-		if (is_paswd_set)
-			temp_str = g_strdup("XXXXX");
-		else
-			temp_str = g_strdup("");
-
 		edit_box_details = g_new0(common_utils_entry_info_t, 1);
 		edit_box_details->entry_id = ENTRY_TYPE_PASSWORD;
 		edit_box_details->title_txt = sc(str_pkg_name, I18N_TYPE_Password);
-		edit_box_details->entry_txt = temp_str;
+		edit_box_details->entry_txt = NULL;
+		edit_box_details->guide_txt = sc(str_pkg_name, I18N_TYPE_Unchanged);
 		edit_box_details->input_panel_cb = input_panel_cb;
 		edit_box_details->input_panel_cb_data = input_panel_cb_data;
 		eap_info_list_data->pswd_item = elm_genlist_item_append(view_list, &g_eap_entry_itc, edit_box_details, NULL, ELM_GENLIST_ITEM_NONE, _gl_editbox_sel_cb, NULL);
@@ -1454,6 +1512,7 @@ void eap_info_save_data(eap_info_list_t *eap_info_list_data)
 
 	wifi_ap_set_eap_passphrase(eap_info_list_data->ap, NULL, txt);
 	g_free(txt);
+	return;
 }
 
 void eap_info_remove(eap_info_list_t *eap_info_list_data)
@@ -1464,30 +1523,45 @@ void eap_info_remove(eap_info_list_t *eap_info_list_data)
 	}
 
 	elm_object_item_del(eap_info_list_data->pswd_item);
+
 	eap_info_list_data->pswd_item = NULL;
+
 	g_free(eap_info_list_data);
 }
 
-void eap_view_close(common_eap_connect_data_t *eap_data)
+void eap_connect_data_free(eap_connect_data_t *eap_data)
 {
-	if (NULL == eap_data)
-		return;
-
-	Evas_Object *nf = eap_data->navi_frame;
 	__common_eap_connect_cleanup(eap_data);
-	elm_naviframe_item_pop(nf);
 }
 
-void eap_view_rotate_popup(common_eap_connect_data_t *eap_data, int rotate_angle)
+void eap_view_rotate_popup(eap_connect_data_t *eap_data, int rotate_angle)
 {
 	__COMMON_FUNC_ENTER__;
 
 	if (NULL == eap_data || NULL == eap_data->popup)
 		return;
 
+	int value = eap_data->key_status;
 	Evas_Object *box = elm_object_content_get(eap_data->popup);
-	__common_popup_size_get(NULL, &eap_data->visible_area_width, &eap_data->visible_area_height);
-	evas_object_size_hint_min_set(box, eap_data->visible_area_width * elm_config_scale_get(), eap_data->visible_area_height* elm_config_scale_get());
+
+	if (value == ECORE_IMF_INPUT_PANEL_STATE_SHOW) {
+		DEBUG_LOG(UG_NAME_NORMAL, "Key pad is open");
+
+		if (rotate_angle == 0 || rotate_angle == 180)
+			evas_object_size_hint_min_set(box, -1,
+					530 * elm_config_scale_get());
+		else
+			evas_object_size_hint_min_set(box, -1,
+					200 * elm_config_scale_get());
+	} else if (value == ECORE_IMF_INPUT_PANEL_STATE_HIDE) {
+		if (rotate_angle == 0 || rotate_angle == 180)
+			evas_object_size_hint_min_set(box, -1,
+					DEVICE_PICKER_POPUP_H * elm_config_scale_get());
+		else
+			evas_object_size_hint_min_set(box, -1,
+					DEVICE_PICKER_POPUP_LN_H * elm_config_scale_get());
+	}
 
 	__COMMON_FUNC_EXIT__;
+	return;
 }

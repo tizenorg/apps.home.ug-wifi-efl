@@ -29,7 +29,7 @@ msgid "IDS_ST_BODY_NETWORK_NOTIFICATION"
 msgstr "Obaveštenje putem mreže"
 
 msgid "IDS_WIFI_POP_OPEN"
-msgstr "Otvori"
+msgstr "Otvorena"
 
 msgid "IDS_ST_BODY_SECURED_ABB_M_WIFI_AP_SUMMARY"
 msgstr "Obezbeđeno"
@@ -204,4 +204,7 @@ msgstr "Unesi šifru"
 
 msgid "IDS_WIFI_BODY_NOTIFY_WHEN_WI_FI_NETWORK_IS_FOUND"
 msgstr "Obavesti me kada se pronađe Wi-Fi mreža"
+
+msgid "IDS_ST_BODY_HUNCHANGED"
+msgstr "(nepromenjeno)"
 

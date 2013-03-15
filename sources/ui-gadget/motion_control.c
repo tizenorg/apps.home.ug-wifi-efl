@@ -17,11 +17,14 @@
  *
  */
 
-#include "sensor.h"
+#include <vconf.h>
+#include <sensor.h>
+#include <vconf-keys.h>
+
+#include "common.h"
+#include "wlan_manager.h"
 #include "motion_control.h"
 #include "viewer_manager.h"
-#include "wlan_manager.h"
-#include "vconf.h"
 #include "wifi-engine-callback.h"
 
 static int motion_handle = -1;
@@ -29,30 +32,37 @@ static Evas_Object* target = NULL;
 
 static void __motion_shake_cb(unsigned int event_type, sensor_event_data_t *event_data, void *data)
 {
-	int vconf_value = 0;
+	int scan_result;
+	int motion_activated = 0;
+	HEADER_MODES current_state;
 
-	vconf_get_bool(VCONFKEY_SETAPPL_MOTION_ACTIVATION, &vconf_value);
-	if(vconf_value != 1)
+	vconf_get_bool(VCONFKEY_SETAPPL_MOTION_ACTIVATION, &motion_activated);
+	if(motion_activated != 1)
 		return;
 
-	vconf_get_bool(VCONFKEY_SETAPPL_USE_SHAKE, &vconf_value);
-	if(vconf_value != 1)
+	vconf_get_bool(VCONFKEY_SETAPPL_USE_SHAKE, &motion_activated);
+	if(motion_activated != 1)
 		return;
 
-	HEADER_MODES header_mode = viewer_manager_header_mode_get();
+	current_state = viewer_manager_header_mode_get();
 
-	switch(header_mode) {
+	switch(current_state) {
 	case HEADER_MODE_OFF:
 		power_control();
-		viewer_manager_show(VIEWER_WINSET_SEARCHING);
 		break;
+
 	case HEADER_MODE_ON:
 	case HEADER_MODE_CONNECTED:
-		if (WLAN_MANAGER_ERR_NONE == wlan_manager_request_scan()) {
-			viewer_manager_show(VIEWER_WINSET_SEARCHING);
-			viewer_manager_header_mode_set(HEADER_MODE_SEARCHING);
+		viewer_manager_show(VIEWER_WINSET_SEARCHING);
+		viewer_manager_header_mode_set(HEADER_MODE_SEARCHING);
+
+		scan_result = wlan_manager_scan();
+		if (scan_result != WLAN_MANAGER_ERR_NONE) {
+			viewer_manager_hide(VIEWER_WINSET_SEARCHING);
+			viewer_manager_header_mode_set(current_state);
 		}
 		break;
+
 	default:
 		break;
 	}

@@ -8,7 +8,7 @@ msgid "IDS_WIFI_BODY_STATIC_IP"
 msgstr "Statisk IP"
 
 msgid "IDS_WIFI_POP_ACTIVATING_WI_FI_ING"
-msgstr "Aktiverer Wi-Fi..."
+msgstr "Aktiverer Wi-Fi ..."
 
 msgid "IDS_WIFI_SK_FORGET"
 msgstr "Glem"
@@ -68,7 +68,7 @@ msgid "IDS_WIFI_HEADER_HIDDEN_NETWORK"
 msgstr "Skjult netværk"
 
 msgid "IDS_WIFI_POP_DEACTIVATING_WI_FI_ING"
-msgstr "Deaktiverer Wi-Fi..."
+msgstr "Deaktiverer Wi-Fi ..."
 
 msgid "IDS_WIFI_POP_SEARCHING_ING"
 msgstr "Søger ..."
@@ -128,7 +128,7 @@ msgid "IDS_WIFI_BODY_SECURITYTYPE_WEP"
 msgstr "WEP"
 
 msgid "IDS_ST_POP_DEACTIVATING_ING"
-msgstr "Deaktiverer..."
+msgstr "Deaktiverer ..."
 
 msgid "IDS_WIFI_BODY_CONFIGURATION_NO_SECURITY"
 msgstr "Ingen sikkerhed"
@@ -191,7 +191,7 @@ msgid "IDS_ST_BODY_PRESS_WPS_ON_YOUR_WI_FI_ACCESS_POINT_WITHIN_2_MINUTES"
 msgstr "Tryk på WPS på dit Wi-Fi-adgangspunkt inden for 2 minutter"
 
 msgid "IDS_WIFI_BUTTON_CANCEL"
-msgstr "Annuller"
+msgstr "Annullér"
 
 msgid "IDS_WIFI_BODY_SSID"
 msgstr "SSID"
@@ -204,4 +204,7 @@ msgstr "Angiv adgangskode"
 
 msgid "IDS_WIFI_BODY_NOTIFY_WHEN_WI_FI_NETWORK_IS_FOUND"
 msgstr "Giv mig besked, når der er fundet et Wi-Fi-netværk"
+
+msgid "IDS_ST_BODY_HUNCHANGED"
+msgstr "(uændret)"
 

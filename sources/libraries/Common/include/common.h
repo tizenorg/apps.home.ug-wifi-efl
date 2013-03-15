@@ -54,9 +54,18 @@ extern "C"
 	"WEP requires 5, 10, 13, 26 letters for a password.<br>Please, check your input."
 #define WPA_WRONG_PASSWORD_LEN_ERR_MSG_STR \
 	"WPA2 requires 8 - 63 letters for a password.<br>Please, check your input."
-#define FIND_HIDDEN_NETWORK_STR					"Find hidden network"
-#define SCREEN_TYPE_ID_KEY						"screen_type_id_key"
-#define INVALID_PASSWORD						"Your password might be invalid"
+#define WIFI_TETHERING_FAILED_STR \
+	"Wi-Fi tethering enabled. Will you turn Wi-Fi tethering off?"
+#define OPEN_HIDDEN_NETWORK_STR			"Wi-Fi network detected. Connect?"
+#define FIND_HIDDEN_NETWORK_STR			"Find hidden network"
+#define SCREEN_TYPE_ID_KEY				"screen_type_id_key"
+#define INVALID_PASSWORD				"Your password might be invalid"
+
+/* Syspopup height for portrait mode*/
+#define DEVICE_PICKER_POPUP_H		880
+
+/* Syspopup height for landscape mode */
+#define DEVICE_PICKER_POPUP_LN_H		480
 
 typedef enum {
 	VIEW_MANAGER_VIEW_TYPE_MAIN,
@@ -79,6 +88,20 @@ typedef enum {
 	SLOG(LOG_WARN, MID, "\033[43m[%s:%d]\033[0m\033[33m " format "\033[0m", __func__, __LINE__, ##args)
 #define ERROR_LOG(MID, format, args...) \
 	SLOG(LOG_ERROR, MID, "\033[41m[%s:%d]\033[0m\033[31m " format "\033[0m", __func__, __LINE__, ##args)
+
+#define retm_if(expr) do { \
+	if (expr) { \
+		ERROR_LOG(COMMON_NAME_ERR, "[%s(): %d] (%s) [return]", __FUNCTION__, __LINE__, #expr); \
+		return; \
+	} \
+} while (0)
+
+#define retvm_if(expr, val) do { \
+	if (expr) { \
+		ERROR_LOG(COMMON_NAME_ERR, "[%s(): %d] (%s) [return]", __FUNCTION__, __LINE__, #expr); \
+		return (val); \
+	} \
+} while (0)
 
 #define assertm_if(expr, fmt, arg...) do { \
 	if(expr) { \

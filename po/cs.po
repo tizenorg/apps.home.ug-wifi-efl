@@ -205,3 +205,6 @@ msgstr "Zadejte heslo"
 msgid "IDS_WIFI_BODY_NOTIFY_WHEN_WI_FI_NETWORK_IS_FOUND"
 msgstr "Upozornit při nalezení sítě Wi-Fi"
 
+msgid "IDS_ST_BODY_HUNCHANGED"
+msgstr "(nezměněno)"
+

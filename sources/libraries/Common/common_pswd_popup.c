@@ -152,7 +152,7 @@ static Eina_Bool _enable_scan_updates_cb(void *data)
 	return ECORE_CALLBACK_CANCEL;
 }
 
-void common_pswd_popup_pbc_popup_create(pswd_popup_t *pswd_popup_data, Evas_Smart_Cb cancel_cb, void *cancel_cb_data)
+void create_pbc_popup(pswd_popup_t *pswd_popup_data, Evas_Smart_Cb cancel_cb, void *cancel_cb_data)
 {
 	if (!pswd_popup_data) {
 		return;
@@ -227,7 +227,8 @@ void common_pswd_popup_pbc_popup_create(pswd_popup_t *pswd_popup_data, Evas_Smar
 	return;
 }
 
-pswd_popup_t *common_pswd_popup_create(Evas_Object *win_main, const char *pkg_name, pswd_popup_create_req_data_t *popup_info)
+pswd_popup_t *create_passwd_popup(Evas_Object *win_main,
+		const char *pkg_name, pswd_popup_create_req_data_t *popup_info)
 {
 	__COMMON_FUNC_ENTER__;
 
@@ -237,8 +238,10 @@ pswd_popup_t *common_pswd_popup_create(Evas_Object *win_main, const char *pkg_na
 	pswd_popup_t *pswd_popup_data = g_new0(pswd_popup_t, 1);
 
 	if (popup_info->ap) {
-		if (WIFI_ERROR_NONE != wifi_ap_clone(&(pswd_popup_data->ap), popup_info->ap)) {
+		if (WIFI_ERROR_NONE !=
+				wifi_ap_clone(&(pswd_popup_data->ap), popup_info->ap)) {
 			g_free(pswd_popup_data);
+
 			return NULL;
 		}
 	} else {
@@ -247,8 +250,9 @@ pswd_popup_t *common_pswd_popup_create(Evas_Object *win_main, const char *pkg_na
 	/* Lets disable the scan updates so that the UI is not refreshed un necessarily */
 	wlan_manager_disable_scan_result_update();
 
-	popup_btn_info_t	popup_btn_data;
+	popup_btn_info_t popup_btn_data;
 	memset(&popup_btn_data, 0, sizeof(popup_btn_data));
+
 	popup_btn_data.title_txt = popup_info->title;
 	popup_btn_data.btn1_cb = popup_info->ok_cb;
 	popup_btn_data.btn1_data = popup_info->cb_data;
@@ -257,6 +261,11 @@ pswd_popup_t *common_pswd_popup_create(Evas_Object *win_main, const char *pkg_na
 	popup_btn_data.btn1_txt = sc(pkg_name, I18N_TYPE_Ok);
 	popup_btn_data.btn2_txt = sc(pkg_name, I18N_TYPE_Cancel);
 	Evas_Object *passpopup = common_utils_show_info_popup(win_main, &popup_btn_data);
+
+	Evas_Object *eo = elm_layout_edje_get(passpopup);
+	const Evas_Object *po = edje_object_part_object_get(eo, "elm.text.title");
+	Evas_Object *ao = elm_access_object_get(po);
+	elm_access_info_set(ao, ELM_ACCESS_INFO, popup_info->title);
 
 	Evas_Object *box = elm_box_add(passpopup);
 	evas_object_size_hint_weight_set(box, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
@@ -279,12 +288,17 @@ pswd_popup_t *common_pswd_popup_create(Evas_Object *win_main, const char *pkg_na
 	elm_object_part_content_set(entry_ly, "elm.swallow.content", entry);
 
 	limit_filter_data.max_char_count = 32;
-	elm_entry_markup_filter_append(entry, elm_entry_filter_limit_size, &limit_filter_data);
+	elm_entry_markup_filter_append(entry,
+			elm_entry_filter_limit_size, &limit_filter_data);
 
-	evas_object_smart_callback_add(entry, "changed", __popup_entry_changed_cb, entry_ly);
-	evas_object_smart_callback_add(entry, "focused", __popup_entry_focused_cb, entry_ly);
-	evas_object_smart_callback_add(entry, "unfocused", __popup_entry_unfocused_cb, entry_ly);
-	elm_object_signal_callback_add(entry_ly, "elm,eraser,clicked", "elm", __popup_eraser_clicked_cb, entry);
+	evas_object_smart_callback_add(entry, "changed",
+			__popup_entry_changed_cb, entry_ly);
+	evas_object_smart_callback_add(entry, "focused",
+			__popup_entry_focused_cb, entry_ly);
+	evas_object_smart_callback_add(entry, "unfocused",
+			__popup_entry_unfocused_cb, entry_ly);
+	elm_object_signal_callback_add(entry_ly, "elm,eraser,clicked",
+			"elm", __popup_eraser_clicked_cb, entry);
 	evas_object_show(entry);
 
 	elm_entry_password_set(entry, EINA_TRUE);
@@ -310,7 +324,8 @@ pswd_popup_t *common_pswd_popup_create(Evas_Object *win_main, const char *pkg_na
 		evas_object_size_hint_align_set(btn,
 				EVAS_HINT_FILL,
 				EVAS_HINT_FILL);
-		evas_object_smart_callback_add(btn, "clicked", popup_info->wps_btn_cb, popup_info->cb_data);
+		evas_object_smart_callback_add(btn, "clicked",
+				popup_info->wps_btn_cb, popup_info->cb_data);
 		elm_box_pack_end(box, btn);
 		evas_object_show(btn);
 	}
@@ -324,19 +339,19 @@ pswd_popup_t *common_pswd_popup_create(Evas_Object *win_main, const char *pkg_na
 	elm_object_focus_set(entry, EINA_TRUE);
 
 	__COMMON_FUNC_EXIT__;
-
 	return pswd_popup_data;
 }
 
-char *common_pswd_popup_get_txt(pswd_popup_t *pswd_popup_data)
+char *passwd_popup_get_txt(pswd_popup_t *pswd_popup_data)
 {
 	if (pswd_popup_data)
-		return common_utils_entry_layout_get_text(pswd_popup_data->popup_entry_lyt);
+		return common_utils_entry_layout_get_text(
+					pswd_popup_data->popup_entry_lyt);
 
 	return NULL;
 }
 
-wifi_ap_h common_pswd_popup_get_ap(pswd_popup_t *pswd_popup_data)
+wifi_ap_h passwd_popup_get_ap(pswd_popup_t *pswd_popup_data)
 {
 	if (pswd_popup_data)
 		return pswd_popup_data->ap;
@@ -344,22 +359,25 @@ wifi_ap_h common_pswd_popup_get_ap(pswd_popup_t *pswd_popup_data)
 	return NULL;
 }
 
-void common_pswd_popup_destroy(pswd_popup_t *pswd_popup_data)
+void passwd_popup_free(pswd_popup_t *pswd_popup_data)
 {
-	if (pswd_popup_data) {
-		if (pswd_popup_data->pbc_popup_data) {
-			__common_pbc_popup_destroy(pswd_popup_data->pbc_popup_data);
-			pswd_popup_data->pbc_popup_data = NULL;
-		}
-		evas_object_hide(pswd_popup_data->popup);
-		evas_object_del(pswd_popup_data->popup);
-		pswd_popup_data->popup = NULL;
-		pswd_popup_data->popup_entry_lyt = NULL;
-		wifi_ap_destroy(pswd_popup_data->ap);
-		g_free(pswd_popup_data);
+	if (pswd_popup_data == NULL)
+		return;
 
-		/* A delay is needed to get the smooth Input panel closing animation effect */
-		ecore_timer_add(0.1, _enable_scan_updates_cb, NULL);
+	if (pswd_popup_data->pbc_popup_data) {
+		__common_pbc_popup_destroy(pswd_popup_data->pbc_popup_data);
+		pswd_popup_data->pbc_popup_data = NULL;
 	}
-	return;
+
+	evas_object_hide(pswd_popup_data->popup);
+	evas_object_del(pswd_popup_data->popup);
+	pswd_popup_data->popup = NULL;
+	pswd_popup_data->popup_entry_lyt = NULL;
+
+	wifi_ap_destroy(pswd_popup_data->ap);
+
+	g_free(pswd_popup_data);
+
+	/* A delay is needed to get the smooth Input panel closing animation effect */
+	ecore_timer_add(0.1, _enable_scan_updates_cb, NULL);
 }

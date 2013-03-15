@@ -205,3 +205,6 @@ msgstr "Saisir le mot de passe"
 msgid "IDS_WIFI_BODY_NOTIFY_WHEN_WI_FI_NETWORK_IS_FOUND"
 msgstr "M'avertir lorsqu'un réseau Wi-Fi est détecté"
 
+msgid "IDS_ST_BODY_HUNCHANGED"
+msgstr "(aucune modification)"
+

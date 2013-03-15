@@ -14,18 +14,18 @@ FOREACH(pofile ${POFILES})
 	GET_FILENAME_COMPONENT(lang ${absPofile} NAME_WE)
 	SET(moFile ${CMAKE_CURRENT_BINARY_DIR}/${lang}.mo)
 	ADD_CUSTOM_COMMAND(
-			OUTPUT ${moFile}
-			COMMAND ${MSGFMT} -o ${moFile} ${absPofile}
-			DEPENDS ${absPofile}
+		OUTPUT ${moFile}
+		COMMAND ${MSGFMT} -o ${moFile} ${absPofile}
+		DEPENDS ${absPofile}
 	)
 
 	# install for UG
 	INSTALL(FILES ${moFile}
-			DESTINATION /usr/ug/res/locale/${lang}/LC_MESSAGES RENAME ${WIFI_UG_PROJECT_NAME}.mo)
+		DESTINATION /usr/ug/res/locale/${lang}/LC_MESSAGES RENAME ${WIFI_UG_PROJECT_NAME}.mo)
 
 	# install for QS
 	INSTALL(FILES ${moFile}
-			DESTINATION /usr/share/locale/${lang}/LC_MESSAGES RENAME ${WIFI_QS_PROJECT_NAME}.mo)
+		DESTINATION /usr/share/locale/${lang}/LC_MESSAGES RENAME ${WIFI_QS_PROJECT_NAME}.mo)
 
 	SET(moFiles ${moFiles} ${moFile})
 ENDFOREACH(pofile)

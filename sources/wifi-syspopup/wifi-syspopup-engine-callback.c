@@ -24,6 +24,7 @@
 #include "view-main.h"
 #include "view-alerts.h"
 #include "common_utils.h"
+#include "wlan_connection.h"
 #include "wifi-syspopup-engine-callback.h"
 
 extern wifi_object* syspopup_app_state;
@@ -61,7 +62,7 @@ void wlan_engine_callback(wlan_mgr_event_info_t *event_info, void *user_data)
 	case WLAN_MANAGER_RESPONSE_TYPE_CONNECTION_CONNECT_FAILED:
 	case WLAN_MANAGER_RESPONSE_TYPE_WPS_ENROLL_FAIL:
 		if (syspopup_app_state->passpopup) {
-			common_pswd_popup_destroy(syspopup_app_state->passpopup);
+			passwd_popup_free(syspopup_app_state->passpopup);
 			syspopup_app_state->passpopup = NULL;
 		}
 
@@ -73,8 +74,6 @@ void wlan_engine_callback(wlan_mgr_event_info_t *event_info, void *user_data)
 		break;
 
 	case WLAN_MANAGER_RESPONSE_TYPE_POWER_ON_OK:
-		connman_request_scan_mode_set(WIFI_BGSCAN_MODE_PERIODIC);
-
 		if (syspopup_app_state->syspopup_type == WIFI_SYSPOPUP_WITHOUT_AP_LIST)
 			wifi_syspopup_destroy();
 
@@ -86,7 +85,8 @@ void wlan_engine_callback(wlan_mgr_event_info_t *event_info, void *user_data)
 			syspopup_app_state->alertpopup = NULL;
 		}
 
-		common_utils_send_message_to_net_popup("Network connection popup", "not support", "notification", NULL);
+		common_utils_send_message_to_net_popup("Network connection popup",
+				"not support", "notification", NULL);
 		wifi_syspopup_destroy();
 
 		break;
@@ -97,7 +97,8 @@ void wlan_engine_callback(wlan_mgr_event_info_t *event_info, void *user_data)
 			syspopup_app_state->alertpopup = NULL;
 		}
 
-		common_utils_send_message_to_net_popup("Network connection popup", "wifi restricted", "popup", NULL);
+		common_utils_send_message_to_net_popup("Network connection popup",
+				"wifi restricted", "popup", NULL);
 		wifi_syspopup_destroy();
 
 		break;
@@ -127,6 +128,7 @@ void wlan_engine_callback(wlan_mgr_event_info_t *event_info, void *user_data)
 		break;
 	}
 
+	wlan_validate_alt_connection();
 	__COMMON_FUNC_EXIT__;
 }
 

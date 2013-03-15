@@ -31,27 +31,21 @@ extern "C"
 #include "wlan_manager.h"
 
 typedef enum {
-	HEADER_MODE_OFF=0x01,
+	HEADER_MODE_OFF = 0x01,
 	HEADER_MODE_ON,
 	HEADER_MODE_ACTIVATING,
 	HEADER_MODE_CONNECTING,
 	HEADER_MODE_CONNECTED,
-	HEADER_MODE_DISCONNECTING,
 	HEADER_MODE_DEACTIVATING,
-	HEADER_MODE_CANCEL_CONNECTING,
 	HEADER_MODE_SEARCHING,
 	HEADER_MODE_MAX
 } HEADER_MODES;
 
 typedef enum {
-	VIEWER_ITEM_RADIO_MODE_OFF = 0,
+	VIEWER_ITEM_RADIO_MODE_OFF = 0x01,
 	VIEWER_ITEM_RADIO_MODE_CONNECTED,
 	VIEWER_ITEM_RADIO_MODE_CONNECTING,
-	VIEWER_ITEM_RADIO_MODE_CANCEL_CONNECTING,
-	VIEWER_ITEM_RADIO_MODE_WPS_CONNECTING,
-	VIEWER_ITEM_RADIO_MODE_DISCONNECTING,
 	VIEWER_ITEM_RADIO_MODE_MAX
-
 } VIEWER_ITEM_RADIO_MODES;
 
 typedef enum {
@@ -59,24 +53,25 @@ typedef enum {
 	VIEWER_WINSET_SUB_CONTENTS
 } VIEWER_WINSETS;
 
-Evas_Object* viewer_manager_create(Evas_Object* parent);
-Eina_Bool viewer_manager_destroy();
+Evas_Object *viewer_manager_create(Evas_Object *parent);
+Eina_Bool viewer_manager_destroy(void);
 Eina_Bool viewer_manager_show(VIEWER_WINSETS winset);
 Eina_Bool viewer_manager_hide(VIEWER_WINSETS winset);
 Eina_Bool viewer_manager_refresh(void);
 
-int power_control();
+void power_control(void);
 
-int viewer_manager_hidden_disable_set(int mode);
-Evas_Object *viewer_manager_get_naviframe();
-int viewer_manager_header_mode_set(HEADER_MODES mode);
+void viewer_manager_update_hidden_btn(void);
+Evas_Object *viewer_manager_get_naviframe(void);
+
+void viewer_manager_header_mode_set(HEADER_MODES new_mode);
 HEADER_MODES viewer_manager_header_mode_get(void);
-void viewer_manager_scroll_to_top(void);
+
 Elm_Object_Item *viewer_manager_move_item_to_top(Elm_Object_Item *item);
-void viewer_manager_specific_scan_response_hlr(
-								GSList *bss_info_list, void *user_data);
-void viewer_manager_update_ap_handle(Elm_Object_Item *item, wifi_ap_h ap);
-void viewer_manager_update_connected_ap_sig_str(void);
+void viewer_manager_specific_scan_response_hlr(GSList *bss_info_list,
+		void *user_data);
+void viewer_manager_refresh_ap_info(Elm_Object_Item *item);
+void viewer_manager_update_rssi(void);
 
 #ifdef __cplusplus
 }

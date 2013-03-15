@@ -11,7 +11,7 @@ msgid "IDS_WIFI_POP_ACTIVATING_WI_FI_ING"
 msgstr "Activando Wi-Fi..."
 
 msgid "IDS_WIFI_SK_FORGET"
-msgstr "Cancelar"
+msgstr "Olvidar"
 
 msgid "IDS_WIFI_BODY_IP_ADDRESS"
 msgstr "Dirección IP"
@@ -204,4 +204,7 @@ msgstr "Introducir contraseña"
 
 msgid "IDS_WIFI_BODY_NOTIFY_WHEN_WI_FI_NETWORK_IS_FOUND"
 msgstr "Notificar cuando se encuentre una red Wi-Fi"
+
+msgid "IDS_ST_BODY_HUNCHANGED"
+msgstr "(sin modificar)"
 

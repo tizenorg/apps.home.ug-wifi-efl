@@ -77,10 +77,10 @@ typedef struct {
 	char *rbutton_setup_wizard_next;
 	char *rbutton_setup_wizard_skip;
 	popup_manager_object_t *popup_manager;
-	common_eap_connect_data_t *eap_view;
+	eap_connect_data_t *eap_view;
 } wifi_appdata ;
 
-int wifi_exit();
+int wifi_exit(void);
 
 #ifdef __cplusplus
 }

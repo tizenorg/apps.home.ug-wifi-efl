@@ -30,6 +30,7 @@ static struct _wifi_cb_s wifi_callbacks = {0,};
 int wifi_set_specific_scan_cb(wifi_specific_scan_finished_cb cb, void *data)
 {
 	__COMMON_FUNC_ENTER__;
+
 	if (!cb) {
 		__COMMON_FUNC_EXIT__;
 		return WIFI_ERROR_INVALID_PARAMETER;
@@ -37,14 +38,15 @@ int wifi_set_specific_scan_cb(wifi_specific_scan_finished_cb cb, void *data)
 
 	wifi_callbacks.specific_scan_cb = cb;
 	wifi_callbacks.specific_scan_user_data = data;
-	__COMMON_FUNC_EXIT__;
 
+	__COMMON_FUNC_EXIT__;
 	return WIFI_ERROR_NONE;
 }
 
 int wifi_unset_specific_scan_cb(void)
 {
 	__COMMON_FUNC_ENTER__;
+
 	if (wifi_callbacks.specific_scan_cb == NULL) {
 		__COMMON_FUNC_EXIT__;
 		return WIFI_ERROR_INVALID_OPERATION;
@@ -52,40 +54,49 @@ int wifi_unset_specific_scan_cb(void)
 
 	wifi_callbacks.specific_scan_cb = NULL;
 	wifi_callbacks.specific_scan_user_data = NULL;
-	__COMMON_FUNC_EXIT__;
 
+	__COMMON_FUNC_EXIT__;
 	return WIFI_ERROR_NONE;
 }
 
-void network_evt_cb(const net_event_info_t* net_event, void* user_data)
+void network_evt_cb(const net_event_info_t *net_event, void *user_data)
 {
 	__COMMON_FUNC_ENTER__;
 
 	switch (net_event->Event) {
-		case NET_EVENT_SPECIFIC_SCAN_RSP:
-			INFO_LOG(COMMON_NAME_LIB, "Callback - NET_EVENT_SPECIFIC_SCAN_RSP");
-			if (net_event->Error != NET_ERR_NONE) {
-				if (wifi_callbacks.specific_scan_cb)
-					wifi_callbacks.specific_scan_cb(WIFI_ERROR_OPERATION_FAILED, NULL, wifi_callbacks.specific_scan_user_data);
-				else
-					ERROR_LOG(COMMON_NAME_LIB, "Specific scan cb is not set !!!");
-			} else {
-				INFO_LOG(COMMON_NAME_LIB, "Successfully sent the specific scan request");
-			}
-			break;
-		case NET_EVENT_SPECIFIC_SCAN_IND:
-			INFO_LOG(COMMON_NAME_LIB, "Callback - NET_EVENT_SPECIFIC_SCAN_IND");
-			if (!wifi_callbacks.specific_scan_cb) {
-				ERROR_LOG(COMMON_NAME_LIB, "Specific scan cb is not set !!!");
-			} else if (net_event->Error != NET_ERR_NONE) {
-				wifi_callbacks.specific_scan_cb(WIFI_ERROR_OPERATION_FAILED, NULL, wifi_callbacks.specific_scan_user_data);
-			} else {
-				wifi_callbacks.specific_scan_cb(WIFI_ERROR_NONE, net_event->Data, wifi_callbacks.specific_scan_user_data);
-			}
-			break;
-		default:
-			INFO_LOG(COMMON_NAME_LIB, "Callback - %d", net_event->Event);
-			break;
+	case NET_EVENT_SPECIFIC_SCAN_RSP:
+		INFO_LOG(COMMON_NAME_LIB, "NET_EVENT_SPECIFIC_SCAN_RSP");
+
+		if (wifi_callbacks.specific_scan_cb) {
+			if (net_event->Error != NET_ERR_NONE)
+				wifi_callbacks.specific_scan_cb(
+						WIFI_ERROR_OPERATION_FAILED,
+						NULL,
+						wifi_callbacks.specific_scan_user_data);
+			else
+				INFO_LOG(COMMON_NAME_LIB, "Specific scan request successful");
+		} else {
+			ERROR_LOG(COMMON_NAME_LIB, "Specific scan cb is not set !!!");
+		}
+		break;
+
+	case NET_EVENT_SPECIFIC_SCAN_IND:
+		INFO_LOG(COMMON_NAME_LIB, "SSID scan results");
+
+		if (wifi_callbacks.specific_scan_cb) {
+			if (net_event->Error == NET_ERR_NONE)
+				wifi_callbacks.specific_scan_cb(WIFI_ERROR_NONE,
+						net_event->Data,
+						wifi_callbacks.specific_scan_user_data);
+			else
+				wifi_callbacks.specific_scan_cb(WIFI_ERROR_OPERATION_FAILED,
+						NULL,
+						wifi_callbacks.specific_scan_user_data);
+		}
+		break;
+
+	default:
+		break;
 	}
 
 	__COMMON_FUNC_EXIT__;

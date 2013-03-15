@@ -156,23 +156,27 @@ void view_hidden_ap_popup_destroy(hiddep_ap_popup_data_t *popup_data)
 
 	/* A delay is needed to get the smooth Input panel closing animation effect */
 	ecore_timer_add(0.1, _enable_scan_updates_cb, NULL);
-
-	return;
 }
 
-static void view_hidden_ap_popup_ok_cb(void *data, Evas_Object *obj, void *event_info)
+static void view_hidden_ap_popup_ok_cb(
+		void *data, Evas_Object *obj, void *event_info)
 {
 	hiddep_ap_popup_data_t *popup_data = (hiddep_ap_popup_data_t *)data;
-	char *entry_txt = common_utils_entry_layout_get_text(popup_data->popup_entry_lyt);
-	if (WLAN_MANAGER_ERR_NONE != wlan_manager_request_specific_scan(entry_txt, entry_txt)) {
+
+	char *entry_txt = common_utils_entry_layout_get_text(
+									popup_data->popup_entry_lyt);
+
+	if (WLAN_MANAGER_ERR_NONE != wlan_manager_scan_with_ssid(entry_txt, entry_txt)) {
 		char *disp_msg = g_strdup_printf("Unable to find %s", entry_txt);
+
 		common_utils_show_info_ok_popup(popup_data->win, popup_data->str_pkg_name, disp_msg);
+
 		g_free(disp_msg);
 		g_free(entry_txt);
+
 		view_hidden_ap_popup_destroy(popup_data);
 	} else {
-
-		/* Show progress idication popup */
+		/* Show progress indication popup */
 		popup_data->progress_popup = common_utils_show_info_ok_popup(popup_data->win, popup_data->str_pkg_name, "Please Wait...");
 
 		evas_object_del(popup_data->popup);
@@ -181,15 +185,14 @@ static void view_hidden_ap_popup_ok_cb(void *data, Evas_Object *obj, void *event
 		/* A delay is needed to get the smooth Input panel closing animation effect */
 		ecore_timer_add(0.1, _enable_scan_updates_cb, NULL);
 	}
-
-	return;
 }
 
 static void view_hidden_ap_popup_cancel_cb(void *data, Evas_Object *obj, void *event_info)
 {
-	hiddep_ap_popup_data_t *hidden_ap_popup_data = (hiddep_ap_popup_data_t *)data;
+	hiddep_ap_popup_data_t *hidden_ap_popup_data;
+
+	hidden_ap_popup_data = (hiddep_ap_popup_data_t *)data;
 	view_hidden_ap_popup_destroy(hidden_ap_popup_data);
-	return;
 }
 
 static Eina_Bool _enable_scan_updates_cb(void *data)

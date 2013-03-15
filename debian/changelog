@@ -1,3 +1,243 @@
+wifi-efl-ug (0.5.2-1) precise; urgency=low
+
+  * Update for SR
+  * Git: magnolia/apps/home/ug-wifi-efl
+  * Tag: wifi-efl-ug_0.5.2-1
+
+ -- sunil85.kim <isurit@sunil85.kim>  Thu, 14 Mar 2013 15:59:00 +0900
+
+wifi-efl-ug (0.5.1-60) precise; urgency=low
+
+  * Set the filter for proxy address
+  * Git: magnolia/apps/home/ug-wifi-efl
+  * Tag: wifi-efl-ug_0.5.1-60
+
+ -- sunil85.kim <isurit@sunil85.kim>  Fri, 08 Mar 2013 14:01:50 +0900
+
+wifi-efl-ug (0.5.1-59) precise; urgency=low
+
+  * Disable the header item when pressed in activating / deactivating state
+  * Git: magnolia/apps/home/ug-wifi-efl
+  * Tag: wifi-efl-ug_0.5.1-59
+
+ -- sunil85.kim <isurit@sunil85.kim>  Fri, 08 Mar 2013 12:14:50 +0900
+
+wifi-efl-ug (0.5.1-58) precise; urgency=low
+
+  * Wi-Fi device state change not handled in Wi-Fi UG
+  * Git: magnolia/apps/home/ug-wifi-efl
+  * Tag: wifi-efl-ug_0.5.1-58
+
+ -- sunil85.kim <isurit@sunil85.kim>  Fri, 08 Mar 2013 11:20:48 +0900
+
+wifi-efl-ug (0.5.1-57) precise; urgency=low
+
+  * SMACK rule updated
+  * Git: magnolia/apps/home/ug-wifi-efl
+  * Tag: wifi-efl-ug_0.5.1-57
+
+ -- sunil85.kim <isurit@sunil85.kim>  Fri, 08 Mar 2013 11:12:44 +0900
+
+wifi-efl-ug (0.5.1-56) precise; urgency=low
+
+  * While we are connected to any WiFi network, front under highlight is blue
+  * Git: magnolia/apps/home/ug-wifi-efl
+  * Tag: wifi-efl-ug_0.5.1-56
+
+ -- sunil85.kim <isurit@sunil85.kim>  Fri, 08 Mar 2013 09:22:05 +0900
+
+wifi-efl-ug (0.5.1-55) precise; urgency=low
+
+  * Fix width adjustment in syspopup during screen rotation
+  * Git: magnolia/apps/home/ug-wifi-efl
+  * Tag: wifi-efl-ug_0.5.1-55
+
+ -- sunil85.kim <isurit@sunil85.kim>  Thu, 07 Mar 2013 11:48:26 +0900
+
+wifi-efl-ug (0.5.1-54) precise; urgency=low
+
+  * Add safe checks with error logging macro
+  * Git: magnolia/apps/home/ug-wifi-efl
+  * Tag: wifi-efl-ug_0.5.1-54
+
+ -- sunil85.kim <isurit@sunil85.kim>  Thu, 07 Mar 2013 11:36:55 +0900
+
+wifi-efl-ug (0.5.1-53) precise; urgency=low
+
+  * Avoid callback duplicates for EAP field entries to fix navi title issue
+  * Git: magnolia/apps/home/ug-wifi-efl
+  * Tag: wifi-efl-ug_0.5.1-53
+
+ -- sunil85.kim <isurit@sunil85.kim>  Thu, 07 Mar 2013 11:07:58 +0900
+
+wifi-efl-ug (0.5.1-52) precise; urgency=low
+
+  * Add safe check to avoid dereferencing NULL pointer
+  * Git: magnolia/apps/home/ug-wifi-efl
+  * Tag: wifi-efl-ug_0.5.1-52
+
+ -- sunil85.kim <isurit@sunil85.kim>  Thu, 07 Mar 2013 09:48:48 +0900
+
+wifi-efl-ug (0.5.1-51) precise; urgency=low
+
+  * Update image files for signal icons
+  * Git: magnolia/apps/home/ug-wifi-efl
+  * Tag: wifi-efl-ug_0.5.1-51
+
+ -- sunil85.kim <isurit@sunil85.kim>  Wed, 06 Mar 2013 20:14:41 +0900
+
+wifi-efl-ug (0.5.1-50) precise; urgency=low
+
+  * Fix ug crash when clicked power on/off item
+  * Git: magnolia/apps/home/ug-wifi-efl
+  * Tag: wifi-efl-ug_0.5.1-50
+
+ -- sunil85.kim <isurit@sunil85.kim>  Wed, 06 Mar 2013 20:02:57 +0900
+
+wifi-efl-ug (0.5.1-49) precise; urgency=low
+
+  * Apply changable icon in ap list whether item is highlight or not
+  * Git: magnolia/apps/home/ug-wifi-efl
+  * Tag: wifi-efl-ug_0.5.1-49
+
+ -- sunil85.kim <isurit@sunil85.kim>  Wed, 06 Mar 2013 19:46:52 +0900
+
+wifi-efl-ug (0.5.1-48) precise; urgency=low
+
+  * SMACK rules updated
+  * Git: magnolia/apps/home/ug-wifi-efl
+  * Tag: wifi-efl-ug_0.5.1-48
+
+ -- sunil85.kim <isurit@sunil85.kim>  Wed, 06 Mar 2013 19:05:07 +0900
+
+wifi-efl-ug (0.5.1-47) precise; urgency=low
+
+  * Fix UI lockup issue related to back button in EAP connect screen
+  * Git: magnolia/apps/home/ug-wifi-efl
+  * Tag: wifi-efl-ug_0.5.1-47
+
+ -- sunil85.kim <isurit@sunil85.kim>  Wed, 06 Mar 2013 15:56:28 +0900
+
+wifi-efl-ug (0.5.1-46) precise; urgency=low
+
+  * Show QS popup after pwlock is unlocked during boot
+  * Git: magnolia/apps/home/ug-wifi-efl
+  * Tag: wifi-efl-ug_0.5.1-46
+
+ -- sunil85.kim <isurit@sunil85.kim>  Wed, 06 Mar 2013 15:46:51 +0900
+
+wifi-efl-ug (0.5.1-45) precise; urgency=low
+
+  * Make "connecting..." text only on receiving the connecting state change indi
+  * Git: magnolia/apps/home/ug-wifi-efl
+  * Tag: wifi-efl-ug_0.5.1-45
+
+ -- sunil85.kim <isurit@sunil85.kim>  Wed, 06 Mar 2013 15:30:59 +0900
+
+wifi-efl-ug (0.5.1-44) precise; urgency=low
+
+  * Update 'Find hidden network' option as a button and not genlist item
+  * Git: magnolia/apps/home/ug-wifi-efl
+  * Tag: wifi-efl-ug_0.5.1-44
+
+ -- sunil85.kim <isurit@sunil85.kim>  Wed, 06 Mar 2013 15:09:53 +0900
+
+wifi-efl-ug (0.5.1-43) precise; urgency=low
+
+  * Handle the specific scan responses properly
+  * Git: magnolia/apps/home/ug-wifi-efl
+  * Tag: wifi-efl-ug_0.5.1-43
+
+ -- sunil85.kim <isurit@sunil85.kim>  Wed, 06 Mar 2013 12:06:29 +0900
+
+wifi-efl-ug (0.5.1-42) precise; urgency=low
+
+  * Apply screen reader feature
+  * Git: magnolia/apps/home/ug-wifi-efl
+  * Tag: wifi-efl-ug_0.5.1-42
+
+ -- sunil85.kim <isurit@sunil85.kim>  Tue, 05 Mar 2013 20:15:07 +0900
+
+wifi-efl-ug (0.5.1-41) precise; urgency=low
+
+  * First draft of Wi-Fi alternative connection support
+  * Git: magnolia/apps/home/ug-wifi-efl
+  * Tag: wifi-efl-ug_0.5.1-41
+
+ -- sunil85.kim <isurit@sunil85.kim>  Tue, 05 Mar 2013 14:09:23 +0900
+
+wifi-efl-ug (0.5.1-40) precise; urgency=low
+
+  * First draft of Wi-Fi alternative connection support
+  * Git: magnolia/apps/home/ug-wifi-efl
+  * Tag: wifi-efl-ug_0.5.1-40
+
+ -- sunil85.kim <isurit@sunil85.kim>  Tue, 05 Mar 2013 12:24:56 +0900
+
+wifi-efl-ug (0.5.1-39) precise; urgency=low
+
+  * Fit the modification of libnet-client
+  * Git: magnolia/apps/home/ug-wifi-efl
+  * Tag: wifi-efl-ug_0.5.1-39
+
+ -- sunil85.kim <isurit@sunil85.kim>  Mon, 04 Mar 2013 19:33:06 +0900
+
+wifi-efl-ug (0.5.1-38) precise; urgency=low
+
+  * Fix UT Bug
+  * Git: magnolia/apps/home/ug-wifi-efl
+  * Tag: wifi-efl-ug_0.5.1-38
+
+ -- sunil85.kim <isurit@sunil85.kim>  Mon, 04 Mar 2013 16:24:54 +0900
+
+wifi-efl-ug (0.5.1-37) precise; urgency=low
+
+  * Apply Naviframe Title Slide Mode
+  * Git: magnolia/apps/home/ug-wifi-efl
+  * Tag: wifi-efl-ug_0.5.1-37
+
+ -- sunil85.kim <isurit@sunil85.kim>  Mon, 04 Mar 2013 15:18:24 +0900
+
+wifi-efl-ug (0.5.1-36) precise; urgency=low
+
+  * modify domain name in manifest file
+  * Git: magnolia/apps/home/ug-wifi-efl
+  * Tag: wifi-efl-ug_0.5.1-36
+
+ -- sunil85.kim <isurit@sunil85.kim>  Thu, 28 Feb 2013 10:39:06 +0900
+
+wifi-efl-ug (0.5.1-35) precise; urgency=low
+
+  * Wi-Fi lists might be better to be updated at maximum delayed
+  * Git: magnolia/apps/home/ug-wifi-efl
+  * Tag: wifi-efl-ug_0.5.1-35
+
+ -- sunil85.kim <isurit@sunil85.kim>  Tue, 26 Feb 2013 17:33:51 +0900
+
+wifi-efl-ug (0.5.1-34) precise; urgency=low
+
+  * Modify guide text of password field in EAP detail view
+  * Git: magnolia/apps/home/ug-wifi-efl
+  * Tag: wifi-efl-ug_0.5.1-34
+
+ -- sunil85.kim <isurit@sunil85.kim>  Tue, 26 Feb 2013 15:05:38 +0900
+
+wifi-efl-ug (0.5.1-33) precise; urgency=low
+
+  * [N_SE-25618]Fix window resize bug
+  * Git: magnolia/apps/home/ug-wifi-efl
+  * Tag: wifi-efl-ug_0.5.1-33
+
+ -- sunil85.kim <isurit@sunil85.kim>  Fri, 22 Feb 2013 10:52:39 +0900
+
+wifi-efl-ug (0.5.1-32) precise; urgency=low
+
+  * Destroy Wi-Fi popup when lockscreen shown
+  * Git: magnolia/apps/home/ug-wifi-efl
+  * Tag: wifi-efl-ug_0.5.1-32
+
+ -- sunil85.kim <isurit@sunil85.kim>  Thu, 14 Feb 2013 17:26:47 +0900
+
 wifi-efl-ug (0.5.1-31) precise; urgency=low
 
   * [N_SE-3422] Bug fix

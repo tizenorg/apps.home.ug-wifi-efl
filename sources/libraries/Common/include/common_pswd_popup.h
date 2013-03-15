@@ -30,7 +30,7 @@ extern "C"
 
 typedef struct {
 	char *title;
-	Eina_Bool	show_wps_btn;
+	Eina_Bool show_wps_btn;
 	Evas_Smart_Cb ok_cb;
 	Evas_Smart_Cb cancel_cb;
 	Evas_Smart_Cb wps_btn_cb;
@@ -40,11 +40,15 @@ typedef struct {
 
 typedef struct pswd_popup pswd_popup_t;
 
-pswd_popup_t *common_pswd_popup_create(Evas_Object *win_main, const char *pkg_name, pswd_popup_create_req_data_t *popup_info);
-void common_pswd_popup_pbc_popup_create(pswd_popup_t *pswd_popup_data, Evas_Smart_Cb cancel_cb, void *cancel_cb_data);
-char *common_pswd_popup_get_txt(pswd_popup_t *pswd_popup_data);
-wifi_ap_h common_pswd_popup_get_ap(pswd_popup_t *pswd_popup_data);
-void common_pswd_popup_destroy(pswd_popup_t *pswd_popup_data);
+pswd_popup_t *create_passwd_popup(Evas_Object *win_main, const char *pkg_name,
+		pswd_popup_create_req_data_t *popup_info);
+void create_pbc_popup(pswd_popup_t *pswd_popup_data, Evas_Smart_Cb cancel_cb,
+		void *cancel_cb_data);
+
+void passwd_popup_free(pswd_popup_t *pswd_popup_data);
+
+char *passwd_popup_get_txt(pswd_popup_t *pswd_popup_data);
+wifi_ap_h passwd_popup_get_ap(pswd_popup_t *pswd_popup_data);
 
 #ifdef __cplusplus
 }

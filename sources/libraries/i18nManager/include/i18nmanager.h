@@ -98,6 +98,7 @@ typedef enum {
 	I18N_TYPE_Button_Cancel,
 	I18N_TYPE_Ssid,
 	I18N_TYPE_Find_Hidden_Network,
+	I18N_TYPE_Unchanged,
 
 /* etc */
 	I18N_TYPE_DNS_1,

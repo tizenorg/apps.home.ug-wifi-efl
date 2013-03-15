@@ -27,35 +27,33 @@ extern "C"
 
 #include "viewer_manager.h"
 
-//////// genlist struct data ////////////////////////////////////////////////////////////////////
 typedef struct {
 	wifi_device_info_t *device_info;
 	VIEWER_ITEM_RADIO_MODES radio_mode;
+	gboolean highlighted;
 } ug_genlist_data_t;
-/////////////////////////////////////////////////////////////////////////////////////////////
 
-
-Evas_Object* viewer_list_create(Evas_Object *win);
+Evas_Object *viewer_list_create(Evas_Object *win);
 int viewer_list_destroy(void);
-void viewer_list_title_item_del();
-void viewer_list_title_item_update();
-
-////////////////////////////////////////////////////////////////////////////////////////////////
+void viewer_list_title_item_del(void);
+void viewer_list_title_item_update(void);
 
 //////// list item add / remove ///////////////////////////////////////////////////////////////
-int viewer_list_title_item_set(void);
-int viewer_list_item_radio_mode_set(Elm_Object_Item* item, VIEWER_ITEM_RADIO_MODES mode);
-Elm_Object_Item* viewer_list_item_insert_after(wifi_ap_h ap, Elm_Object_Item *after);
-Elm_Object_Item* viewer_list_get_first_item(void);
+void viewer_list_title_item_set(void);
+int viewer_list_item_radio_mode_set(Elm_Object_Item* item,
+		VIEWER_ITEM_RADIO_MODES mode);
+Elm_Object_Item *viewer_list_item_insert_after(wifi_ap_h ap,
+		Elm_Object_Item *after);
+Elm_Object_Item *viewer_list_get_first_item(void);
 void viewer_list_item_clear(void);
 ////////////////////////////////////////////////////////////////////////////////////////////////
 
 //////// item iteration /////////////////////////////////////////////////////////////////////////
 int viewer_list_item_size_get(void);
 void viewer_list_item_del(Elm_Object_Item *item);
-Elm_Object_Item* viewer_list_item_first_get(Evas_Object* list);
-Elm_Object_Item* viewer_list_item_next_get(const Elm_Object_Item* current);
-Elm_Object_Item* viewer_list_item_at_index(int index);
+Elm_Object_Item *viewer_list_item_first_get(Evas_Object* list);
+Elm_Object_Item *viewer_list_item_next_get(const Elm_Object_Item* current);
+Elm_Object_Item *viewer_list_item_at_index(int index);
 /////////////////////////////////////////////////////////////////////////////////////////////////
 
 //////// item control /////////////////////////////////////////////////////////////////////////
@@ -63,9 +61,8 @@ void viewer_list_item_enable_all(void);
 void viewer_list_item_disable_all(void);
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-Elm_Object_Item* item_get_for_ap(wifi_ap_h ap);
+Elm_Object_Item *item_get_for_ap(wifi_ap_h ap);
 Elm_Object_Item *item_get_for_ssid(const char* ssid, int *num_aps);
-void viewer_list_item_move_connected_ap_to_top(const Elm_Object_Item *connected_item);
 
 #ifdef __cplusplus
 }

@@ -33,13 +33,13 @@ extern "C"
 #include "connman-response.h"
 
 typedef enum {
-	WLAN_MANAGER_ERR_NONE = 0,
+	WLAN_MANAGER_ERR_NONE = 0x00,
 	WLAN_MANAGER_ERR_UNKNOWN,
 	WLAN_MANAGER_ERR_INVALID_PARAM,
 	WLAN_MANAGER_ERR_ALREADY_REGISTERED,
 	WLAN_MANAGER_ERR_CONNECT_PASSWORD_NEEDED,
 	WLAN_MANAGER_ERR_CONNECT_EAP_SEC_TYPE,
-	WLAN_MANAGER_ERR_MOBILE_HOTSPOT_OCCUPIED,
+	WLAN_MANAGER_ERR_WIFI_TETHERING_OCCUPIED,
 	WLAN_MANAGER_ERR_NOSERVICE,
 	WLAN_MANAGER_ERR_IN_PROGRESS,
 } WLAN_MANAGER_ERR_TYPE;
@@ -59,7 +59,7 @@ typedef enum {
  * It should be merged into one enumerations
 */
 typedef enum {
-	SECURITY_TYPE_NONE=0x01,
+	SECURITY_TYPE_NONE = 0x01,
 	SECURITY_TYPE_WEP,
 	SECURITY_TYPE_WPA_PSK,
 	SECURITY_TYPE_WPA2_PSK,
@@ -101,36 +101,36 @@ typedef enum {
  * RESPONSES
  */
 typedef enum {
-	WLAN_MANAGER_RESPONSE_TYPE_NONE,
-	WLAN_MANAGER_RESPONSE_TYPE_CONNECTING,
-	WLAN_MANAGER_RESPONSE_TYPE_CONNECTION_OK,
-	WLAN_MANAGER_RESPONSE_TYPE_CONNECTION_FAIL_IN_PROGRESS,
-	WLAN_MANAGER_RESPONSE_TYPE_CONNECTION_FAIL_ABORTED,
-	WLAN_MANAGER_RESPONSE_TYPE_CONNECTION_FAIL_ALREADY_EXIST,
-	WLAN_MANAGER_RESPONSE_TYPE_CONNECTION_FAIL_TIMEOUT,
-	WLAN_MANAGER_RESPONSE_TYPE_CONNECTION_FAIL_UNKNOWN,
-	WLAN_MANAGER_RESPONSE_TYPE_CONNECTION_FAIL_UNKNOWN_METHOD,
-	WLAN_MANAGER_RESPONSE_TYPE_CONNECTION_CONNECT_FAILED,
-	WLAN_MANAGER_RESPONSE_TYPE_CONNECTION_INVALID_KEY,
-	WLAN_MANAGER_RESPONSE_TYPE_DISCONNECTION_OK,
-	WLAN_MANAGER_RESPONSE_TYPE_POWER_ON_OK,
-	WLAN_MANAGER_RESPONSE_TYPE_POWER_ON_NOT_SUPPORTED,
-	WLAN_MANAGER_RESPONSE_TYPE_POWER_ON_RESTRICTED,
-	WLAN_MANAGER_RESPONSE_TYPE_POWER_OFF_OK,
-	WLAN_MANAGER_RESPONSE_TYPE_SCAN_OK,
-	WLAN_MANAGER_RESPONSE_TYPE_WPS_ENROLL_OK,
-	WLAN_MANAGER_RESPONSE_TYPE_WPS_ENROLL_FAIL,
-	WLAN_MANAGER_RESPONSE_TYPE_CANCEL_WPS_ENROLL_OK,
-	WLAN_MANAGER_RESPONSE_TYPE_CANCEL_WPS_ENROLL_FAIL,
-	WLAN_MANAGER_RESPONSE_TYPE_CONNECTION_IND,
-	WLAN_MANAGER_RESPONSE_TYPE_DISCONNECTION_IND,
-	WLAN_MANAGER_RESPONSE_TYPE_SCAN_RESULT_IND,
-	WLAN_MANAGER_RESPONSE_TYPE_MAC_ID_IND,
-	WLAN_MANAGER_RESPONSE_TYPE_SPECIFIC_SCAN_OK,
-	WLAN_MANAGER_RESPONSE_TYPE_SPECIFIC_SCAN_FAIL,
-	WLAN_MANAGER_RESPONSE_TYPE_SPECIFIC_SCAN_IND,
-	WLAN_MANAGER_RESPONSE_TYPE_UPDATE_SIG_STR,
-	WLAN_MANAGER_RESPONSE_TYPE_MAX
+	WLAN_MANAGER_RESPONSE_TYPE_NONE								= 0x00,
+	WLAN_MANAGER_RESPONSE_TYPE_CONNECTING						= 0x01,
+	WLAN_MANAGER_RESPONSE_TYPE_CONNECTION_OK					= 0x02,
+	WLAN_MANAGER_RESPONSE_TYPE_CONNECTION_FAIL_IN_PROGRESS		= 0x03,
+	WLAN_MANAGER_RESPONSE_TYPE_CONNECTION_FAIL_ABORTED			= 0x04,
+	WLAN_MANAGER_RESPONSE_TYPE_CONNECTION_FAIL_ALREADY_EXIST	= 0x05,
+	WLAN_MANAGER_RESPONSE_TYPE_CONNECTION_FAIL_TIMEOUT			= 0x06,
+	WLAN_MANAGER_RESPONSE_TYPE_CONNECTION_FAIL_UNKNOWN			= 0x07,
+	WLAN_MANAGER_RESPONSE_TYPE_CONNECTION_FAIL_UNKNOWN_METHOD	= 0x08,
+	WLAN_MANAGER_RESPONSE_TYPE_CONNECTION_CONNECT_FAILED		= 0x09,
+	WLAN_MANAGER_RESPONSE_TYPE_CONNECTION_INVALID_KEY			= 0x0A,
+	WLAN_MANAGER_RESPONSE_TYPE_DISCONNECTION_OK					= 0x0B,
+	WLAN_MANAGER_RESPONSE_TYPE_POWER_ON_OK						= 0x0C,
+	WLAN_MANAGER_RESPONSE_TYPE_POWER_ON_NOT_SUPPORTED			= 0x0D,
+	WLAN_MANAGER_RESPONSE_TYPE_POWER_ON_RESTRICTED				= 0x0E,
+	WLAN_MANAGER_RESPONSE_TYPE_POWER_OFF_OK						= 0x0F,
+	WLAN_MANAGER_RESPONSE_TYPE_SCAN_OK							= 0x10,
+	WLAN_MANAGER_RESPONSE_TYPE_WPS_ENROLL_OK					= 0x11,
+	WLAN_MANAGER_RESPONSE_TYPE_WPS_ENROLL_FAIL					= 0x12,
+	WLAN_MANAGER_RESPONSE_TYPE_CANCEL_WPS_ENROLL_OK				= 0x13,
+	WLAN_MANAGER_RESPONSE_TYPE_CANCEL_WPS_ENROLL_FAIL			= 0x14,
+	WLAN_MANAGER_RESPONSE_TYPE_CONNECTION_IND					= 0x15,
+	WLAN_MANAGER_RESPONSE_TYPE_DISCONNECTION_IND				= 0x16,
+	WLAN_MANAGER_RESPONSE_TYPE_SCAN_RESULT_IND					= 0x17,
+	WLAN_MANAGER_RESPONSE_TYPE_MAC_ID_IND						= 0x18,
+	WLAN_MANAGER_RESPONSE_TYPE_SPECIFIC_SCAN_OK					= 0x19,
+	WLAN_MANAGER_RESPONSE_TYPE_SPECIFIC_SCAN_FAIL				= 0x1A,
+	WLAN_MANAGER_RESPONSE_TYPE_SPECIFIC_SCAN_IND				= 0x1B,
+	WLAN_MANAGER_RESPONSE_TYPE_UPDATE_WIFI_RSSI					= 0x1C,
+	WLAN_MANAGER_RESPONSE_TYPE_MAX								= 0x1D,
 } WLAN_MANAGER_RESPONSE_TYPES;
 
 #define WLAN_RSSI_LEVEL_EXCELLENT		64
@@ -145,13 +145,13 @@ typedef struct {
 	gboolean is_handled;
 } wifi_pending_call_info_t;
 
-wifi_pending_call_info_t	g_pending_call;
+wifi_pending_call_info_t g_pending_call;
 
 typedef struct _wifi_device_info_t {
 	wifi_ap_h ap;
-	char* ssid;
-	char* ap_status_txt;
-	char* ap_image_path;
+	char *ssid;
+	char *ap_status_txt;
+	char *ap_image_path;
 	int ipconfigtype;
 	int rssi;
 	wlan_security_mode_type_t security_mode;
@@ -159,27 +159,26 @@ typedef struct _wifi_device_info_t {
 } wifi_device_info_t;
 
 typedef struct {
-	const char* password;
-	char* category;
-	char* subcategory;
-	char* username;
-	char* userpassword;
-	char* ca_cert_filename;
-	char* client_cert_filename;
-	char* private_key;
-	char* private_key_password;
+	const char *password;
+	char *category;
+	char *subcategory;
+	char *username;
+	char *userpassword;
+	char *ca_cert_filename;
+	char *client_cert_filename;
+	char *private_key;
+	char *private_key_password;
 	int wlan_eap_type;
 } wlan_manager_password_data;
 
 /* it should be implement. */
 typedef enum {
-	WLAN_MANAGER_ERROR=0x01,
-	WLAN_MANAGER_OFF,
-	WLAN_MANAGER_UNCONNECTED,
-	WLAN_MANAGER_CONNECTED,
-	WLAN_MANAGER_CONNECTING,
-	WLAN_MANAGER_DISCONNECTING,
-	WLAN_MANAGER_MAX
+	WLAN_MANAGER_ERROR			= 0x01,
+	WLAN_MANAGER_OFF			= 0x02,
+	WLAN_MANAGER_UNCONNECTED	= 0x03,
+	WLAN_MANAGER_CONNECTED		= 0x04,
+	WLAN_MANAGER_CONNECTING		= 0x05,
+	WLAN_MANAGER_MAX			= 0x06,
 } WLAN_MANAGER_STATES;
 
 typedef void (*wlan_manager_ui_refresh_func_t)(void);
@@ -204,14 +203,13 @@ typedef struct wlan_manager_object {
 /////////////////////////////////////////////////////////////////
 
 /////////////////////////////////////////////////////////////////
-// FUNCTIONS 
+// FUNCTIONS
 /////////////////////////////////////////////////////////////////
 
-
-wlan_manager_object* wlan_manager_get_singleton(void);
-void* wlan_manager_create();
-int wlan_manager_destroy();
-int wlan_manager_start();
+wlan_manager_object *wlan_manager_get_singleton(void);
+void *wlan_manager_create(void);
+int wlan_manager_destroy(void);
+int wlan_manager_start(void);
 
 wifi_ap_h wlan_manager_get_ap_with_state(int ap_state);
 int wlan_manager_state_get(void);
@@ -222,19 +220,16 @@ void wlan_manager_enable_scan_result_update(void);
 void wlan_manager_disable_scan_result_update(void);
 char *wlan_manager_get_connected_ssid(void);
 
-// * request
-int wlan_manager_request_connection(wifi_ap_h ap);
-int wlan_manager_request_disconnection(wifi_ap_h ap);
-int wlan_manager_request_wps_connection(wifi_ap_h ap);
-int wlan_manager_request_power_on(void);
-int wlan_manager_request_power_off(void);
-int wlan_manager_request_scan(void);
-
-// * connect, disconnect and forget
+// request
+int wlan_manager_connect(wifi_ap_h ap);
 int wlan_manager_connect_with_password(wifi_ap_h ap, const char *pass_phrase);
-int wlan_manager_connect_with_wifi_info(wifi_ap_h ap);
+int wlan_manager_disconnect(wifi_ap_h ap);
+int wlan_manager_wps_connect(wifi_ap_h ap);
+int wlan_manager_power_on(void);
+int wlan_manager_power_off(void);
+int wlan_manager_scan(void);
 int wlan_manager_forget(wifi_ap_h ap);
-int wlan_manager_request_specific_scan(const char *ssid, void *data);
+int wlan_manager_scan_with_ssid(const char *ssid, void *data);
 
 int wlan_manager_profile_modify_by_device_info(net_profile_info_t *profiles);
 
@@ -242,10 +237,10 @@ STRENGTH_TYPES wlan_manager_get_signal_strength(int rssi);
 
 //// profile refresh /////////////////////////////////////////////
 void wlan_manager_scanned_profile_refresh(void);
-int wlan_manager_scanned_profile_refresh_with_count(int count);
 wifi_device_info_t *wlan_manager_profile_device_info_blank_create(void);
 
-int wlan_manager_network_syspopup_message(const char *title, const char *content, const char *type);
+void wlan_manager_set_last_scan_time(void);
+time_t wlan_manager_get_last_scan_time(void);
 
 #ifdef __cplusplus
 }

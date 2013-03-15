@@ -27,7 +27,6 @@ extern "C"
 
 #include <Evas.h>
 
-void appcore_win_del(void *data, Evas_Object *obj, void *event);
 Evas_Object* appcore_create_win(const char *name);
 Evas_Object* appcore_load_edj(Evas_Object *parent, const char *file,const char *group);
 

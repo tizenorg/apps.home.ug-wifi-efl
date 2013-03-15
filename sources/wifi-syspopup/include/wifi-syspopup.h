@@ -26,22 +26,22 @@ extern "C"
 #endif
 
 #include "common.h"
+#include "wlan_manager.h"
 #include "common_pswd_popup.h"
 #include "common_eap_connect.h"
-#include "wlan_manager.h"
 
-#define PACKAGE "wifi-qs"
-#define LOCALEDIR "/usr/share/locale"
-#define WIFI_SP_ICON_PATH "/usr/share/icon"
+#define PACKAGE				"wifi-qs"
+#define LOCALEDIR			"/usr/share/locale"
+#define WIFI_SP_ICON_PATH	"/usr/share/icon"
 
 typedef enum {
-	WIFI_SYSPOPUP_SUPPORT_NONE =0,
-	WIFI_SYSPOPUP_SUPPORT_QUICKPANEL=1,
-	WIFI_SYSPOPUP_SUPPORT_MAX
+	WIFI_SYSPOPUP_SUPPORT_NONE			= 0x00,
+	WIFI_SYSPOPUP_SUPPORT_QUICKPANEL,
+	WIFI_SYSPOPUP_SUPPORT_MAX,
 } WIFI_SYSPOPUP_SUPPORTS;
 
 typedef enum {
-	WIFI_SYSPOPUP_WITH_AP_LIST = 0,
+	WIFI_SYSPOPUP_WITH_AP_LIST		= 0x00,
 	WIFI_SYSPOPUP_WITHOUT_AP_LIST
 } WIFI_SYSPOPUP_TYPE;
 
@@ -60,25 +60,24 @@ typedef struct wifi_object {
 	WIFI_SYSPOPUP_TYPE syspopup_type;
 
 	/* window */
-	Evas_Object* win_main;
-	Evas_Object* conformant;
-	Evas_Object* layout_main;
+	Evas_Object *win_main;
+	Evas_Object *conformant;
+	Evas_Object *layout_main;
 
-	Evas* evas;
-	bundle* b;
+	Evas *evas;
+	bundle *b;
 
 	/* popups */
-	Evas_Object* syspopup;
+	Evas_Object *syspopup;
 	pswd_popup_t *passpopup;
-	common_eap_connect_data_t *eap_popup;
-	Evas_Object* alertpopup; 
+	eap_connect_data_t *eap_popup;
+	Evas_Object *alertpopup;
 } wifi_object;
 
 typedef enum {
 	ITEM_CONNECTION_MODE_NULL,
 	ITEM_CONNECTION_MODE_OFF,
 	ITEM_CONNECTION_MODE_CONNECTING,
-	ITEM_CONNECTION_MODE_DISCONNECTING,
 	ITEM_CONNECTION_MODE_MAX
 } ITEM_CONNECTION_MODES;
 
@@ -86,6 +85,7 @@ typedef struct {
 	Elm_Object_Item *it;
 	ITEM_CONNECTION_MODES connection_mode;
 	wifi_device_info_t *dev_info;
+	gboolean highlighted;
 } syspopup_genlist_data_t;
 
 int wifi_syspopup_create(void);
