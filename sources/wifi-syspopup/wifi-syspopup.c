@@ -22,6 +22,9 @@
 #include <vconf.h>
 #include <vconf-keys.h>
 #include <appcore-efl.h>
+#include <X11/Xatom.h>
+#include <X11/Xutil.h>
+#include <Ecore_X.h>
 
 #include "common.h"
 #include "view-main.h"
@@ -33,31 +36,148 @@
 #include "appcoreWrapper.h"
 #include "wifi-syspopup-engine-callback.h"
 
+#define POPUP_HEAD_AREA 134
+#define POPUP_BUTTON_AREA 200
+#define MAX_INITIAL_QS_POPUP_LIST_SIZE	8
+
 wifi_object* syspopup_app_state = NULL;
 
-static int wifi_syspopup_rotate_cb(enum appcore_rm rotate_mode, void *data)
+static int __get_window_property(Display *dpy, Window win, Atom atom,
+		Atom type, unsigned int *val,
+		unsigned int len)
 {
+	__COMMON_FUNC_ENTER__;
+	unsigned char *prop_ret = NULL;
+	Atom type_ret = -1;
+	unsigned long bytes_after = 0;
+	unsigned long  num_ret = -1;
+	int format_ret = -1;
+	unsigned int i = 0;
+	int num = 0;
+
+	prop_ret = NULL;
+	if (XGetWindowProperty(dpy, win, atom, 0, 0x7fffffff, False,
+				type, &type_ret, &format_ret, &num_ret,
+				&bytes_after, &prop_ret) != Success) {
+		return -1;
+	}
+
+	if (type_ret != type || format_ret != 32) {
+		num = -1;
+	} else if (num_ret == 0 || !prop_ret) {
+		num = 0;
+	} else {
+		if (num_ret < len) {
+			len = num_ret;
+		}
+		for (i = 0; i < len; i++) {
+			val[i] = ((unsigned long *)prop_ret)[i];
+		}
+		num = len;
+	}
+
+	if (prop_ret) {
+		XFree(prop_ret);
+	}
+
+	__COMMON_FUNC_EXIT__;
+	return num;
+}
+
+static int __x_rotation_get(Display *dpy, Window win)
+{
+	__COMMON_FUNC_ENTER__;
+	Window active_win = 0;
+	Window root_win = 0;
+	int rotation = -1;
+	int ret = -1;
+
+	Atom atom_active_win;
+	Atom atom_win_rotate_angle;
+
+	root_win = XDefaultRootWindow(dpy);
+
+	atom_active_win = XInternAtom(dpy, "_NET_ACTIVE_WINDOW", False);
+	ret = __get_window_property(dpy, root_win, atom_active_win,
+			XA_WINDOW,
+			(unsigned int *)&active_win, 1);
+
+	if (ret != 1)
+		return 0;
+
+	atom_win_rotate_angle =
+		XInternAtom(dpy, "_E_ILLUME_ROTATE_WINDOW_ANGLE", False);
+	ret = __get_window_property(dpy, active_win	,
+			atom_win_rotate_angle, XA_CARDINAL,
+			(unsigned int *)&rotation, 1);
+
+	__COMMON_FUNC_EXIT__;
+
+	if (ret == 1)
+		return rotation;
+	else
+		return 0;
+}
+
+static Eina_Bool __rotate(void *data, int type, void *event)
+{
+	__COMMON_FUNC_ENTER__;
+	struct wifi_object *ad = data;
+	Ecore_X_Event_Client_Message *ev = event;
+	int visible_area_width, visible_area_height;
 	int rotate_angle;
+
 	Evas_Object *box = NULL;
 
-	rotate_angle = common_utils_get_rotate_angle(rotate_mode);
-	box = elm_object_content_get(syspopup_app_state->syspopup);
+	if (!event)
+		return ECORE_CALLBACK_RENEW;
 
-	elm_win_rotation_with_resize_set(syspopup_app_state->win_main, rotate_angle);
+	if (ev->message_type == ECORE_X_ATOM_E_ILLUME_ROTATE_ROOT_ANGLE) {
+		box = elm_object_content_get(syspopup_app_state->syspopup);
 
-	if (0 == rotate_angle || 180 == rotate_angle)
-		evas_object_size_hint_min_set(box, -1,
-				DEVICE_PICKER_POPUP_H * elm_config_scale_get());
-	else
-		evas_object_size_hint_min_set(box, -1,
-				DEVICE_PICKER_POPUP_LN_H * elm_config_scale_get());
+		if (box) {
+			rotate_angle = __x_rotation_get(ecore_x_display_get(), elm_win_xwindow_get(syspopup_app_state->win_main));
+			if (rotate_angle < 0)
+				rotate_angle = 0;
+			__common_popup_size_set(NULL ,&visible_area_width, &visible_area_height, rotate_angle);
+			elm_win_rotation_with_resize_set(syspopup_app_state->win_main, rotate_angle);
+			evas_object_size_hint_min_set(box, visible_area_width * elm_config_scale_get(), visible_area_height * elm_config_scale_get());
+		}
 
-	if (syspopup_app_state->eap_popup)
-		eap_view_rotate_popup(syspopup_app_state->eap_popup, rotate_angle);
+		if (syspopup_app_state->eap_popup)
+			eap_view_rotate_popup(syspopup_app_state->eap_popup, rotate_angle);
+	}
 
-	INFO_LOG(SP_NAME_NORMAL, "rotate_angle: %d", rotate_angle);
 
+	__COMMON_FUNC_EXIT__;
 	return 0;
+}
+
+void __common_popup_size_set(Ecore_IMF_Context *target_imf, int *width, int *height, int rotate_angle)
+{
+	__COMMON_FUNC_ENTER__;
+
+	int window_width, window_height;
+	int start_x, start_y, imf_width, imf_height;
+	float resize_scale = 0.7f;
+
+	ecore_x_window_size_get(ecore_x_window_root_first_get(), &window_width, &window_height);
+
+	*width = -1;
+
+	if (rotate_angle == 0 || rotate_angle == 180)
+		*height = window_height * resize_scale;
+	else
+		*height = window_width;
+
+	if (target_imf != NULL) {
+		ecore_imf_context_input_panel_geometry_get(target_imf, &start_x, &start_y, &imf_width, &imf_height);
+		*height = start_y * resize_scale;
+	}else
+		*height = *height-POPUP_HEAD_AREA-POPUP_BUTTON_AREA;
+
+
+	__COMMON_FUNC_EXIT__;
 }
 
 static void wifi_syspopup_exit(void)
@@ -96,6 +216,7 @@ static void _exit_cb(void *data, Evas_Object *obj, void *event_info)
 
 int wifi_syspopup_destroy(void)
 {
+	__COMMON_FUNC_ENTER__;
 	if (syspopup_app_state->passpopup) {
 		passwd_popup_free(syspopup_app_state->passpopup);
 		syspopup_app_state->passpopup = NULL;
@@ -124,6 +245,7 @@ int wifi_syspopup_destroy(void)
 	connman_request_scan_mode_set(WIFI_BGSCAN_MODE_EXPONENTIAL);
 
 	wifi_syspopup_exit();
+	__COMMON_FUNC_EXIT__;
 
 	return 1;
 }
@@ -132,6 +254,8 @@ int wifi_syspopup_create(void)
 {
 	__COMMON_FUNC_ENTER__;
 	int rotate_angle;
+	int visible_area_height;
+	int visible_area_width;
 
 	if (NULL == syspopup_app_state->syspopup) {
 		syspopup_app_state->syspopup = elm_popup_add(syspopup_app_state->layout_main);
@@ -155,14 +279,18 @@ int wifi_syspopup_create(void)
 	elm_box_pack_end(box, main_list);
 	evas_object_show(main_list);
 
-	rotate_angle = common_utils_get_rotate_angle(APPCORE_RM_UNKNOWN);
+	rotate_angle = __x_rotation_get(ecore_x_display_get(), elm_win_xwindow_get(syspopup_app_state->win_main));
+
+	if (rotate_angle < 0)
+		rotate_angle = 0;
+
+	ecore_x_icccm_hints_set(elm_win_xwindow_get(syspopup_app_state->win_main), 1, 0, 0, 0, 0, 0, 0);
+
 	elm_win_rotation_with_resize_set(syspopup_app_state->win_main, rotate_angle);
-	if (0 == rotate_angle || 180 == rotate_angle)
-		evas_object_size_hint_min_set(box, -1,
-				DEVICE_PICKER_POPUP_H * elm_config_scale_get());
-	else
-		evas_object_size_hint_min_set(box, -1,
-				DEVICE_PICKER_POPUP_LN_H * elm_config_scale_get());
+
+	__common_popup_size_set(NULL ,&visible_area_width, &visible_area_height, rotate_angle);
+
+	evas_object_size_hint_min_set(box, visible_area_width * elm_config_scale_get(), visible_area_height * elm_config_scale_get());
 
 	elm_object_content_set(syspopup_app_state->syspopup, box);
 	evas_object_show(syspopup_app_state->syspopup);
@@ -336,7 +464,7 @@ static void __pw_lock_state_change_cb(keynode_t *node, void *user_data)
 			pw_lock_state != VCONFKEY_PWLOCK_BOOTING_LOCK) {
 		vconf_ignore_key_changed(VCONFKEY_PWLOCK_STATE, __pw_lock_state_change_cb);
 		wifi_syspopup_create();
-		appcore_set_rotation_cb(wifi_syspopup_rotate_cb, NULL);
+		ecore_event_handler_add(ECORE_X_EVENT_CLIENT_MESSAGE, __rotate, (void *)syspopup_app_state);
 		g_idle_add(load_initial_ap_list, NULL);
 	}
 
@@ -354,6 +482,7 @@ static int app_reset(bundle *b, void *data)
 	Evas *evas = NULL;
 	int ret = 0;
 	int pw_lock_state = 0;
+	int w, h = 0;
 
 	assertm_if(NULL == data, "data param is NULL!!");
 	assertm_if(NULL == b, "bundle is NULL!!");
@@ -363,7 +492,6 @@ static int app_reset(bundle *b, void *data)
 
 	if (syspopup_has_popup(b)) {
 		INFO_LOG(SP_NAME_NORMAL, "Wi-Fi device picker is already launched");
-
 		syspopup_reset(b);
 	} else {
 		win_main = appcore_create_win(PACKAGE);
@@ -418,7 +546,6 @@ static int app_reset(bundle *b, void *data)
 			return 0;
 		} else {
 			syspopup_app_state->syspopup_type = WIFI_SYSPOPUP_WITH_AP_LIST;
-
 			int wlan_ret = wifi_syspopup_init();
 			if (WLAN_MANAGER_ERR_NONE != wlan_ret ||
 								_power_on_check() == FALSE) {
@@ -457,8 +584,10 @@ static int app_reset(bundle *b, void *data)
 				 */
 				vconf_notify_key_changed(VCONFKEY_PWLOCK_STATE, __pw_lock_state_change_cb, NULL);
 			} else {
+				ecore_x_window_size_get(ecore_x_window_root_first_get(), &w, &h);
+
 				wifi_syspopup_create();
-				appcore_set_rotation_cb(wifi_syspopup_rotate_cb, NULL);
+				ecore_event_handler_add(ECORE_X_EVENT_CLIENT_MESSAGE, __rotate, (void *)syspopup_app_state);
 				g_idle_add(load_initial_ap_list, NULL);
 			}
 
@@ -495,6 +624,8 @@ static int app_pause(void *data)
 	__COMMON_FUNC_ENTER__;
 
 	connman_request_scan_mode_set(WIFI_BGSCAN_MODE_EXPONENTIAL);
+
+	wifi_syspopup_destroy();
 
 	__COMMON_FUNC_EXIT__;
 	return 0;

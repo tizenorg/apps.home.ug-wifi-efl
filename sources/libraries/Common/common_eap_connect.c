@@ -121,6 +121,8 @@ struct common_eap_connect_data {
 	Evas_Object* navi_frame;
 
 	int key_status;
+	int visible_area_width;
+	int visible_area_height;
 };
 
 static void _gl_eap_provision_sel(void *data, Evas_Object *obj, void *event_info);
@@ -459,7 +461,7 @@ static Evas_Object *_gl_eap_entry_item_content_get(void *data, Evas_Object *obj,
 	char *guide_txt = NULL;
 	char *accepted = NULL;
 	Eina_Bool hide_entry_txt = EINA_FALSE;
-	Elm_Input_Panel_Layout panel_type = ELM_INPUT_PANEL_LAYOUT_URL;
+	Elm_Input_Panel_Layout panel_type = ELM_INPUT_PANEL_LAYOUT_PASSWORD;
 
 	Elm_Entry_Filter_Limit_Size limit_filter_data;
 
@@ -712,8 +714,11 @@ static void __common_eap_connect_im_ctxt_evnt_resize_cb(void *data, Ecore_IMF_Co
 
 	eap_connect_data_t *eap_data = (eap_connect_data_t *)data;
 	eap_data->key_status = value;
+	Evas_Object *box = elm_object_content_get(eap_data->popup);
 
-	eap_view_rotate_popup(eap_data, rotate_angle);
+	__common_popup_size_get(ctx, &eap_data->visible_area_width, &eap_data->visible_area_height);
+	evas_object_size_hint_min_set(box, eap_data->visible_area_width * elm_config_scale_get(),
+			eap_data->visible_area_height * elm_config_scale_get());
 
 	__COMMON_FUNC_EXIT__;
 	return;

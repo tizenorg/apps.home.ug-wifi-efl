@@ -25,6 +25,9 @@
 #include "common_utils.h"
 #include "i18nmanager.h"
 
+#define POPUP_HEAD_AREA 134
+#define POPUP_BUTTON_AREA 80
+
 typedef struct {
 	char *title_str;
 	char *info_str;
@@ -166,6 +169,36 @@ char *common_utils_entry_layout_get_text(Evas_Object *layout)
 {
 	Evas_Object *entry = elm_object_part_content_get(layout, "elm.swallow.content");
 	return elm_entry_markup_to_utf8(elm_entry_entry_get(entry));
+}
+
+void __common_popup_size_get(Ecore_IMF_Context *target_imf, int *width, int *height)
+{
+	__COMMON_FUNC_ENTER__;
+
+	int window_width, window_height;
+	int start_x, start_y, imf_width, imf_height;
+	int rotate_angle;
+	float resize_scale = 0.7f;
+
+	rotate_angle = common_utils_get_rotate_angle(APPCORE_RM_UNKNOWN);
+	ecore_x_window_size_get(ecore_x_window_root_first_get(), &window_width, &window_height);
+
+	*width = window_width;
+
+	if (rotate_angle == 0 || rotate_angle == 180)
+	{
+		*height = window_height * resize_scale;
+	}else
+		*height = window_width;
+
+	if (target_imf != NULL) {
+		ecore_imf_context_input_panel_geometry_get(target_imf, &start_x, &start_y, &imf_width, &imf_height);
+		*height = start_y * resize_scale;
+	}
+
+	*height = *height-POPUP_HEAD_AREA-POPUP_BUTTON_AREA;
+
+	__COMMON_FUNC_EXIT__;
 }
 
 void common_utils_entry_password_set(Evas_Object *layout, Eina_Bool pswd_set)
