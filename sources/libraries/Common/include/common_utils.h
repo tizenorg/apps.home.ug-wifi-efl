@@ -26,6 +26,11 @@ extern "C"
 #endif
 
 #include <Elementary.h>
+
+/* Fix build warning (redefine '_()' in appcore-common.h) */
+#ifdef _
+#undef _
+#endif
 #include <appcore-common.h>
 
 #include "wlan_manager.h"
@@ -104,6 +109,9 @@ int common_utils_send_message_to_net_popup(const char *title,
 
 int common_util_set_system_registry(const char *key, int value);
 int common_util_get_system_registry(const char *key);
+
+guint common_util_managed_idle_add(GSourceFunc func, gpointer user_data);
+void common_util_managed_idle_cleanup(void);
 
 #ifdef __cplusplus
 }

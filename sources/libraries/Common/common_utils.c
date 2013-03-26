@@ -19,8 +19,8 @@
 
 #include <vconf.h>
 #include <syspopup_caller.h>
-
 #include <aul.h>
+
 #include "common.h"
 #include "common_utils.h"
 #include "i18nmanager.h"
@@ -32,6 +32,8 @@ typedef struct {
 	char *title_str;
 	char *info_str;
 } two_line_disp_data_t;
+
+static GSList *managed_idler_list = NULL;
 
 static char *__common_utils_2line_text_get(void *data, Evas_Object *obj, const char *part)
 {
@@ -453,6 +455,7 @@ int common_utils_send_message_to_net_popup(const char *title, const char *conten
 	bundle_add(b, "_AP_NAME_", ssid);
 
 	ret = aul_launch_app("net.netpopup", b);
+
 	bundle_free(b);
 
 	return ret;
@@ -488,4 +491,80 @@ int common_util_get_system_registry(const char *key)
 
 	__COMMON_FUNC_EXIT__;
 	return value;
+}
+
+struct managed_idle_data {
+	GSourceFunc func;
+	gpointer user_data;
+	guint id;
+};
+
+static void __managed_idle_destroy_cb(gpointer data)
+{
+	if (!data)
+		return;
+
+	managed_idler_list = g_slist_remove(managed_idler_list, data);
+}
+
+static gboolean __managed_idle_hook_cb(gpointer user_data)
+{
+	struct managed_idle_data *data = user_data;
+
+	if (!data)
+		return FALSE;
+
+	return data->func(data->user_data);
+}
+
+guint common_util_managed_idle_add(GSourceFunc func, gpointer user_data)
+{
+	guint id;
+	struct managed_idle_data *data;
+
+	if (!func)
+		return 0;
+
+	data = g_new0(struct managed_idle_data, 1);
+	if (!data)
+		return 0;
+
+	data->func = func;
+	data->user_data = user_data;
+
+	id = g_idle_add_full(G_PRIORITY_DEFAULT_IDLE, __managed_idle_hook_cb, data,
+			__managed_idle_destroy_cb);
+	if (!id) {
+		g_free(data);
+		return id;
+	}
+
+	data->id = id;
+
+	managed_idler_list = g_slist_append(managed_idler_list, data);
+
+	return id;
+}
+
+void common_util_managed_idle_cleanup(void)
+{
+	GSList *cur = managed_idler_list;
+	GSource *src;
+	struct managed_idle_data *data;
+
+	for (;cur; cur = cur->next) {
+		data = cur->data;
+
+		src = g_main_context_find_source_by_id(g_main_context_default(),
+				data->id);
+		if (src) {
+			g_source_destroy(src);
+		}
+
+		g_free(data);
+	}
+
+	g_slist_free (managed_idler_list);
+	managed_idler_list = NULL;
+
 }

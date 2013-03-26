@@ -178,7 +178,7 @@ static void _hide_finished_cb(void *data, Evas_Object *obj, void *event_info)
 	__COMMON_FUNC_EXIT__;
 }
 
-void _lbutton_click_cb(void *data, Evas_Object *obj, void *event_info)
+static void _lbutton_click_cb(void *data, Evas_Object *obj, void *event_info)
 {
 	__COMMON_FUNC_ENTER__;
 
@@ -200,7 +200,7 @@ void _lbutton_click_cb(void *data, Evas_Object *obj, void *event_info)
 	__COMMON_FUNC_EXIT__;
 }
 
-void _rbutton_click_cb(void *data, Evas_Object *obj, void *event_info)
+static void _rbutton_click_cb(void *data, Evas_Object *obj, void *event_info)
 {
 	__COMMON_FUNC_ENTER__;
 
@@ -222,7 +222,7 @@ void _rbutton_click_cb(void *data, Evas_Object *obj, void *event_info)
 	__COMMON_FUNC_EXIT__;
 }
 
-void _back_sk_cb(void *data, Evas_Object *obj, void *event_info)
+static void _back_sk_cb(void *data, Evas_Object *obj, void *event_info)
 {
 	__COMMON_FUNC_ENTER__;
 
@@ -619,8 +619,8 @@ static Eina_Bool viewer_manager_scan_button_set(Eina_Bool show_state)
 	/* TODO: need to check VIEW_MANAGER_VIEW_TYPE_MAIN ?
 	 * Evas_Object* navi_frame = viewer_manager_get_naviframe();
 	 * view_manager_view_type_t top_view_id =
-	 * 			(view_manager_view_type_t)evas_object_data_get(navi_frame,
-	 * 											SCREEN_TYPE_ID_KEY);
+	 *			(view_manager_view_type_t)evas_object_data_get(navi_frame,
+	 *											SCREEN_TYPE_ID_KEY);
 	 */
 
 	if (show_state == EINA_TRUE)
@@ -819,6 +819,8 @@ Eina_Bool viewer_manager_hide(VIEWER_WINSETS winset)
 	return EINA_TRUE;
 }
 
+#if 0
+/* Unused function */
 Eina_Bool viewer_manager_genlist_item_update(Elm_Object_Item* item)
 {
 	__COMMON_FUNC_ENTER__;
@@ -826,12 +828,13 @@ Eina_Bool viewer_manager_genlist_item_update(Elm_Object_Item* item)
 		__COMMON_FUNC_EXIT__;
 		return EINA_FALSE;
 	}
-	
+
 	elm_genlist_item_update(item);
 
 	__COMMON_FUNC_EXIT__;
 	return EINA_FALSE;
 }
+#endif
 
 void viewer_manager_update_hidden_btn(void)
 {

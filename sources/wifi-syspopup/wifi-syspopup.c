@@ -250,7 +250,7 @@ int wifi_syspopup_destroy(void)
 	return 1;
 }
 
-int wifi_syspopup_create(void)
+static int wifi_syspopup_create(void)
 {
 	__COMMON_FUNC_ENTER__;
 	int rotate_angle;
@@ -302,7 +302,7 @@ int wifi_syspopup_create(void)
 	return 1;
 }
 
-int wifi_syspopup_init()
+static int wifi_syspopup_init()
 {
 	__COMMON_FUNC_ENTER__;
 
@@ -434,12 +434,12 @@ syspopup_handler handler = {
 		.def_timeout_fn = mytimeout
 };
 
-static Eina_Bool __wifi_syspopup_del_found_ap_noti(void *data)
+static gboolean __wifi_syspopup_del_found_ap_noti(void *data)
 {
 	common_utils_send_message_to_net_popup(NULL, NULL,
 										"del_found_ap_noti", NULL);
 
-	return ECORE_CALLBACK_CANCEL;
+	return FALSE;
 }
 
 static gboolean load_initial_ap_list(gpointer data)
@@ -465,7 +465,7 @@ static void __pw_lock_state_change_cb(keynode_t *node, void *user_data)
 		vconf_ignore_key_changed(VCONFKEY_PWLOCK_STATE, __pw_lock_state_change_cb);
 		wifi_syspopup_create();
 		ecore_event_handler_add(ECORE_X_EVENT_CLIENT_MESSAGE, __rotate, (void *)syspopup_app_state);
-		g_idle_add(load_initial_ap_list, NULL);
+		common_util_managed_idle_add(load_initial_ap_list, NULL);
 	}
 
 	INFO_LOG(SP_NAME_NORMAL, "pwlock state = %d", pw_lock_state);
@@ -488,10 +488,11 @@ static int app_reset(bundle *b, void *data)
 	assertm_if(NULL == b, "bundle is NULL!!");
 
 	/* Remove the "WiFi networks found" from the notification tray.*/
-	ecore_idler_add(__wifi_syspopup_del_found_ap_noti, NULL);
+	common_util_managed_idle_add(__wifi_syspopup_del_found_ap_noti, NULL);
 
 	if (syspopup_has_popup(b)) {
 		INFO_LOG(SP_NAME_NORMAL, "Wi-Fi device picker is already launched");
+
 		syspopup_reset(b);
 	} else {
 		win_main = appcore_create_win(PACKAGE);
@@ -546,6 +547,7 @@ static int app_reset(bundle *b, void *data)
 			return 0;
 		} else {
 			syspopup_app_state->syspopup_type = WIFI_SYSPOPUP_WITH_AP_LIST;
+
 			int wlan_ret = wifi_syspopup_init();
 			if (WLAN_MANAGER_ERR_NONE != wlan_ret ||
 								_power_on_check() == FALSE) {
@@ -588,7 +590,7 @@ static int app_reset(bundle *b, void *data)
 
 				wifi_syspopup_create();
 				ecore_event_handler_add(ECORE_X_EVENT_CLIENT_MESSAGE, __rotate, (void *)syspopup_app_state);
-				g_idle_add(load_initial_ap_list, NULL);
+				common_util_managed_idle_add(load_initial_ap_list, NULL);
 			}
 
 			INFO_LOG(SP_NAME_NORMAL, "pwlock state = %d", pw_lock_state);

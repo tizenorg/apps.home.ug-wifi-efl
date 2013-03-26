@@ -26,8 +26,8 @@ struct wlan_connection {
 	void *user_data;
 };
 
-static struct wlan_connection current_item = { NULL, };
-static struct wlan_connection next_item = { NULL, };
+static struct wlan_connection current_item = { NULL, NULL, NULL };
+static struct wlan_connection next_item = { NULL, NULL, NULL };
 
 static void wlan_connect_debug(wifi_ap_h ap)
 {

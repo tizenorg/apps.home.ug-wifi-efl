@@ -45,12 +45,16 @@ struct ug_data {
 	ui_gadget_h ug;
 };
 
-static Eina_Bool __wifi_efl_ug_del_found_ap_noti(void *data)
+UG_MODULE_API int UG_MODULE_INIT(struct ug_module_ops *ops);
+UG_MODULE_API void UG_MODULE_EXIT(struct ug_module_ops *ops);
+UG_MODULE_API int setting_plugin_reset(bundle *data, void *priv);
+
+static gboolean __wifi_efl_ug_del_found_ap_noti(void *data)
 {
 	common_utils_send_message_to_net_popup(NULL, NULL,
 										"del_found_ap_noti", NULL);
 
-	return ECORE_CALLBACK_CANCEL;
+	return FALSE;
 }
 
 static void __make_scan_if_bss_expired(void)
@@ -165,7 +169,7 @@ static void *on_create(ui_gadget_h ug, enum ug_mode mode,
 								VCONFKEY_WIFI_UG_RUN_STATE_ON_FOREGROUND);
 
 	/* Remove the "WiFi networks found" from the notification tray.*/
-	ecore_idler_add(__wifi_efl_ug_del_found_ap_noti, NULL);
+	common_util_managed_idle_add(__wifi_efl_ug_del_found_ap_noti, NULL);
 
 	memset(&g_pending_call, 0, sizeof(wifi_pending_call_info_t));
 
@@ -245,7 +249,7 @@ static void on_start(ui_gadget_h ug, service_h service, void *priv)
 {
 	__COMMON_FUNC_ENTER__;
 
-	g_idle_add(load_initial_ap_list, NULL);
+	common_util_managed_idle_add(load_initial_ap_list, NULL);
 
 	connman_request_scan_mode_set(WIFI_BGSCAN_MODE_PERIODIC);
 
@@ -327,6 +331,8 @@ static void on_destroy(ui_gadget_h ug, service_h service, void *priv)
 		evas_object_del(ugd->base);
 		ugd->base = NULL;
 	}
+
+	common_util_managed_idle_cleanup();
 
 	__COMMON_FUNC_EXIT__;
 }

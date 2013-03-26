@@ -88,7 +88,6 @@ typedef struct {
 	gboolean highlighted;
 } syspopup_genlist_data_t;
 
-int wifi_syspopup_create(void);
 int wifi_syspopup_destroy(void);
 
 #ifdef __cplusplus

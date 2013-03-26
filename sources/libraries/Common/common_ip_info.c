@@ -490,17 +490,17 @@ static void _delete_static_ip_table(ip_info_list_t *ip_info_list_data)
 	__COMMON_FUNC_EXIT__;
 }
 
-static Eina_Bool __genlist_item_disable_later(void *data)
+static gboolean __genlist_item_disable_later(void *data)
 {
 	elm_genlist_item_selected_set((Elm_Object_Item *)data, FALSE);
 
-	return ECORE_CALLBACK_CANCEL;
+	return FALSE;
 }
 
 static void _gl_deselect_callback(void* data,
 		Evas_Object* obj, void* event_info)
 {
-	ecore_idler_add(__genlist_item_disable_later, event_info);
+	common_util_managed_idle_add(__genlist_item_disable_later, event_info);
 }
 
 static char* _ip_info_iptoggle_text_get(void *data, Evas_Object *obj,
@@ -634,7 +634,7 @@ static void __ip_info_toggle_item_sel_cb(void* data,
 	elm_genlist_item_update(ip_info_list_data->ip_toggle_item);
 	elm_object_item_disabled_set(ip_info_list_data->ip_toggle_item, FALSE);
 
-	ecore_idler_add(__genlist_item_disable_later, event_info);
+	common_util_managed_idle_add(__genlist_item_disable_later, event_info);
 
 	__COMMON_FUNC_EXIT__;
 }

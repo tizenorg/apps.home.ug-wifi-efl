@@ -453,7 +453,7 @@ static void _gl_eap_entry_unfocused_cb(void *data, Evas_Object *obj, void *event
 	elm_object_item_signal_emit(entry_info->item, "elm,state,rename,show", "");
 }
 
-static void _gl_eap_entry_eraser_clicked_cb(void *data, Evas_Object *obj, const char *emission, const char *source)
+static void _gl_eap_entry_eraser_clicked_cb(void *data, Evas_Object *obj, void *event_info)
 {
 	common_utils_entry_info_t *entry_info = (common_utils_entry_info_t *)data;
 	if (!entry_info)
@@ -597,7 +597,7 @@ static void _gl_exp(void *data, Evas_Object *obj, void *event_info)
 	common_utils_edit_box_focus_set(eap_data->eap_pw_item, EINA_FALSE);
 	ip_info_close_all_keypads(eap_data->ip_info_list);
 
-	int i = 0;
+	unsigned int i = 0;
 	eap_type_t eap_type;
 	eap_auth_t auth_type;
 	INFO_LOG(UG_NAME_RESP, "depth = %d", eap_data->expandable_list_index);
@@ -1073,29 +1073,29 @@ static void __common_eap_connect_done_cb(void *data,  Evas_Object *obj,
 	__COMMON_FUNC_EXIT__;
 }
 
-static Eina_Bool __common_eap_connect_show_ime(void *data)
+static gboolean __common_eap_connect_show_ime(void *data)
 {
 	Elm_Object_Item *list_entry_item = (Elm_Object_Item *)data;
 	if (!list_entry_item)
-		return ECORE_CALLBACK_CANCEL;
+		return FALSE;
 
 	Evas_Object *entry = elm_object_item_part_content_get(list_entry_item, "elm.icon.entry");
 	if (!entry)
-		return ECORE_CALLBACK_CANCEL;
+		return FALSE;
 
 	g_eap_id_show_keypad = TRUE;
 	elm_genlist_item_update(list_entry_item);
-	return ECORE_CALLBACK_CANCEL;
+	return FALSE;
 }
 
-static Eina_Bool __common_eap_connect_load_ip_info_list_cb(void *data)
+static gboolean __common_eap_connect_load_ip_info_list_cb(void *data)
 {
 	eap_connect_data_t *eap_data = (eap_connect_data_t *)data;
 	Elm_Object_Item *navi_it = NULL;
 	Evas_Object *list = NULL;
 
 	if (!eap_data)
-		return ECORE_CALLBACK_CANCEL;
+		return FALSE;
 
 	if (eap_data->navi_frame) {
 		Evas_Object *layout = NULL;
@@ -1113,9 +1113,9 @@ static Eina_Bool __common_eap_connect_load_ip_info_list_cb(void *data)
 	/* Add a separator */
 	common_utils_add_dialogue_separator(list, "dialogue/separator");
 
-	ecore_idler_add(__common_eap_connect_show_ime, eap_data->eap_id_item);
+	common_util_managed_idle_add(__common_eap_connect_show_ime, eap_data->eap_id_item);
 
-	return ECORE_CALLBACK_CANCEL;
+	return FALSE;
 }
 
 eap_connect_data_t *create_eap_view(Evas_Object *win_main,
@@ -1183,7 +1183,7 @@ eap_connect_data_t *create_eap_view(Evas_Object *win_main,
 			connect_btn);
 
 	/* Append ip info items and add a seperator */
-	ecore_idler_add(__common_eap_connect_load_ip_info_list_cb, eap_data);
+	common_util_managed_idle_add(__common_eap_connect_load_ip_info_list_cb, eap_data);
 
 	/* Title Connect button */
 	connect_btn = elm_button_add(navi_frame);
@@ -1271,7 +1271,7 @@ eap_connect_data_t *create_eap_popup(Evas_Object *win_main,
 	list = _create_list(box, eap_data);
 
 	/* Append ip info items and add a seperator */
-	ecore_idler_add(__common_eap_connect_load_ip_info_list_cb, eap_data);
+	common_util_managed_idle_add(__common_eap_connect_load_ip_info_list_cb, eap_data);
 
 	/* Pack the list into the box */
 	elm_box_pack_end(box, list);

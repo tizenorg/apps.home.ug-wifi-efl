@@ -152,7 +152,7 @@ void wlan_engine_refresh_callback(void)
 
 	INFO_LOG(SP_NAME_NORMAL, "Wi-Fi QS launch");
 
-	ecore_idler_add(view_main_show, NULL);
+	common_util_managed_idle_add(view_main_show, NULL);
 
 	__COMMON_FUNC_EXIT__;
 	return;

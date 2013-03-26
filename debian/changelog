@@ -1,3 +1,11 @@
+wifi-efl-ug (0.5.2-6) precise; urgency=low
+
+  * Add managed idler & Fix build warnings
+  * Git: magnolia/apps/home/ug-wifi-efl
+  * Tag: wifi-efl-ug_0.5.2-5
+
+ -- sunil85.kim <isurit@sunil85.kim>  Tue, 26 Mar 2013 12:22:31 +0900
+
 wifi-efl-ug (0.5.2-5) precise; urgency=low
 
   * Apply new UX for editfield widget

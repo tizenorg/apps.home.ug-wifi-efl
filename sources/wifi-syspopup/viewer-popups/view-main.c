@@ -201,6 +201,8 @@ static void __view_main_wifi_connect(syspopup_genlist_data_t *gdata)
 	}
 }
 
+#if 0
+/* Unused function */
 Elm_Object_Item *__view_main_get_item_in_mode(ITEM_CONNECTION_MODES mode)
 {
 	Elm_Object_Item* it = NULL;
@@ -219,6 +221,7 @@ Elm_Object_Item *__view_main_get_item_in_mode(ITEM_CONNECTION_MODES mode)
 	__COMMON_FUNC_EXIT__;
 	return NULL;
 }
+#endif
 
 static void __gl_sel(void *data, Evas_Object *obj, void *event_info)
 {
@@ -521,7 +524,7 @@ static bool view_main_wifi_found_ap_cb(wifi_ap_h ap, void* user_data)
 	return true;
 }
 
-Eina_Bool view_main_show(void *data)
+gboolean view_main_show(void *data)
 {
 	__COMMON_FUNC_ENTER__;
 
@@ -529,7 +532,7 @@ Eina_Bool view_main_show(void *data)
 		ERROR_LOG( SP_NAME_NORMAL, "list is NULL!!" );
 
 		__COMMON_FUNC_EXIT__;
-		return ECORE_CALLBACK_CANCEL;
+		return FALSE;
 	}
 
 	view_main_scan_ui_clear();
@@ -537,7 +540,7 @@ Eina_Bool view_main_show(void *data)
 
 	int state = wlan_manager_state_get();
 	if (WLAN_MANAGER_ERROR == state || WLAN_MANAGER_OFF == state) {
-		return ECORE_CALLBACK_CANCEL;
+		return FALSE;
 	}
 
 	itc.item_style = "2text.2icon.4";
@@ -555,11 +558,11 @@ Eina_Bool view_main_show(void *data)
 		WARN_LOG(SP_NAME_NORMAL, "scan size is ZERO");
 
 		__COMMON_FUNC_EXIT__;
-		return ECORE_CALLBACK_CANCEL;
+		return FALSE;
 	}
 
 	evas_object_show(list);
 
 	__COMMON_FUNC_EXIT__;
-	return ECORE_CALLBACK_CANCEL;
+	return FALSE;
 }

@@ -728,14 +728,14 @@ wifi_device_info_t* wlan_manager_profile_device_info_blank_create()
 	return di_s0;
 }
 
-static Eina_Bool _refresh_ui(void *data)
+static gboolean _refresh_ui(void *data)
 {
 	manager_object->refresh_func();
 
 	manager_object->b_scan_blocked = FALSE;
 	manager_object->b_ui_refresh = FALSE;
 
-	return ECORE_CALLBACK_CANCEL;
+	return FALSE;
 }
 
 void wlan_manager_enable_scan_result_update(void)
@@ -747,7 +747,7 @@ void wlan_manager_enable_scan_result_update(void)
 			DEBUG_LOG(COMMON_NAME_LIB, "Refresh the UI with last scan update");
 
 			/* Delayed rendering in order to get smooth effect of popup close */
-			ecore_idler_add(_refresh_ui, NULL);
+			common_util_managed_idle_add(_refresh_ui, NULL);
 		} else
 			manager_object->b_scan_blocked = FALSE;
 	}

@@ -151,7 +151,7 @@ static void ok_cb(void *data, Evas_Object *obj, void *event_info)
 
 	elm_naviframe_item_pop(viewer_manager_get_naviframe());
 
-	g_idle_add(__forget_wifi_ap, (gpointer)ap);
+	common_util_managed_idle_add(__forget_wifi_ap, (gpointer)ap);
 
 	__COMMON_FUNC_EXIT__;
 }
@@ -249,7 +249,7 @@ static void __view_detail_imf_ctxt_evnt_cb(void *data, Ecore_IMF_Context *ctx, i
 	return;
 }
 
-static Eina_Bool __view_detail_load_ip_info_list_cb(void *data)
+static gboolean __view_detail_load_ip_info_list_cb(void *data)
 {
 	Elm_Object_Item *navi_it = NULL;
 	Evas_Object *list = NULL;
@@ -257,7 +257,7 @@ static Eina_Bool __view_detail_load_ip_info_list_cb(void *data)
 	view_detail_data *_detail_data = (view_detail_data *)data;
 
 	if (!_detail_data)
-		return ECORE_CALLBACK_CANCEL;
+		return FALSE;
 
 	navi_it = elm_naviframe_top_item_get(viewer_manager_get_naviframe());
 	layout = elm_object_item_part_content_get(navi_it, "elm.swallow.content");
@@ -270,7 +270,7 @@ static Eina_Bool __view_detail_load_ip_info_list_cb(void *data)
 
 	common_utils_add_dialogue_separator(list, "dialogue/separator");
 
-	return ECORE_CALLBACK_CANCEL;
+	return FALSE;
 }
 
 void view_detail(wifi_device_info_t *device_info, Evas_Object *win_main)
@@ -365,7 +365,7 @@ void view_detail(wifi_device_info_t *device_info, Evas_Object *win_main)
 	}
 
 	/* Append the ip info details */
-	ecore_idler_add(__view_detail_load_ip_info_list_cb, _detail_data);
+	common_util_managed_idle_add(__view_detail_load_ip_info_list_cb, _detail_data);
 
 	__COMMON_FUNC_EXIT__;
 }

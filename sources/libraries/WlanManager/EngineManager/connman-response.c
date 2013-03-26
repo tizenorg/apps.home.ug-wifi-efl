@@ -25,7 +25,7 @@ struct _wifi_cb_s {
 	void *specific_scan_user_data;
 };
 
-static struct _wifi_cb_s wifi_callbacks = {0,};
+static struct _wifi_cb_s wifi_callbacks = {NULL, NULL};
 
 int wifi_set_specific_scan_cb(wifi_specific_scan_finished_cb cb, void *data)
 {

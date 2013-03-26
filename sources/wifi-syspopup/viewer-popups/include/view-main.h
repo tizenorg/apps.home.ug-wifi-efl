@@ -35,7 +35,7 @@ extern "C"
 Evas_Object *view_main_create(Evas_Object* parent);
 int view_main_destroy(void);
 void view_main_item_state_set(wifi_ap_h ap, ITEM_CONNECTION_MODES state);
-Eina_Bool view_main_show(void *data);
+gboolean view_main_show(void *data);
 
 #ifdef __cplusplus
 }
