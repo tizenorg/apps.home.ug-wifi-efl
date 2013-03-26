@@ -99,27 +99,37 @@ static char *_ip_info_detail_description_text_get(void *data,
 
 static void _ip_info_entry_cursor_changed_cb(void* data, Evas_Object* obj, void* event_info)
 {
-	if (data == NULL)
+	common_utils_entry_info_t *entry_info = (common_utils_entry_info_t *)data;
+	if (!entry_info)
 		return;
 
-	common_utils_entry_info_t *entry_info = (common_utils_entry_info_t *)data;
+	if (elm_object_focus_get(obj)) {
+		if (elm_entry_is_empty(obj))
+			elm_object_item_signal_emit(entry_info->item, "elm,state,eraser,hide", "");
+		else
+			elm_object_item_signal_emit(entry_info->item, "elm,state,eraser,show", "");
+	}
 
-	if (entry_info) {
+	if (entry_info->entry_txt) {
 		g_free(entry_info->entry_txt);
 		entry_info->entry_txt = NULL;
-
-		char *entry_text = elm_entry_markup_to_utf8(elm_entry_entry_get(obj));
-
-		if (entry_text != NULL && entry_text[0] != '\0')
-			entry_info->entry_txt = g_strdup(elm_entry_entry_get(obj));
-
-		g_free(entry_text);
 	}
+
+	char *entry_text = elm_entry_markup_to_utf8(elm_entry_entry_get(obj));
+
+	if (entry_text != NULL && entry_text[0] != '\0')
+		entry_info->entry_txt = g_strdup(elm_entry_entry_get(obj));
+
+	g_free(entry_text);
 }
 
 static void _ip_info_entry_changed_cb(void *data,
 		Evas_Object *obj, void *event_info)
 {
+	common_utils_entry_info_t *entry_info = (common_utils_entry_info_t *)data;
+	if (!entry_info)
+		return;
+
 	int entry_pos = 0;
 	char *entry_text = NULL;
 	char **ip_text = NULL;
@@ -128,11 +138,11 @@ static void _ip_info_entry_changed_cb(void *data,
 	if (obj == NULL)
 		return;
 
-	if (elm_object_focus_get(data)) {
+	if (elm_object_focus_get(obj)) {
 		if (elm_entry_is_empty(obj))
-			elm_object_signal_emit(data, "elm,state,eraser,hide", "elm");
+			elm_object_item_signal_emit(entry_info->item, "elm,state,eraser,hide", "");
 		else
-			elm_object_signal_emit(data, "elm,state,eraser,show", "elm");
+			elm_object_item_signal_emit(entry_info->item, "elm,state,eraser,show", "");
 	}
 
 	panel_type = elm_entry_input_panel_layout_get(obj);
@@ -193,19 +203,23 @@ static void _ip_info_entry_changed_cb(void *data,
 
 static void _ip_info_entry_focused_cb(void *data, Evas_Object *obj, void *event_info)
 {
+	common_utils_entry_info_t *entry_info = (common_utils_entry_info_t *)data;
+	if (!entry_info)
+		return;
+
 	if (!elm_entry_is_empty(obj))
-		elm_object_signal_emit(data, "elm,state,eraser,show", "elm");
-	elm_object_signal_emit(data, "elm,state,guidetext,hide", "elm");
+		elm_object_item_signal_emit(entry_info->item, "elm,state,eraser,show", "");
+
+	elm_object_item_signal_emit(entry_info->item, "elm,state,rename,hide", "");
 }
 
 static void _ip_info_entry_unfocused_cb(void *data, Evas_Object *obj, void *event_info)
 {
-	INFO_LOG(UG_NAME_NORMAL, "_ip_info_entry_unfocused_cb entered");
+	common_utils_entry_info_t *entry_info = (common_utils_entry_info_t *)data;
+	if (!entry_info)
+		return;
 
-	if (elm_entry_is_empty(obj))
-		elm_object_signal_emit(data, "elm,state,guidetext,show", "elm");
-	else {
-		elm_object_signal_emit(data, "elm,state,guidetext,hide", "elm");
+	if (!elm_entry_is_empty(obj)) {
 		int panel_type = elm_entry_input_panel_layout_get(obj);
 		if (panel_type == ELM_INPUT_PANEL_LAYOUT_IP) {
 			int ip_addr[4] = {0};
@@ -217,121 +231,128 @@ static void _ip_info_entry_unfocused_cb(void *data, Evas_Object *obj, void *even
 		}
 	}
 
-	elm_object_signal_emit(data, "elm,state,eraser,hide", "elm");
+	elm_object_item_signal_emit(entry_info->item, "elm,state,eraser,hide", "");
+	elm_object_item_signal_emit(entry_info->item, "elm,state,rename,show", "");
 }
 
-static void _ip_info_entry_eraser_clicked_cb(void *data, Evas_Object *obj, const char *emission, const char *source)
+static void _ip_info_entry_eraser_clicked_cb(void *data, Evas_Object *obj, void *event_info)
 {
-	elm_entry_entry_set(data, "");
+	common_utils_entry_info_t *entry_info = (common_utils_entry_info_t *)data;
+	if (!entry_info)
+		return;
+
+	Evas_Object *entry = elm_object_item_part_content_get(entry_info->item, "elm.icon.entry");
+	elm_object_focus_set(entry, EINA_TRUE);
+	elm_entry_entry_set(entry, "");
 }
 
-static Evas_Object *_ip_info_entry_item_content_get(void *data, Evas_Object *obj, const char *part)
+static char *_ip_info_entry_item_text_get(void *data, Evas_Object *obj, const char *part)
 {
-	if (g_strcmp0(part, "elm.icon")) {
-		return NULL;
-	}
-
 	common_utils_entry_info_t *entry_info = (common_utils_entry_info_t *)data;
 	if (!entry_info)
 		return NULL;
 
-	Evas_Object *layout = NULL;
-	Evas_Object *entry = NULL;
-	char *title = NULL;
-	char *guide_txt = NULL;
-	char *accepted = NULL;
-	Eina_Bool hide_entry_txt = EINA_FALSE;
-	Elm_Input_Panel_Layout panel_type;
+	if (!strcmp(part, "elm.text"))
+		return g_strdup(entry_info->title_txt);
 
-	Elm_Entry_Filter_Limit_Size limit_filter_data;
+	return NULL;
+}
 
-	layout = elm_layout_add(obj);
-	elm_layout_theme_set(layout, "layout", "editfield", "title");
-
-	entry = elm_entry_add(layout);
-	elm_entry_scrollable_set(entry, EINA_TRUE);
-	elm_entry_single_line_set(entry, EINA_TRUE);
-	elm_object_part_content_set(layout, "elm.swallow.content", entry);
-
-	switch (entry_info->entry_id)
-	{
-	case ENTRY_TYPE_IP_ADDR:
-		title = entry_info->title_txt;
-		guide_txt = entry_info->guide_txt;
-		panel_type = ELM_INPUT_PANEL_LAYOUT_IP;
-		accepted = "0123456789.";
-		break;
-	case ENTRY_TYPE_SUBNET_MASK:
-		title = entry_info->title_txt;
-		guide_txt = entry_info->guide_txt;
-		panel_type = ELM_INPUT_PANEL_LAYOUT_IP;
-		accepted = "0123456789.";
-		break;
-	case ENTRY_TYPE_GATEWAY:
-		title = entry_info->title_txt;
-		guide_txt = entry_info->guide_txt;
-		panel_type = ELM_INPUT_PANEL_LAYOUT_IP;
-		accepted = "0123456789.";
-		break;
-	case ENTRY_TYPE_DNS_1:
-		title = entry_info->title_txt;
-		guide_txt = entry_info->guide_txt;
-		panel_type = ELM_INPUT_PANEL_LAYOUT_IP;
-		accepted = "0123456789.";
-		break;
-	case ENTRY_TYPE_DNS_2:
-		title = entry_info->title_txt;
-		guide_txt = entry_info->guide_txt;
-		panel_type = ELM_INPUT_PANEL_LAYOUT_IP;
-		accepted = "0123456789.";
-		break;
-	case ENTRY_TYPE_PROXY_ADDR:
-		title = entry_info->title_txt;
-		guide_txt = DEFAULT_GUIDE_PROXY_IP;
-		panel_type = ELM_INPUT_PANEL_LAYOUT_URL;
-		accepted = "0123456789.abcdefghijklmnopqrstuvwxyz-ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-		break;
-	case ENTRY_TYPE_PROXY_PORT:
-		title = entry_info->title_txt;
-		guide_txt = DEFAULT_GUIDE_PROXY_PORT;
-		panel_type = ELM_INPUT_PANEL_LAYOUT_NUMBERONLY;
-		break;
-	default:
+static Evas_Object *_ip_info_entry_item_content_get(void *data, Evas_Object *obj, const char *part)
+{
+	common_utils_entry_info_t *entry_info = (common_utils_entry_info_t *)data;
+	if (!entry_info)
 		return NULL;
-	}
 
-	elm_object_part_text_set(layout, "elm.text", title);
-	elm_object_part_text_set(layout, "elm.guidetext", guide_txt);
-	elm_entry_password_set(entry, hide_entry_txt);
-	if (entry_info->entry_txt && (strlen(entry_info->entry_txt) > 0)) {
-		elm_entry_entry_set(entry, entry_info->entry_txt);
-		elm_object_signal_emit(layout, "elm,state,guidetext,hide", "elm");
-	}
-	elm_entry_input_panel_layout_set(entry, panel_type);
-	limit_filter_data.max_char_count = 32;
-	elm_entry_markup_filter_append(entry, elm_entry_filter_limit_size, &limit_filter_data);
-	elm_entry_context_menu_disabled_set(entry, EINA_TRUE);
+	if (g_strcmp0(part, "elm.icon.entry") == 0) {
+		Evas_Object *entry = NULL;
+		char *guide_txt = NULL;
+		char *accepted = NULL;
+		Elm_Input_Panel_Layout panel_type;
 
-	Elm_Entry_Filter_Accept_Set digits_filter_data;
-	memset(&digits_filter_data, 0, sizeof(Elm_Entry_Filter_Accept_Set));
-	digits_filter_data.accepted = accepted;
-	elm_entry_markup_filter_append(entry, elm_entry_filter_accept_set, &digits_filter_data);
+		Elm_Entry_Filter_Limit_Size limit_filter_data;
 
-	if (entry_info->input_panel_cb) {
-		Ecore_IMF_Context *imf_ctxt = elm_entry_imf_context_get(entry);
-		if (imf_ctxt) {
-			ecore_imf_context_input_panel_event_callback_add(imf_ctxt, ECORE_IMF_INPUT_PANEL_STATE_EVENT, entry_info->input_panel_cb, entry_info->input_panel_cb_data);
+		switch (entry_info->entry_id)
+		{
+		case ENTRY_TYPE_IP_ADDR:
+			guide_txt = entry_info->guide_txt;
+			panel_type = ELM_INPUT_PANEL_LAYOUT_IP;
+			accepted = "0123456789.";
+			break;
+		case ENTRY_TYPE_SUBNET_MASK:
+			guide_txt = entry_info->guide_txt;
+			panel_type = ELM_INPUT_PANEL_LAYOUT_IP;
+			accepted = "0123456789.";
+			break;
+		case ENTRY_TYPE_GATEWAY:
+			guide_txt = entry_info->guide_txt;
+			panel_type = ELM_INPUT_PANEL_LAYOUT_IP;
+			accepted = "0123456789.";
+			break;
+		case ENTRY_TYPE_DNS_1:
+			guide_txt = entry_info->guide_txt;
+			panel_type = ELM_INPUT_PANEL_LAYOUT_IP;
+			accepted = "0123456789.";
+			break;
+		case ENTRY_TYPE_DNS_2:
+			guide_txt = entry_info->guide_txt;
+			panel_type = ELM_INPUT_PANEL_LAYOUT_IP;
+			accepted = "0123456789.";
+			break;
+		case ENTRY_TYPE_PROXY_ADDR:
+			guide_txt = DEFAULT_GUIDE_PROXY_IP;
+			panel_type = ELM_INPUT_PANEL_LAYOUT_URL;
+			accepted = "0123456789.abcdefghijklmnopqrstuvwxyz-ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+			break;
+		case ENTRY_TYPE_PROXY_PORT:
+			guide_txt = DEFAULT_GUIDE_PROXY_PORT;
+			panel_type = ELM_INPUT_PANEL_LAYOUT_NUMBERONLY;
+			break;
+		default:
+			return NULL;
 		}
-	}
-	evas_object_smart_callback_add(entry, "cursor,changed", _ip_info_entry_cursor_changed_cb, entry_info);
-	evas_object_smart_callback_add(entry, "changed", _ip_info_entry_changed_cb, layout);
-	evas_object_smart_callback_add(entry, "focused", _ip_info_entry_focused_cb, layout);
-	evas_object_smart_callback_add(entry, "unfocused", _ip_info_entry_unfocused_cb, layout);
-	elm_object_signal_callback_add(layout, "elm,eraser,clicked", "elm", _ip_info_entry_eraser_clicked_cb, entry);
-	evas_object_show(entry);
 
-	entry_info->layout = layout;
-	return layout;
+		entry = elm_entry_add(obj);
+		elm_entry_scrollable_set(entry, EINA_TRUE);
+		elm_entry_single_line_set(entry, EINA_TRUE);
+		elm_entry_password_set(entry, EINA_FALSE);
+		elm_object_part_text_set(entry, "elm.guide", guide_txt);
+		if (entry_info->entry_txt && (strlen(entry_info->entry_txt) > 0)) {
+			elm_entry_entry_set(entry, entry_info->entry_txt);
+		}
+
+		elm_entry_input_panel_layout_set(entry, panel_type);
+
+		limit_filter_data.max_char_count = 32;
+		elm_entry_markup_filter_append(entry, elm_entry_filter_limit_size, &limit_filter_data);
+		elm_entry_context_menu_disabled_set(entry, EINA_TRUE);
+
+		Elm_Entry_Filter_Accept_Set digits_filter_data;
+		memset(&digits_filter_data, 0, sizeof(Elm_Entry_Filter_Accept_Set));
+		digits_filter_data.accepted = accepted;
+		elm_entry_markup_filter_append(entry, elm_entry_filter_accept_set, &digits_filter_data);
+
+		if (entry_info->input_panel_cb) {
+			Ecore_IMF_Context *imf_ctxt = elm_entry_imf_context_get(entry);
+			if (imf_ctxt) {
+				ecore_imf_context_input_panel_event_callback_add(imf_ctxt, ECORE_IMF_INPUT_PANEL_STATE_EVENT, entry_info->input_panel_cb, entry_info->input_panel_cb_data);
+			}
+		}
+
+		evas_object_smart_callback_add(entry, "cursor,changed", _ip_info_entry_cursor_changed_cb, entry_info);
+		evas_object_smart_callback_add(entry, "changed", _ip_info_entry_changed_cb, entry_info);
+		evas_object_smart_callback_add(entry, "focused", _ip_info_entry_focused_cb, entry_info);
+		evas_object_smart_callback_add(entry, "unfocused", _ip_info_entry_unfocused_cb, entry_info);
+
+		return entry;
+	} else if (g_strcmp0(part, "elm.icon.eraser") == 0) {
+		Evas_Object *btn = elm_button_add(obj);
+		elm_object_style_set(btn, "editfield_clear");
+		evas_object_smart_callback_add(btn, "clicked", _ip_info_entry_eraser_clicked_cb, entry_info);
+		return btn;
+	}
+
+	return NULL;
 }
 
 static void _ip_info_entry_item_del(void *data, Evas_Object *obj)
@@ -344,7 +365,7 @@ static void _ip_info_entry_item_del(void *data, Evas_Object *obj)
 		g_free(entry_info->entry_txt);
 
 	if (entry_info->input_panel_cb) {
-		Evas_Object *entry = common_utils_entry_layout_get_entry(entry_info->layout);
+		Evas_Object *entry = elm_object_item_part_content_get(entry_info->item, "elm.icon.entry");
 		Ecore_IMF_Context *imf_ctxt = elm_entry_imf_context_get(entry);
 		if (imf_ctxt) {
 			ecore_imf_context_input_panel_event_callback_del(imf_ctxt, ECORE_IMF_INPUT_PANEL_STATE_EVENT, entry_info->input_panel_cb);
@@ -382,10 +403,11 @@ static void _create_static_ip_table(ip_info_list_t *ip_info_list_data)
 	edit_box_details->entry_txt = txt;
 	edit_box_details->input_panel_cb = ip_info_list_data->input_panel_cb;
 	edit_box_details->input_panel_cb_data = ip_info_list_data->input_panel_cb_data;
-	ip_info_list_data->ip_addr_item = elm_genlist_item_insert_after(ip_info_list_data->genlist, &ip_entry_itc, edit_box_details, NULL, ip_info_list_data->ip_toggle_item, ELM_GENLIST_ITEM_NONE, _gl_editbox_sel_cb, NULL);
-	elm_genlist_item_select_mode_set(ip_info_list_data->ip_addr_item, ELM_OBJECT_SELECT_MODE_NONE);
-	Evas_Object *ao = elm_object_item_access_object_get(ip_info_list_data->ip_addr_item);
+	edit_box_details->item = elm_genlist_item_insert_after(ip_info_list_data->genlist, &ip_entry_itc, edit_box_details, NULL, ip_info_list_data->ip_toggle_item, ELM_GENLIST_ITEM_NONE, _gl_editbox_sel_cb, NULL);
+	elm_genlist_item_select_mode_set(edit_box_details->item, ELM_OBJECT_SELECT_MODE_NONE);
+	Evas_Object *ao = elm_object_item_access_object_get(edit_box_details->item);
 	elm_access_info_cb_set(ao, ELM_ACCESS_INFO, _access_info_cb, edit_box_details);
+	ip_info_list_data->ip_addr_item = edit_box_details->item;
 
 	/* Subnet Mask */
 	wifi_ap_get_subnet_mask(ap, WIFI_ADDRESS_FAMILY_IPV4, &txt);
@@ -395,10 +417,11 @@ static void _create_static_ip_table(ip_info_list_t *ip_info_list_data)
 	edit_box_details->entry_txt = txt;
 	edit_box_details->input_panel_cb = ip_info_list_data->input_panel_cb;
 	edit_box_details->input_panel_cb_data = ip_info_list_data->input_panel_cb_data;
-	ip_info_list_data->subnet_mask_item = elm_genlist_item_insert_after(ip_info_list_data->genlist, &ip_entry_itc, edit_box_details, NULL, ip_info_list_data->ip_addr_item, ELM_GENLIST_ITEM_NONE, _gl_editbox_sel_cb, NULL);
-	elm_genlist_item_select_mode_set(ip_info_list_data->subnet_mask_item, ELM_OBJECT_SELECT_MODE_NONE);
-	ao = elm_object_item_access_object_get(ip_info_list_data->subnet_mask_item);
+	edit_box_details->item = elm_genlist_item_insert_after(ip_info_list_data->genlist, &ip_entry_itc, edit_box_details, NULL, ip_info_list_data->ip_addr_item, ELM_GENLIST_ITEM_NONE, _gl_editbox_sel_cb, NULL);
+	elm_genlist_item_select_mode_set(edit_box_details->item, ELM_OBJECT_SELECT_MODE_NONE);
+	ao = elm_object_item_access_object_get(edit_box_details->item);
 	elm_access_info_cb_set(ao, ELM_ACCESS_INFO, _access_info_cb, edit_box_details);
+	ip_info_list_data->subnet_mask_item = edit_box_details->item;
 
 	/* Gateway Address */
 	wifi_ap_get_gateway_address(ap, WIFI_ADDRESS_FAMILY_IPV4, &txt);
@@ -408,10 +431,11 @@ static void _create_static_ip_table(ip_info_list_t *ip_info_list_data)
 	edit_box_details->entry_txt = txt;
 	edit_box_details->input_panel_cb = ip_info_list_data->input_panel_cb;
 	edit_box_details->input_panel_cb_data = ip_info_list_data->input_panel_cb_data;
-	ip_info_list_data->gateway_addr_item = elm_genlist_item_insert_after(ip_info_list_data->genlist, &ip_entry_itc, edit_box_details, NULL, ip_info_list_data->subnet_mask_item, ELM_GENLIST_ITEM_NONE, _gl_editbox_sel_cb, NULL);
-	elm_genlist_item_select_mode_set(ip_info_list_data->gateway_addr_item, ELM_OBJECT_SELECT_MODE_NONE);
-	ao = elm_object_item_access_object_get(ip_info_list_data->gateway_addr_item);
+	edit_box_details->item = elm_genlist_item_insert_after(ip_info_list_data->genlist, &ip_entry_itc, edit_box_details, NULL, ip_info_list_data->subnet_mask_item, ELM_GENLIST_ITEM_NONE, _gl_editbox_sel_cb, NULL);
+	elm_genlist_item_select_mode_set(edit_box_details->item, ELM_OBJECT_SELECT_MODE_NONE);
+	ao = elm_object_item_access_object_get(edit_box_details->item);
 	elm_access_info_cb_set(ao, ELM_ACCESS_INFO, _access_info_cb, edit_box_details);
+	ip_info_list_data->gateway_addr_item = edit_box_details->item;
 
 	/* DNS 1 */
 	wifi_ap_get_dns_address(ap, 1, WIFI_ADDRESS_FAMILY_IPV4, &txt);
@@ -421,10 +445,11 @@ static void _create_static_ip_table(ip_info_list_t *ip_info_list_data)
 	edit_box_details->entry_txt = txt;
 	edit_box_details->input_panel_cb = ip_info_list_data->input_panel_cb;
 	edit_box_details->input_panel_cb_data = ip_info_list_data->input_panel_cb_data;
-	ip_info_list_data->dns_1_item = elm_genlist_item_insert_after(ip_info_list_data->genlist, &ip_entry_itc, edit_box_details, NULL, ip_info_list_data->gateway_addr_item, ELM_GENLIST_ITEM_NONE, _gl_editbox_sel_cb, NULL);
-	elm_genlist_item_select_mode_set(ip_info_list_data->dns_1_item, ELM_OBJECT_SELECT_MODE_NONE);
-	ao = elm_object_item_access_object_get(ip_info_list_data->dns_1_item);
+	edit_box_details->item = elm_genlist_item_insert_after(ip_info_list_data->genlist, &ip_entry_itc, edit_box_details, NULL, ip_info_list_data->gateway_addr_item, ELM_GENLIST_ITEM_NONE, _gl_editbox_sel_cb, NULL);
+	elm_genlist_item_select_mode_set(edit_box_details->item, ELM_OBJECT_SELECT_MODE_NONE);
+	ao = elm_object_item_access_object_get(edit_box_details->item);
 	elm_access_info_cb_set(ao, ELM_ACCESS_INFO, _access_info_cb, edit_box_details);
+	ip_info_list_data->dns_1_item = edit_box_details->item;
 
 	/* DNS 2 */
 	wifi_ap_get_dns_address(ap, 2, WIFI_ADDRESS_FAMILY_IPV4, &txt);
@@ -434,10 +459,11 @@ static void _create_static_ip_table(ip_info_list_t *ip_info_list_data)
 	edit_box_details->entry_txt = txt;
 	edit_box_details->input_panel_cb = ip_info_list_data->input_panel_cb;
 	edit_box_details->input_panel_cb_data = ip_info_list_data->input_panel_cb_data;
-	ip_info_list_data->dns_2_item = elm_genlist_item_insert_after(ip_info_list_data->genlist, &ip_entry_itc, edit_box_details, NULL, ip_info_list_data->dns_1_item, ELM_GENLIST_ITEM_NONE, _gl_editbox_sel_cb, NULL);
-	elm_genlist_item_select_mode_set(ip_info_list_data->dns_2_item, ELM_OBJECT_SELECT_MODE_NONE);
-	ao = elm_object_item_access_object_get(ip_info_list_data->dns_2_item);
+	edit_box_details->item = elm_genlist_item_insert_after(ip_info_list_data->genlist, &ip_entry_itc, edit_box_details, NULL, ip_info_list_data->dns_1_item, ELM_GENLIST_ITEM_NONE, _gl_editbox_sel_cb, NULL);
+	elm_genlist_item_select_mode_set(edit_box_details->item, ELM_OBJECT_SELECT_MODE_NONE);
+	ao = elm_object_item_access_object_get(edit_box_details->item);
 	elm_access_info_cb_set(ao, ELM_ACCESS_INFO, _access_info_cb, edit_box_details);
+	ip_info_list_data->dns_2_item = edit_box_details->item;
 
 	__COMMON_FUNC_EXIT__;
 
@@ -741,8 +767,8 @@ ip_info_list_t *ip_info_append_items(wifi_ap_h ap, const char *pkg_name,
 	description_itc.func.state_get = NULL;
 	description_itc.func.del = _ip_info_detail_description_del;
 
-	ip_entry_itc.item_style = "dialogue/1icon";
-	ip_entry_itc.func.text_get = NULL;
+	ip_entry_itc.item_style = "dialogue/editfield/title";
+	ip_entry_itc.func.text_get = _ip_info_entry_item_text_get;
 	ip_entry_itc.func.content_get = _ip_info_entry_item_content_get;
 	ip_entry_itc.func.state_get = NULL;
 	ip_entry_itc.func.del = _ip_info_entry_item_del;
@@ -818,10 +844,11 @@ ip_info_list_t *ip_info_append_items(wifi_ap_h ap, const char *pkg_name,
 	edit_box_details->guide_txt = DEFAULT_GUIDE_PROXY_IP;
 	edit_box_details->input_panel_cb = input_panel_cb;
 	edit_box_details->input_panel_cb_data = input_panel_cb_data;
-	ip_info_list_data->proxy_addr_item = elm_genlist_item_append(genlist, &ip_entry_itc, edit_box_details, NULL, ELM_GENLIST_ITEM_NONE, _gl_editbox_sel_cb, NULL);
-	elm_genlist_item_select_mode_set(ip_info_list_data->proxy_addr_item, ELM_OBJECT_SELECT_MODE_NONE);
-	Evas_Object *ao = elm_object_item_access_object_get(ip_info_list_data->proxy_addr_item);
+	edit_box_details->item = elm_genlist_item_append(genlist, &ip_entry_itc, edit_box_details, NULL, ELM_GENLIST_ITEM_NONE, _gl_editbox_sel_cb, NULL);
+	elm_genlist_item_select_mode_set(edit_box_details->item, ELM_OBJECT_SELECT_MODE_NONE);
+	Evas_Object *ao = elm_object_item_access_object_get(edit_box_details->item);
 	elm_access_info_cb_set(ao, ELM_ACCESS_INFO, _access_info_cb, edit_box_details);
+	ip_info_list_data->proxy_addr_item = edit_box_details->item;
 
 	edit_box_details = g_new0(common_utils_entry_info_t, 1);
 	edit_box_details->entry_id = ENTRY_TYPE_PROXY_PORT;
@@ -830,10 +857,11 @@ ip_info_list_t *ip_info_append_items(wifi_ap_h ap, const char *pkg_name,
 	edit_box_details->guide_txt = DEFAULT_GUIDE_PROXY_PORT;
 	edit_box_details->input_panel_cb = input_panel_cb;
 	edit_box_details->input_panel_cb_data = input_panel_cb_data;
-	ip_info_list_data->proxy_port_item = elm_genlist_item_append(genlist, &ip_entry_itc, edit_box_details, NULL, ELM_GENLIST_ITEM_NONE, _gl_editbox_sel_cb, NULL);
-	elm_genlist_item_select_mode_set(ip_info_list_data->proxy_port_item, ELM_OBJECT_SELECT_MODE_NONE);
-	ao = elm_object_item_access_object_get(ip_info_list_data->proxy_port_item);
+	edit_box_details->item = elm_genlist_item_append(genlist, &ip_entry_itc, edit_box_details, NULL, ELM_GENLIST_ITEM_NONE, _gl_editbox_sel_cb, NULL);
+	elm_genlist_item_select_mode_set(edit_box_details->item, ELM_OBJECT_SELECT_MODE_NONE);
+	ao = elm_object_item_access_object_get(edit_box_details->item);
 	elm_access_info_cb_set(ao, ELM_ACCESS_INFO, _access_info_cb, edit_box_details);
+	ip_info_list_data->proxy_port_item = edit_box_details->item;
 
 	g_free(proxy_data);
 

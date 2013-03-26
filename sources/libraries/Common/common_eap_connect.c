@@ -390,148 +390,174 @@ static char *_gl_eap_user_cert_text_get(void *data, Evas_Object *obj, const char
 
 static void _gl_eap_entry_cursor_changed_cb(void* data, Evas_Object* obj, void* event_info)
 {
-	if (data == NULL)
+	common_utils_entry_info_t *entry_info = (common_utils_entry_info_t *)data;
+	if (!entry_info)
 		return;
 
-	common_utils_entry_info_t *entry_info = (common_utils_entry_info_t *)data;
+	if (elm_object_focus_get(obj)) {
+		if (elm_entry_is_empty(obj))
+			elm_object_item_signal_emit(entry_info->item, "elm,state,eraser,hide", "");
+		else
+			elm_object_item_signal_emit(entry_info->item, "elm,state,eraser,show", "");
+	}
 
-	if (entry_info) {
+	if (entry_info->entry_txt) {
 		g_free(entry_info->entry_txt);
 		entry_info->entry_txt = NULL;
-		char *entry_text = elm_entry_markup_to_utf8(elm_entry_entry_get(obj));
-
-		if (entry_text != NULL && entry_text[0] != '\0')
-			entry_info->entry_txt = g_strdup(elm_entry_entry_get(obj));
-
-		g_free(entry_text);
 	}
+
+	char *entry_text = elm_entry_markup_to_utf8(elm_entry_entry_get(obj));
+
+	if (entry_text != NULL && entry_text[0] != '\0')
+		entry_info->entry_txt = g_strdup(elm_entry_entry_get(obj));
+
+	g_free(entry_text);
 }
 
 static void _gl_eap_entry_changed_cb(void* data, Evas_Object* obj, void* event_info)
 {
+	common_utils_entry_info_t *entry_info = (common_utils_entry_info_t *)data;
+	if (!entry_info)
+		return;
+
 	if (obj == NULL)
 		return;
 
-	if (elm_object_focus_get(data)) {
+	if (elm_object_focus_get(obj)) {
 		if (elm_entry_is_empty(obj))
-			elm_object_signal_emit(data, "elm,state,eraser,hide", "elm");
+			elm_object_item_signal_emit(entry_info->item, "elm,state,eraser,hide", "");
 		else
-			elm_object_signal_emit(data, "elm,state,eraser,show", "elm");
+			elm_object_item_signal_emit(entry_info->item, "elm,state,eraser,show", "");
 	}
 }
 
 static void _gl_eap_entry_focused_cb(void *data, Evas_Object *obj, void *event_info)
 {
+	common_utils_entry_info_t *entry_info = (common_utils_entry_info_t *)data;
+	if (!entry_info)
+		return;
+
 	if (!elm_entry_is_empty(obj))
-		elm_object_signal_emit(data, "elm,state,eraser,show", "elm");
-	elm_object_signal_emit(data, "elm,state,guidetext,hide", "elm");
+		elm_object_item_signal_emit(entry_info->item, "elm,state,eraser,show", "");
+
+	elm_object_item_signal_emit(entry_info->item, "elm,state,rename,hide", "");
 }
 
 static void _gl_eap_entry_unfocused_cb(void *data, Evas_Object *obj, void *event_info)
 {
-	INFO_LOG(UG_NAME_NORMAL, "_gl_eap_entry_unfocused_cb entered");
+	common_utils_entry_info_t *entry_info = (common_utils_entry_info_t *)data;
+	if (!entry_info)
+		return;
 
-	if (elm_entry_is_empty(obj))
-		elm_object_signal_emit(data, "elm,state,guidetext,show", "elm");
-	else {
-		elm_object_signal_emit(data, "elm,state,guidetext,hide", "elm");
-	}
-
-	elm_object_signal_emit(data, "elm,state,eraser,hide", "elm");
+	elm_object_item_signal_emit(entry_info->item, "elm,state,eraser,hide", "");
+	elm_object_item_signal_emit(entry_info->item, "elm,state,rename,show", "");
 }
 
 static void _gl_eap_entry_eraser_clicked_cb(void *data, Evas_Object *obj, const char *emission, const char *source)
 {
-	elm_entry_entry_set(data, "");
+	common_utils_entry_info_t *entry_info = (common_utils_entry_info_t *)data;
+	if (!entry_info)
+		return;
+
+	Evas_Object *entry = elm_object_item_part_content_get(entry_info->item, "elm.icon.entry");
+	elm_object_focus_set(entry, EINA_TRUE);
+	elm_entry_entry_set(entry, "");
 }
 
-static Evas_Object *_gl_eap_entry_item_content_get(void *data, Evas_Object *obj, const char *part)
+static char *_gl_eap_entry_item_text_get(void *data, Evas_Object *obj, const char *part)
 {
-	if (g_strcmp0(part, "elm.icon")) {
-		return NULL;
-	}
-
 	common_utils_entry_info_t *entry_info = (common_utils_entry_info_t *)data;
 	if (!entry_info)
 		return NULL;
 
-	Evas_Object *layout = NULL;
-	Evas_Object *entry = NULL;
-	char *title = NULL;
-	char *guide_txt = NULL;
-	char *accepted = NULL;
-	Eina_Bool hide_entry_txt = EINA_FALSE;
-	Elm_Input_Panel_Layout panel_type = ELM_INPUT_PANEL_LAYOUT_PASSWORD;
+	if (!strcmp(part, "elm.text"))
+		return g_strdup(entry_info->title_txt);
 
-	Elm_Entry_Filter_Limit_Size limit_filter_data;
+	return NULL;
+}
 
-	layout = elm_layout_add(obj);
-	elm_layout_theme_set(layout, "layout", "editfield", "title");
-
-	entry = elm_entry_add(layout);
-	elm_entry_scrollable_set(entry, EINA_TRUE);
-	elm_entry_single_line_set(entry, EINA_TRUE);
-	elm_object_part_content_set(layout, "elm.swallow.content", entry);
-
-	switch (entry_info->entry_id)
-	{
-	case ENTRY_TYPE_USER_ID:
-		title = entry_info->title_txt;
-		guide_txt = entry_info->guide_txt;
-		break;
-	case ENTRY_TYPE_ANONYMOUS_ID:
-		title = entry_info->title_txt;
-		guide_txt = entry_info->guide_txt;
-		break;
-	case ENTRY_TYPE_PASSWORD:
-		title = entry_info->title_txt;
-		guide_txt = entry_info->guide_txt;
-		hide_entry_txt = EINA_TRUE;
-		break;
-	default:
+static Evas_Object *_gl_eap_entry_item_content_get(void *data, Evas_Object *obj, const char *part)
+{
+	common_utils_entry_info_t *entry_info = (common_utils_entry_info_t *)data;
+	if (!entry_info)
 		return NULL;
-	}
-	elm_object_part_text_set(layout, "elm.text", title);
-	elm_object_part_text_set(layout, "elm.guidetext", guide_txt);
-	elm_entry_password_set(entry, hide_entry_txt);
-	if (entry_info->entry_txt && (strlen(entry_info->entry_txt) > 0)) {
-		elm_entry_entry_set(entry, entry_info->entry_txt);
-		elm_object_signal_emit(layout, "elm,state,guidetext,hide", "elm");
-	}
-	elm_entry_input_panel_layout_set(entry, panel_type);
-	limit_filter_data.max_char_count = 32;
-	elm_entry_markup_filter_append(entry, elm_entry_filter_limit_size, &limit_filter_data);
 
-	Elm_Entry_Filter_Accept_Set digits_filter_data;
-	memset(&digits_filter_data, 0, sizeof(Elm_Entry_Filter_Accept_Set));
-	digits_filter_data.accepted = accepted;
-	elm_entry_markup_filter_append(entry, elm_entry_filter_accept_set, &digits_filter_data);
-	elm_entry_context_menu_disabled_set(entry, EINA_TRUE);
+	if (g_strcmp0(part, "elm.icon.entry") == 0) {
+		Evas_Object *entry = NULL;
+		char *guide_txt = NULL;
+		char *accepted = NULL;
+		Eina_Bool hide_entry_txt = EINA_FALSE;
+		Elm_Input_Panel_Layout panel_type = ELM_INPUT_PANEL_LAYOUT_PASSWORD;
 
-	Ecore_IMF_Context *imf_ctxt = elm_entry_imf_context_get(entry);
-	if (imf_ctxt && entry_info->input_panel_cb) {
-		ecore_imf_context_input_panel_event_callback_add(imf_ctxt,
-				ECORE_IMF_INPUT_PANEL_STATE_EVENT,
-				entry_info->input_panel_cb,
-				entry_info->input_panel_cb_data);
-		DEBUG_LOG(UG_NAME_NORMAL, "set the imf ctxt cbs");
-	}
+		Elm_Entry_Filter_Limit_Size limit_filter_data;
 
-	evas_object_smart_callback_add(entry, "cursor,changed", _gl_eap_entry_cursor_changed_cb, entry_info);
-	evas_object_smart_callback_add(entry, "changed", _gl_eap_entry_changed_cb, layout);
-	evas_object_smart_callback_add(entry, "focused", _gl_eap_entry_focused_cb, layout);
-	evas_object_smart_callback_add(entry, "unfocused", _gl_eap_entry_unfocused_cb, layout);
-	elm_object_signal_callback_add(layout, "elm,eraser,clicked", "elm", _gl_eap_entry_eraser_clicked_cb, entry);
-	evas_object_show(entry);
-
-	if (ENTRY_TYPE_USER_ID == entry_info->entry_id) {
-		if (TRUE == g_eap_id_show_keypad) {
-			elm_object_focus_set(entry, EINA_TRUE);
-			g_eap_id_show_keypad = FALSE;
+		switch (entry_info->entry_id)
+		{
+		case ENTRY_TYPE_USER_ID:
+			guide_txt = entry_info->guide_txt;
+			break;
+		case ENTRY_TYPE_ANONYMOUS_ID:
+			guide_txt = entry_info->guide_txt;
+			break;
+		case ENTRY_TYPE_PASSWORD:
+			guide_txt = entry_info->guide_txt;
+			hide_entry_txt = EINA_TRUE;
+			break;
+		default:
+			return NULL;
 		}
+
+		entry = elm_entry_add(obj);
+		elm_entry_scrollable_set(entry, EINA_TRUE);
+		elm_entry_single_line_set(entry, EINA_TRUE);
+		elm_entry_password_set(entry, hide_entry_txt);
+
+		elm_object_part_text_set(entry, "elm.guide", guide_txt);
+		if (entry_info->entry_txt && (strlen(entry_info->entry_txt) > 0)) {
+			elm_entry_entry_set(entry, entry_info->entry_txt);
+		}
+
+		elm_entry_input_panel_layout_set(entry, panel_type);
+
+		limit_filter_data.max_char_count = 32;
+		elm_entry_markup_filter_append(entry, elm_entry_filter_limit_size, &limit_filter_data);
+
+		Elm_Entry_Filter_Accept_Set digits_filter_data;
+		memset(&digits_filter_data, 0, sizeof(Elm_Entry_Filter_Accept_Set));
+		digits_filter_data.accepted = accepted;
+		elm_entry_markup_filter_append(entry, elm_entry_filter_accept_set, &digits_filter_data);
+		elm_entry_context_menu_disabled_set(entry, EINA_TRUE);
+
+		Ecore_IMF_Context *imf_ctxt = elm_entry_imf_context_get(entry);
+		if (imf_ctxt && entry_info->input_panel_cb) {
+			ecore_imf_context_input_panel_event_callback_add(imf_ctxt,
+					ECORE_IMF_INPUT_PANEL_STATE_EVENT,
+					entry_info->input_panel_cb,
+					entry_info->input_panel_cb_data);
+			DEBUG_LOG(UG_NAME_NORMAL, "set the imf ctxt cbs");
+		}
+
+		evas_object_smart_callback_add(entry, "cursor,changed", _gl_eap_entry_cursor_changed_cb, entry_info);
+		evas_object_smart_callback_add(entry, "changed", _gl_eap_entry_changed_cb, entry_info);
+		evas_object_smart_callback_add(entry, "focused", _gl_eap_entry_focused_cb, entry_info);
+		evas_object_smart_callback_add(entry, "unfocused", _gl_eap_entry_unfocused_cb, entry_info);
+
+		if (ENTRY_TYPE_USER_ID == entry_info->entry_id) {
+			if (TRUE == g_eap_id_show_keypad) {
+				elm_object_focus_set(entry, EINA_TRUE);
+				g_eap_id_show_keypad = FALSE;
+			}
+		}
+
+		return entry;
+	} else if (g_strcmp0(part, "elm.icon.eraser") == 0) {
+		Evas_Object *btn = elm_button_add(obj);
+		elm_object_style_set(btn, "editfield_clear");
+		evas_object_smart_callback_add(btn, "clicked", _gl_eap_entry_eraser_clicked_cb, entry_info);
+		return btn;
 	}
-	entry_info->layout = layout;
-	return layout;
+
+	return NULL;
 }
 
 static void _gl_eap_entry_item_del(void *data, Evas_Object *obj)
@@ -544,7 +570,7 @@ static void _gl_eap_entry_item_del(void *data, Evas_Object *obj)
 		g_free(entry_info->entry_txt);
 
 	if (entry_info->input_panel_cb) {
-		Evas_Object *entry = common_utils_entry_layout_get_entry(entry_info->layout);
+		Evas_Object *entry = elm_object_item_part_content_get(entry_info->item, "elm.icon.entry");
 		Ecore_IMF_Context *imf_ctxt = elm_entry_imf_context_get(entry);
 		if (imf_ctxt) {
 			ecore_imf_context_input_panel_event_callback_del(imf_ctxt, ECORE_IMF_INPUT_PANEL_STATE_EVENT, entry_info->input_panel_cb);
@@ -679,8 +705,8 @@ static void __common_eap_connect_popup_init_item_class(void *data)
 	g_eap_user_cert_itc.func.state_get = NULL;
 	g_eap_user_cert_itc.func.del = NULL;
 
-	g_eap_entry_itc.item_style = "dialogue/1icon";
-	g_eap_entry_itc.func.text_get = NULL;
+	g_eap_entry_itc.item_style = "dialogue/editfield/title";
+	g_eap_entry_itc.func.text_get = _gl_eap_entry_item_text_get;
 	g_eap_entry_itc.func.content_get = _gl_eap_entry_item_content_get;
 	g_eap_entry_itc.func.state_get = NULL;
 	g_eap_entry_itc.func.del = _gl_eap_entry_item_del;
@@ -827,8 +853,9 @@ static void _create_and_update_list_items_based_on_rules(eap_type_t new_type, ea
 		edit_box_details->entry_id = ENTRY_TYPE_USER_ID;
 		edit_box_details->title_txt = sc(eap_data->str_pkg_name, I18N_TYPE_Identity);
 		edit_box_details->guide_txt = sc(eap_data->str_pkg_name, I18N_TYPE_Enter_Identity);
-		eap_data->eap_id_item = elm_genlist_item_insert_after(view_list, &g_eap_entry_itc, edit_box_details, NULL, eap_data->eap_user_cert_item, ELM_GENLIST_ITEM_NONE, _gl_editbox_sel_cb, NULL);
-		elm_genlist_item_select_mode_set(eap_data->eap_id_item, ELM_OBJECT_SELECT_MODE_NONE);
+		edit_box_details->item = elm_genlist_item_insert_after(view_list, &g_eap_entry_itc, edit_box_details, NULL, eap_data->eap_user_cert_item, ELM_GENLIST_ITEM_NONE, _gl_editbox_sel_cb, NULL);
+		elm_genlist_item_select_mode_set(edit_box_details->item, ELM_OBJECT_SELECT_MODE_NONE);
+		eap_data->eap_id_item = edit_box_details->item;
 		g_eap_id_show_keypad = FALSE;
 
 		/* Add EAP Anonymous Identity */
@@ -836,16 +863,18 @@ static void _create_and_update_list_items_based_on_rules(eap_type_t new_type, ea
 		edit_box_details->entry_id = ENTRY_TYPE_ANONYMOUS_ID;
 		edit_box_details->title_txt = sc(eap_data->str_pkg_name, I18N_TYPE_Anonymous_Identity);
 		edit_box_details->guide_txt = sc(eap_data->str_pkg_name, I18N_TYPE_Enter_Anonymous_Identity);
-		eap_data->eap_anonyid_item = elm_genlist_item_insert_after(view_list, &g_eap_entry_itc, edit_box_details, NULL, eap_data->eap_id_item, ELM_GENLIST_ITEM_NONE, _gl_editbox_sel_cb, NULL);
-		elm_genlist_item_select_mode_set(eap_data->eap_anonyid_item, ELM_OBJECT_SELECT_MODE_NONE);
+		edit_box_details->item = elm_genlist_item_insert_after(view_list, &g_eap_entry_itc, edit_box_details, NULL, eap_data->eap_id_item, ELM_GENLIST_ITEM_NONE, _gl_editbox_sel_cb, NULL);
+		elm_genlist_item_select_mode_set(edit_box_details->item, ELM_OBJECT_SELECT_MODE_NONE);
+		eap_data->eap_anonyid_item = edit_box_details->item;
 
 		/* Add EAP Password */
 		edit_box_details = g_new0(common_utils_entry_info_t, 1);
 		edit_box_details->entry_id = ENTRY_TYPE_PASSWORD;
 		edit_box_details->title_txt = sc(eap_data->str_pkg_name, I18N_TYPE_Password);
 		edit_box_details->guide_txt = sc(eap_data->str_pkg_name, I18N_TYPE_Enter_password);
-		eap_data->eap_pw_item = elm_genlist_item_insert_after(view_list, &g_eap_entry_itc, edit_box_details, NULL, eap_data->eap_anonyid_item, ELM_GENLIST_ITEM_NONE, _gl_editbox_sel_cb, NULL);
-		elm_genlist_item_select_mode_set(eap_data->eap_pw_item, ELM_OBJECT_SELECT_MODE_NONE);
+		edit_box_details->item = elm_genlist_item_insert_after(view_list, &g_eap_entry_itc, edit_box_details, NULL, eap_data->eap_anonyid_item, ELM_GENLIST_ITEM_NONE, _gl_editbox_sel_cb, NULL);
+		elm_genlist_item_select_mode_set(edit_box_details->item, ELM_OBJECT_SELECT_MODE_NONE);
+		eap_data->eap_pw_item = edit_box_details->item;
 
 		if (eap_data->popup) {	/* Popup */
 			__common_eap_popup_set_imf_ctxt_evnt_cb(eap_data);
@@ -1050,10 +1079,8 @@ static Eina_Bool __common_eap_connect_show_ime(void *data)
 	if (!list_entry_item)
 		return ECORE_CALLBACK_CANCEL;
 
-	common_utils_entry_info_t *entry_info = elm_object_item_data_get(list_entry_item);
-	Evas_Object *lyt = entry_info->layout;
-	Evas_Object *entry = common_utils_entry_layout_get_entry(lyt);
-	if (!lyt || !entry)
+	Evas_Object *entry = elm_object_item_part_content_get(list_entry_item, "elm.icon.entry");
+	if (!entry)
 		return ECORE_CALLBACK_CANCEL;
 
 	g_eap_id_show_keypad = TRUE;
@@ -1498,8 +1525,9 @@ eap_info_list_t *eap_info_append_items(wifi_ap_h ap, Evas_Object* view_list,
 		edit_box_details->guide_txt = sc(str_pkg_name, I18N_TYPE_Unchanged);
 		edit_box_details->input_panel_cb = input_panel_cb;
 		edit_box_details->input_panel_cb_data = input_panel_cb_data;
-		eap_info_list_data->pswd_item = elm_genlist_item_append(view_list, &g_eap_entry_itc, edit_box_details, NULL, ELM_GENLIST_ITEM_NONE, _gl_editbox_sel_cb, NULL);
+		edit_box_details->item = elm_genlist_item_append(view_list, &g_eap_entry_itc, edit_box_details, NULL, ELM_GENLIST_ITEM_NONE, _gl_editbox_sel_cb, NULL);
 		elm_genlist_item_select_mode_set(eap_info_list_data->pswd_item, ELM_OBJECT_SELECT_MODE_NONE);
+		eap_info_list_data->pswd_item = edit_box_details->item;
 	}
 
 	__COMMON_FUNC_EXIT__;

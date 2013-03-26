@@ -218,7 +218,8 @@ void common_utils_set_edit_box_imf_panel_evnt_cb(Elm_Object_Item *item,
 
 	entry_info->input_panel_cb = input_panel_cb;
 	entry_info->input_panel_cb_data = user_data;
-	Evas_Object *entry = common_utils_entry_layout_get_entry(entry_info->layout);
+
+	Evas_Object *entry = elm_object_item_part_content_get(item, "elm.icon.entry");
 	Ecore_IMF_Context *imf_ctxt = elm_entry_imf_context_get(entry);
 	if (imf_ctxt && entry_info->input_panel_cb) {
 		/* Deleting the previously attached callback */
@@ -239,12 +240,10 @@ void common_utils_set_edit_box_imf_panel_evnt_cb(Elm_Object_Item *item,
 void common_utils_edit_box_focus_set(Elm_Object_Item *item, Eina_Bool focus_set)
 {
 	__COMMON_FUNC_ENTER__;
-	common_utils_entry_info_t *entry_info;
-	entry_info = elm_object_item_data_get(item);
-	if (!entry_info)
+	if (!item)
 		return;
 
-	Evas_Object *entry = common_utils_entry_layout_get_entry(entry_info->layout);
+	Evas_Object *entry = elm_object_item_part_content_get(item, "elm.icon.entry");
 	elm_object_focus_set(entry, focus_set);
 
 	__COMMON_FUNC_EXIT__;
@@ -453,8 +452,7 @@ int common_utils_send_message_to_net_popup(const char *title, const char *conten
 	bundle_add(b, "_SYSPOPUP_TYPE_", type);
 	bundle_add(b, "_AP_NAME_", ssid);
 
-	ret = aul_launch_app("org.tizen.net-popup", b);
-
+	ret = aul_launch_app("net.netpopup", b);
 	bundle_free(b);
 
 	return ret;

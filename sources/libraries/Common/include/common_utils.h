@@ -50,7 +50,7 @@ typedef struct {
 	char *title_txt;
 	char *guide_txt;
 	char *entry_txt;
-	Evas_Object *layout;
+	Elm_Object_Item *item;
 	imf_ctxt_panel_cb_t input_panel_cb;
 	void *input_panel_cb_data;
 } common_utils_entry_info_t;
