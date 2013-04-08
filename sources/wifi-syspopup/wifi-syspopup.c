@@ -125,7 +125,7 @@ static Eina_Bool __rotate(void *data, int type, void *event)
 	struct wifi_object *ad = data;
 	Ecore_X_Event_Client_Message *ev = event;
 	int visible_area_width, visible_area_height;
-	int rotate_angle;
+	int rotate_angle = 0;
 
 	Evas_Object *box = NULL;
 
