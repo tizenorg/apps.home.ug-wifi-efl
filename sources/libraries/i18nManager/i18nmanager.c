@@ -66,6 +66,16 @@ static char* i18n_get_text_by_system(I18N_TYPES type){
 		return (char*)dgettext("sys_string", "IDS_COM_BODY_PASSWORD");
 	case I18N_TYPE_Details:
 		return (char*)dgettext("sys_string", "IDS_COM_BODY_DETAILS");
+	case I18N_TYPE_Unknown:
+		return (char*)dgettext("sys_string", "IDS_COM_BODY_UNKNOWN");
+	case I18N_TYPE_Scan:
+		return (char*)dgettext("sys_string", "IDS_COM_BUTTON_SCAN");
+	case I18N_TYPE_Open:
+		return (char*)dgettext("sys_string", "IDS_COM_SK_OPEN");
+	case I18N_TYPE_Always:
+		return (char*)dgettext("sys_string", "IDS_COM_BODY_ALWAYS");
+	case I18N_TYPE_Never:
+		return (char*)dgettext("sys_string", "IDS_COM_BODY_NEVER");
 	default:
 		return "(debug)system_text_failed";
 	}
@@ -89,41 +99,30 @@ char* i18n_manager_get_text(const char *pkg_name, I18N_TYPES type)
 	case I18N_TYPE_Connected:
 	case I18N_TYPE_Searching:
 	case I18N_TYPE_Details:
+	case I18N_TYPE_Unknown:
+	case I18N_TYPE_Scan:
+	case I18N_TYPE_Open:
+	case I18N_TYPE_Always:
+	case I18N_TYPE_Never:
 		return i18n_get_text_by_system(type);
 	case I18N_TYPE_Provisioning:
 		return apply_i18n(pkg_name, I18N_MODE_SELF_MADE, "IDS_WIFI_BODY_PROVISIONING");
-	case I18N_TYPE_Ca_Certificate:
-		return apply_i18n(pkg_name, I18N_MODE_SELF_MADE, "IDS_WIFI_BODY_CA_CERTIFICATE");
 	case I18N_TYPE_User_Certificate:
 		return apply_i18n(pkg_name, I18N_MODE_SELF_MADE, "IDS_WIFI_BODY_USER_CERTIFICATE_ABB");
 	case I18N_TYPE_Unspecified:
 		return apply_i18n(pkg_name, I18N_MODE_SELF_MADE, "IDS_WIFI_BODY_UNSPECIFIED");
-	case I18N_TYPE_Unknown:
-		return apply_i18n(pkg_name, I18N_MODE_SELF_MADE, "IDS_WIFI_BODY_UNKNOWN");
 	case I18N_TYPE_Enter_Ssid:
 		return apply_i18n(pkg_name, I18N_MODE_SELF_MADE, "IDS_WIFI_BODY_ENTER_SSID");
 	case I18N_TYPE_Identity:
 		return apply_i18n(pkg_name, I18N_MODE_SELF_MADE, "IDS_WIFI_BODY_IDENTITY");
-	case I18N_TYPE_Anonymous_Identity:
-		return apply_i18n(pkg_name, I18N_MODE_SELF_MADE, "IDS_WIFI_BODY_ANONYMOUS_IDENTITY");
-	case I18N_TYPE_Wifi_Opt_Find_Hidden_Network:
-		return apply_i18n(pkg_name, I18N_MODE_SELF_MADE, "IDS_WIFI_OPT_FIND_HIDDEN_NETWORK");
-	case I18N_TYPE_WPS_Button_Connection:
-		return apply_i18n(pkg_name, I18N_MODE_SELF_MADE, "IDS_WIFI_BODY_WPS_BUTTON_CONNECTION");
-	case I18N_TYPE_Press_WPS_On_Your_Wi_Fi_Access_Point:
-		return apply_i18n(pkg_name, I18N_MODE_SELF_MADE, "IDS_ST_BODY_PRESS_WPS_ON_YOUR_WI_FI_ACCESS_POINT_WITHIN_2_MINUTES");
-	case I18N_TYPE_Button_Cancel:
-		return apply_i18n(pkg_name, I18N_MODE_SELF_MADE, "IDS_WIFI_BUTTON_CANCEL");
 	case I18N_TYPE_Ssid:
 		return apply_i18n(pkg_name, I18N_MODE_SELF_MADE, "IDS_WIFI_BODY_SSID");
 	case I18N_TYPE_Find_Hidden_Network:
 		return apply_i18n(pkg_name, I18N_MODE_SELF_MADE, "IDS_WIFI_OPT_FIND_HIDDEN_NETWORK");
-	    
-		
 	case I18N_TYPE_Connect:
 		return apply_i18n(pkg_name, I18N_MODE_SELF_MADE, "IDS_WIFI_BODY_CONNECT");
-	case I18N_TYPE_Scan:
-		return apply_i18n(pkg_name, I18N_MODE_SELF_MADE, "IDS_ST_BODY_SCAN");
+	case I18N_TYPE_Setting:
+		return apply_i18n(pkg_name, I18N_MODE_SELF_MADE, "IDS_COM_BODY_SETTING");
 	case I18N_TYPE_Forget:
 		return apply_i18n(pkg_name, I18N_MODE_SELF_MADE, "IDS_WIFI_SK_FORGET");
 	case I18N_TYPE_Dynamic_IP:
@@ -142,8 +141,6 @@ char* i18n_manager_get_text(const char *pkg_name, I18N_TYPES type)
 		return apply_i18n(pkg_name, I18N_MODE_SELF_MADE, "IDS_WIFI_BODY_DISCONNECTING_ING");
 	case I18N_TYPE_Hidden_AP:
 		return apply_i18n(pkg_name, I18N_MODE_SELF_MADE, "IDS_WIFI_HEADER_HIDDEN_NETWORK");
-	case I18N_TYPE_Add_WiFi_network:
-		return apply_i18n(pkg_name, I18N_MODE_SELF_MADE, "IDS_ST_BODY_ADD_WI_FI_NETWORK");
 	case I18N_TYPE_No_AP:
 		return apply_i18n(pkg_name, I18N_MODE_SELF_MADE, "IDS_WIFI_BODY_NO_APS");
 	case I18N_TYPE_Signal_strength:
@@ -166,32 +163,24 @@ char* i18n_manager_get_text(const char *pkg_name, I18N_TYPES type)
 		return apply_i18n(pkg_name, I18N_MODE_SELF_MADE, "IDS_WIFI_BODY_GATEWAY_ADDRESS");
 	case I18N_TYPE_Deactivating:
 		return apply_i18n(pkg_name, I18N_MODE_SELF_MADE, "IDS_WIFI_POP_DEACTIVATING_WI_FI_ING");
-	case I18N_TYPE_No_security:
-		return apply_i18n(pkg_name, I18N_MODE_SELF_MADE, "IDS_WIFI_BODY_CONFIGURATION_NO_SECURITY");
-	case I18N_TYPE_Network_SSID:
-		return apply_i18n(pkg_name, I18N_MODE_SELF_MADE, "IDS_ST_BODY_NETWORK_SSID");
-	case I18N_TYPE_Network_notification:
-		return apply_i18n(pkg_name, I18N_MODE_SELF_MADE, "IDS_ST_BODY_NETWORK_NOTIFICATION");
-	case I18N_TYPE_Network_notify_me_later:
-		return apply_i18n(pkg_name, I18N_MODE_SELF_MADE, "IDS_WIFI_BODY_NOTIFY_WHEN_WI_FI_NETWORK_IS_FOUND");
-	case I18N_TYPE_Select_network:
-		return apply_i18n(pkg_name, I18N_MODE_SELF_MADE, "IDS_WIFI_HEADER_SELECT_NETWORK");
 	case I18N_TYPE_WiFi_network:
 		return apply_i18n(pkg_name, I18N_MODE_SELF_MADE, "IDS_ST_BODY_WI_FI_NETWORKS");
 	case I18N_TYPE_Enter_password:
 		return apply_i18n(pkg_name, I18N_MODE_SELF_MADE, "IDS_WIFI_BODY_ENTER_PASSWORD");
 	case I18N_TYPE_Enter_Identity:
 		return apply_i18n(pkg_name, I18N_MODE_SELF_MADE, "IDS_WIFI_BODY_ENTER_IDENTITY");
-	case I18N_TYPE_Enter_Anonymous_Identity:
-		return apply_i18n(pkg_name, I18N_MODE_SELF_MADE, "IDS_WIFI_BODY_ENTER_ANONYMOUS_IDENTITY");
 	case I18N_TYPE_Input_password:
 		return apply_i18n(pkg_name, I18N_MODE_SELF_MADE, "IDS_CST_BODY_INPUT_PASSWORD");
 	case I18N_TYPE_Show_password:
 		return apply_i18n(pkg_name, I18N_MODE_SELF_MADE, "IDS_ST_BODY_SHOW_PASSWORD");
 	case I18N_TYPE_Autonomous_connection_to_s_will_be_turned_off_Continue:
 		return apply_i18n(pkg_name, I18N_MODE_SELF_MADE, "IDS_WIFI_POP_AUTOMATIC_CONNECTION_NETWORK_WILL_DISABLED_CONTINUE_Q_MSG");
-	case I18N_TYPE_Open:
-		return apply_i18n(pkg_name, I18N_MODE_SELF_MADE, "IDS_WIFI_POP_OPEN");
+	case I18N_TYPE_Wait:
+		return apply_i18n(pkg_name, I18N_MODE_SELF_MADE, "IDS_WIFI_POP_PLEASE_WAIT_ING");
+	case I18N_TYPE_TRY_CONNECT:
+		return apply_i18n(pkg_name, I18N_MODE_SELF_MADE, "IDS_ST_BODY_WI_FI_NETWORK_DETECTED_CONNECT_Q");
+	case I18N_TYPE_FIND_FAIL:
+		return apply_i18n(pkg_name, I18N_MODE_SELF_MADE, "IDS_WIFI_POP_UNABLE_TO_FIND_NETWORK");
 	case I18N_TYPE_WPS_Available:
 		return apply_i18n(pkg_name, I18N_MODE_SELF_MADE, "IDS_ST_BODY_WPS_AVAILABLE");
 	case I18N_TYPE_Secured:
@@ -222,6 +211,40 @@ char* i18n_manager_get_text(const char *pkg_name, I18N_TYPES type)
 		return apply_i18n(pkg_name, I18N_MODE_NO_NEEDED, "WPA-EAP");
 	case I18N_TYPE_WPA2_EAP:
 		return apply_i18n(pkg_name, I18N_MODE_NO_NEEDED, "WPA2-EAP");
+	case I18N_TYPE_WPS_Button_Connection:
+		return apply_i18n(pkg_name, I18N_MODE_SELF_MADE, "IDS_WIFI_BODY_WPS_BUTTON_CONNECTION");
+	case I18N_TYPE_Ca_Certificate:
+		return apply_i18n(pkg_name, I18N_MODE_SELF_MADE, "IDS_WIFI_BODY_CA_CERTIFICATE");
+	case I18N_TYPE_Enter_Anonymous_Identity:
+			return apply_i18n(pkg_name, I18N_MODE_SELF_MADE, "IDS_WIFI_BODY_ENTER_ANONYMOUS_IDENTITY");
+	case I18N_TYPE_Anonymous_Identity:
+			return apply_i18n(pkg_name, I18N_MODE_SELF_MADE, "IDS_WIFI_BODY_ANONYMOUS_IDENTITY");
+	case I18N_TYPE_Advanced:
+		return apply_i18n(pkg_name, I18N_MODE_SELF_MADE, "IDS_ST_BODY_ADVANCED");
+	case I18N_TYPE_WIFI_ADVANCED:
+		return apply_i18n(pkg_name, I18N_MODE_NO_NEEDED, "WI-FI ADVANCED");
+	case I18N_TYPE_Network_notification:
+		return apply_i18n(pkg_name, I18N_MODE_SELF_MADE, "IDS_ST_BODY_NETWORK_NOTIFICATION");
+	case I18N_TYPE_Network_notify_me_later:
+		return apply_i18n(pkg_name, I18N_MODE_SELF_MADE, "IDS_WIFI_BODY_NOTIFY_WHEN_WI_FI_NETWORK_IS_FOUND");
+	case I18N_TYPE_Smart_switching:
+		return apply_i18n(pkg_name, I18N_MODE_NO_NEEDED, "Smart switching");
+	case I18N_TYPE_Keep_WIFI_on_during_sleep:
+		return apply_i18n(pkg_name, I18N_MODE_NO_NEEDED, "Keep WI-FI on during sleep");
+	case I18N_TYPE_Plugged:
+		return apply_i18n(pkg_name, I18N_MODE_NO_NEEDED, "Plugged");
+	case I18N_TYPE_WPS:
+		return apply_i18n(pkg_name, I18N_MODE_SELF_MADE, "IDS_ST_HEADER_WPS_CONNECTION_ABB");
+	case I18N_TYPE_Press_WPS_On_Your_Wi_Fi_Access_Point:
+		return apply_i18n(pkg_name, I18N_MODE_SELF_MADE, "IDS_ST_BODY_PRESS_WPS_ON_YOUR_WI_FI_ACCESS_POINT_WITHIN_2_MINUTES");
+	case I18N_TYPE_Enter_PIN_number:
+		return apply_i18n(pkg_name, I18N_MODE_SELF_MADE, "Enter PIN number");
+	case I18N_TYPE_Enter_PIN_number_on_your_WIFI_access_point:
+		return apply_i18n(pkg_name, I18N_MODE_SELF_MADE, "Enter PIN number on your WI-FI access point");
+	case I18N_TYPE_WPS_Button:
+		return apply_i18n(pkg_name, I18N_MODE_SELF_MADE, "IDS_WIFI_BUTTON_WPS_BUTTON");
+	case I18N_TYPE_WPS_PIN:
+		return apply_i18n(pkg_name, I18N_MODE_SELF_MADE, "IDS_WIFI_BODY_WPS_PIN");
 
 	default:
 		return apply_i18n(pkg_name, I18N_MODE_NO_NEEDED, "(debugapplying_i18n_failed");

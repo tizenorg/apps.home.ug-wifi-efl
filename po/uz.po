@@ -28,9 +28,6 @@ msgstr "DNS 2"
 msgid "IDS_ST_BODY_NETWORK_NOTIFICATION"
 msgstr "Tarmoq bildirishnomasi"
 
-msgid "IDS_WIFI_POP_OPEN"
-msgstr "Ochish"
-
 msgid "IDS_ST_BODY_SECURED_ABB_M_WIFI_AP_SUMMARY"
 msgstr "Himoyalangan"
 
@@ -45,9 +42,6 @@ msgstr "A’lo"
 
 msgid "IDS_ST_BODY_GOOD_M_STRENGTH"
 msgstr "Yaxshi"
-
-msgid "IDS_ST_BODY_SCAN"
-msgstr "Qidirish"
 
 msgid "IDS_ST_BODY_WI_FI_NETWORKS"
 msgstr "Wi-Fi tarmoqlar"
@@ -69,9 +63,6 @@ msgstr "Yashirin tarmoq"
 
 msgid "IDS_WIFI_POP_DEACTIVATING_WI_FI_ING"
 msgstr "Wi-Fi o‘chirilmoqda..."
-
-msgid "IDS_WIFI_POP_SEARCHING_ING"
-msgstr "Qidirilmoqda..."
 
 msgid "IDS_WIFI_POP_SELECT_NETWORK"
 msgstr "Tarmoq tanlang"
@@ -127,15 +118,6 @@ msgstr "Shluz"
 msgid "IDS_WIFI_BODY_SECURITYTYPE_WEP"
 msgstr "WEP"
 
-msgid "IDS_ST_POP_DEACTIVATING_ING"
-msgstr "O‘chirilmoqda..."
-
-msgid "IDS_WIFI_BODY_CONFIGURATION_NO_SECURITY"
-msgstr "Xavfsizlik yo‘q"
-
-msgid "IDS_WIFI_HEADER_SELECT_NETWORK"
-msgstr "Tarmoq tanlash"
-
 msgid "IDS_WIFI_BODY_WEAK_M_STRENGTH"
 msgstr "Kuchsiz"
 
@@ -151,12 +133,6 @@ msgstr "Kanal"
 msgid "IDS_ST_BODY_NOTIFY_ME_WHEN_AN_OPEN_NETWORK_IS_AVAILABLE"
 msgstr "Ochiq tarmoqdan foydalanish mumkin bo‘lganda, menga xabar berilsin"
 
-msgid "IDS_ST_BODY_ADD_WI_FI_NETWORK"
-msgstr "Wi-Fi tarmoq qo‘shish"
-
-msgid "IDS_ST_BODY_NETWORK_SSID"
-msgstr "Tarmoq SSID"
-
 msgid "IDS_WIFI_POP_AUTOMATIC_CONNECTION_NETWORK_WILL_DISABLED_CONTINUE_Q_MSG"
 msgstr "Ushbu tarmoqqa avtomatik ulanish o‘chiriladi. Davom ettirilsinmi?"
 
@@ -166,11 +142,8 @@ msgstr "Bosqich 2 tekshiruvi"
 msgid "IDS_WIFI_BODY_CONNECT"
 msgstr "Ulanish"
 
-msgid "IDS_WIFI_POP_PRESS_WPS_ON_YOUR_WI_FI_ACCESS_POINT_WITHIN_PD_MINUTES"
-msgstr "Wi-Fi kirishda WPSni %d daqiqa bosib turing"
-
-msgid "IDS_WIFI_BODY_UNKNOWN"
-msgstr "Noma’lum"
+msgid "IDS_ST_BODY_ADVANCED"
+msgstr "Takomillashgan"
 
 msgid "IDS_WIFI_BODY_ENTER_SSID"
 msgstr "SSID kiriting"
@@ -190,9 +163,6 @@ msgstr "Yashirin tarmoqni topish"
 msgid "IDS_ST_BODY_PRESS_WPS_ON_YOUR_WI_FI_ACCESS_POINT_WITHIN_2_MINUTES"
 msgstr "Wi-Fi kirishda WPSni 2 daqiqa bosib turing"
 
-msgid "IDS_WIFI_BUTTON_CANCEL"
-msgstr "Bekor q."
-
 msgid "IDS_WIFI_BODY_SSID"
 msgstr "SSID"
 
@@ -202,9 +172,30 @@ msgstr "Identifikatsiyani kiriting"
 msgid "IDS_WIFI_HEADER_ENTER_PASSWORD"
 msgstr "Parol kiriting"
 
+msgid "IDS_COM_BODY_SETTING"
+msgstr "Parametr"
+
 msgid "IDS_WIFI_BODY_NOTIFY_WHEN_WI_FI_NETWORK_IS_FOUND"
 msgstr "Wi-Fi tarmoq topilganda, menga yordam berilsin"
 
 msgid "IDS_ST_BODY_HUNCHANGED"
 msgstr "(o‘zgartirilmagan)"
+
+msgid "IDS_ST_HEADER_WPS_CONNECTION_ABB"
+msgstr "WPS ulanishi"
+
+msgid "IDS_WIFI_BODY_WPS_PIN"
+msgstr "WPS PIN-kodi"
+
+msgid "IDS_WIFI_BUTTON_WPS_BUTTON"
+msgstr "WPS tugmasi"
+
+msgid "IDS_ST_BODY_WI_FI_NETWORK_DETECTED_CONNECT_Q"
+msgstr "Wi-Fi tarmoq aniqlandi. Ulanilsinmi?"
+
+msgid "IDS_WIFI_POP_PLEASE_WAIT_ING"
+msgstr "Iltimos, kuting..."
+
+msgid "IDS_WIFI_POP_UNABLE_TO_FIND_NETWORK"
+msgstr "Tarmoqni topib bo‘lmaydi"
 

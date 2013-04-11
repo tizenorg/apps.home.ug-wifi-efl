@@ -28,9 +28,6 @@ msgstr "DNS 2"
 msgid "IDS_ST_BODY_NETWORK_NOTIFICATION"
 msgstr "ქსელის შეტყობინება"
 
-msgid "IDS_WIFI_POP_OPEN"
-msgstr "გახსნა"
-
 msgid "IDS_ST_BODY_SECURED_ABB_M_WIFI_AP_SUMMARY"
 msgstr "დაცული"
 
@@ -45,9 +42,6 @@ msgstr "ბრწყინვალეა"
 
 msgid "IDS_ST_BODY_GOOD_M_STRENGTH"
 msgstr "კარგი"
-
-msgid "IDS_ST_BODY_SCAN"
-msgstr "სკანირება"
 
 msgid "IDS_ST_BODY_WI_FI_NETWORKS"
 msgstr "Wi-Fi ქსელები"
@@ -69,9 +63,6 @@ msgstr "დაფარული ქსელი"
 
 msgid "IDS_WIFI_POP_DEACTIVATING_WI_FI_ING"
 msgstr "თავიდან აქტიურდება Wi-Fi..."
-
-msgid "IDS_WIFI_POP_SEARCHING_ING"
-msgstr "იძებნება..."
 
 msgid "IDS_WIFI_POP_SELECT_NETWORK"
 msgstr "ქსელის შერჩევა"
@@ -127,15 +118,6 @@ msgstr "გასასვლელი"
 msgid "IDS_WIFI_BODY_SECURITYTYPE_WEP"
 msgstr "WEP"
 
-msgid "IDS_ST_POP_DEACTIVATING_ING"
-msgstr "გამორთვა..."
-
-msgid "IDS_WIFI_BODY_CONFIGURATION_NO_SECURITY"
-msgstr "არაა უსაფრთხო"
-
-msgid "IDS_WIFI_HEADER_SELECT_NETWORK"
-msgstr "ქსელის შერჩევა"
-
 msgid "IDS_WIFI_BODY_WEAK_M_STRENGTH"
 msgstr "სუსტი"
 
@@ -151,12 +133,6 @@ msgstr "არხი"
 msgid "IDS_ST_BODY_NOTIFY_ME_WHEN_AN_OPEN_NETWORK_IS_AVAILABLE"
 msgstr "მსურს მივიღო შეტყობინება, როცა ღია ქსელი მისაწვდომი იქნება"
 
-msgid "IDS_ST_BODY_ADD_WI_FI_NETWORK"
-msgstr "Wi-Fi ქსელის დამატება"
-
-msgid "IDS_ST_BODY_NETWORK_SSID"
-msgstr "SSID ქსელი"
-
 msgid "IDS_WIFI_POP_AUTOMATIC_CONNECTION_NETWORK_WILL_DISABLED_CONTINUE_Q_MSG"
 msgstr "ამ ქსელთან ავტომატური დაკავშირება გამოირთვება. განაგრძობთ?"
 
@@ -166,11 +142,8 @@ msgstr "ფაზა 2-ის ავტორიზაცია"
 msgid "IDS_WIFI_BODY_CONNECT"
 msgstr "დაკავშირება"
 
-msgid "IDS_WIFI_POP_PRESS_WPS_ON_YOUR_WI_FI_ACCESS_POINT_WITHIN_PD_MINUTES"
-msgstr "მაქსიმუმ %d წუთში დააჭირეთ WPS–ს თქვენი Wi-Fi წვდომის წერტილზე"
-
-msgid "IDS_WIFI_BODY_UNKNOWN"
-msgstr "უცნობი"
+msgid "IDS_ST_BODY_ADVANCED"
+msgstr "გაუმჯობესებული"
 
 msgid "IDS_WIFI_BODY_ENTER_SSID"
 msgstr "SSID შეტანა"
@@ -190,9 +163,6 @@ msgstr "ფარული ქსელის ძებნა"
 msgid "IDS_ST_BODY_PRESS_WPS_ON_YOUR_WI_FI_ACCESS_POINT_WITHIN_2_MINUTES"
 msgstr "მაქსიმუმ 2 წუთში დააჭირეთ WPS-ს თქვენს Wi-Fi წვდომის წერტილზე"
 
-msgid "IDS_WIFI_BUTTON_CANCEL"
-msgstr "გაუქმება"
-
 msgid "IDS_WIFI_BODY_SSID"
 msgstr "SSID"
 
@@ -202,9 +172,30 @@ msgstr "შეიყვანეთ თქვენი საიდენტი�
 msgid "IDS_WIFI_HEADER_ENTER_PASSWORD"
 msgstr "პაროლის შეყვანა"
 
+msgid "IDS_COM_BODY_SETTING"
+msgstr "პარამეტრები"
+
 msgid "IDS_WIFI_BODY_NOTIFY_WHEN_WI_FI_NETWORK_IS_FOUND"
 msgstr "შეტყობინება მოვიდეს, როდესაც მოიძებნება Wi-Fi ქსელი"
 
 msgid "IDS_ST_BODY_HUNCHANGED"
 msgstr "(შეუცვლელი)"
+
+msgid "IDS_ST_HEADER_WPS_CONNECTION_ABB"
+msgstr "WPS კავშირი"
+
+msgid "IDS_WIFI_BODY_WPS_PIN"
+msgstr "WPS PIN"
+
+msgid "IDS_WIFI_BUTTON_WPS_BUTTON"
+msgstr "WPS ღილაკი"
+
+msgid "IDS_ST_BODY_WI_FI_NETWORK_DETECTED_CONNECT_Q"
+msgstr "ნაპოვნია Wi-Fi ქსელი. დაუკავშირდებით?"
+
+msgid "IDS_WIFI_POP_PLEASE_WAIT_ING"
+msgstr "გთხოვთ, დაელოდოთ..."
+
+msgid "IDS_WIFI_POP_UNABLE_TO_FIND_NETWORK"
+msgstr "ქსელის პოვნა შეუძლებელია"
 

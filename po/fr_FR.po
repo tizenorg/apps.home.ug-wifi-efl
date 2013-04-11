@@ -28,9 +28,6 @@ msgstr "DNS 2"
 msgid "IDS_ST_BODY_NETWORK_NOTIFICATION"
 msgstr "Notification réseau"
 
-msgid "IDS_WIFI_POP_OPEN"
-msgstr "Ouvert"
-
 msgid "IDS_ST_BODY_SECURED_ABB_M_WIFI_AP_SUMMARY"
 msgstr "Sécurisé"
 
@@ -45,9 +42,6 @@ msgstr "Excellent"
 
 msgid "IDS_ST_BODY_GOOD_M_STRENGTH"
 msgstr "Correct"
-
-msgid "IDS_ST_BODY_SCAN"
-msgstr "Analyser"
 
 msgid "IDS_ST_BODY_WI_FI_NETWORKS"
 msgstr "Réseaux Wi-Fi"
@@ -69,9 +63,6 @@ msgstr "Réseau masqué"
 
 msgid "IDS_WIFI_POP_DEACTIVATING_WI_FI_ING"
 msgstr "Désactivation Wi-Fi..."
-
-msgid "IDS_WIFI_POP_SEARCHING_ING"
-msgstr "Recherche..."
 
 msgid "IDS_WIFI_POP_SELECT_NETWORK"
 msgstr "Sélectionner un réseau"
@@ -127,15 +118,6 @@ msgstr "Passerelle"
 msgid "IDS_WIFI_BODY_SECURITYTYPE_WEP"
 msgstr "WEP"
 
-msgid "IDS_ST_POP_DEACTIVATING_ING"
-msgstr "Désactivation..."
-
-msgid "IDS_WIFI_BODY_CONFIGURATION_NO_SECURITY"
-msgstr "Pas de sécurité"
-
-msgid "IDS_WIFI_HEADER_SELECT_NETWORK"
-msgstr "Sélectionner un réseau"
-
 msgid "IDS_WIFI_BODY_WEAK_M_STRENGTH"
 msgstr "Faible"
 
@@ -151,12 +133,6 @@ msgstr "Canal"
 msgid "IDS_ST_BODY_NOTIFY_ME_WHEN_AN_OPEN_NETWORK_IS_AVAILABLE"
 msgstr "M'avertir quand un réseau ouvert est disponible"
 
-msgid "IDS_ST_BODY_ADD_WI_FI_NETWORK"
-msgstr "Ajouter un réseau Wi-Fi"
-
-msgid "IDS_ST_BODY_NETWORK_SSID"
-msgstr "SSID du réseau"
-
 msgid "IDS_WIFI_POP_AUTOMATIC_CONNECTION_NETWORK_WILL_DISABLED_CONTINUE_Q_MSG"
 msgstr "La connexion automatique à ce réseau va être désactivée. Continuer ?"
 
@@ -166,11 +142,8 @@ msgstr "Authentification Phase 2"
 msgid "IDS_WIFI_BODY_CONNECT"
 msgstr "Connexion"
 
-msgid "IDS_WIFI_POP_PRESS_WPS_ON_YOUR_WI_FI_ACCESS_POINT_WITHIN_PD_MINUTES"
-msgstr "Appuyez sur la touche WPS de votre point d'accès Wi-Fi sous %d minutes"
-
-msgid "IDS_WIFI_BODY_UNKNOWN"
-msgstr "Inconnu"
+msgid "IDS_ST_BODY_ADVANCED"
+msgstr "Paramètres avancés"
 
 msgid "IDS_WIFI_BODY_ENTER_SSID"
 msgstr "Entrer SSID"
@@ -190,9 +163,6 @@ msgstr "Rechercher réseau masqué"
 msgid "IDS_ST_BODY_PRESS_WPS_ON_YOUR_WI_FI_ACCESS_POINT_WITHIN_2_MINUTES"
 msgstr "Appuyez sur la touche WPS de votre point d'accès Wi-Fi dans 2 minutes"
 
-msgid "IDS_WIFI_BUTTON_CANCEL"
-msgstr "Annuler"
-
 msgid "IDS_WIFI_BODY_SSID"
 msgstr "SSID"
 
@@ -202,9 +172,30 @@ msgstr "Indiquer votre identité"
 msgid "IDS_WIFI_HEADER_ENTER_PASSWORD"
 msgstr "Saisir le mot de passe"
 
+msgid "IDS_COM_BODY_SETTING"
+msgstr "Paramètres"
+
 msgid "IDS_WIFI_BODY_NOTIFY_WHEN_WI_FI_NETWORK_IS_FOUND"
 msgstr "M'avertir lorsqu'un réseau Wi-Fi est détecté"
 
 msgid "IDS_ST_BODY_HUNCHANGED"
 msgstr "(aucune modification)"
+
+msgid "IDS_ST_HEADER_WPS_CONNECTION_ABB"
+msgstr "Connexion WPS"
+
+msgid "IDS_WIFI_BODY_WPS_PIN"
+msgstr "PIN WPS"
+
+msgid "IDS_WIFI_BUTTON_WPS_BUTTON"
+msgstr "Touche WPS"
+
+msgid "IDS_ST_BODY_WI_FI_NETWORK_DETECTED_CONNECT_Q"
+msgstr "Réseau Wi-Fi détecté. Se connecter ?"
+
+msgid "IDS_WIFI_POP_PLEASE_WAIT_ING"
+msgstr "Veuillez patienter..."
+
+msgid "IDS_WIFI_POP_UNABLE_TO_FIND_NETWORK"
+msgstr "Réseau introuvable"
 

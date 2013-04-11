@@ -28,9 +28,6 @@ msgstr "DNS 2"
 msgid "IDS_ST_BODY_NETWORK_NOTIFICATION"
 msgstr "नेटवर्क नोटिफ़िकेशन"
 
-msgid "IDS_WIFI_POP_OPEN"
-msgstr "खोलें"
-
 msgid "IDS_ST_BODY_SECURED_ABB_M_WIFI_AP_SUMMARY"
 msgstr "सुरक्षित"
 
@@ -45,9 +42,6 @@ msgstr "उत्तम"
 
 msgid "IDS_ST_BODY_GOOD_M_STRENGTH"
 msgstr "अच्छा"
-
-msgid "IDS_ST_BODY_SCAN"
-msgstr "स्‍कैन"
 
 msgid "IDS_ST_BODY_WI_FI_NETWORKS"
 msgstr "Wi-Fi नेटवर्क्स"
@@ -69,9 +63,6 @@ msgstr "छुपा नेटवर्क"
 
 msgid "IDS_WIFI_POP_DEACTIVATING_WI_FI_ING"
 msgstr "Wi-Fi निष्क्रिय हो रहा है…"
-
-msgid "IDS_WIFI_POP_SEARCHING_ING"
-msgstr "खोज रहा है..."
 
 msgid "IDS_WIFI_POP_SELECT_NETWORK"
 msgstr "नेटवर्क चुनें"
@@ -127,15 +118,6 @@ msgstr "गेटवे"
 msgid "IDS_WIFI_BODY_SECURITYTYPE_WEP"
 msgstr "WEP"
 
-msgid "IDS_ST_POP_DEACTIVATING_ING"
-msgstr "निष्क्रिय हो रहा है…"
-
-msgid "IDS_WIFI_BODY_CONFIGURATION_NO_SECURITY"
-msgstr "कोई सुरक्षा नहीं"
-
-msgid "IDS_WIFI_HEADER_SELECT_NETWORK"
-msgstr "नेटवर्क चुनें"
-
 msgid "IDS_WIFI_BODY_WEAK_M_STRENGTH"
 msgstr "दुर्बल"
 
@@ -151,12 +133,6 @@ msgstr "चैनल"
 msgid "IDS_ST_BODY_NOTIFY_ME_WHEN_AN_OPEN_NETWORK_IS_AVAILABLE"
 msgstr "ज़ब ओपन नेटवर्क उपलब्‍ध हो तो मुझे सूचित करें"
 
-msgid "IDS_ST_BODY_ADD_WI_FI_NETWORK"
-msgstr "WI-FI नेटवर्क जोड़ें"
-
-msgid "IDS_ST_BODY_NETWORK_SSID"
-msgstr "नेटवर्क SSID"
-
 msgid "IDS_WIFI_POP_AUTOMATIC_CONNECTION_NETWORK_WILL_DISABLED_CONTINUE_Q_MSG"
 msgstr "इस नेटवर्क के साथ स्वचालित कनेक्शन अक्षम हो जाएगा। जारी रखें?"
 
@@ -166,11 +142,8 @@ msgstr "फ़ेज 2 प्रमाणीकरण"
 msgid "IDS_WIFI_BODY_CONNECT"
 msgstr "जोड़ें"
 
-msgid "IDS_WIFI_POP_PRESS_WPS_ON_YOUR_WI_FI_ACCESS_POINT_WITHIN_PD_MINUTES"
-msgstr "%d मिनटों के अंदर आप के वाई-फाई अभिगम पॉइंट पर डब्ल्यूपीएस दबाएँ"
-
-msgid "IDS_WIFI_BODY_UNKNOWN"
-msgstr "अज्ञात"
+msgid "IDS_ST_BODY_ADVANCED"
+msgstr "उन्नत"
 
 msgid "IDS_WIFI_BODY_ENTER_SSID"
 msgstr "एसएसआईडी प्रविष्ट करें"
@@ -190,9 +163,6 @@ msgstr "छुपा नेटवर्क ढूँढें"
 msgid "IDS_ST_BODY_PRESS_WPS_ON_YOUR_WI_FI_ACCESS_POINT_WITHIN_2_MINUTES"
 msgstr "2 मिनटों के अंदर आप के Wi-Fi ऍक्सेस पॉइंट पर WPS दबाएँ"
 
-msgid "IDS_WIFI_BUTTON_CANCEL"
-msgstr "रद्द"
-
 msgid "IDS_WIFI_BODY_SSID"
 msgstr "एसएसआईडी"
 
@@ -202,9 +172,30 @@ msgstr "अपनी पहचान दर्ज करें"
 msgid "IDS_WIFI_HEADER_ENTER_PASSWORD"
 msgstr "पासवर्ड प्रविष्ट करें"
 
+msgid "IDS_COM_BODY_SETTING"
+msgstr "सेटिंग"
+
 msgid "IDS_WIFI_BODY_NOTIFY_WHEN_WI_FI_NETWORK_IS_FOUND"
 msgstr "Wi-Fi नेटवर्क के प्राप्त होने पर सूचित करें"
 
 msgid "IDS_ST_BODY_HUNCHANGED"
 msgstr "(बदला नहीं)"
+
+msgid "IDS_ST_HEADER_WPS_CONNECTION_ABB"
+msgstr "डब्ल्यूपीएस कनेक्‍शन"
+
+msgid "IDS_WIFI_BODY_WPS_PIN"
+msgstr "डब्ल्यूपीएस PIN"
+
+msgid "IDS_WIFI_BUTTON_WPS_BUTTON"
+msgstr "WPS बटन"
+
+msgid "IDS_ST_BODY_WI_FI_NETWORK_DETECTED_CONNECT_Q"
+msgstr "वाई-फाई नेटवर्क का पता लगाया गया। जोड़ें?"
+
+msgid "IDS_WIFI_POP_PLEASE_WAIT_ING"
+msgstr "कृपया प्रतीक्षा करें"
+
+msgid "IDS_WIFI_POP_UNABLE_TO_FIND_NETWORK"
+msgstr "नेटवर्क खोजने में अक्षम"
 

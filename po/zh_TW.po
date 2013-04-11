@@ -28,9 +28,6 @@ msgstr "DNS 2"
 msgid "IDS_ST_BODY_NETWORK_NOTIFICATION"
 msgstr "網路通知"
 
-msgid "IDS_WIFI_POP_OPEN"
-msgstr "開啟"
-
 msgid "IDS_ST_BODY_SECURED_ABB_M_WIFI_AP_SUMMARY"
 msgstr "安全"
 
@@ -45,9 +42,6 @@ msgstr "棒極了"
 
 msgid "IDS_ST_BODY_GOOD_M_STRENGTH"
 msgstr "良好"
-
-msgid "IDS_ST_BODY_SCAN"
-msgstr "掃描"
 
 msgid "IDS_ST_BODY_WI_FI_NETWORKS"
 msgstr "Wi-Fi無線網路"
@@ -69,9 +63,6 @@ msgstr "隱藏網路"
 
 msgid "IDS_WIFI_POP_DEACTIVATING_WI_FI_ING"
 msgstr "正在停用 Wi-Fi..."
-
-msgid "IDS_WIFI_POP_SEARCHING_ING"
-msgstr "正在搜尋..."
 
 msgid "IDS_WIFI_POP_SELECT_NETWORK"
 msgstr "選擇網路"
@@ -127,15 +118,6 @@ msgstr "閘道"
 msgid "IDS_WIFI_BODY_SECURITYTYPE_WEP"
 msgstr "WEP"
 
-msgid "IDS_ST_POP_DEACTIVATING_ING"
-msgstr "正在停用..."
-
-msgid "IDS_WIFI_BODY_CONFIGURATION_NO_SECURITY"
-msgstr "不設置安全性"
-
-msgid "IDS_WIFI_HEADER_SELECT_NETWORK"
-msgstr "選擇網路"
-
 msgid "IDS_WIFI_BODY_WEAK_M_STRENGTH"
 msgstr "弱"
 
@@ -151,12 +133,6 @@ msgstr "頻道"
 msgid "IDS_ST_BODY_NOTIFY_ME_WHEN_AN_OPEN_NETWORK_IS_AVAILABLE"
 msgstr "有可用的開放網路時通知我"
 
-msgid "IDS_ST_BODY_ADD_WI_FI_NETWORK"
-msgstr "新增 Wi-Fi 網路"
-
-msgid "IDS_ST_BODY_NETWORK_SSID"
-msgstr "網路 SSID"
-
 msgid "IDS_WIFI_POP_AUTOMATIC_CONNECTION_NETWORK_WILL_DISABLED_CONTINUE_Q_MSG"
 msgstr "自動連接到這個網路將被關閉。繼續？"
 
@@ -166,11 +142,8 @@ msgstr "第 2 階段認證"
 msgid "IDS_WIFI_BODY_CONNECT"
 msgstr "連線"
 
-msgid "IDS_WIFI_POP_PRESS_WPS_ON_YOUR_WI_FI_ACCESS_POINT_WITHIN_PD_MINUTES"
-msgstr "在%d分鐘內按下你的Wi - Fi WPS存取點"
-
-msgid "IDS_WIFI_BODY_UNKNOWN"
-msgstr "未知"
+msgid "IDS_ST_BODY_ADVANCED"
+msgstr "進階"
 
 msgid "IDS_WIFI_BODY_ENTER_SSID"
 msgstr "輸入 SSID"
@@ -190,9 +163,6 @@ msgstr "尋找隱藏的網路"
 msgid "IDS_ST_BODY_PRESS_WPS_ON_YOUR_WI_FI_ACCESS_POINT_WITHIN_2_MINUTES"
 msgstr "請在 2 分鐘內於 Wi-Fi 按下 WPS 存取點"
 
-msgid "IDS_WIFI_BUTTON_CANCEL"
-msgstr "取消"
-
 msgid "IDS_WIFI_BODY_SSID"
 msgstr "SSID"
 
@@ -202,9 +172,30 @@ msgstr "輸入身分"
 msgid "IDS_WIFI_HEADER_ENTER_PASSWORD"
 msgstr "輸入密碼"
 
+msgid "IDS_COM_BODY_SETTING"
+msgstr "設定"
+
 msgid "IDS_WIFI_BODY_NOTIFY_WHEN_WI_FI_NETWORK_IS_FOUND"
 msgstr "找到 Wi-Fi 網路時通知"
 
 msgid "IDS_ST_BODY_HUNCHANGED"
 msgstr "（未更改）"
+
+msgid "IDS_ST_HEADER_WPS_CONNECTION_ABB"
+msgstr "WPS連接"
+
+msgid "IDS_WIFI_BODY_WPS_PIN"
+msgstr "WPS的密碼"
+
+msgid "IDS_WIFI_BUTTON_WPS_BUTTON"
+msgstr "WPS 按鈕"
+
+msgid "IDS_ST_BODY_WI_FI_NETWORK_DETECTED_CONNECT_Q"
+msgstr "Wi-Fi網路偵測，要繼續?"
+
+msgid "IDS_WIFI_POP_PLEASE_WAIT_ING"
+msgstr "請稍候..."
+
+msgid "IDS_WIFI_POP_UNABLE_TO_FIND_NETWORK"
+msgstr "找不到網路"
 

@@ -28,9 +28,6 @@ msgstr "DNS2"
 msgid "IDS_ST_BODY_NETWORK_NOTIFICATION"
 msgstr "Şəbəkə bildirişi"
 
-msgid "IDS_WIFI_POP_OPEN"
-msgstr "Aç"
-
 msgid "IDS_ST_BODY_SECURED_ABB_M_WIFI_AP_SUMMARY"
 msgstr "Qorunur"
 
@@ -45,9 +42,6 @@ msgstr "Əla"
 
 msgid "IDS_ST_BODY_GOOD_M_STRENGTH"
 msgstr "Yaxşı"
-
-msgid "IDS_ST_BODY_SCAN"
-msgstr "Axtarın"
 
 msgid "IDS_ST_BODY_WI_FI_NETWORKS"
 msgstr "Wi-Fi şəbəkələri"
@@ -69,9 +63,6 @@ msgstr "Gizli şəbəkə"
 
 msgid "IDS_WIFI_POP_DEACTIVATING_WI_FI_ING"
 msgstr "Wi-Fi söndürülür..."
-
-msgid "IDS_WIFI_POP_SEARCHING_ING"
-msgstr "Axtarır..."
 
 msgid "IDS_WIFI_POP_SELECT_NETWORK"
 msgstr "Şəbəkə seç"
@@ -127,15 +118,6 @@ msgstr "Şlüz"
 msgid "IDS_WIFI_BODY_SECURITYTYPE_WEP"
 msgstr "WEP"
 
-msgid "IDS_ST_POP_DEACTIVATING_ING"
-msgstr "Söndürülür..."
-
-msgid "IDS_WIFI_BODY_CONFIGURATION_NO_SECURITY"
-msgstr "Qeyritəhlükəsiz"
-
-msgid "IDS_WIFI_HEADER_SELECT_NETWORK"
-msgstr "Şəbəkə seç"
-
 msgid "IDS_WIFI_BODY_WEAK_M_STRENGTH"
 msgstr "Zəif"
 
@@ -151,12 +133,6 @@ msgstr "Kanal"
 msgid "IDS_ST_BODY_NOTIFY_ME_WHEN_AN_OPEN_NETWORK_IS_AVAILABLE"
 msgstr "Açıq şəbəkə mövcud olduqda məni xəbərdar edin"
 
-msgid "IDS_ST_BODY_ADD_WI_FI_NETWORK"
-msgstr "Wi-Fi şəbəkəsi əlavə edin"
-
-msgid "IDS_ST_BODY_NETWORK_SSID"
-msgstr "Şəbəkə SSID"
-
 msgid "IDS_WIFI_POP_AUTOMATIC_CONNECTION_NETWORK_WILL_DISABLED_CONTINUE_Q_MSG"
 msgstr "Bu şəbəkəyə avtomatik bağlanma qeyri-aktiv ediləcək. Davam edilsin?"
 
@@ -166,11 +142,8 @@ msgstr "Mərhələ 2 əslliyin yoxlanması"
 msgid "IDS_WIFI_BODY_CONNECT"
 msgstr "Qoşul"
 
-msgid "IDS_WIFI_POP_PRESS_WPS_ON_YOUR_WI_FI_ACCESS_POINT_WITHIN_PD_MINUTES"
-msgstr "%d dəqiqə ərzində Wi-Fi giriş nöqtəsində WPS düyməsini bas"
-
-msgid "IDS_WIFI_BODY_UNKNOWN"
-msgstr "Naməlum"
+msgid "IDS_ST_BODY_ADVANCED"
+msgstr "Təkmilləşdirilmiş"
 
 msgid "IDS_WIFI_BODY_ENTER_SSID"
 msgstr "SSİD daxil edin"
@@ -190,9 +163,6 @@ msgstr "Gizli şəbəkləri tap"
 msgid "IDS_ST_BODY_PRESS_WPS_ON_YOUR_WI_FI_ACCESS_POINT_WITHIN_2_MINUTES"
 msgstr "2 dəqiqə ərzində Wi-Fi giriş nöqtənizdə WPS basın"
 
-msgid "IDS_WIFI_BUTTON_CANCEL"
-msgstr "Ləğv et"
-
 msgid "IDS_WIFI_BODY_SSID"
 msgstr "SSID"
 
@@ -202,9 +172,30 @@ msgstr "Eyniliyinizi daxil edin"
 msgid "IDS_WIFI_HEADER_ENTER_PASSWORD"
 msgstr "Kodu daxil et"
 
+msgid "IDS_COM_BODY_SETTING"
+msgstr "Parametr"
+
 msgid "IDS_WIFI_BODY_NOTIFY_WHEN_WI_FI_NETWORK_IS_FOUND"
 msgstr "Wi-Fi şəbəkəsi tapılanda xəbər verin"
 
 msgid "IDS_ST_BODY_HUNCHANGED"
 msgstr "(dəyişdirilməmiş)"
+
+msgid "IDS_ST_HEADER_WPS_CONNECTION_ABB"
+msgstr "WPS bağlantısı"
+
+msgid "IDS_WIFI_BODY_WPS_PIN"
+msgstr "WPS PIN"
+
+msgid "IDS_WIFI_BUTTON_WPS_BUTTON"
+msgstr "WPS düyməsi"
+
+msgid "IDS_ST_BODY_WI_FI_NETWORK_DETECTED_CONNECT_Q"
+msgstr "Wi-Fi şəbəkəsi aşkarlandı. Qoşulsun?"
+
+msgid "IDS_WIFI_POP_PLEASE_WAIT_ING"
+msgstr "Gözləyin"
+
+msgid "IDS_WIFI_POP_UNABLE_TO_FIND_NETWORK"
+msgstr "Şəbəkəni tapmaq mümkün deyil"
 

@@ -28,9 +28,6 @@ msgstr "DNS 2"
 msgid "IDS_ST_BODY_NETWORK_NOTIFICATION"
 msgstr "Võrguteade"
 
-msgid "IDS_WIFI_POP_OPEN"
-msgstr "Ava"
-
 msgid "IDS_ST_BODY_SECURED_ABB_M_WIFI_AP_SUMMARY"
 msgstr "Turvatud"
 
@@ -45,9 +42,6 @@ msgstr "Võrratu"
 
 msgid "IDS_ST_BODY_GOOD_M_STRENGTH"
 msgstr "Hea"
-
-msgid "IDS_ST_BODY_SCAN"
-msgstr "Otsi"
 
 msgid "IDS_ST_BODY_WI_FI_NETWORKS"
 msgstr "Wi-Fi võrgud"
@@ -69,9 +63,6 @@ msgstr "Peidetud võrk"
 
 msgid "IDS_WIFI_POP_DEACTIVATING_WI_FI_ING"
 msgstr "Wi-Fi desaktiveerimine..."
-
-msgid "IDS_WIFI_POP_SEARCHING_ING"
-msgstr "Otsimine..."
 
 msgid "IDS_WIFI_POP_SELECT_NETWORK"
 msgstr "Vali võrk"
@@ -127,15 +118,6 @@ msgstr "Lüüs"
 msgid "IDS_WIFI_BODY_SECURITYTYPE_WEP"
 msgstr "WEP"
 
-msgid "IDS_ST_POP_DEACTIVATING_ING"
-msgstr "Desaktiveerimine..."
-
-msgid "IDS_WIFI_BODY_CONFIGURATION_NO_SECURITY"
-msgstr "Turvalisus puudub"
-
-msgid "IDS_WIFI_HEADER_SELECT_NETWORK"
-msgstr "Vali võrk"
-
 msgid "IDS_WIFI_BODY_WEAK_M_STRENGTH"
 msgstr "Nõrk"
 
@@ -151,12 +133,6 @@ msgstr "Kanal"
 msgid "IDS_ST_BODY_NOTIFY_ME_WHEN_AN_OPEN_NETWORK_IS_AVAILABLE"
 msgstr "Teavita mind, kui avatud võrk on saadaval"
 
-msgid "IDS_ST_BODY_ADD_WI_FI_NETWORK"
-msgstr "Lisa Wi-Fi võrk"
-
-msgid "IDS_ST_BODY_NETWORK_SSID"
-msgstr "Võrgu SSID"
-
 msgid "IDS_WIFI_POP_AUTOMATIC_CONNECTION_NETWORK_WILL_DISABLED_CONTINUE_Q_MSG"
 msgstr "Selle võrgu automaatühendus keelatakse. Kas jätkata?"
 
@@ -166,11 +142,8 @@ msgstr "2. faasi autentimine"
 msgid "IDS_WIFI_BODY_CONNECT"
 msgstr "Ühenda"
 
-msgid "IDS_WIFI_POP_PRESS_WPS_ON_YOUR_WI_FI_ACCESS_POINT_WITHIN_PD_MINUTES"
-msgstr "Vajutage %d minuti jooksul WPS-nuppu oma Wi-Fi pääsupunktil"
-
-msgid "IDS_WIFI_BODY_UNKNOWN"
-msgstr "Tundmatu"
+msgid "IDS_ST_BODY_ADVANCED"
+msgstr "Täpsemalt"
 
 msgid "IDS_WIFI_BODY_ENTER_SSID"
 msgstr "Sisesta SSID"
@@ -190,9 +163,6 @@ msgstr "Otsi peidetud võrku"
 msgid "IDS_ST_BODY_PRESS_WPS_ON_YOUR_WI_FI_ACCESS_POINT_WITHIN_2_MINUTES"
 msgstr "Vajutage 2 minuti jooksul WPS-nuppu oma Wi-Fi pääsupunktil"
 
-msgid "IDS_WIFI_BUTTON_CANCEL"
-msgstr "Tühista"
-
 msgid "IDS_WIFI_BODY_SSID"
 msgstr "SSID"
 
@@ -202,9 +172,30 @@ msgstr "Sisestage oma tunnus"
 msgid "IDS_WIFI_HEADER_ENTER_PASSWORD"
 msgstr "Sisestage parool"
 
+msgid "IDS_COM_BODY_SETTING"
+msgstr "Seadistus"
+
 msgid "IDS_WIFI_BODY_NOTIFY_WHEN_WI_FI_NETWORK_IS_FOUND"
 msgstr "Teavita, kui Wi-Fi võrk on leitud"
 
 msgid "IDS_ST_BODY_HUNCHANGED"
 msgstr "(muutmata)"
+
+msgid "IDS_ST_HEADER_WPS_CONNECTION_ABB"
+msgstr "WPS-i ühendus"
+
+msgid "IDS_WIFI_BODY_WPS_PIN"
+msgstr "WPS-i PIN-kood"
+
+msgid "IDS_WIFI_BUTTON_WPS_BUTTON"
+msgstr "WPS-i nupp"
+
+msgid "IDS_ST_BODY_WI_FI_NETWORK_DETECTED_CONNECT_Q"
+msgstr "Tuvastatud Wi-Fi võrk. Kas luua ühendus?"
+
+msgid "IDS_WIFI_POP_PLEASE_WAIT_ING"
+msgstr "Palun oodake..."
+
+msgid "IDS_WIFI_POP_UNABLE_TO_FIND_NETWORK"
+msgstr "Võrku ei leita"
 

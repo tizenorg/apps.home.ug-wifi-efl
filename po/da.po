@@ -28,9 +28,6 @@ msgstr "DNS 2"
 msgid "IDS_ST_BODY_NETWORK_NOTIFICATION"
 msgstr "Netværksbesked"
 
-msgid "IDS_WIFI_POP_OPEN"
-msgstr "Åben"
-
 msgid "IDS_ST_BODY_SECURED_ABB_M_WIFI_AP_SUMMARY"
 msgstr "Sikret"
 
@@ -45,9 +42,6 @@ msgstr "Fremragende"
 
 msgid "IDS_ST_BODY_GOOD_M_STRENGTH"
 msgstr "God"
-
-msgid "IDS_ST_BODY_SCAN"
-msgstr "Scanning"
 
 msgid "IDS_ST_BODY_WI_FI_NETWORKS"
 msgstr "Wi-Fi-netværk"
@@ -69,9 +63,6 @@ msgstr "Skjult netværk"
 
 msgid "IDS_WIFI_POP_DEACTIVATING_WI_FI_ING"
 msgstr "Deaktiverer Wi-Fi ..."
-
-msgid "IDS_WIFI_POP_SEARCHING_ING"
-msgstr "Søger ..."
 
 msgid "IDS_WIFI_POP_SELECT_NETWORK"
 msgstr "Vælg netværk"
@@ -127,15 +118,6 @@ msgstr "Gateway"
 msgid "IDS_WIFI_BODY_SECURITYTYPE_WEP"
 msgstr "WEP"
 
-msgid "IDS_ST_POP_DEACTIVATING_ING"
-msgstr "Deaktiverer ..."
-
-msgid "IDS_WIFI_BODY_CONFIGURATION_NO_SECURITY"
-msgstr "Ingen sikkerhed"
-
-msgid "IDS_WIFI_HEADER_SELECT_NETWORK"
-msgstr "Vælg netværk"
-
 msgid "IDS_WIFI_BODY_WEAK_M_STRENGTH"
 msgstr "Svag"
 
@@ -151,12 +133,6 @@ msgstr "Kanal"
 msgid "IDS_ST_BODY_NOTIFY_ME_WHEN_AN_OPEN_NETWORK_IS_AVAILABLE"
 msgstr "Giv mig besked, når et åbent netværk er tilgængeligt"
 
-msgid "IDS_ST_BODY_ADD_WI_FI_NETWORK"
-msgstr "Tilføj Wi-Fi-netværk"
-
-msgid "IDS_ST_BODY_NETWORK_SSID"
-msgstr "Netværks-SSID"
-
 msgid "IDS_WIFI_POP_AUTOMATIC_CONNECTION_NETWORK_WILL_DISABLED_CONTINUE_Q_MSG"
 msgstr "Automatisk forbindelse til dette netværk deaktiveres. Vil du fortsætte?"
 
@@ -166,11 +142,8 @@ msgstr "Fase 2-godkendelse"
 msgid "IDS_WIFI_BODY_CONNECT"
 msgstr "Tilslut"
 
-msgid "IDS_WIFI_POP_PRESS_WPS_ON_YOUR_WI_FI_ACCESS_POINT_WITHIN_PD_MINUTES"
-msgstr "Tryk på WPS på dit Wi-Fi-adgangspunkt inden for %d minutter"
-
-msgid "IDS_WIFI_BODY_UNKNOWN"
-msgstr "Ukendt"
+msgid "IDS_ST_BODY_ADVANCED"
+msgstr "Avanceret"
 
 msgid "IDS_WIFI_BODY_ENTER_SSID"
 msgstr "Angiv SSID"
@@ -190,9 +163,6 @@ msgstr "Find skjult netværk"
 msgid "IDS_ST_BODY_PRESS_WPS_ON_YOUR_WI_FI_ACCESS_POINT_WITHIN_2_MINUTES"
 msgstr "Tryk på WPS på dit Wi-Fi-adgangspunkt inden for 2 minutter"
 
-msgid "IDS_WIFI_BUTTON_CANCEL"
-msgstr "Annullér"
-
 msgid "IDS_WIFI_BODY_SSID"
 msgstr "SSID"
 
@@ -202,9 +172,30 @@ msgstr "Indtast din identitet"
 msgid "IDS_WIFI_HEADER_ENTER_PASSWORD"
 msgstr "Angiv adgangskode"
 
+msgid "IDS_COM_BODY_SETTING"
+msgstr "Indstilling"
+
 msgid "IDS_WIFI_BODY_NOTIFY_WHEN_WI_FI_NETWORK_IS_FOUND"
 msgstr "Giv mig besked, når der er fundet et Wi-Fi-netværk"
 
 msgid "IDS_ST_BODY_HUNCHANGED"
 msgstr "(uændret)"
+
+msgid "IDS_ST_HEADER_WPS_CONNECTION_ABB"
+msgstr "WPS-forbindelse"
+
+msgid "IDS_WIFI_BODY_WPS_PIN"
+msgstr "WPS PIN-kode"
+
+msgid "IDS_WIFI_BUTTON_WPS_BUTTON"
+msgstr "WPS-knap"
+
+msgid "IDS_ST_BODY_WI_FI_NETWORK_DETECTED_CONNECT_Q"
+msgstr "Wi-Fi-netværk detekteret. Tilslut?"
+
+msgid "IDS_WIFI_POP_PLEASE_WAIT_ING"
+msgstr "Vent..."
+
+msgid "IDS_WIFI_POP_UNABLE_TO_FIND_NETWORK"
+msgstr "Kunne ikke finde netværk"
 

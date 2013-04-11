@@ -28,9 +28,6 @@ msgstr "DNS 2"
 msgid "IDS_ST_BODY_NETWORK_NOTIFICATION"
 msgstr "Notificación de rede"
 
-msgid "IDS_WIFI_POP_OPEN"
-msgstr "Abrir"
-
 msgid "IDS_ST_BODY_SECURED_ABB_M_WIFI_AP_SUMMARY"
 msgstr "Protexida"
 
@@ -45,9 +42,6 @@ msgstr "Excelente"
 
 msgid "IDS_ST_BODY_GOOD_M_STRENGTH"
 msgstr "Bo"
-
-msgid "IDS_ST_BODY_SCAN"
-msgstr "Buscar"
 
 msgid "IDS_ST_BODY_WI_FI_NETWORKS"
 msgstr "Redes Wi-Fi"
@@ -69,9 +63,6 @@ msgstr "Rede oculta"
 
 msgid "IDS_WIFI_POP_DEACTIVATING_WI_FI_ING"
 msgstr "Desactivando Wi-Fi..."
-
-msgid "IDS_WIFI_POP_SEARCHING_ING"
-msgstr "Buscando..."
 
 msgid "IDS_WIFI_POP_SELECT_NETWORK"
 msgstr "Seleccionar rede"
@@ -127,15 +118,6 @@ msgstr "Pasarela"
 msgid "IDS_WIFI_BODY_SECURITYTYPE_WEP"
 msgstr "WEP"
 
-msgid "IDS_ST_POP_DEACTIVATING_ING"
-msgstr "Desactivando..."
-
-msgid "IDS_WIFI_BODY_CONFIGURATION_NO_SECURITY"
-msgstr "Sen seguridade"
-
-msgid "IDS_WIFI_HEADER_SELECT_NETWORK"
-msgstr "Seleccionar rede"
-
 msgid "IDS_WIFI_BODY_WEAK_M_STRENGTH"
 msgstr "Débil"
 
@@ -151,12 +133,6 @@ msgstr "Canle"
 msgid "IDS_ST_BODY_NOTIFY_ME_WHEN_AN_OPEN_NETWORK_IS_AVAILABLE"
 msgstr "Avisarme cando estea dispoñible unha rede aberta"
 
-msgid "IDS_ST_BODY_ADD_WI_FI_NETWORK"
-msgstr "Engadir rede Wi-Fi"
-
-msgid "IDS_ST_BODY_NETWORK_SSID"
-msgstr "SSID de redes"
-
 msgid "IDS_WIFI_POP_AUTOMATIC_CONNECTION_NETWORK_WILL_DISABLED_CONTINUE_Q_MSG"
 msgstr "A conexión automática a esta rede vaise desactivar. Continuar?"
 
@@ -166,11 +142,8 @@ msgstr "Autenticación da fase 2"
 msgid "IDS_WIFI_BODY_CONNECT"
 msgstr "Conectar"
 
-msgid "IDS_WIFI_POP_PRESS_WPS_ON_YOUR_WI_FI_ACCESS_POINT_WITHIN_PD_MINUTES"
-msgstr "Pulsa no botón WPS no punto de acceso Wi-Fi dentro de %d minutos"
-
-msgid "IDS_WIFI_BODY_UNKNOWN"
-msgstr "Descoñecido"
+msgid "IDS_ST_BODY_ADVANCED"
+msgstr "Avanzadas"
 
 msgid "IDS_WIFI_BODY_ENTER_SSID"
 msgstr "Introducir SSID"
@@ -190,9 +163,6 @@ msgstr "Buscar rede oculta"
 msgid "IDS_ST_BODY_PRESS_WPS_ON_YOUR_WI_FI_ACCESS_POINT_WITHIN_2_MINUTES"
 msgstr "Pulsa no botón WPS no teu punto de acceso da Wi-Fi dentro de 2 minutos"
 
-msgid "IDS_WIFI_BUTTON_CANCEL"
-msgstr "Cancelar"
-
 msgid "IDS_WIFI_BODY_SSID"
 msgstr "SSID"
 
@@ -202,9 +172,30 @@ msgstr "Introducir a túa identidade"
 msgid "IDS_WIFI_HEADER_ENTER_PASSWORD"
 msgstr "Introduza o contrasinal"
 
+msgid "IDS_COM_BODY_SETTING"
+msgstr "Axustes"
+
 msgid "IDS_WIFI_BODY_NOTIFY_WHEN_WI_FI_NETWORK_IS_FOUND"
 msgstr "Notificar cando se atope unha rede Wi-Fi"
 
 msgid "IDS_ST_BODY_HUNCHANGED"
 msgstr "(sen cambiar)"
+
+msgid "IDS_ST_HEADER_WPS_CONNECTION_ABB"
+msgstr "Conexión WPS"
+
+msgid "IDS_WIFI_BODY_WPS_PIN"
+msgstr "PIN de WPS"
+
+msgid "IDS_WIFI_BUTTON_WPS_BUTTON"
+msgstr "Botón WPS"
+
+msgid "IDS_ST_BODY_WI_FI_NETWORK_DETECTED_CONNECT_Q"
+msgstr "Rede Wi-Fi detectada. Conectarse?"
+
+msgid "IDS_WIFI_POP_PLEASE_WAIT_ING"
+msgstr "Por favor, espere..."
+
+msgid "IDS_WIFI_POP_UNABLE_TO_FIND_NETWORK"
+msgstr "Non se pode atopar a rede"
 

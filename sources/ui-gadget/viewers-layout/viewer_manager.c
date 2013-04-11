@@ -1292,7 +1292,7 @@ void viewer_manager_specific_scan_response_hlr(
 
 			popup_btn_info_t popup_btn_data;
 			memset(&popup_btn_data, 0, sizeof(popup_btn_data));
-			popup_btn_data.info_txt = OPEN_HIDDEN_NETWORK_STR;
+			popup_btn_data.info_txt = sc(PACKAGE, I18N_TYPE_TRY_CONNECT);
 			popup_btn_data.btn1_cb = hidden_ap_connect_ok_cb;
 			popup_btn_data.btn2_cb = hidden_ap_connect_cacel_cb;
 			popup_btn_data.btn2_data = popup_btn_data.btn1_data = hidden_ap_data;
@@ -1358,7 +1358,7 @@ void viewer_manager_specific_scan_response_hlr(
 			break;
 		}
 	} else if (ap_count == 0) {
-		char *disp_msg = g_strdup_printf("Unable to find %s", ssid);
+		char *disp_msg = g_strdup_printf("%s : %s",sc(PACKAGE, I18N_TYPE_FIND_FAIL), ssid);
 		common_utils_show_info_ok_popup(ug_app_state->layout_main, PACKAGE, disp_msg);
 		g_free(disp_msg);
 	}

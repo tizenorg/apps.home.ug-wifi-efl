@@ -1,10 +1,10 @@
 wifi-efl-ug (0.5.2-6) precise; urgency=low
 
-  * Initialized rotate status value
+  * Initialized rotate status value.
   * Git: magnolia/apps/home/ug-wifi-efl
   * Tag: wifi-efl-ug_0.5.2-6
 
- -- sunil85.kim <isurit@sunil85.kim>  Mon, 08 Apr 2013 14:36:00 +0900
+ -- sunil85.kim <isurit@sunil85.kim>  Mon, 08 Apr 2013 14:24:04 +0900
 
 wifi-efl-ug (0.5.2-6) precise; urgency=low
 
@@ -12,7 +12,7 @@ wifi-efl-ug (0.5.2-6) precise; urgency=low
   * Git: magnolia/apps/home/ug-wifi-efl
   * Tag: wifi-efl-ug_0.5.2-5
 
- -- sunil85.kim <isurit@sunil85.kim>  Mon, 08 Apr 2013 14:35:54 +0900
+ -- sunil85.kim <isurit@sunil85.kim>  Tue, 26 Mar 2013 12:22:31 +0900
 
 wifi-efl-ug (0.5.2-5) precise; urgency=low
 

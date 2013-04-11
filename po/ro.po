@@ -28,9 +28,6 @@ msgstr "DNS2"
 msgid "IDS_ST_BODY_NETWORK_NOTIFICATION"
 msgstr "Notificare reţea"
 
-msgid "IDS_WIFI_POP_OPEN"
-msgstr "Deschidere"
-
 msgid "IDS_ST_BODY_SECURED_ABB_M_WIFI_AP_SUMMARY"
 msgstr "Securizat"
 
@@ -45,9 +42,6 @@ msgstr "Excelent"
 
 msgid "IDS_ST_BODY_GOOD_M_STRENGTH"
 msgstr "Bun"
-
-msgid "IDS_ST_BODY_SCAN"
-msgstr "Căutare"
 
 msgid "IDS_ST_BODY_WI_FI_NETWORKS"
 msgstr "Reţele Wi-Fi"
@@ -69,9 +63,6 @@ msgstr "Reţea ascunsă"
 
 msgid "IDS_WIFI_POP_DEACTIVATING_WI_FI_ING"
 msgstr "Se dezactivează Wi-Fi..."
-
-msgid "IDS_WIFI_POP_SEARCHING_ING"
-msgstr "Căutare..."
 
 msgid "IDS_WIFI_POP_SELECT_NETWORK"
 msgstr "Selectare reţea"
@@ -127,15 +118,6 @@ msgstr "Gateway"
 msgid "IDS_WIFI_BODY_SECURITYTYPE_WEP"
 msgstr "WEP"
 
-msgid "IDS_ST_POP_DEACTIVATING_ING"
-msgstr "Dezactivare..."
-
-msgid "IDS_WIFI_BODY_CONFIGURATION_NO_SECURITY"
-msgstr "Fără securitate"
-
-msgid "IDS_WIFI_HEADER_SELECT_NETWORK"
-msgstr "Selectare reţea"
-
 msgid "IDS_WIFI_BODY_WEAK_M_STRENGTH"
 msgstr "Slabă"
 
@@ -151,12 +133,6 @@ msgstr "Canal"
 msgid "IDS_ST_BODY_NOTIFY_ME_WHEN_AN_OPEN_NETWORK_IS_AVAILABLE"
 msgstr "Notificare disponibilitate reţea deschisă"
 
-msgid "IDS_ST_BODY_ADD_WI_FI_NETWORK"
-msgstr "Adăugare reţea Wi-Fi"
-
-msgid "IDS_ST_BODY_NETWORK_SSID"
-msgstr "SSID reţea"
-
 msgid "IDS_WIFI_POP_AUTOMATIC_CONNECTION_NETWORK_WILL_DISABLED_CONTINUE_Q_MSG"
 msgstr "Va fi dezactivată conectarea automată la această reţea. Continuaţi?"
 
@@ -166,11 +142,8 @@ msgstr "Autentificare în faza 2"
 msgid "IDS_WIFI_BODY_CONNECT"
 msgstr "Conectare"
 
-msgid "IDS_WIFI_POP_PRESS_WPS_ON_YOUR_WI_FI_ACCESS_POINT_WITHIN_PD_MINUTES"
-msgstr "Apăsaţi pe WPS pe punctul dvs. de acces Wi-Fi în interval de %d minute"
-
-msgid "IDS_WIFI_BODY_UNKNOWN"
-msgstr "Necunoscut"
+msgid "IDS_ST_BODY_ADVANCED"
+msgstr "Avansat"
 
 msgid "IDS_WIFI_BODY_ENTER_SSID"
 msgstr "Introducere SSID"
@@ -190,9 +163,6 @@ msgstr "Găsire reţea ascunsă"
 msgid "IDS_ST_BODY_PRESS_WPS_ON_YOUR_WI_FI_ACCESS_POINT_WITHIN_2_MINUTES"
 msgstr "Apăsaţi pe WPS pe punctul de acces Wi-Fi în interval de 2 minute"
 
-msgid "IDS_WIFI_BUTTON_CANCEL"
-msgstr "Anulare"
-
 msgid "IDS_WIFI_BODY_SSID"
 msgstr "SSID"
 
@@ -202,9 +172,30 @@ msgstr "Introduceţi identitatea dvs."
 msgid "IDS_WIFI_HEADER_ENTER_PASSWORD"
 msgstr "Introduceţi parola"
 
+msgid "IDS_COM_BODY_SETTING"
+msgstr "Setare"
+
 msgid "IDS_WIFI_BODY_NOTIFY_WHEN_WI_FI_NETWORK_IS_FOUND"
 msgstr "Notificare la găsirea reţelei Wi-Fi"
 
 msgid "IDS_ST_BODY_HUNCHANGED"
 msgstr "(neschimbat)"
+
+msgid "IDS_ST_HEADER_WPS_CONNECTION_ABB"
+msgstr "Conexiune WPS"
+
+msgid "IDS_WIFI_BODY_WPS_PIN"
+msgstr "PIN WPS"
+
+msgid "IDS_WIFI_BUTTON_WPS_BUTTON"
+msgstr "Buton WPS"
+
+msgid "IDS_ST_BODY_WI_FI_NETWORK_DETECTED_CONNECT_Q"
+msgstr "Reţea Wi-Fi detectată. Vă conectaţi?"
+
+msgid "IDS_WIFI_POP_PLEASE_WAIT_ING"
+msgstr "Aşteptaţi..."
+
+msgid "IDS_WIFI_POP_UNABLE_TO_FIND_NETWORK"
+msgstr "Imposibil de găsit reţeaua"
 

@@ -28,9 +28,6 @@ msgstr "DNS 2"
 msgid "IDS_ST_BODY_NETWORK_NOTIFICATION"
 msgstr "Желілік мәлімдеме"
 
-msgid "IDS_WIFI_POP_OPEN"
-msgstr "Ашу"
-
 msgid "IDS_ST_BODY_SECURED_ABB_M_WIFI_AP_SUMMARY"
 msgstr "Қауіпсіз"
 
@@ -45,9 +42,6 @@ msgstr "Өте жақсы"
 
 msgid "IDS_ST_BODY_GOOD_M_STRENGTH"
 msgstr "Жақсы"
-
-msgid "IDS_ST_BODY_SCAN"
-msgstr "Қарап шығу"
 
 msgid "IDS_ST_BODY_WI_FI_NETWORKS"
 msgstr "Wi-Fi желілері"
@@ -69,9 +63,6 @@ msgstr "Жасырын желі"
 
 msgid "IDS_WIFI_POP_DEACTIVATING_WI_FI_ING"
 msgstr "Wi-Fi сөндірілуде..."
-
-msgid "IDS_WIFI_POP_SEARCHING_ING"
-msgstr "Іздеуде...."
 
 msgid "IDS_WIFI_POP_SELECT_NETWORK"
 msgstr "Желі таңдау"
@@ -127,15 +118,6 @@ msgstr "Gateway"
 msgid "IDS_WIFI_BODY_SECURITYTYPE_WEP"
 msgstr "WEP"
 
-msgid "IDS_ST_POP_DEACTIVATING_ING"
-msgstr "Өшірілуде.."
-
-msgid "IDS_WIFI_BODY_CONFIGURATION_NO_SECURITY"
-msgstr "Қауіпсіздік жоқ"
-
-msgid "IDS_WIFI_HEADER_SELECT_NETWORK"
-msgstr "Желі таңдау"
-
 msgid "IDS_WIFI_BODY_WEAK_M_STRENGTH"
 msgstr "Әлсіз"
 
@@ -151,12 +133,6 @@ msgstr "Арна"
 msgid "IDS_ST_BODY_NOTIFY_ME_WHEN_AN_OPEN_NETWORK_IS_AVAILABLE"
 msgstr "Ашық желі қол жетімді болғанда маған хабарлаңыз"
 
-msgid "IDS_ST_BODY_ADD_WI_FI_NETWORK"
-msgstr "Wi-Fi желісін қосу"
-
-msgid "IDS_ST_BODY_NETWORK_SSID"
-msgstr "Желілік SSID"
-
 msgid "IDS_WIFI_POP_AUTOMATIC_CONNECTION_NETWORK_WILL_DISABLED_CONTINUE_Q_MSG"
 msgstr "Бұл желіге автоматты қосылу өшіріледі. Жалғастыру керек пе?"
 
@@ -166,11 +142,8 @@ msgstr "2-кезең аутентификациясы"
 msgid "IDS_WIFI_BODY_CONNECT"
 msgstr "Қосу"
 
-msgid "IDS_WIFI_POP_PRESS_WPS_ON_YOUR_WI_FI_ACCESS_POINT_WITHIN_PD_MINUTES"
-msgstr "Wi-Fi қатынас нүктесіндегі WPS пернесін %d минут ішінде басыңыз"
-
-msgid "IDS_WIFI_BODY_UNKNOWN"
-msgstr "Белгісіз"
+msgid "IDS_ST_BODY_ADVANCED"
+msgstr "Қосымша"
 
 msgid "IDS_WIFI_BODY_ENTER_SSID"
 msgstr "SSID нөмірін енгізу"
@@ -190,9 +163,6 @@ msgstr "Жасырын желіні табу"
 msgid "IDS_ST_BODY_PRESS_WPS_ON_YOUR_WI_FI_ACCESS_POINT_WITHIN_2_MINUTES"
 msgstr "Wi-Fi кіру нүктесіндегі WPS пернесін 2 минут ішінде басыңыз"
 
-msgid "IDS_WIFI_BUTTON_CANCEL"
-msgstr "Тоқтату"
-
 msgid "IDS_WIFI_BODY_SSID"
 msgstr "SSID"
 
@@ -202,9 +172,30 @@ msgstr "Идентификаторды енгізу"
 msgid "IDS_WIFI_HEADER_ENTER_PASSWORD"
 msgstr "Кілтсөз енгізіңіз"
 
+msgid "IDS_COM_BODY_SETTING"
+msgstr "Қондырғылар"
+
 msgid "IDS_WIFI_BODY_NOTIFY_WHEN_WI_FI_NETWORK_IS_FOUND"
 msgstr "Wi-Fi желісі табылғанда хабарлау"
 
 msgid "IDS_ST_BODY_HUNCHANGED"
 msgstr "(өзгертілген)"
+
+msgid "IDS_ST_HEADER_WPS_CONNECTION_ABB"
+msgstr "WPS байланысы"
+
+msgid "IDS_WIFI_BODY_WPS_PIN"
+msgstr "WPS PIN"
+
+msgid "IDS_WIFI_BUTTON_WPS_BUTTON"
+msgstr "WPS түймесі"
+
+msgid "IDS_ST_BODY_WI_FI_NETWORK_DETECTED_CONNECT_Q"
+msgstr "Wi-Fi желісі анықталды. Қосылу керек пе?"
+
+msgid "IDS_WIFI_POP_PLEASE_WAIT_ING"
+msgstr "Күте тұрыңыз..."
+
+msgid "IDS_WIFI_POP_UNABLE_TO_FIND_NETWORK"
+msgstr "Желіні табу мүмкін емес"
 

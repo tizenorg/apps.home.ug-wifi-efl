@@ -28,9 +28,6 @@ msgstr "DNS 2"
 msgid "IDS_ST_BODY_NETWORK_NOTIFICATION"
 msgstr "Netzbenachrichtigung"
 
-msgid "IDS_WIFI_POP_OPEN"
-msgstr "Offen"
-
 msgid "IDS_ST_BODY_SECURED_ABB_M_WIFI_AP_SUMMARY"
 msgstr "Gesichert"
 
@@ -45,9 +42,6 @@ msgstr "Exzellent"
 
 msgid "IDS_ST_BODY_GOOD_M_STRENGTH"
 msgstr "Gut"
-
-msgid "IDS_ST_BODY_SCAN"
-msgstr "Suchen"
 
 msgid "IDS_ST_BODY_WI_FI_NETWORKS"
 msgstr "WLAN"
@@ -69,9 +63,6 @@ msgstr "Verborgenes Netz"
 
 msgid "IDS_WIFI_POP_DEACTIVATING_WI_FI_ING"
 msgstr "WLAN wird deaktiviert..."
-
-msgid "IDS_WIFI_POP_SEARCHING_ING"
-msgstr "Suche läuft..."
 
 msgid "IDS_WIFI_POP_SELECT_NETWORK"
 msgstr "Netz auswählen"
@@ -127,15 +118,6 @@ msgstr "Gateway"
 msgid "IDS_WIFI_BODY_SECURITYTYPE_WEP"
 msgstr "WEP"
 
-msgid "IDS_ST_POP_DEACTIVATING_ING"
-msgstr "Wird deaktiviert..."
-
-msgid "IDS_WIFI_BODY_CONFIGURATION_NO_SECURITY"
-msgstr "Keine Sicherheit"
-
-msgid "IDS_WIFI_HEADER_SELECT_NETWORK"
-msgstr "Netz auswählen"
-
 msgid "IDS_WIFI_BODY_WEAK_M_STRENGTH"
 msgstr "Schwach"
 
@@ -151,12 +133,6 @@ msgstr "Sender"
 msgid "IDS_ST_BODY_NOTIFY_ME_WHEN_AN_OPEN_NETWORK_IS_AVAILABLE"
 msgstr "Benachrichtigen, wenn ein offenes Netzwerk verfügbar ist"
 
-msgid "IDS_ST_BODY_ADD_WI_FI_NETWORK"
-msgstr "WLAN hinzufügen"
-
-msgid "IDS_ST_BODY_NETWORK_SSID"
-msgstr "Netz-SSID"
-
 msgid "IDS_WIFI_POP_AUTOMATIC_CONNECTION_NETWORK_WILL_DISABLED_CONTINUE_Q_MSG"
 msgstr "Automatische Verbindung zu diesem Netzwerk wird deaktiviert. Fortfahren?"
 
@@ -166,11 +142,8 @@ msgstr "Phase 2-Authentifizierung"
 msgid "IDS_WIFI_BODY_CONNECT"
 msgstr "Verbinden"
 
-msgid "IDS_WIFI_POP_PRESS_WPS_ON_YOUR_WI_FI_ACCESS_POINT_WITHIN_PD_MINUTES"
-msgstr "Drücken Sie die WPS-Taste an Ihrem WLAN-Zugangspunkt innerhalb von %d Minuten."
-
-msgid "IDS_WIFI_BODY_UNKNOWN"
-msgstr "Unbekannt"
+msgid "IDS_ST_BODY_ADVANCED"
+msgstr "Erweitert"
 
 msgid "IDS_WIFI_BODY_ENTER_SSID"
 msgstr "SSID eingeben"
@@ -190,9 +163,6 @@ msgstr "Verborgenes Netz suchen"
 msgid "IDS_ST_BODY_PRESS_WPS_ON_YOUR_WI_FI_ACCESS_POINT_WITHIN_2_MINUTES"
 msgstr "Drücken Sie die WPS-Taste an Ihrem WLAN-Zugangspunkt innerhalb von 2 Minuten."
 
-msgid "IDS_WIFI_BUTTON_CANCEL"
-msgstr "Abbruch"
-
 msgid "IDS_WIFI_BODY_SSID"
 msgstr "SSID"
 
@@ -202,9 +172,30 @@ msgstr "Ihre Identität eingeben"
 msgid "IDS_WIFI_HEADER_ENTER_PASSWORD"
 msgstr "Passwort eingeben"
 
+msgid "IDS_COM_BODY_SETTING"
+msgstr "Einstellung"
+
 msgid "IDS_WIFI_BODY_NOTIFY_WHEN_WI_FI_NETWORK_IS_FOUND"
 msgstr "Benachrichtigen, wenn WLAN-Netzwerk gefunden wurde"
 
 msgid "IDS_ST_BODY_HUNCHANGED"
 msgstr "(unverändert)"
+
+msgid "IDS_ST_HEADER_WPS_CONNECTION_ABB"
+msgstr "WPS-Verbindung"
+
+msgid "IDS_WIFI_BODY_WPS_PIN"
+msgstr "WPS-PIN"
+
+msgid "IDS_WIFI_BUTTON_WPS_BUTTON"
+msgstr "WPS-Taste"
+
+msgid "IDS_ST_BODY_WI_FI_NETWORK_DETECTED_CONNECT_Q"
+msgstr "WLAN gefunden. Verbinden?"
+
+msgid "IDS_WIFI_POP_PLEASE_WAIT_ING"
+msgstr "Bitte warten..."
+
+msgid "IDS_WIFI_POP_UNABLE_TO_FIND_NETWORK"
+msgstr "Netzwerk kann nicht gefunden werden"
 

@@ -28,9 +28,6 @@ msgstr "DNS 2"
 msgid "IDS_ST_BODY_NETWORK_NOTIFICATION"
 msgstr "Ցանցային ծանուցում"
 
-msgid "IDS_WIFI_POP_OPEN"
-msgstr "Բացել"
-
 msgid "IDS_ST_BODY_SECURED_ABB_M_WIFI_AP_SUMMARY"
 msgstr "Ապահով"
 
@@ -45,9 +42,6 @@ msgstr "Գերազանց"
 
 msgid "IDS_ST_BODY_GOOD_M_STRENGTH"
 msgstr "Լավ"
-
-msgid "IDS_ST_BODY_SCAN"
-msgstr "Զննել"
 
 msgid "IDS_ST_BODY_WI_FI_NETWORKS"
 msgstr "Wi-Fi ցանցեր"
@@ -69,9 +63,6 @@ msgstr "Թաքցված ցանց"
 
 msgid "IDS_WIFI_POP_DEACTIVATING_WI_FI_ING"
 msgstr "Wi-Fi-ի ապաակտիվացում..."
-
-msgid "IDS_WIFI_POP_SEARCHING_ING"
-msgstr "Որոնում է..."
 
 msgid "IDS_WIFI_POP_SELECT_NETWORK"
 msgstr "Ընտրել ցանցը"
@@ -127,15 +118,6 @@ msgstr "Մուտք"
 msgid "IDS_WIFI_BODY_SECURITYTYPE_WEP"
 msgstr "WEP"
 
-msgid "IDS_ST_POP_DEACTIVATING_ING"
-msgstr "Ապաակտիվացում..."
-
-msgid "IDS_WIFI_BODY_CONFIGURATION_NO_SECURITY"
-msgstr "Անվտանգության բացակայություն"
-
-msgid "IDS_WIFI_HEADER_SELECT_NETWORK"
-msgstr "Ընտրել ցանցը"
-
 msgid "IDS_WIFI_BODY_WEAK_M_STRENGTH"
 msgstr "Թույլ"
 
@@ -151,12 +133,6 @@ msgstr "Ալիք"
 msgid "IDS_ST_BODY_NOTIFY_ME_WHEN_AN_OPEN_NETWORK_IS_AVAILABLE"
 msgstr "Ծանուցել բացված ցանցի մատչելիության դեպքում"
 
-msgid "IDS_ST_BODY_ADD_WI_FI_NETWORK"
-msgstr "Ավելացնել Wi-Fi ցանց"
-
-msgid "IDS_ST_BODY_NETWORK_SSID"
-msgstr "Ցանցի SSID"
-
 msgid "IDS_WIFI_POP_AUTOMATIC_CONNECTION_NETWORK_WILL_DISABLED_CONTINUE_Q_MSG"
 msgstr "Ինքնամիացումն այս ցանցին կկասեցվի: Շարունակե՞լ:"
 
@@ -166,11 +142,8 @@ msgstr "Փուլ 2 նույնականացում"
 msgid "IDS_WIFI_BODY_CONNECT"
 msgstr "Միանալ"
 
-msgid "IDS_WIFI_POP_PRESS_WPS_ON_YOUR_WI_FI_ACCESS_POINT_WITHIN_PD_MINUTES"
-msgstr "Սեղմեք Ձեր Wi-Fi մուտքի կետի WPS-ը %d րոպե"
-
-msgid "IDS_WIFI_BODY_UNKNOWN"
-msgstr "Անհայտ"
+msgid "IDS_ST_BODY_ADVANCED"
+msgstr "Լրացուցիչ"
 
 msgid "IDS_WIFI_BODY_ENTER_SSID"
 msgstr "Մուտքագրեք SSID-ն"
@@ -190,9 +163,6 @@ msgstr "Փնտրել թաքնված ցանց"
 msgid "IDS_ST_BODY_PRESS_WPS_ON_YOUR_WI_FI_ACCESS_POINT_WITHIN_2_MINUTES"
 msgstr "Սեղմեք Ձեր Wi-Fi մուտքի կետի WPS-ը 2 րոպե"
 
-msgid "IDS_WIFI_BUTTON_CANCEL"
-msgstr "Չեղարկել"
-
 msgid "IDS_WIFI_BODY_SSID"
 msgstr "SSID"
 
@@ -202,9 +172,30 @@ msgstr "Մուտքագրեք Ձեր ինքնությունը"
 msgid "IDS_WIFI_HEADER_ENTER_PASSWORD"
 msgstr "Մուտքագրեք գաղտնաբառը"
 
+msgid "IDS_COM_BODY_SETTING"
+msgstr "Կայանք"
+
 msgid "IDS_WIFI_BODY_NOTIFY_WHEN_WI_FI_NETWORK_IS_FOUND"
 msgstr "Ծանուցել, երբ Wi-Fi ցանց է գտնվում"
 
 msgid "IDS_ST_BODY_HUNCHANGED"
 msgstr "(անփոփոխ)"
+
+msgid "IDS_ST_HEADER_WPS_CONNECTION_ABB"
+msgstr "WPS միացում"
+
+msgid "IDS_WIFI_BODY_WPS_PIN"
+msgstr "WPS PIN"
+
+msgid "IDS_WIFI_BUTTON_WPS_BUTTON"
+msgstr "WPS կոճակ"
+
+msgid "IDS_ST_BODY_WI_FI_NETWORK_DETECTED_CONNECT_Q"
+msgstr "Wi-Fi ցանց է հայտնաբերվել: Միացնե՞լ:"
+
+msgid "IDS_WIFI_POP_PLEASE_WAIT_ING"
+msgstr "Սպասեք..."
+
+msgid "IDS_WIFI_POP_UNABLE_TO_FIND_NETWORK"
+msgstr "Անհնար է ցանց գտնել"
 

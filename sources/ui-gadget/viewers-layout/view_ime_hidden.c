@@ -167,7 +167,7 @@ static void view_hidden_ap_popup_ok_cb(
 									popup_data->popup_entry_lyt);
 
 	if (WLAN_MANAGER_ERR_NONE != wlan_manager_scan_with_ssid(entry_txt, entry_txt)) {
-		char *disp_msg = g_strdup_printf("Unable to find %s", entry_txt);
+		char *disp_msg = g_strdup_printf("%s : %s", sc(popup_data->str_pkg_name,I18N_TYPE_Find_Hidden_Network), entry_txt);
 
 		common_utils_show_info_ok_popup(popup_data->win, popup_data->str_pkg_name, disp_msg);
 
@@ -177,7 +177,7 @@ static void view_hidden_ap_popup_ok_cb(
 		view_hidden_ap_popup_destroy(popup_data);
 	} else {
 		/* Show progress indication popup */
-		popup_data->progress_popup = common_utils_show_info_ok_popup(popup_data->win, popup_data->str_pkg_name, "Please Wait...");
+		popup_data->progress_popup = common_utils_show_info_ok_popup(popup_data->win, popup_data->str_pkg_name, sc(popup_data->str_pkg_name,I18N_TYPE_Wait));
 
 		evas_object_del(popup_data->popup);
 		popup_data->popup = NULL;

@@ -28,9 +28,6 @@ msgstr "DNS 2"
 msgid "IDS_ST_BODY_NETWORK_NOTIFICATION"
 msgstr "Obavijest o mreži"
 
-msgid "IDS_WIFI_POP_OPEN"
-msgstr "Otvorena"
-
 msgid "IDS_ST_BODY_SECURED_ABB_M_WIFI_AP_SUMMARY"
 msgstr "Zaštićeno"
 
@@ -45,9 +42,6 @@ msgstr "Odličan"
 
 msgid "IDS_ST_BODY_GOOD_M_STRENGTH"
 msgstr "Signal dobar"
-
-msgid "IDS_ST_BODY_SCAN"
-msgstr "Traženje"
 
 msgid "IDS_ST_BODY_WI_FI_NETWORKS"
 msgstr "Wi-Fi mreže"
@@ -69,9 +63,6 @@ msgstr "Skrivena mreža"
 
 msgid "IDS_WIFI_POP_DEACTIVATING_WI_FI_ING"
 msgstr "WiFi isključivanje..."
-
-msgid "IDS_WIFI_POP_SEARCHING_ING"
-msgstr "Pretraživanje..."
 
 msgid "IDS_WIFI_POP_SELECT_NETWORK"
 msgstr "Odaberite mrežu"
@@ -127,15 +118,6 @@ msgstr "Gateway"
 msgid "IDS_WIFI_BODY_SECURITYTYPE_WEP"
 msgstr "WEP"
 
-msgid "IDS_ST_POP_DEACTIVATING_ING"
-msgstr "Isključivanje..."
-
-msgid "IDS_WIFI_BODY_CONFIGURATION_NO_SECURITY"
-msgstr "Nema zaštite"
-
-msgid "IDS_WIFI_HEADER_SELECT_NETWORK"
-msgstr "Odaberite mrežu"
-
 msgid "IDS_WIFI_BODY_WEAK_M_STRENGTH"
 msgstr "Slaba"
 
@@ -151,12 +133,6 @@ msgstr "Postaja"
 msgid "IDS_ST_BODY_NOTIFY_ME_WHEN_AN_OPEN_NETWORK_IS_AVAILABLE"
 msgstr "Obavijesti o dostupnim otvorenim  mrežama"
 
-msgid "IDS_ST_BODY_ADD_WI_FI_NETWORK"
-msgstr "Dodaj Wi-Fi mrežu"
-
-msgid "IDS_ST_BODY_NETWORK_SSID"
-msgstr "SSID mreže"
-
 msgid "IDS_WIFI_POP_AUTOMATIC_CONNECTION_NETWORK_WILL_DISABLED_CONTINUE_Q_MSG"
 msgstr "Isključiti će se automatsko spajanje na tu mrežu. Nastaviti?"
 
@@ -166,11 +142,8 @@ msgstr "2. faza autorizacije"
 msgid "IDS_WIFI_BODY_CONNECT"
 msgstr "Spoji"
 
-msgid "IDS_WIFI_POP_PRESS_WPS_ON_YOUR_WI_FI_ACCESS_POINT_WITHIN_PD_MINUTES"
-msgstr "Pritisnite WPS na Wi-Fi pristupnoj točki u roku od %d minute"
-
-msgid "IDS_WIFI_BODY_UNKNOWN"
-msgstr "Nepoznato"
+msgid "IDS_ST_BODY_ADVANCED"
+msgstr "Napredno"
 
 msgid "IDS_WIFI_BODY_ENTER_SSID"
 msgstr "Unesite SSID"
@@ -190,9 +163,6 @@ msgstr "Traži skrivenu mrežu"
 msgid "IDS_ST_BODY_PRESS_WPS_ON_YOUR_WI_FI_ACCESS_POINT_WITHIN_2_MINUTES"
 msgstr "Pritisnite WPS na Wi-Fi pristupnoj točki u roku od 2 min"
 
-msgid "IDS_WIFI_BUTTON_CANCEL"
-msgstr "Prekid"
-
 msgid "IDS_WIFI_BODY_SSID"
 msgstr "SSID"
 
@@ -202,9 +172,30 @@ msgstr "Unesi svoj identitet"
 msgid "IDS_WIFI_HEADER_ENTER_PASSWORD"
 msgstr "Unesite šifru"
 
+msgid "IDS_COM_BODY_SETTING"
+msgstr "Postavka"
+
 msgid "IDS_WIFI_BODY_NOTIFY_WHEN_WI_FI_NETWORK_IS_FOUND"
 msgstr "Obavijesti kad je Wi-Fi mreža pronađena"
 
 msgid "IDS_ST_BODY_HUNCHANGED"
 msgstr "(nepromijenjeno)"
+
+msgid "IDS_ST_HEADER_WPS_CONNECTION_ABB"
+msgstr "WPS veza"
+
+msgid "IDS_WIFI_BODY_WPS_PIN"
+msgstr "WPS PIN"
+
+msgid "IDS_WIFI_BUTTON_WPS_BUTTON"
+msgstr "WPS tipka"
+
+msgid "IDS_ST_BODY_WI_FI_NETWORK_DETECTED_CONNECT_Q"
+msgstr "Wi-Fi mreža prepoznata. Spojiti?"
+
+msgid "IDS_WIFI_POP_PLEASE_WAIT_ING"
+msgstr "Pričekajte..."
+
+msgid "IDS_WIFI_POP_UNABLE_TO_FIND_NETWORK"
+msgstr "Nemoguće pronaći mrežu"
 

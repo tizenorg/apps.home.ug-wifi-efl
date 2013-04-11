@@ -28,9 +28,6 @@ msgstr "DNS 2"
 msgid "IDS_ST_BODY_NETWORK_NOTIFICATION"
 msgstr "Мрежно известување"
 
-msgid "IDS_WIFI_POP_OPEN"
-msgstr "Отвори"
-
 msgid "IDS_ST_BODY_SECURED_ABB_M_WIFI_AP_SUMMARY"
 msgstr "Обезбедено"
 
@@ -45,9 +42,6 @@ msgstr "Одлично"
 
 msgid "IDS_ST_BODY_GOOD_M_STRENGTH"
 msgstr "Добро"
-
-msgid "IDS_ST_BODY_SCAN"
-msgstr "Скенирај"
 
 msgid "IDS_ST_BODY_WI_FI_NETWORKS"
 msgstr "Мрежи Wi-Fi"
@@ -69,9 +63,6 @@ msgstr "Скриена мрежа"
 
 msgid "IDS_WIFI_POP_DEACTIVATING_WI_FI_ING"
 msgstr "Се исклучува Wi-Fi..."
-
-msgid "IDS_WIFI_POP_SEARCHING_ING"
-msgstr "Пребарување..."
 
 msgid "IDS_WIFI_POP_SELECT_NETWORK"
 msgstr "Избери мрежа"
@@ -127,15 +118,6 @@ msgstr "Порта"
 msgid "IDS_WIFI_BODY_SECURITYTYPE_WEP"
 msgstr "WEP"
 
-msgid "IDS_ST_POP_DEACTIVATING_ING"
-msgstr "Се исклучува..."
-
-msgid "IDS_WIFI_BODY_CONFIGURATION_NO_SECURITY"
-msgstr "Без сигурност"
-
-msgid "IDS_WIFI_HEADER_SELECT_NETWORK"
-msgstr "Избери мрежа"
-
 msgid "IDS_WIFI_BODY_WEAK_M_STRENGTH"
 msgstr "Слаб"
 
@@ -151,12 +133,6 @@ msgstr "Станица"
 msgid "IDS_ST_BODY_NOTIFY_ME_WHEN_AN_OPEN_NETWORK_IS_AVAILABLE"
 msgstr "Извести ме кога е достапна отворена мрежа"
 
-msgid "IDS_ST_BODY_ADD_WI_FI_NETWORK"
-msgstr "Додај мрежа Wi-Fi"
-
-msgid "IDS_ST_BODY_NETWORK_SSID"
-msgstr "Мрежен SSID"
-
 msgid "IDS_WIFI_POP_AUTOMATIC_CONNECTION_NETWORK_WILL_DISABLED_CONTINUE_Q_MSG"
 msgstr "Автоматското поврзување со оваа мрежа ќе се исклучи. Продолжи?"
 
@@ -166,11 +142,8 @@ msgstr "Потврдување, 2 фаза"
 msgid "IDS_WIFI_BODY_CONNECT"
 msgstr "Поврзи"
 
-msgid "IDS_WIFI_POP_PRESS_WPS_ON_YOUR_WI_FI_ACCESS_POINT_WITHIN_PD_MINUTES"
-msgstr "Притиснете WPS на пристапната точка за Wi-Fi во рок од %d минути"
-
-msgid "IDS_WIFI_BODY_UNKNOWN"
-msgstr "Непознато"
+msgid "IDS_ST_BODY_ADVANCED"
+msgstr "Дополнително"
 
 msgid "IDS_WIFI_BODY_ENTER_SSID"
 msgstr "Внесете SSID"
@@ -190,9 +163,6 @@ msgstr "Најди скриена мрежа"
 msgid "IDS_ST_BODY_PRESS_WPS_ON_YOUR_WI_FI_ACCESS_POINT_WITHIN_2_MINUTES"
 msgstr "Притиснете WPS на пристапната точка за Wi-Fi во рок од 2 минути"
 
-msgid "IDS_WIFI_BUTTON_CANCEL"
-msgstr "Откажи"
-
 msgid "IDS_WIFI_BODY_SSID"
 msgstr "SSID"
 
@@ -202,9 +172,30 @@ msgstr "Внесете го својот идентитет"
 msgid "IDS_WIFI_HEADER_ENTER_PASSWORD"
 msgstr "Внесете лозинка"
 
+msgid "IDS_COM_BODY_SETTING"
+msgstr "Нагодување"
+
 msgid "IDS_WIFI_BODY_NOTIFY_WHEN_WI_FI_NETWORK_IS_FOUND"
 msgstr "Извести ме кога ќе се најде Wi-Fi мрежа"
 
 msgid "IDS_ST_BODY_HUNCHANGED"
 msgstr "(непроменето)"
+
+msgid "IDS_ST_HEADER_WPS_CONNECTION_ABB"
+msgstr "Поврзување WPS"
+
+msgid "IDS_WIFI_BODY_WPS_PIN"
+msgstr "PIN за WPS"
+
+msgid "IDS_WIFI_BUTTON_WPS_BUTTON"
+msgstr "Копче WPS"
+
+msgid "IDS_ST_BODY_WI_FI_NETWORK_DETECTED_CONNECT_Q"
+msgstr "Најдена е мрежа Wi-Fi. Поврзи?"
+
+msgid "IDS_WIFI_POP_PLEASE_WAIT_ING"
+msgstr "Ве молам почекајте..."
+
+msgid "IDS_WIFI_POP_UNABLE_TO_FIND_NETWORK"
+msgstr "Не може да се најде мрежа"
 

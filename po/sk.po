@@ -28,9 +28,6 @@ msgstr "DNS 2"
 msgid "IDS_ST_BODY_NETWORK_NOTIFICATION"
 msgstr "Sieťové oznámenie"
 
-msgid "IDS_WIFI_POP_OPEN"
-msgstr "Otvoriť"
-
 msgid "IDS_ST_BODY_SECURED_ABB_M_WIFI_AP_SUMMARY"
 msgstr "Zabezpečené"
 
@@ -45,9 +42,6 @@ msgstr "Výborné"
 
 msgid "IDS_ST_BODY_GOOD_M_STRENGTH"
 msgstr "Dobrý"
-
-msgid "IDS_ST_BODY_SCAN"
-msgstr "Vyhľadať"
 
 msgid "IDS_ST_BODY_WI_FI_NETWORKS"
 msgstr "Siete Wi-Fi"
@@ -69,9 +63,6 @@ msgstr "Skrytá sieť"
 
 msgid "IDS_WIFI_POP_DEACTIVATING_WI_FI_ING"
 msgstr "Deaktivuje sa Wi-Fi..."
-
-msgid "IDS_WIFI_POP_SEARCHING_ING"
-msgstr "Hľadanie..."
 
 msgid "IDS_WIFI_POP_SELECT_NETWORK"
 msgstr "Vybrať sieť"
@@ -127,15 +118,6 @@ msgstr "Brána"
 msgid "IDS_WIFI_BODY_SECURITYTYPE_WEP"
 msgstr "WEP"
 
-msgid "IDS_ST_POP_DEACTIVATING_ING"
-msgstr "Deaktivácia..."
-
-msgid "IDS_WIFI_BODY_CONFIGURATION_NO_SECURITY"
-msgstr "Žiadne zabezpečenie"
-
-msgid "IDS_WIFI_HEADER_SELECT_NETWORK"
-msgstr "Vybrať sieť"
-
 msgid "IDS_WIFI_BODY_WEAK_M_STRENGTH"
 msgstr "Slabá"
 
@@ -151,12 +133,6 @@ msgstr "Kanál"
 msgid "IDS_ST_BODY_NOTIFY_ME_WHEN_AN_OPEN_NETWORK_IS_AVAILABLE"
 msgstr "Upozorniť pri dostupnosti otvorenej siete"
 
-msgid "IDS_ST_BODY_ADD_WI_FI_NETWORK"
-msgstr "Pridať sieť Wi-Fi"
-
-msgid "IDS_ST_BODY_NETWORK_SSID"
-msgstr "SSID siete"
-
 msgid "IDS_WIFI_POP_AUTOMATIC_CONNECTION_NETWORK_WILL_DISABLED_CONTINUE_Q_MSG"
 msgstr "Automatické pripojenie na túto sieť bude zakázané. Pokračovať?"
 
@@ -166,11 +142,8 @@ msgstr "Overovanie fázy 2"
 msgid "IDS_WIFI_BODY_CONNECT"
 msgstr "Pripojiť"
 
-msgid "IDS_WIFI_POP_PRESS_WPS_ON_YOUR_WI_FI_ACCESS_POINT_WITHIN_PD_MINUTES"
-msgstr "Do %d minút stlačte tlačidlo WPS na prístupovom bode Wi-Fi"
-
-msgid "IDS_WIFI_BODY_UNKNOWN"
-msgstr "Neznáme"
+msgid "IDS_ST_BODY_ADVANCED"
+msgstr "Pokročilé"
 
 msgid "IDS_WIFI_BODY_ENTER_SSID"
 msgstr "Zadajte SSID"
@@ -190,9 +163,6 @@ msgstr "Hľadať skrytú sieť"
 msgid "IDS_ST_BODY_PRESS_WPS_ON_YOUR_WI_FI_ACCESS_POINT_WITHIN_2_MINUTES"
 msgstr "Do 2 minút stlačte tlačidlo WPS na prístupovom bode Wi-Fi"
 
-msgid "IDS_WIFI_BUTTON_CANCEL"
-msgstr "Zrušiť"
-
 msgid "IDS_WIFI_BODY_SSID"
 msgstr "SSID"
 
@@ -202,9 +172,30 @@ msgstr "Zadajte vašu identitu"
 msgid "IDS_WIFI_HEADER_ENTER_PASSWORD"
 msgstr "Zadajte heslo"
 
+msgid "IDS_COM_BODY_SETTING"
+msgstr "Nastavenie"
+
 msgid "IDS_WIFI_BODY_NOTIFY_WHEN_WI_FI_NETWORK_IS_FOUND"
 msgstr "Oznámiť, keď sa nájde sieť Wi-Fi"
 
 msgid "IDS_ST_BODY_HUNCHANGED"
 msgstr "(bez zmeny)"
+
+msgid "IDS_ST_HEADER_WPS_CONNECTION_ABB"
+msgstr "Pripojenie WPS"
+
+msgid "IDS_WIFI_BODY_WPS_PIN"
+msgstr "WPS PIN"
+
+msgid "IDS_WIFI_BUTTON_WPS_BUTTON"
+msgstr "Tlačid. WPS"
+
+msgid "IDS_ST_BODY_WI_FI_NETWORK_DETECTED_CONNECT_Q"
+msgstr "Zistila sa sieť Wi-Fi. Pripojiť?"
+
+msgid "IDS_WIFI_POP_PLEASE_WAIT_ING"
+msgstr "Čakajte prosím..."
+
+msgid "IDS_WIFI_POP_UNABLE_TO_FIND_NETWORK"
+msgstr "Nedá sa nájsť sieť"
 

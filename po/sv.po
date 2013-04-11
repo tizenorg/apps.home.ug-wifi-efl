@@ -28,9 +28,6 @@ msgstr "DNS 2"
 msgid "IDS_ST_BODY_NETWORK_NOTIFICATION"
 msgstr "Nätverksmeddelande"
 
-msgid "IDS_WIFI_POP_OPEN"
-msgstr "Öppen"
-
 msgid "IDS_ST_BODY_SECURED_ABB_M_WIFI_AP_SUMMARY"
 msgstr "Skyddad"
 
@@ -45,9 +42,6 @@ msgstr "Utmärkt"
 
 msgid "IDS_ST_BODY_GOOD_M_STRENGTH"
 msgstr "Bra"
-
-msgid "IDS_ST_BODY_SCAN"
-msgstr "Sök"
 
 msgid "IDS_ST_BODY_WI_FI_NETWORKS"
 msgstr "Wi-Fi-nätverk"
@@ -69,9 +63,6 @@ msgstr "Dolt nät"
 
 msgid "IDS_WIFI_POP_DEACTIVATING_WI_FI_ING"
 msgstr "Avaktiverar Wi-Fi..."
-
-msgid "IDS_WIFI_POP_SEARCHING_ING"
-msgstr "Söker..."
 
 msgid "IDS_WIFI_POP_SELECT_NETWORK"
 msgstr "Välj nät"
@@ -127,15 +118,6 @@ msgstr "Gateway"
 msgid "IDS_WIFI_BODY_SECURITYTYPE_WEP"
 msgstr "WEP"
 
-msgid "IDS_ST_POP_DEACTIVATING_ING"
-msgstr "Deaktiverar..."
-
-msgid "IDS_WIFI_BODY_CONFIGURATION_NO_SECURITY"
-msgstr "Ingen säkerhet"
-
-msgid "IDS_WIFI_HEADER_SELECT_NETWORK"
-msgstr "Välj nätverk"
-
 msgid "IDS_WIFI_BODY_WEAK_M_STRENGTH"
 msgstr "Svag"
 
@@ -151,12 +133,6 @@ msgstr "Kanal"
 msgid "IDS_ST_BODY_NOTIFY_ME_WHEN_AN_OPEN_NETWORK_IS_AVAILABLE"
 msgstr "Meddela mig när ett öppet nätverk är tillgängligt"
 
-msgid "IDS_ST_BODY_ADD_WI_FI_NETWORK"
-msgstr "Lägg till Wi-Fi-nätverk"
-
-msgid "IDS_ST_BODY_NETWORK_SSID"
-msgstr "Nätverks-SSID"
-
 msgid "IDS_WIFI_POP_AUTOMATIC_CONNECTION_NETWORK_WILL_DISABLED_CONTINUE_Q_MSG"
 msgstr "Automatisk anslutning till det här nätverket avaktiveras. Fortsätta?"
 
@@ -166,11 +142,8 @@ msgstr "Fas 2-autentisering"
 msgid "IDS_WIFI_BODY_CONNECT"
 msgstr "Anslut"
 
-msgid "IDS_WIFI_POP_PRESS_WPS_ON_YOUR_WI_FI_ACCESS_POINT_WITHIN_PD_MINUTES"
-msgstr "Tryck på WPS på Wi-Fi-åtkomstpunkten inom %d minuter"
-
-msgid "IDS_WIFI_BODY_UNKNOWN"
-msgstr "Okänd"
+msgid "IDS_ST_BODY_ADVANCED"
+msgstr "Avancerat"
 
 msgid "IDS_WIFI_BODY_ENTER_SSID"
 msgstr "Ange SSID"
@@ -190,9 +163,6 @@ msgstr "Hitta dolt nätverk"
 msgid "IDS_ST_BODY_PRESS_WPS_ON_YOUR_WI_FI_ACCESS_POINT_WITHIN_2_MINUTES"
 msgstr "Tryck på WPS på Wi-Fi-åtkomstpunkten inom 2 minuter"
 
-msgid "IDS_WIFI_BUTTON_CANCEL"
-msgstr "Avbryt"
-
 msgid "IDS_WIFI_BODY_SSID"
 msgstr "SSID"
 
@@ -202,9 +172,30 @@ msgstr "Ange din identitet"
 msgid "IDS_WIFI_HEADER_ENTER_PASSWORD"
 msgstr "Ange lösenord"
 
+msgid "IDS_COM_BODY_SETTING"
+msgstr "Inställning"
+
 msgid "IDS_WIFI_BODY_NOTIFY_WHEN_WI_FI_NETWORK_IS_FOUND"
 msgstr "Meddela mig när ett Wi-Fi-nätverk hittats"
 
 msgid "IDS_ST_BODY_HUNCHANGED"
 msgstr "(ej ändrad)"
+
+msgid "IDS_ST_HEADER_WPS_CONNECTION_ABB"
+msgstr "WPS-anslutning"
+
+msgid "IDS_WIFI_BODY_WPS_PIN"
+msgstr "WPS PIN"
+
+msgid "IDS_WIFI_BUTTON_WPS_BUTTON"
+msgstr "WPS-knapp"
+
+msgid "IDS_ST_BODY_WI_FI_NETWORK_DETECTED_CONNECT_Q"
+msgstr "Wi-Fi-nätverk identifierat. Ansluta?"
+
+msgid "IDS_WIFI_POP_PLEASE_WAIT_ING"
+msgstr "Var god vänta..."
+
+msgid "IDS_WIFI_POP_UNABLE_TO_FIND_NETWORK"
+msgstr "Kan inte hitta nätverk"
 

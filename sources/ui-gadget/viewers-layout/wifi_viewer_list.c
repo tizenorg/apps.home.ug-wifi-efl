@@ -490,8 +490,8 @@ static void __viewer_list_item_clicked_cb(void *data, Evas_Object *obj,
 		}
 		break;
 
-	case VIEWER_ITEM_RADIO_MODE_CONNECTED:
 	case VIEWER_ITEM_RADIO_MODE_CONNECTING:
+	case VIEWER_ITEM_RADIO_MODE_CONNECTED:
 	default:
 		INFO_LOG(UG_NAME_NORMAL, "Ignore click");
 		break;

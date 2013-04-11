@@ -28,9 +28,6 @@ msgstr "DNS 2"
 msgid "IDS_ST_BODY_NETWORK_NOTIFICATION"
 msgstr "Network notification"
 
-msgid "IDS_WIFI_POP_OPEN"
-msgstr "Open"
-
 msgid "IDS_ST_BODY_SECURED_ABB_M_WIFI_AP_SUMMARY"
 msgstr "Secured"
 
@@ -45,9 +42,6 @@ msgstr "Excellent"
 
 msgid "IDS_ST_BODY_GOOD_M_STRENGTH"
 msgstr "Good"
-
-msgid "IDS_ST_BODY_SCAN"
-msgstr "Scan"
 
 msgid "IDS_ST_BODY_WI_FI_NETWORKS"
 msgstr "Wi-Fi networks"
@@ -69,9 +63,6 @@ msgstr "Hidden network"
 
 msgid "IDS_WIFI_POP_DEACTIVATING_WI_FI_ING"
 msgstr "Deactivating Wi-Fi..."
-
-msgid "IDS_WIFI_POP_SEARCHING_ING"
-msgstr "Searching..."
 
 msgid "IDS_WIFI_POP_SELECT_NETWORK"
 msgstr "Select network"
@@ -127,15 +118,6 @@ msgstr "Gateway"
 msgid "IDS_WIFI_BODY_SECURITYTYPE_WEP"
 msgstr "WEP"
 
-msgid "IDS_ST_POP_DEACTIVATING_ING"
-msgstr "Deactivating..."
-
-msgid "IDS_WIFI_BODY_CONFIGURATION_NO_SECURITY"
-msgstr "No security"
-
-msgid "IDS_WIFI_HEADER_SELECT_NETWORK"
-msgstr "Select network"
-
 msgid "IDS_WIFI_BODY_WEAK_M_STRENGTH"
 msgstr "Weak"
 
@@ -151,12 +133,6 @@ msgstr "Channel"
 msgid "IDS_ST_BODY_NOTIFY_ME_WHEN_AN_OPEN_NETWORK_IS_AVAILABLE"
 msgstr "Notify me when an open network is available"
 
-msgid "IDS_ST_BODY_ADD_WI_FI_NETWORK"
-msgstr "Add Wi-Fi network"
-
-msgid "IDS_ST_BODY_NETWORK_SSID"
-msgstr "Network SSID"
-
 msgid "IDS_WIFI_POP_AUTOMATIC_CONNECTION_NETWORK_WILL_DISABLED_CONTINUE_Q_MSG"
 msgstr "Automatic connection to this network will be disabled. Continue?"
 
@@ -166,11 +142,8 @@ msgstr "Phase 2 authentication"
 msgid "IDS_WIFI_BODY_CONNECT"
 msgstr "Connect"
 
-msgid "IDS_WIFI_POP_PRESS_WPS_ON_YOUR_WI_FI_ACCESS_POINT_WITHIN_PD_MINUTES"
-msgstr "Press WPS on your Wi-Fi access point within %d minutes"
-
-msgid "IDS_WIFI_BODY_UNKNOWN"
-msgstr "Unknown"
+msgid "IDS_ST_BODY_ADVANCED"
+msgstr "Advanced"
 
 msgid "IDS_WIFI_BODY_ENTER_SSID"
 msgstr "Enter SSID"
@@ -190,9 +163,6 @@ msgstr "Find hidden network"
 msgid "IDS_ST_BODY_PRESS_WPS_ON_YOUR_WI_FI_ACCESS_POINT_WITHIN_2_MINUTES"
 msgstr "Press WPS on your Wi-Fi access point within 2 minutes"
 
-msgid "IDS_WIFI_BUTTON_CANCEL"
-msgstr "Cancel"
-
 msgid "IDS_WIFI_BODY_SSID"
 msgstr "SSID"
 
@@ -202,9 +172,30 @@ msgstr "Enter your identity"
 msgid "IDS_WIFI_HEADER_ENTER_PASSWORD"
 msgstr "Enter password"
 
+msgid "IDS_COM_BODY_SETTING"
+msgstr "Setting"
+
 msgid "IDS_WIFI_BODY_NOTIFY_WHEN_WI_FI_NETWORK_IS_FOUND"
 msgstr "Notify when Wi-Fi network is found"
 
 msgid "IDS_ST_BODY_HUNCHANGED"
 msgstr "(unchanged)"
+
+msgid "IDS_ST_HEADER_WPS_CONNECTION_ABB"
+msgstr "WPS connection"
+
+msgid "IDS_WIFI_BODY_WPS_PIN"
+msgstr "WPS PIN"
+
+msgid "IDS_WIFI_BUTTON_WPS_BUTTON"
+msgstr "WPS button"
+
+msgid "IDS_ST_BODY_WI_FI_NETWORK_DETECTED_CONNECT_Q"
+msgstr "Wi-Fi network detected. Connect?"
+
+msgid "IDS_WIFI_POP_PLEASE_WAIT_ING"
+msgstr "Please wait..."
+
+msgid "IDS_WIFI_POP_UNABLE_TO_FIND_NETWORK"
+msgstr "Unable to find network"
 
