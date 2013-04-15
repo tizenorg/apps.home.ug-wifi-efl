@@ -1,6 +1,6 @@
 Name:       wifi-efl-ug
 Summary:    Wi-Fi UI Gadget
-Version:    0.5.2_7
+Version:    0.5.2_8
 Release:    1
 Group:      App/Network
 License:    Flora License

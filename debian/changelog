@@ -1,3 +1,19 @@
+wifi-efl-ug (0.5.2-8) precise; urgency=low
+
+  * Added handling when Wifi power was off
+  * Git: magnolia/apps/home/ug-wifi-efl
+  * Tag: wifi-efl-ug_0.5.2-8
+
+ -- sunil85.kim <isurit@sunil85.kim>  Mon, 15 Apr 2013 20:48:31 +0900
+
+wifi-efl-ug (0.5.2-7) precise; urgency=low
+
+  * Added handling when Wifi power was off
+  * Git: magnolia/apps/home/ug-wifi-efl
+  * Tag: wifi-efl-ug_0.5.2-7
+
+ -- sunil85.kim <isurit@sunil85.kim>  Mon, 15 Apr 2013 20:26:36 +0900
+
 wifi-efl-ug (0.5.2-6) precise; urgency=low
 
   * Initialized rotate status value.

@@ -466,6 +466,7 @@ UG_MODULE_API int setting_plugin_reset(bundle *data, void *priv)
 	__COMMON_FUNC_ENTER__;
 
 	int return_value = 0;
+	bool activated = false;
 
 	return_value = wlan_manager_start();
 	if (return_value != WLAN_MANAGER_ERR_NONE) {
@@ -475,11 +476,23 @@ UG_MODULE_API int setting_plugin_reset(bundle *data, void *priv)
 	}
 
 	wifi_foreach_found_aps(setting_plugin_wifi_found_ap_cb, NULL);
-	return_value = wlan_manager_power_off();
-	if (return_value != WLAN_MANAGER_ERR_NONE) {
-		ERROR_LOG(UG_NAME_NORMAL, "Failed to power_off: %d",return_value);
+
+	return_value = wifi_is_activated(&activated);
+	if (WIFI_ERROR_NONE == return_value)
+		INFO_LOG(UG_NAME_NORMAL, "Wi-Fi activated: %d", activated);
+	else {
+		ERROR_LOG(UG_NAME_NORMAL, "Failed to check state : %d",return_value);
 		return_value = -1;
 		goto error;
+	}
+
+	if (activated != 0) {
+		return_value = wlan_manager_power_off();
+		if (return_value != WLAN_MANAGER_ERR_NONE) {
+			ERROR_LOG(UG_NAME_NORMAL, "Failed to power_off: %d",return_value);
+			return_value = -1;
+			goto error;
+		}
 	}
 
 	common_util_set_system_registry(VCONFKEY_WIFI_ENABLE_QS,
