@@ -32,6 +32,8 @@ pkg_check_modules(pkgs REQUIRED
 #engine pkgconfigs
 	${ENGINE_PKGCONFIGS})
 
+INSTALL(FILES ${CMAKE_CURRENT_SOURCE_DIR}/wifi-efl-ug.xml DESTINATION /usr/share/packages/)
+
 INCLUDE_DIRECTORIES(
 	${CMAKE_CURRENT_SOURCE_DIR}/sources/ui-gadget/include
 	${CMAKE_CURRENT_SOURCE_DIR}/sources/ui-gadget/viewers-layout/include

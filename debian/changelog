@@ -1,3 +1,11 @@
+wifi-efl-ug (0.5.2-9) precise; urgency=low
+
+  * Update for appcontrol
+  * Git: magnolia/apps/home/ug-wifi-efl
+  * Tag: wifi-efl-ug_0.5.2-9
+
+ -- sunil85.kim <isurit@sunil85.kim>  Tue, 16 Apr 2013 13:18:48 +0900
+
 wifi-efl-ug (0.5.2-8) precise; urgency=low
 
   * Added handling when Wifi power was off
