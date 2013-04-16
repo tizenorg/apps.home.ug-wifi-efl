@@ -3,7 +3,7 @@
 	<label>Wi-Fi</label>
 	<author email="sunil85.kim@samsung.com" href="www.samsung.com">Sunil Kim</author>
 	<description>Wi-Fi</description>
-	<ui-application appid="wifi-efl-ug" exec="/usr/ug/bin/ug-wifi-efl" nodisplay="true" taskmanage="false" multiple="false" type="capp">
+	<ui-application appid="wifi-efl-ug" exec="/usr/ug/bin/wifi-efl-UG" nodisplay="true" taskmanage="false" multiple="false" type="capp">
 		<label>Wi-Fi</label>
 			<application-service>
 				<operation name="http://tizen.org/appcontrol/operation/ugtest"/>

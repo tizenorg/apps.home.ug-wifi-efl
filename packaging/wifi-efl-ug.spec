@@ -1,6 +1,6 @@
 Name:       wifi-efl-ug
 Summary:    Wi-Fi UI Gadget
-Version:    0.5.2_9
+Version:    0.5.2_10
 Release:    1
 Group:      App/Network
 License:    Flora License
@@ -65,7 +65,7 @@ cp LICENSE.Flora %{buildroot}%{_datadir}/license/net.wifi-qs
 %post
 /sbin/ldconfig
 mkdir -p %{PREFIX}/bin/
-ln -sf /usr/bin/ug-client %{PREFIX}/bin/ug-wifi-efl
+ln -sf /usr/bin/ug-client %{PREFIX}/bin/wifi-efl-UG
 
 vconftool set -t int memory/wifi/ug_run_state 3 -i -g 6519 -f
 
