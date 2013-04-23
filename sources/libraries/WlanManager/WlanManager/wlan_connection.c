@@ -87,8 +87,7 @@ static void wlan_go_fast_next(void)
 	if (favorite == true)
 		return;
 
-	wifi_disconnect(current_item.ap, current_item.callback,
-			current_item.user_data);
+	wifi_disconnect(current_item.ap, NULL, NULL);
 }
 
 static void wlan_update_next(wifi_ap_h ap, wifi_connected_cb callback,

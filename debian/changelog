@@ -1,3 +1,11 @@
+wifi-efl-ug (0.5.2-13) precise; urgency=low
+
+  * Fix bux TREL-368
+  * Git: magnolia/apps/home/ug-wifi-efl
+  * Tag: wifi-efl-ug_0.5.2-13
+
+ -- sunil85.kim <isurit@sunil85.kim>  Wed, 24 Apr 2013 04:16:37 +0900
+
 wifi-efl-ug (0.5.2-12) precise; urgency=low
 
   * Update 'LICENSE.Flora" file #2
