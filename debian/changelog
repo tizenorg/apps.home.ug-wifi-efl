@@ -1,3 +1,11 @@
+wifi-efl-ug (0.5.2-14) precise; urgency=low
+
+  * [N_SE-36723] Added notification state check function
+  * Git: magnolia/apps/home/ug-wifi-efl
+  * Tag: wifi-efl-ug_0.5.2-14
+
+ -- sunil85.kim <isurit@sunil85.kim>  Tue, 30 Apr 2013 09:52:17 +0900
+
 wifi-efl-ug (0.5.2-13) precise; urgency=low
 
   * Fix bux TREL-368

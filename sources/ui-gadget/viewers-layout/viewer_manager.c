@@ -17,8 +17,6 @@
  *
  */
 
-#include <vconf-keys.h>
-
 #include "common.h"
 #include "ug_wifi.h"
 #include "viewer_list.h"
@@ -462,6 +460,7 @@ static Evas_Object *_gl_bottom_content_get(void *data,
 	evas_object_propagate_events_set(toggle_btn, EINA_FALSE);
 
 	ret = common_util_get_system_registry(VCONFKEY_WIFI_ENABLE_QS);
+
 	switch (ret) {
 	case 1:
 		ao = elm_object_item_access_object_get(manager_object->item_bottom);
@@ -540,6 +539,35 @@ static void __viewer_manager_header_create(Evas_Object* genlist)
 	assertm_if(NULL == manager_object->item_header, "Header item NULL");
 
 	common_utils_add_dialogue_separator(genlist, "dialogue/separator");
+
+	__COMMON_FUNC_EXIT__;
+}
+
+void notification_state_change_cb(keynode_t *node, void *user_data)
+{
+	__COMMON_FUNC_ENTER__;
+
+	int notification_state;
+	Evas_Object *target = NULL;
+
+	assertm_if(NULL == manager_object, "manager_object is NULL");
+	assertm_if(NULL == manager_object->item_bottom, "item_bottom is NULL");
+
+	notification_state = common_util_get_system_registry(VCONFKEY_WIFI_ENABLE_QS);
+	target = elm_object_item_access_object_get(manager_object->item_bottom);
+
+	assertm_if(NULL == target, "Target is NULL");
+
+	if (notification_state == 0) {
+		elm_access_info_set(target, ELM_ACCESS_TYPE, "on/off button");
+		elm_access_info_set(target, ELM_ACCESS_STATE, "off");
+		elm_genlist_item_update(manager_object->item_bottom);
+	} else if (notification_state == 1) {
+		elm_access_info_set(target, ELM_ACCESS_TYPE, "on/off button");
+		elm_access_info_set(target, ELM_ACCESS_STATE, "on");
+		elm_genlist_item_update(manager_object->item_bottom);
+	} else
+		ERROR_LOG(UG_NAME_ERR, "Failed to get notification state");
 
 	__COMMON_FUNC_EXIT__;
 }

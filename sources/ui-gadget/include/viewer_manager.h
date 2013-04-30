@@ -29,6 +29,8 @@ extern "C"
 #include <Elementary.h>
 
 #include "wlan_manager.h"
+#include <vconf.h>
+#include <vconf-keys.h>
 
 typedef enum {
 	HEADER_MODE_OFF = 0x01,
@@ -72,6 +74,7 @@ void viewer_manager_specific_scan_response_hlr(GSList *bss_info_list,
 		void *user_data);
 void viewer_manager_refresh_ap_info(Elm_Object_Item *item);
 void viewer_manager_update_rssi(void);
+void notification_state_change_cb(keynode_t *node, void *user_data);
 
 #ifdef __cplusplus
 }

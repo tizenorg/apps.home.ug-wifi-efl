@@ -255,6 +255,8 @@ static void on_start(ui_gadget_h ug, service_h service, void *priv)
 
 	motion_start();
 
+	vconf_notify_key_changed(VCONFKEY_WIFI_ENABLE_QS, notification_state_change_cb, NULL);
+
 	__COMMON_FUNC_EXIT__;
 }
 
@@ -284,7 +286,6 @@ static void on_resume(ui_gadget_h ug, service_h service, void *priv)
 								VCONFKEY_WIFI_UG_RUN_STATE_ON_FOREGROUND);
 
 	__make_scan_if_bss_expired();
-
 	__COMMON_FUNC_EXIT__;
 }
 
@@ -293,8 +294,7 @@ static void on_destroy(ui_gadget_h ug, service_h service, void *priv)
 	__COMMON_FUNC_ENTER__;
 
 	int ret;
-	common_util_set_system_registry(VCONFKEY_WIFI_UG_RUN_STATE,
-									VCONFKEY_WIFI_UG_RUN_STATE_OFF);
+	common_util_set_system_registry(VCONFKEY_WIFI_UG_RUN_STATE, VCONFKEY_WIFI_UG_RUN_STATE_OFF);
 
 	if (!ug || !priv){
 		__COMMON_FUNC_EXIT__;
@@ -309,6 +309,7 @@ static void on_destroy(ui_gadget_h ug, service_h service, void *priv)
 	winset_popup_manager_destroy(ug_app_state->popup_manager);
 	ug_app_state->popup_manager = NULL;
 	DEBUG_LOG(UG_NAME_NORMAL, "* view_main destroying...");
+	vconf_ignore_key_changed(VCONFKEY_WIFI_ENABLE_QS, notification_state_change_cb);
 	viewer_manager_destroy();
 	DEBUG_LOG(UG_NAME_NORMAL, "* manager destroy complete");
 	DEBUG_LOG(UG_NAME_NORMAL, "* wlan manager destroying...");
