@@ -20,6 +20,7 @@
 #include <vconf.h>
 #include <syspopup_caller.h>
 #include <aul.h>
+#include <Ecore_X.h>
 
 #include "common.h"
 #include "common_utils.h"
@@ -173,7 +174,7 @@ char *common_utils_entry_layout_get_text(Evas_Object *layout)
 	return elm_entry_markup_to_utf8(elm_entry_entry_get(entry));
 }
 
-void __common_popup_size_get(Ecore_IMF_Context *target_imf, int *width, int *height)
+void common_popup_size_get(Ecore_IMF_Context *target_imf, int *width, int *height)
 {
 	__COMMON_FUNC_ENTER__;
 
@@ -187,8 +188,7 @@ void __common_popup_size_get(Ecore_IMF_Context *target_imf, int *width, int *hei
 
 	*width = window_width;
 
-	if (rotate_angle == 0 || rotate_angle == 180)
-	{
+	if (rotate_angle == 0 || rotate_angle == 180) {
 		*height = window_height * resize_scale;
 	}else
 		*height = window_width;
@@ -388,7 +388,7 @@ Evas_Object *common_utils_show_info_timeout_popup(Evas_Object *win,
 
 int common_utils_get_rotate_angle(enum appcore_rm rotate_mode)
 {
-	int rotate_angle;
+	int rotate_angle = 0;
 	if (APPCORE_RM_UNKNOWN == rotate_mode) {
 		appcore_get_rotation_state(&rotate_mode);
 	}

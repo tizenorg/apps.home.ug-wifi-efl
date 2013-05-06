@@ -119,10 +119,35 @@ static int __x_rotation_get(Display *dpy, Window win)
 		return 0;
 }
 
+static void __common_popup_size_set(Ecore_IMF_Context *target_imf, int *width, int *height, int rotate_angle)
+{
+	__COMMON_FUNC_ENTER__;
+
+	int window_width, window_height;
+	int start_x, start_y, imf_width, imf_height;
+	float resize_scale = 0.7f;
+
+	ecore_x_window_size_get(ecore_x_window_root_first_get(), &window_width, &window_height);
+
+	*width = -1;
+
+	if (rotate_angle == 0 || rotate_angle == 180)
+		*height = window_height * resize_scale;
+	else
+		*height = window_width;
+
+	if (target_imf != NULL) {
+		ecore_imf_context_input_panel_geometry_get(target_imf, &start_x, &start_y, &imf_width, &imf_height);
+		*height = start_y * resize_scale;
+	}else
+		*height = *height-POPUP_HEAD_AREA-POPUP_BUTTON_AREA;
+
+	__COMMON_FUNC_EXIT__;
+}
+
 static Eina_Bool __rotate(void *data, int type, void *event)
 {
 	__COMMON_FUNC_ENTER__;
-	struct wifi_object *ad = data;
 	Ecore_X_Event_Client_Message *ev = event;
 	int visible_area_width, visible_area_height;
 	int rotate_angle = 0;
@@ -151,33 +176,6 @@ static Eina_Bool __rotate(void *data, int type, void *event)
 
 	__COMMON_FUNC_EXIT__;
 	return 0;
-}
-
-void __common_popup_size_set(Ecore_IMF_Context *target_imf, int *width, int *height, int rotate_angle)
-{
-	__COMMON_FUNC_ENTER__;
-
-	int window_width, window_height;
-	int start_x, start_y, imf_width, imf_height;
-	float resize_scale = 0.7f;
-
-	ecore_x_window_size_get(ecore_x_window_root_first_get(), &window_width, &window_height);
-
-	*width = -1;
-
-	if (rotate_angle == 0 || rotate_angle == 180)
-		*height = window_height * resize_scale;
-	else
-		*height = window_width;
-
-	if (target_imf != NULL) {
-		ecore_imf_context_input_panel_geometry_get(target_imf, &start_x, &start_y, &imf_width, &imf_height);
-		*height = start_y * resize_scale;
-	}else
-		*height = *height-POPUP_HEAD_AREA-POPUP_BUTTON_AREA;
-
-
-	__COMMON_FUNC_EXIT__;
 }
 
 static void wifi_syspopup_exit(void)

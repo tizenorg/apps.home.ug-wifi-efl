@@ -112,6 +112,7 @@ int common_util_get_system_registry(const char *key);
 
 guint common_util_managed_idle_add(GSourceFunc func, gpointer user_data);
 void common_util_managed_idle_cleanup(void);
+void common_popup_size_get(Ecore_IMF_Context *target_imf, int *width, int *height);
 
 #ifdef __cplusplus
 }

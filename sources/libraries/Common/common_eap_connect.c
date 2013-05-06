@@ -736,13 +736,11 @@ static void __common_eap_connect_im_ctxt_evnt_resize_cb(void *data, Ecore_IMF_Co
 	if (!data)
 		return;
 
-	int rotate_angle = common_utils_get_rotate_angle(APPCORE_RM_UNKNOWN);
-
 	eap_connect_data_t *eap_data = (eap_connect_data_t *)data;
 	eap_data->key_status = value;
 	Evas_Object *box = elm_object_content_get(eap_data->popup);
 
-	__common_popup_size_get(ctx, &eap_data->visible_area_width, &eap_data->visible_area_height);
+	common_popup_size_get(ctx, &eap_data->visible_area_width, &eap_data->visible_area_height);
 	evas_object_size_hint_min_set(box, eap_data->visible_area_width * elm_config_scale_get(),
 			eap_data->visible_area_height * elm_config_scale_get());
 
