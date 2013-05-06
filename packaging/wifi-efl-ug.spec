@@ -1,6 +1,6 @@
 Name:       wifi-efl-ug
 Summary:    Wi-Fi UI Gadget
-Version:    0.5.2_17
+Version:    0.5.2_18
 Release:    1
 Group:      App/Network
 License:    Flora License
@@ -54,7 +54,6 @@ make %{?_smp_mflags}
 %make_install
 
 mkdir -p %{buildroot}%{_sysconfdir}/smack/accesses2.d/
-cp -v net.wifi-qs.rule %{buildroot}%{_sysconfdir}/smack/accesses2.d/
 cp -v wifi-efl-ug.include %{buildroot}%{_sysconfdir}/smack/accesses2.d/
 
 #License
@@ -95,4 +94,3 @@ vconftool set -t int db/wifi/enable_quick_start 1 -g 6519 -i -f
 %{_datadir}/icon/*.png
 %{_datadir}/locale/*/LC_MESSAGES/*.mo
 %{_datadir}/license/net.wifi-qs
-%{_sysconfdir}/smack/accesses2.d/net.wifi-qs.rule
