@@ -121,12 +121,7 @@ static void *on_create(ui_gadget_h ug, enum ug_mode mode,
 		INFO_LOG(UG_NAME_NORMAL, "message load from caller");
 
 		char *caller = NULL;
-		if (service_get_extra_data(service, UG_CALLER, &caller)) {
-			ERROR_LOG(UG_NAME_NORMAL, "Fail to get service extra data");
-
-			__COMMON_FUNC_EXIT__;
-			return NULL;
-		}
+		service_get_extra_data(service, UG_CALLER, &caller);
 
 		if (caller != NULL) {
 			INFO_LOG(UG_NAME_NORMAL, "caller: %s", caller);

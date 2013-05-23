@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns="http://tizen.org/ns/packages" package="wifi-efl-ug" version="0.5.2_9" install-location="internal-only">
+<manifest xmlns="http://tizen.org/ns/packages" package="wifi-efl-ug" version="0.5.2_19" install-location="internal-only">
 	<label>Wi-Fi</label>
 	<author email="sunil85.kim@samsung.com" href="www.samsung.com">Sunil Kim</author>
 	<description>Wi-Fi</description>
 	<ui-application appid="wifi-efl-ug" exec="/usr/ug/bin/wifi-efl-UG" nodisplay="true" taskmanage="false" multiple="false" type="capp">
 		<label>Wi-Fi</label>
 			<application-service>
-				<operation name="http://tizen.org/appcontrol/operation/ugtest"/>
+			<operation name="http://tizen.org/appcontrol/operation/setting/wifi"/>
 			</application-service>
 	</ui-application>
 </manifest>

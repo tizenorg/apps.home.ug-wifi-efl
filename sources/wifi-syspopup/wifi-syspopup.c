@@ -207,7 +207,7 @@ static void _exit_cb(void *data, Evas_Object *obj, void *event_info)
 {
 	__COMMON_FUNC_ENTER__;
 
-	wifi_syspopup_exit();
+	wifi_syspopup_destroy();
 
 	__COMMON_FUNC_EXIT__;
 }
