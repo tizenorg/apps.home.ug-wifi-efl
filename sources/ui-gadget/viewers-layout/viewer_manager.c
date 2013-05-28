@@ -618,7 +618,7 @@ static int viewer_manager_hidden_button_create(Evas_Object* genlist)
 
 	assertm_if(NULL == genlist, "NULL!!");
 
-	hidden_button_itc.item_style = "1icon";
+	hidden_button_itc.item_style = "1icon/with_no_line";
 	hidden_button_itc.func.text_get = NULL;
 	hidden_button_itc.func.content_get = _gl_hidden_btn_content_get;
 	hidden_button_itc.func.state_get = NULL;

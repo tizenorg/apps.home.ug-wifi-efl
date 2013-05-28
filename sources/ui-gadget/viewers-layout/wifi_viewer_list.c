@@ -230,7 +230,7 @@ static void _gl_realized(void *data, Evas_Object *obj, void *event_info)
 		first_item_index = group_index+1;
 	}
 
-	if (first_item_index <= index) {
+	if (first_item_index <= index && first_item_index - last_item_index) {
 		if(index == first_item_index)
 			elm_object_item_signal_emit(item, "elm,state,top", "");
 		else if (index == last_item_index)
@@ -243,6 +243,7 @@ static void _gl_realized(void *data, Evas_Object *obj, void *event_info)
 		elm_access_info_set(ao, ELM_ACCESS_TYPE, "double tap to connect device");
 		elm_access_info_set(ao, ELM_ACCESS_STATE, "More button");
 	}
+
 }
 
 static void _gl_highlighted(void *data, Evas_Object *obj, void *event_info)
