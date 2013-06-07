@@ -108,7 +108,8 @@ static void _ip_info_entry_cursor_changed_cb(void* data, Evas_Object* obj, void*
 			elm_object_item_signal_emit(entry_info->item, "elm,state,eraser,hide", "");
 		else
 			elm_object_item_signal_emit(entry_info->item, "elm,state,eraser,show", "");
-	}
+	} else
+		elm_object_item_signal_emit(entry_info->item, "elm,state,eraser,hide", "");
 
 	if (entry_info->entry_txt) {
 		g_free(entry_info->entry_txt);
