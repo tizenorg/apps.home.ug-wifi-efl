@@ -36,15 +36,8 @@ typedef struct _view_detail_data {
 	Evas_Object *view_detail_list;
 } view_detail_data;
 
-static int view_detail_end = TRUE;
+static int view_detail_end = FALSE;
 
-/* function declaration */
-static void detailview_sk_cb(void *data, Evas_Object *obj, void *event_info);
-static void forget_sk_cb(void *data, Evas_Object *obj, void *event_info);
-
-///////////////////////////////////////////////////////////////
-// implementation
-///////////////////////////////////////////////////////////////
 static char *_view_detail_grouptitle_text_get(void *data,
 		Evas_Object *obj, const char *part)
 {
@@ -128,30 +121,51 @@ static gboolean __forget_wifi_ap(gpointer data)
 	return FALSE;
 }
 
+static void transition_finished_cb(void *data, Evas_Object *obj, void *event_info)
+{
+	__COMMON_FUNC_ENTER__;
+
+	view_detail_data *_detail_data;
+
+	if (view_detail_end == FALSE)
+		return;
+
+	Evas_Object* navi_frame = viewer_manager_get_naviframe();
+
+	if (navi_frame)
+		evas_object_smart_callback_del(navi_frame, "transition,finished", transition_finished_cb);
+	else
+		ERROR_LOG(UG_NAME_NORMAL, "Failed to get naviframe");
+
+	_detail_data = (view_detail_data *)data;
+
+	retm_if(NULL == _detail_data);
+
+	_remove_all(_detail_data);
+
+	__COMMON_FUNC_EXIT__;
+}
+
 static void ok_cb(void *data, Evas_Object *obj, void *event_info)
 {
 	__COMMON_FUNC_ENTER__;
 
-	wifi_ap_h ap = NULL;
 	view_detail_data *_detail_data;
-
-	if (view_detail_end == TRUE)
-		return;
-
-	view_detail_end = TRUE;
 	_detail_data = (view_detail_data *)data;
-	retm_if(NULL == _detail_data);
+	wifi_ap_h ap = NULL;
 
-	wifi_ap_clone(&ap, _detail_data->ap);
+	retm_if(NULL == _detail_data);
 
 	evas_object_del(_detail_data->forget_confirm_popup);
 	_detail_data->forget_confirm_popup = NULL;
 
-	_remove_all(_detail_data);
-
-	elm_naviframe_item_pop(viewer_manager_get_naviframe());
+	wifi_ap_clone(&ap, _detail_data->ap);
 
 	common_util_managed_idle_add(__forget_wifi_ap, (gpointer)ap);
+
+	view_detail_end = TRUE;
+
+	elm_naviframe_item_pop(viewer_manager_get_naviframe());
 
 	__COMMON_FUNC_EXIT__;
 }
@@ -195,44 +209,19 @@ static void forget_sk_cb(void *data, Evas_Object *obj, void *event_info)
 	__COMMON_FUNC_EXIT__;
 }
 
-static void title_back_btn_sk_cb(void *data, Evas_Object *obj, void *event_info)
+static Eina_Bool detailview_sk_cb(void *data, Elm_Object_Item *it)
 {
 	__COMMON_FUNC_ENTER__;
 
-	if(view_detail_end == TRUE) {
-		return;
-	}
-	view_detail_end = TRUE;
 	view_detail_data *_detail_data = (view_detail_data *)data;
-	retm_if(NULL == _detail_data);
-
-	if (_detail_data->eap_info_list)
-		eap_info_save_data(_detail_data->eap_info_list);
+	retvm_if(NULL == _detail_data, EINA_TRUE);
 
 	ip_info_save_data(_detail_data->ip_info_list);
-	_remove_all(_detail_data);
-	elm_naviframe_item_pop(viewer_manager_get_naviframe());
-
-	__COMMON_FUNC_EXIT__;
-}
-
-static void detailview_sk_cb(void *data, Evas_Object *obj, void *event_info)
-{
-	__COMMON_FUNC_ENTER__;
-	if (view_detail_end == TRUE)
-		return;
 	view_detail_end = TRUE;
 
-	view_detail_data *_detail_data = (view_detail_data *)data;
-	retm_if(NULL == _detail_data);
-
-	if (_detail_data->eap_info_list)
-		eap_info_save_data(_detail_data->eap_info_list);
-
-	ip_info_save_data(_detail_data->ip_info_list);
-	_remove_all(_detail_data);
-
 	__COMMON_FUNC_EXIT__;
+
+	return EINA_TRUE;
 }
 
 static void __view_detail_imf_ctxt_evnt_cb(void *data, Ecore_IMF_Context *ctx, int value)
@@ -297,6 +286,9 @@ void view_detail(wifi_device_info_t *device_info, Evas_Object *win_main)
 	view_detail_data *_detail_data = g_new0(view_detail_data, 1);
 	retm_if(NULL == _detail_data);
 
+	evas_object_smart_callback_add(navi_frame, "transition,finished",
+			transition_finished_cb, _detail_data);
+
 	_detail_data->ap = ap = device_info->ap;
 	wifi_ap_is_favorite(ap, &favorite);
 	_detail_data->ap_image_path = g_strdup(device_info->ap_image_path);
@@ -318,23 +310,20 @@ void view_detail(wifi_device_info_t *device_info, Evas_Object *win_main)
 	common_utils_add_dialogue_separator(detailview_list, "dialogue/separator");
 
 	/* AP name and signal strength icon */
-	Elm_Object_Item* title = elm_genlist_item_append(detailview_list, &grouptitle_itc, _detail_data, NULL, ELM_GENLIST_ITEM_GROUP, NULL, NULL);
+	Elm_Object_Item* title = elm_genlist_item_append(detailview_list, &grouptitle_itc,
+			_detail_data, NULL, ELM_GENLIST_ITEM_GROUP, NULL, NULL);
 	elm_object_item_disabled_set(title, TRUE);
 
 	elm_object_part_content_set(layout, "elm.swallow.content", detailview_list);
 
-	Elm_Object_Item* navi_it = elm_naviframe_item_push(navi_frame, sc(PACKAGE, I18N_TYPE_Details), NULL, NULL, layout, NULL);
-	evas_object_data_set(navi_frame, SCREEN_TYPE_ID_KEY, (void *)VIEW_MANAGER_VIEW_TYPE_DETAIL);
+	Elm_Object_Item* navi_it = elm_naviframe_item_push(navi_frame,
+			sc(PACKAGE, I18N_TYPE_Details), NULL, NULL, layout, NULL);
 
-	/* Toolbar Back button */
-	Evas_Object* button_back = elm_object_item_part_content_get(navi_it, "prev_btn");
-	evas_object_smart_callback_add(button_back, "clicked", detailview_sk_cb, _detail_data);
+	evas_object_data_set(navi_frame, SCREEN_TYPE_ID_KEY,
+				(void *)VIEW_MANAGER_VIEW_TYPE_DETAIL);
 
-	/* Title Back button */
-	button_back = elm_button_add(navi_frame);
-	elm_object_style_set(button_back, "naviframe/back_btn/default");
-	evas_object_smart_callback_add(button_back, "clicked", title_back_btn_sk_cb, _detail_data);
-	elm_object_item_part_content_set(navi_it, "title_prev_btn", button_back);
+	/* Set pop callback */
+	elm_naviframe_item_pop_cb_set(navi_it, detailview_sk_cb, _detail_data);
 
 	_detail_data->win = win_main;
 
@@ -345,13 +334,6 @@ void view_detail(wifi_device_info_t *device_info, Evas_Object *win_main)
 		elm_object_text_set(forget_button, sc(PACKAGE, I18N_TYPE_Forget));
 		evas_object_smart_callback_add(forget_button, "clicked", forget_sk_cb, _detail_data);
 		elm_object_item_part_content_set(navi_it, "toolbar_button1", forget_button);
-
-		/* Title Forget button */
-		forget_button = elm_button_add(navi_frame);
-		elm_object_style_set(forget_button, "naviframe/toolbar/default");
-		elm_object_text_set(forget_button, sc(PACKAGE, I18N_TYPE_Forget));
-		evas_object_smart_callback_add(forget_button, "clicked", forget_sk_cb, _detail_data);
-		elm_object_item_part_content_set(navi_it, "title_toolbar_button1", forget_button);
 	}
 
 	wifi_security_type_e type = WIFI_SECURITY_TYPE_NONE;
@@ -360,7 +342,9 @@ void view_detail(wifi_device_info_t *device_info, Evas_Object *win_main)
 		wifi_connection_state_e connection_state;
 		wifi_ap_get_connection_state(ap, &connection_state);
 		if (favorite || WIFI_CONNECTION_STATE_CONNECTED == connection_state) {
-			_detail_data->eap_info_list = eap_info_append_items(ap, detailview_list, PACKAGE, __view_detail_imf_ctxt_evnt_cb, navi_it);
+			_detail_data->eap_info_list = eap_info_append_items(ap,
+					detailview_list, PACKAGE, __view_detail_imf_ctxt_evnt_cb,
+					navi_it);
 		}
 	}
 

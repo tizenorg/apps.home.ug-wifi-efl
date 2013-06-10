@@ -741,9 +741,9 @@ Evas_Object* viewer_manager_create(Evas_Object* _parent)
 				view_content, NULL);
 		evas_object_data_set(manager_object->nav, SCREEN_TYPE_ID_KEY,
 				(void *)VIEW_MANAGER_VIEW_TYPE_MAIN);
+
 		evas_object_smart_callback_add(manager_object->nav,
 				"transition,finished", _hide_finished_cb, navi_it);
-
 		manager_object->scan_button = elm_button_add(manager_object->nav);
 		elm_object_style_set(manager_object->scan_button,
 				"naviframe/toolbar/default");
