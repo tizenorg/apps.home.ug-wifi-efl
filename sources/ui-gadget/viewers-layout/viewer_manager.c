@@ -671,6 +671,7 @@ Evas_Object* viewer_manager_create(Evas_Object* _parent)
 
 	/* Add Full Layout */
 	Evas_Object *layout = elm_layout_add(_parent);
+
 	elm_layout_theme_set(layout, "layout", "application", "default");
 	evas_object_size_hint_weight_set(layout,
 			EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);

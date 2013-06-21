@@ -156,6 +156,9 @@ static void *on_create(ui_gadget_h ug, enum ug_mode mode,
 		__COMMON_FUNC_EXIT__;
 		return NULL;
 	}
+	int rotation = -1;
+	rotation = common_utils_get_rotate_angle(APPCORE_RM_UNKNOWN);
+	elm_win_rotation_with_resize_set(parent_layout, rotation);
 
 	ug_app_state->gadget= ugd;
 	ug_app_state->ug = ug;
