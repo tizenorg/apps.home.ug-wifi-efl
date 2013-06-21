@@ -1,6 +1,6 @@
 Name:       wifi-efl-ug
 Summary:    Wi-Fi UI Gadget
-Version:    0.5.2_25
+Version:    0.5.2_26
 Release:    1
 Group:      App/Network
 License:    Flora License
@@ -22,6 +22,7 @@ BuildRequires: pkgconfig(capi-network-wifi)
 BuildRequires: pkgconfig(network)
 BuildRequires: gettext-tools
 BuildRequires: edje-tools
+BuildRequires: efl-assist-devel
 Requires(post):   /sbin/ldconfig
 Requires(post):   /usr/bin/vconftool
 requires(postun): /sbin/ldconfig

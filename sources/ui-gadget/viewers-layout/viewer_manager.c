@@ -25,6 +25,7 @@
 #include "winset_popup.h"
 #include "viewer_manager.h"
 #include "view_ime_hidden.h"
+#include <efl_assist.h>
 
 typedef struct {
 	wlan_security_mode_type_t sec_mode;
@@ -220,16 +221,19 @@ static void _rbutton_click_cb(void *data, Evas_Object *obj, void *event_info)
 	__COMMON_FUNC_EXIT__;
 }
 
-static void _back_sk_cb(void *data, Evas_Object *obj, void *event_info)
+static Eina_Bool _back_sk_cb(void *data, Evas_Object *obj, void *event_info)
 {
 	__COMMON_FUNC_ENTER__;
 
-	if (ug_app_state->bAlive == EINA_FALSE)
-		return;
+	if (ug_app_state->bAlive == EINA_FALSE) {
+		__COMMON_FUNC_EXIT__;
+		return EINA_TRUE;
+	}
 
 	wifi_exit();
 
 	__COMMON_FUNC_EXIT__;
+	return EINA_FALSE;
 }
 
 static void __refresh_scan_callback(void *data,
@@ -688,6 +692,9 @@ Evas_Object* viewer_manager_create(Evas_Object* _parent)
 	elm_object_part_content_set(layout,
 			"elm.swallow.content", manager_object->nav);
 
+	elm_naviframe_prev_btn_auto_pushed_set(manager_object->nav, EINA_FALSE);
+	ea_object_event_callback_add(manager_object->nav, EA_CALLBACK_BACK, ea_naviframe_back_cb, NULL);
+
 	/* Add MainView Layout */
 	Evas_Object* view_content = elm_layout_add(manager_object->nav);
 	elm_layout_theme_set(view_content, "standard", "window", "integration");
@@ -706,6 +713,9 @@ Evas_Object* viewer_manager_create(Evas_Object* _parent)
 			"elm.swallow.content", manager_object->list);
 
 	if (ug_app_state->ug_type == UG_VIEW_SETUP_WIZARD) {
+		ea_object_event_callback_add(manager_object->nav, EA_CALLBACK_BACK,
+				_lbutton_click_cb, NULL);
+
 		Elm_Object_Item* navi_it = elm_naviframe_item_push(manager_object->nav,
 				sc(PACKAGE, I18N_TYPE_Wi_Fi), NULL, NULL, view_content, NULL);
 		evas_object_data_set(manager_object->nav, SCREEN_TYPE_ID_KEY,
@@ -713,50 +723,56 @@ Evas_Object* viewer_manager_create(Evas_Object* _parent)
 		evas_object_smart_callback_add(manager_object->nav,
 				"transition,finished", _hide_finished_cb, navi_it);
 
-		manager_object->prev_button = elm_button_add(manager_object->nav);
-		elm_object_style_set(manager_object->prev_button,
-				"naviframe/toolbar/default");
-		elm_object_text_set(manager_object->prev_button,
-				ug_app_state->lbutton_setup_wizard_prev);
-		evas_object_smart_callback_add(manager_object->prev_button,
-				"clicked", _lbutton_click_cb, NULL);
-		elm_object_item_part_content_set(navi_it, "toolbar_button1",
-				manager_object->prev_button);
+		Evas_Object *toolbar = elm_toolbar_add(manager_object->nav);
+		elm_toolbar_shrink_mode_set(toolbar, ELM_TOOLBAR_SHRINK_EXPAND);
+		elm_toolbar_transverse_expanded_set(toolbar, EINA_TRUE);
+		elm_toolbar_select_mode_set(toolbar, ELM_OBJECT_SELECT_MODE_NONE);
 
-		manager_object->next_button = elm_button_add(manager_object->nav);
-		elm_object_style_set(manager_object->next_button,
-				"naviframe/toolbar/default");
-		elm_object_text_set(manager_object->next_button,
-				ug_app_state->rbutton_setup_wizard_next);
-		evas_object_smart_callback_add(manager_object->next_button,
-				"clicked", _rbutton_click_cb, NULL);
-		elm_object_item_part_content_set(navi_it, "toolbar_button2",
-				manager_object->next_button);
+		manager_object->prev_button = elm_toolbar_item_append(toolbar, NULL,
+						ug_app_state->lbutton_setup_wizard_prev,
+						_lbutton_click_cb, NULL);
+		manager_object->next_button = elm_toolbar_item_append(toolbar, NULL,
+						ug_app_state->rbutton_setup_wizard_next,
+						_rbutton_click_cb, NULL);
+
+		elm_object_item_part_content_set(navi_it, "toolbar", toolbar);
 	} else {
-		Evas_Object*	back_btn = elm_button_add(manager_object->nav);
-		elm_object_style_set(back_btn, "naviframe/back_btn/default");
-		evas_object_smart_callback_add(back_btn, "clicked", _back_sk_cb, NULL);
+		Evas_Object *back_btn;
+		Elm_Object_Item *navi_it;
 
-		Elm_Object_Item* navi_it = elm_naviframe_item_push(manager_object->nav,
+		ea_object_event_callback_add(manager_object->nav, EA_CALLBACK_BACK,
+				ea_naviframe_back_cb, NULL);
+
+		common_utils_add_dialogue_separator(manager_object->list,
+				"dialogue/separator");
+
+		back_btn = elm_button_add(manager_object->nav);
+		elm_object_style_set(back_btn, "naviframe/back_btn/default");
+
+		navi_it = elm_naviframe_item_push(manager_object->nav,
 				sc(PACKAGE, I18N_TYPE_Wi_Fi), back_btn, NULL,
 				view_content, NULL);
 		evas_object_data_set(manager_object->nav, SCREEN_TYPE_ID_KEY,
 				(void *)VIEW_MANAGER_VIEW_TYPE_MAIN);
-
 		evas_object_smart_callback_add(manager_object->nav,
 				"transition,finished", _hide_finished_cb, navi_it);
-		manager_object->scan_button = elm_button_add(manager_object->nav);
-		elm_object_style_set(manager_object->scan_button,
-				"naviframe/toolbar/default");
-		elm_object_text_set(manager_object->scan_button,
-				sc(PACKAGE, I18N_TYPE_Scan));
-		evas_object_smart_callback_add(manager_object->scan_button,
-				"clicked", __refresh_scan_callback, NULL);
-		elm_object_item_part_content_set(navi_it,
-				"toolbar_button1", manager_object->scan_button);
+
+		Evas_Object *toolbar = elm_toolbar_add(manager_object->nav);
+		elm_toolbar_shrink_mode_set(toolbar, ELM_TOOLBAR_SHRINK_EXPAND);
+		elm_toolbar_transverse_expanded_set(toolbar, EINA_TRUE);
+		elm_toolbar_select_mode_set(toolbar, ELM_OBJECT_SELECT_MODE_NONE);
+
+		manager_object->scan_button = elm_toolbar_item_append(toolbar, NULL,
+						sc(PACKAGE, I18N_TYPE_Scan),
+						__refresh_scan_callback, NULL);
+
+		elm_object_item_part_content_set(navi_it, "toolbar", toolbar);
+
+		elm_naviframe_item_pop_cb_set(navi_it, _back_sk_cb, NULL);
 	}
 
 	evas_object_show(layout);
+	elm_object_focus_set(layout, EINA_TRUE);
 
 	__COMMON_FUNC_EXIT__;
 	return layout;

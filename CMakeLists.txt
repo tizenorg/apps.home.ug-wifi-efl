@@ -25,6 +25,7 @@ pkg_check_modules(pkgs REQUIRED
 	glib-2.0
 	utilX
 	ui-gadget-1
+	efl-assist
 	x11
 	sensor
 	syspopup
