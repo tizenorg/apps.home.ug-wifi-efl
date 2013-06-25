@@ -27,6 +27,8 @@
 #include "view_ime_hidden.h"
 #include <efl_assist.h>
 
+// #define SK_BACK_SUPPORT
+
 typedef struct {
 	wlan_security_mode_type_t sec_mode;
 	char *ssid;
@@ -737,35 +739,38 @@ Evas_Object* viewer_manager_create(Evas_Object* _parent)
 
 		elm_object_item_part_content_set(navi_it, "toolbar", toolbar);
 	} else {
-		Evas_Object *back_btn;
-		Elm_Object_Item *navi_it;
-
 		ea_object_event_callback_add(manager_object->nav, EA_CALLBACK_BACK,
 				ea_naviframe_back_cb, NULL);
-
-		common_utils_add_dialogue_separator(manager_object->list,
-				"dialogue/separator");
-
-		back_btn = elm_button_add(manager_object->nav);
+#ifdef SK_BACK_SUPPORT
+		Evas_Object *back_btn = elm_button_add(manager_object->nav);
 		elm_object_style_set(back_btn, "naviframe/back_btn/default");
 
-		navi_it = elm_naviframe_item_push(manager_object->nav,
+		Elm_Object_Item* navi_it = elm_naviframe_item_push(manager_object->nav,
 				sc(PACKAGE, I18N_TYPE_Wi_Fi), back_btn, NULL,
 				view_content, NULL);
+#else
+		Elm_Object_Item* navi_it = elm_naviframe_item_push(manager_object->nav,
+				sc(PACKAGE, I18N_TYPE_Wi_Fi), NULL, NULL,
+				view_content, NULL);
+#endif
 		evas_object_data_set(manager_object->nav, SCREEN_TYPE_ID_KEY,
 				(void *)VIEW_MANAGER_VIEW_TYPE_MAIN);
 		evas_object_smart_callback_add(manager_object->nav,
 				"transition,finished", _hide_finished_cb, navi_it);
 
-		Evas_Object *toolbar = elm_toolbar_add(manager_object->nav);
+		Evas_Object* toolbar = elm_toolbar_add(manager_object->nav);
+		elm_object_style_set(toolbar, "default");
 		elm_toolbar_shrink_mode_set(toolbar, ELM_TOOLBAR_SHRINK_EXPAND);
 		elm_toolbar_transverse_expanded_set(toolbar, EINA_TRUE);
-		elm_toolbar_select_mode_set(toolbar, ELM_OBJECT_SELECT_MODE_NONE);
 
-		manager_object->scan_button = elm_toolbar_item_append(toolbar, NULL,
-						sc(PACKAGE, I18N_TYPE_Scan),
-						__refresh_scan_callback, NULL);
+		manager_object->scan_button = elm_button_add(toolbar);
+		elm_object_style_set(manager_object->scan_button, "toolbar/default");
+		elm_object_text_set(manager_object->scan_button, sc(PACKAGE, I18N_TYPE_Scan));
+		evas_object_smart_callback_add(manager_object->scan_button,
+				"clicked", __refresh_scan_callback, NULL);
 
+		Evas_Object* btn = elm_toolbar_item_append(toolbar, NULL, NULL, NULL, NULL);
+		elm_object_item_part_content_set(btn, "object", manager_object->scan_button);
 		elm_object_item_part_content_set(navi_it, "toolbar", toolbar);
 
 		elm_naviframe_item_pop_cb_set(navi_it, _back_sk_cb, NULL);
