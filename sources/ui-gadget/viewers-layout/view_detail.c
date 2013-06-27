@@ -329,11 +329,21 @@ void view_detail(wifi_device_info_t *device_info, Evas_Object *win_main)
 
 	if (favorite) {
 		/* Toolbar Forget button */
+#ifdef SK_BACK_SUPPORT
 		Evas_Object* forget_button = elm_button_add(navi_frame);
 		elm_object_style_set(forget_button, "naviframe/toolbar/default");
 		elm_object_text_set(forget_button, sc(PACKAGE, I18N_TYPE_Forget));
 		evas_object_smart_callback_add(forget_button, "clicked", forget_sk_cb, _detail_data);
 		elm_object_item_part_content_set(navi_it, "toolbar_button1", forget_button);
+#else
+		Evas_Object *toolbar = elm_toolbar_add(navi_frame);
+		elm_object_style_set(toolbar, "default");
+		elm_toolbar_shrink_mode_set(toolbar, ELM_TOOLBAR_SHRINK_EXPAND);
+		elm_toolbar_transverse_expanded_set(toolbar, EINA_TRUE);
+		elm_toolbar_select_mode_set(toolbar, ELM_OBJECT_SELECT_MODE_NONE);
+		elm_toolbar_item_append(toolbar, NULL, sc(PACKAGE, I18N_TYPE_Forget), forget_sk_cb, _detail_data);
+		elm_object_item_part_content_set(navi_it, "toolbar", toolbar);
+#endif
 	}
 
 	wifi_security_type_e type = WIFI_SECURITY_TYPE_NONE;

@@ -328,8 +328,6 @@ Evas_Object *common_utils_show_info_popup(Evas_Object *parent, popup_btn_info_t 
 	__COMMON_FUNC_ENTER__;
 	Evas_Object *popup = elm_popup_add(parent);
 
-	ea_object_event_callback_add(popup, EA_CALLBACK_BACK, ea_popup_back_cb, NULL);
-
 	evas_object_size_hint_weight_set(popup, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
 	if (popup_data->title_txt)
 		elm_object_part_text_set(popup, "title,text", popup_data->title_txt);
@@ -353,8 +351,10 @@ Evas_Object *common_utils_show_info_popup(Evas_Object *parent, popup_btn_info_t 
 		evas_object_show(popup);
 		if (popup_data->btn2_cb) {
 			evas_object_smart_callback_add(btn_2, "clicked", popup_data->btn2_cb, popup_data->btn2_data);
+			ea_object_event_callback_add(popup, EA_CALLBACK_BACK, popup_data->btn2_cb, popup_data->btn2_data);
 		} else {	// set the default callback
 			evas_object_smart_callback_add(btn_2, "clicked", __common_utils_del_popup, popup);
+			ea_object_event_callback_add(popup, EA_CALLBACK_BACK, ea_popup_back_cb, NULL);
 		}
 	}
 
