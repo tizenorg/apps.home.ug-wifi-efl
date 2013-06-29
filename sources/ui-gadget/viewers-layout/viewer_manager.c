@@ -695,7 +695,6 @@ Evas_Object* viewer_manager_create(Evas_Object* _parent)
 			"elm.swallow.content", manager_object->nav);
 
 	elm_naviframe_prev_btn_auto_pushed_set(manager_object->nav, EINA_FALSE);
-	ea_object_event_callback_add(manager_object->nav, EA_CALLBACK_BACK, ea_naviframe_back_cb, NULL);
 
 	/* Add MainView Layout */
 	Evas_Object* view_content = elm_layout_add(manager_object->nav);
@@ -715,9 +714,6 @@ Evas_Object* viewer_manager_create(Evas_Object* _parent)
 			"elm.swallow.content", manager_object->list);
 
 	if (ug_app_state->ug_type == UG_VIEW_SETUP_WIZARD) {
-		ea_object_event_callback_add(manager_object->nav, EA_CALLBACK_BACK,
-				_lbutton_click_cb, NULL);
-
 		Elm_Object_Item* navi_it = elm_naviframe_item_push(manager_object->nav,
 				sc(PACKAGE, I18N_TYPE_Wi_Fi), NULL, NULL, view_content, NULL);
 		evas_object_data_set(manager_object->nav, SCREEN_TYPE_ID_KEY,
