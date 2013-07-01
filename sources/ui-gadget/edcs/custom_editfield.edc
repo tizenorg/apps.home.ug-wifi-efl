@@ -95,7 +95,8 @@ collections {
 				scale: 1;
 				description {
 					state: "default" 0.0;
-					min: 0 EDITFIELD_HEIGHT_INC;
+					min: 500 EDITFIELD_HEIGHT_INC;
+					max: 500 EDITFIELD_HEIGHT_INC;
 					align: 0.0 0.5;
 					image {
 						normal: "00_search_edit_field_bg.png";
