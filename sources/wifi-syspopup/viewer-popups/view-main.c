@@ -17,6 +17,7 @@
  *
  */
 
+#include <utilX.h>
 #include "common.h"
 #include "view-main.h"
 #include "common_pswd_popup.h"
@@ -112,6 +113,18 @@ static void __popup_cancel_cb(void *data, Evas_Object *obj, void *event_info)
 	__COMMON_FUNC_EXIT__;
 }
 
+static void __popup_keydown_cb(void *data, Evas *e, Evas_Object *obj,
+		void *event_info) {
+	__COMMON_FUNC_ENTER__;
+
+	Evas_Event_Key_Down *event = event_info;
+
+	if (g_strcmp0(event->keyname, KEY_BACK) == 0)
+		__popup_cancel_cb(data, obj, event_info);
+
+	__COMMON_FUNC_EXIT__;
+}
+
 static void __wps_pbc_popup_cancel_connecting(void *data, Evas_Object *obj,
 		void *event_info)
 {
@@ -188,6 +201,8 @@ static void __view_main_wifi_connect(syspopup_genlist_data_t *gdata)
 		popup_info.cb_data = NULL;
 		syspopup_app_state->passpopup = create_passwd_popup(
 				syspopup_app_state->layout_main, PACKAGE, &popup_info);
+		evas_object_event_callback_add(syspopup_app_state->passpopup->popup,
+				EVAS_CALLBACK_KEY_DOWN, __popup_keydown_cb, NULL);
 		break;
 
 	case WIFI_SECURITY_TYPE_EAP:

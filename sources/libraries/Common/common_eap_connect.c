@@ -17,6 +17,7 @@
  *
  */
 
+#include <utilX.h>
 #include "common.h"
 #include "common_eap_connect.h"
 #include "i18nmanager.h"
@@ -989,14 +990,28 @@ static void __common_eap_connect_cleanup(eap_connect_data_t *eap_data)
 	wlan_manager_enable_scan_result_update();
 }
 
-static void __common_eap_connect_destroy(void *data,  Evas_Object *obj,
-		void *event_info)
+static void __common_eap_connect_destroy(void *data,  Evas_Object *obj, void *event_info)
 {
+	__COMMON_FUNC_ENTER__;
+
 	__common_eap_connect_cleanup((eap_connect_data_t *)data);
+
+	__COMMON_FUNC_EXIT__;
 }
 
-static void __common_eap_connect_done_cb(void *data,  Evas_Object *obj,
-		void *event_info)
+static void __eap_popup_keydown_cb(void *data, Evas *e, Evas_Object *obj, void *event_info)
+{
+	__COMMON_FUNC_ENTER__;
+
+	Evas_Event_Key_Down *event = event_info;
+
+	if (g_strcmp0(event->keyname, KEY_BACK) == 0)
+		__common_eap_connect_destroy(data, obj, event_info);
+
+	__COMMON_FUNC_EXIT__;
+}
+
+static void __common_eap_connect_done_cb(void *data, Evas_Object *obj,		void *event_info)
 {
 	__COMMON_FUNC_ENTER__;
 
@@ -1277,6 +1292,9 @@ eap_connect_data_t *create_eap_popup(Evas_Object *win_main,
 	evas_object_show(list);
 	evas_object_show(box);
 	evas_object_show(popup);
+
+	evas_object_event_callback_add(popup, EVAS_CALLBACK_KEY_DOWN,
+			__eap_popup_keydown_cb, eap_data);
 
 	__common_eap_popup_set_imf_ctxt_evnt_cb(eap_data);
 

@@ -26,26 +26,6 @@
 #define PBC_TIMEOUT_MSG_STR	"one click connection failed"
 #define MAX_PBC_TIMEOUT_SECS	120	// Time in seconds
 
-typedef struct {
-	/* PBC popup related attributes */
-	Evas_Object* popup;
-	Evas_Object* progressbar;
-	Evas_Object* timer_label;
-	Ecore_Timer *timer;
-	int checker;
-	double value;
-} pbc_popup_t;
-
-struct pswd_popup {
-	/* Password popup related attributes */
-	const char *str_pkg_name;
-	Evas_Object *win;
-	Evas_Object *popup;
-	Evas_Object *popup_entry_lyt;
-	pbc_popup_t *pbc_popup_data;
-	wifi_ap_h ap;
-};
-
 static void __popup_entry_changed_cb(void* data, Evas_Object* obj, void* event_info)
 {
 	if (elm_object_focus_get(data)) {

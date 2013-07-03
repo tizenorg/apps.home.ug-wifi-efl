@@ -25,6 +25,7 @@
 #include <X11/Xatom.h>
 #include <X11/Xutil.h>
 #include <Ecore_X.h>
+#include <utilX.h>
 
 #include "common.h"
 #include "view-main.h"
@@ -248,6 +249,18 @@ int wifi_syspopup_destroy(void)
 	return 1;
 }
 
+static void __keydown_cb(void *data, Evas *e, Evas_Object *obj,
+		void *event_info) {
+	__COMMON_FUNC_ENTER__;
+
+	Evas_Event_Key_Down *event = event_info;
+
+	if (g_strcmp0(event->keyname, KEY_BACK) == 0)
+		wifi_syspopup_destroy();
+
+	__COMMON_FUNC_EXIT__;
+}
+
 static int wifi_syspopup_create(void)
 {
 	__COMMON_FUNC_ENTER__;
@@ -260,6 +273,8 @@ static int wifi_syspopup_create(void)
 		elm_object_content_set(syspopup_app_state->layout_main, syspopup_app_state->syspopup);
 		assertm_if(NULL == syspopup_app_state->syspopup, "syspopup is NULL!!");
 	}
+
+	evas_object_event_callback_add(syspopup_app_state->syspopup, EVAS_CALLBACK_KEY_DOWN, __keydown_cb, NULL);
 
 	elm_object_style_set(syspopup_app_state->syspopup,"min_menustyle");
 	elm_object_part_text_set(syspopup_app_state->syspopup, "title,text", sc(PACKAGE, I18N_TYPE_WiFi_network));
