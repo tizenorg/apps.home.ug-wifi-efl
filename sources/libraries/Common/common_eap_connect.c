@@ -32,6 +32,8 @@
 #define EAP_PROVISION_EXP_MENU_ID			1
 #define EAP_AUTH_TYPE_EXP_MENU_ID			2
 
+// #define SK_BACK_SUPPORT
+
 static bool g_eap_id_show_keypad = FALSE;
 static Elm_Genlist_Item_Class g_eap_type_itc;
 static Elm_Genlist_Item_Class g_eap_type_sub_itc;
@@ -1144,6 +1146,7 @@ eap_connect_data_t *create_eap_view(Evas_Object *win_main,
 	Evas_Object *layout = NULL;
 	Evas_Object *list = NULL;
 	Evas_Object *label = NULL;
+	Evas_Object *toolbar = NULL;
 
 	if (win_main == NULL || device_info == NULL || pkg_name == NULL)
 		return NULL;
@@ -1171,8 +1174,14 @@ eap_connect_data_t *create_eap_view(Evas_Object *win_main,
 	evas_object_smart_callback_add(back_btn, "clicked",
 			__common_eap_connect_destroy, eap_data);
 
+#ifdef SK_BACK_SUPPORT
 	navi_it = elm_naviframe_item_push(navi_frame, NULL, back_btn, NULL,
 			layout, NULL);
+#else
+	navi_it = elm_naviframe_item_push(navi_frame, device_info->ssid, NULL, NULL,
+			layout, NULL);
+#endif
+
 	evas_object_data_set(navi_frame, SCREEN_TYPE_ID_KEY,
 			(void *)VIEW_MANAGER_VIEW_TYPE_EAP);
 
@@ -1186,6 +1195,7 @@ eap_connect_data_t *create_eap_view(Evas_Object *win_main,
 	evas_object_show(label);
 	elm_object_item_part_content_set(navi_it, "elm.swallow.title", label);
 
+#ifdef SK_BACK_SUPPORT
 	/* Tool bar Connect button */
 	connect_btn = elm_button_add(navi_frame);
 	elm_object_style_set(connect_btn, "naviframe/toolbar/default");
@@ -1194,6 +1204,25 @@ eap_connect_data_t *create_eap_view(Evas_Object *win_main,
 			__common_eap_connect_done_cb, eap_data);
 	elm_object_item_part_content_set(navi_it, "toolbar_button1",
 			connect_btn);
+#else
+	toolbar = elm_toolbar_add(navi_frame);
+	connect_btn = elm_button_add(toolbar);
+
+	elm_object_style_set(connect_btn, "naviframe/toolbar/default");
+	elm_object_text_set(connect_btn, sc(pkg_name, I18N_TYPE_Connect));
+
+	evas_object_smart_callback_add(connect_btn, "clicked", __common_eap_connect_done_cb, eap_data);
+
+	elm_object_style_set(toolbar, "default");
+	elm_toolbar_shrink_mode_set(toolbar, ELM_TOOLBAR_SHRINK_EXPAND);
+	elm_toolbar_transverse_expanded_set(toolbar, EINA_TRUE);
+
+	elm_toolbar_select_mode_set(toolbar, ELM_OBJECT_SELECT_MODE_NONE);
+	Evas_Object* btn = elm_toolbar_item_append(toolbar, NULL, NULL, NULL, NULL);
+
+	elm_object_item_part_content_set(btn, "object", connect_btn);
+	elm_object_item_part_content_set(navi_it, "toolbar", toolbar);
+#endif
 
 	/* Append ip info items and add a seperator */
 	common_util_managed_idle_add(__common_eap_connect_load_ip_info_list_cb, eap_data);
