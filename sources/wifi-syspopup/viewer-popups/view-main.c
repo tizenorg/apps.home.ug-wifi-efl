@@ -554,11 +554,11 @@ gboolean view_main_show(void *data)
 	view_main_state_set(ITEM_CONNECTION_MODE_OFF);
 
 	int state = wlan_manager_state_get();
-	if (WLAN_MANAGER_ERROR == state || WLAN_MANAGER_OFF == state) {
-		return FALSE;
-	}
 
-	itc.item_style = "2text.2icon.4";
+	if (WLAN_MANAGER_ERROR == state || WLAN_MANAGER_OFF == state)
+		return FALSE;
+
+	itc.item_style = "2text.2icon.4/popup";
 	itc.func.text_get = _gl_text_get;
 	itc.func.content_get = _gl_content_get;
 	itc.func.state_get = NULL;

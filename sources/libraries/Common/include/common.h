@@ -62,7 +62,7 @@ extern "C"
 #define INVALID_PASSWORD				"Your password might be invalid"
 
 /* Syspopup height for portrait mode*/
-#define DEVICE_PICKER_POPUP_H		880
+#define DEVICE_PICKER_POPUP_H		530
 
 /* Syspopup height for landscape mode */
 #define DEVICE_PICKER_POPUP_LN_H		480

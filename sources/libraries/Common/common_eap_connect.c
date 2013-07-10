@@ -1277,7 +1277,7 @@ eap_connect_data_t *create_eap_popup(Evas_Object *win_main,
 	wlan_manager_disable_scan_result_update();
 
 	eap_data->popup = popup = elm_popup_add(win_main);
-	elm_object_style_set(popup, "min_menustyle");
+	elm_object_style_set(popup, "content_no_vhpad");
 	elm_object_part_text_set(popup, "title,text", device_info->ssid);
 	evas_object_size_hint_weight_set(popup, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
 	evas_object_size_hint_align_set(popup, EVAS_HINT_FILL, EVAS_HINT_FILL);

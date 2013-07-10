@@ -34,7 +34,7 @@ Evas_Object* appcore_create_win(const char *name)
 	Evas_Object *eo;
 	int w, h;
 
-	eo = elm_win_add(NULL, name, ELM_WIN_BASIC);
+	eo = elm_win_add(NULL, name, ELM_WIN_DIALOG_BASIC);
 	if (eo) {
 		elm_win_title_set(eo, name);
 		elm_win_borderless_set(eo, EINA_TRUE);
