@@ -18,6 +18,7 @@
  */
 
 #include <utilX.h>
+#include <efl_assist.h>
 #include "common.h"
 #include "common_eap_connect.h"
 #include "i18nmanager.h"
@@ -979,6 +980,8 @@ static void __common_eap_connect_cleanup(eap_connect_data_t *eap_data)
 	evas_object_del(radio_main);
 	radio_main = NULL;
 
+	ea_object_event_callback_del(eap_data->navi_frame, EA_CALLBACK_BACK, ea_naviframe_back_cb);
+
 	if (eap_data->navi_frame) {
 		evas_object_smart_callback_del(eap_data->navi_frame, "title,clicked",
 				__eap_view_title_clicked_cb);
@@ -1242,6 +1245,10 @@ eap_connect_data_t *create_eap_view(Evas_Object *win_main,
 	evas_object_smart_callback_add(back_btn, "clicked",
 			__common_eap_connect_destroy, eap_data);
 	elm_object_item_part_content_set(navi_it, "title_prev_btn", back_btn);
+
+	ea_object_event_callback_add(eap_data->navi_frame, EA_CALLBACK_BACK, ea_naviframe_back_cb, NULL);
+	elm_naviframe_item_pop_cb_set(navi_it, __common_eap_connect_destroy, eap_data);
+
 
 	/* Register imf event cbs */
 	__common_eap_view_set_imf_ctxt_evnt_cb(eap_data);

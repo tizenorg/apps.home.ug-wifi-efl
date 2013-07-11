@@ -25,6 +25,7 @@
 #include "common_utils.h"
 #include "common_ip_info.h"
 #include "common_eap_connect.h"
+#include <efl_assist.h>
 
 typedef struct _view_detail_data {
 	Evas_Object *win;
@@ -213,6 +214,9 @@ static Eina_Bool detailview_sk_cb(void *data, Elm_Object_Item *it)
 {
 	__COMMON_FUNC_ENTER__;
 
+	Evas_Object* navi_frame = viewer_manager_get_naviframe();
+	ea_object_event_callback_del(navi_frame, EA_CALLBACK_BACK, ea_naviframe_back_cb);
+
 	view_detail_data *_detail_data = (view_detail_data *)data;
 	retvm_if(NULL == _detail_data, EINA_TRUE);
 
@@ -369,6 +373,8 @@ void view_detail(wifi_device_info_t *device_info, Evas_Object *win_main)
 					navi_it);
 		}
 	}
+
+	ea_object_event_callback_add(navi_frame, EA_CALLBACK_BACK, ea_naviframe_back_cb, NULL);
 
 	/* Append the ip info details */
 	common_util_managed_idle_add(__view_detail_load_ip_info_list_cb, _detail_data);
