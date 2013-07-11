@@ -37,7 +37,7 @@
 #include "appcoreWrapper.h"
 #include "wifi-syspopup-engine-callback.h"
 
-#define POPUP_HEAD_AREA 134
+#define POPUP_HEAD_AREA 160
 #define POPUP_BUTTON_AREA 200
 #define MAX_INITIAL_QS_POPUP_LIST_SIZE	8
 
