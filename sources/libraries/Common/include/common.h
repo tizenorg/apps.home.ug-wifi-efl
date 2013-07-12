@@ -46,20 +46,7 @@ extern "C"
 #define COMMON_LOG_ERROR	LOG_ERROR
 
 #define MAX_DEVICE_ICON_PATH_STR_LEN			256
-#define WIFI_UNKNOWN_DEVICE_STATUS_STR			"Unknown"
-#define ENTER_SSID_STR							"Enter SSID"
-#define EAP_CHECK_YOUR_ID_STR					"Check your identity"
-#define EAP_CHECK_YOUR_PASWD_STR				"Check your password"
-#define WEP_WRONG_PASSWORD_LEN_ERR_MSG_STR \
-	"WEP requires 5, 10, 13, 26 letters for a password.<br>Please, check your input."
-#define WPA_WRONG_PASSWORD_LEN_ERR_MSG_STR \
-	"WPA2 requires 8 - 63 letters for a password.<br>Please, check your input."
-#define WIFI_TETHERING_FAILED_STR \
-	"Wi-Fi tethering enabled. Will you turn Wi-Fi tethering off?"
-#define OPEN_HIDDEN_NETWORK_STR			"Wi-Fi network detected. Connect?"
-#define FIND_HIDDEN_NETWORK_STR			"Find hidden network"
 #define SCREEN_TYPE_ID_KEY				"screen_type_id_key"
-#define INVALID_PASSWORD				"Your password might be invalid"
 
 /* Syspopup height for portrait mode*/
 #define DEVICE_PICKER_POPUP_H		530

@@ -1,9 +1,3 @@
-msgid "IDS_WIFI_BODY_CONNECTED"
-msgstr "Savienots"
-
-msgid "IDS_WIFI_BODY_CONNECTING_ING"
-msgstr "Savieno..."
-
 msgid "IDS_WIFI_BODY_STATIC_IP"
 msgstr "Statiska IP"
 
@@ -49,23 +43,8 @@ msgstr "Wi-Fi tīkli"
 msgid "IDS_WIFI_BODY_DISCONNECTING_ING"
 msgstr "Atvieno..."
 
-msgid "IDS_WIFI_BODY_DYNAMIC_IP"
-msgstr "Dinamiskais IP"
-
-msgid "IDS_WIFI_BODY_NO_APS"
-msgstr "Nav APs"
-
-msgid "IDS_WIFI_BODY_SECURITY_TYPE"
-msgstr "Drošības veids"
-
-msgid "IDS_WIFI_HEADER_HIDDEN_NETWORK"
-msgstr "Paslēpts tīkls"
-
 msgid "IDS_WIFI_POP_DEACTIVATING_WI_FI_ING"
 msgstr "Deaktivizē Wi-Fi..."
-
-msgid "IDS_WIFI_POP_SELECT_NETWORK"
-msgstr "Izvēlieties tīklu"
 
 msgid "IDS_WIFI_BODY_EAP_METHOD"
 msgstr "EAP metode"
@@ -100,23 +79,14 @@ msgstr "Ievadiet identitāti"
 msgid "IDS_WIFI_BODY_ENTER_ANONYMOUS_IDENTITY"
 msgstr "Ievadiet anonīmu identitāti"
 
-msgid "IDS_CST_BODY_INPUT_PASSWORD"
-msgstr "Ievadīt paroli"
-
 msgid "IDS_ST_BODY_SHOW_PASSWORD"
 msgstr "Rādīt paroli"
 
 msgid "IDS_WIFI_HEADER_PROXY_ADDRESS"
 msgstr "Starpniekservera adrese"
 
-msgid "IDS_WIFI_BODY_SIGNAL_STRENGTH"
-msgstr "Signāla stiprums"
-
 msgid "IDS_WIFI_BODY_GATEWAY"
 msgstr "Vārteja"
-
-msgid "IDS_WIFI_BODY_SECURITYTYPE_WEP"
-msgstr "WEP"
 
 msgid "IDS_WIFI_BODY_WEAK_M_STRENGTH"
 msgstr "Vājš"
@@ -124,14 +94,8 @@ msgstr "Vājš"
 msgid "IDS_ST_BODY_WPS_AVAILABLE"
 msgstr "WPS ir pieejams"
 
-msgid "IDS_ST_BODY_OBTAINING_IP_ADDRESS_ING"
-msgstr "Iegūst IP adresi..."
-
 msgid "IDS_WIFI_BODY_CHANNEL"
 msgstr "Kanāls"
-
-msgid "IDS_ST_BODY_NOTIFY_ME_WHEN_AN_OPEN_NETWORK_IS_AVAILABLE"
-msgstr "Brīdināt mani, ja ir pieejams atvērtais tīkls"
 
 msgid "IDS_WIFI_POP_AUTOMATIC_CONNECTION_NETWORK_WILL_DISABLED_CONTINUE_Q_MSG"
 msgstr "Automātiskais savienojums ar šo tīklu tiks deaktivizēts. Vai turpināt?"
@@ -142,14 +106,8 @@ msgstr "2. fāzes autentifikācija"
 msgid "IDS_WIFI_BODY_CONNECT"
 msgstr "Savienot"
 
-msgid "IDS_ST_BODY_ADVANCED"
-msgstr "Papildu"
-
 msgid "IDS_WIFI_BODY_ENTER_SSID"
 msgstr "Ievadiet SSID"
-
-msgid "IDS_WIFI_HEADER_PASSWORD"
-msgstr "Parole"
 
 msgid "IDS_WIFI_BODY_PROVISIONING"
 msgstr "Nodrošināšana"
@@ -166,15 +124,6 @@ msgstr "2 minūšu laikā Wi-Fi piekļuves punktā nospiediet WPS"
 msgid "IDS_WIFI_BODY_SSID"
 msgstr "SSID"
 
-msgid "IDS_WIFI_BODY_ENTER_YOUR_IDENTITY"
-msgstr "Ievadiet savu identitāti"
-
-msgid "IDS_WIFI_HEADER_ENTER_PASSWORD"
-msgstr "Ievadiet paroli"
-
-msgid "IDS_COM_BODY_SETTING"
-msgstr "Iestatījums"
-
 msgid "IDS_WIFI_BODY_NOTIFY_WHEN_WI_FI_NETWORK_IS_FOUND"
 msgstr "Paziņot, kad ir atrasts Wi-Fi tīkls"
 
@@ -183,9 +132,6 @@ msgstr "(bez izmaiņām)"
 
 msgid "IDS_ST_HEADER_WPS_CONNECTION_ABB"
 msgstr "WPS savienojums"
-
-msgid "IDS_WIFI_BODY_WPS_PIN"
-msgstr "WPS PIN"
 
 msgid "IDS_WIFI_BUTTON_WPS_BUTTON"
 msgstr "WPS poga"
@@ -198,4 +144,16 @@ msgstr "Lūdzu, uzgaidiet..."
 
 msgid "IDS_WIFI_POP_UNABLE_TO_FIND_NETWORK"
 msgstr "Nevar atrast tīklu"
+
+msgid "IDS_ST_POP_INVALID_PASSWORD"
+msgstr "Nepareiza parole"
+
+msgid "IDS_WIFI_BODY_ENTER_YOUR_PASSWORD"
+msgstr "Ievadiet paroli"
+
+msgid "IDS_WIFI_BODY_ENTER_YOUR_ID"
+msgstr "Ievadiet savu ID kodu"
+
+msgid "IDS_WIFI_BODY_DISABLE_WI_FI_TETHERING_TO_CONNECT_TO_A_WI_FI_NETWORK"
+msgstr "Deaktivizējiet Wi-Fi piesaisti, lai izveidotu savienojumu ar Wi-Fi tīklu"
 

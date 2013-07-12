@@ -1,9 +1,3 @@
-msgid "IDS_WIFI_BODY_CONNECTED"
-msgstr "Поврзано"
-
-msgid "IDS_WIFI_BODY_CONNECTING_ING"
-msgstr "Поврзување..."
-
 msgid "IDS_WIFI_BODY_STATIC_IP"
 msgstr "Статичен IP"
 
@@ -49,23 +43,8 @@ msgstr "Мрежи Wi-Fi"
 msgid "IDS_WIFI_BODY_DISCONNECTING_ING"
 msgstr "Врската се прекинува..."
 
-msgid "IDS_WIFI_BODY_DYNAMIC_IP"
-msgstr "Динамичен IP"
-
-msgid "IDS_WIFI_BODY_NO_APS"
-msgstr "Нема APs"
-
-msgid "IDS_WIFI_BODY_SECURITY_TYPE"
-msgstr "Тип на сигурност"
-
-msgid "IDS_WIFI_HEADER_HIDDEN_NETWORK"
-msgstr "Скриена мрежа"
-
 msgid "IDS_WIFI_POP_DEACTIVATING_WI_FI_ING"
 msgstr "Се исклучува Wi-Fi..."
-
-msgid "IDS_WIFI_POP_SELECT_NETWORK"
-msgstr "Избери мрежа"
 
 msgid "IDS_WIFI_BODY_EAP_METHOD"
 msgstr "Начин за EAP"
@@ -100,23 +79,14 @@ msgstr "Внесете идентитет"
 msgid "IDS_WIFI_BODY_ENTER_ANONYMOUS_IDENTITY"
 msgstr "Внесете анонимен идентитет"
 
-msgid "IDS_CST_BODY_INPUT_PASSWORD"
-msgstr "Внесете лозинка"
-
 msgid "IDS_ST_BODY_SHOW_PASSWORD"
 msgstr "Прикажи лозинка"
 
 msgid "IDS_WIFI_HEADER_PROXY_ADDRESS"
 msgstr "Адреса на прокси"
 
-msgid "IDS_WIFI_BODY_SIGNAL_STRENGTH"
-msgstr "Јачина на сигналот"
-
 msgid "IDS_WIFI_BODY_GATEWAY"
 msgstr "Порта"
-
-msgid "IDS_WIFI_BODY_SECURITYTYPE_WEP"
-msgstr "WEP"
 
 msgid "IDS_WIFI_BODY_WEAK_M_STRENGTH"
 msgstr "Слаб"
@@ -124,14 +94,8 @@ msgstr "Слаб"
 msgid "IDS_ST_BODY_WPS_AVAILABLE"
 msgstr "Достапно е WPS"
 
-msgid "IDS_ST_BODY_OBTAINING_IP_ADDRESS_ING"
-msgstr "Се добива IP-адреса..."
-
 msgid "IDS_WIFI_BODY_CHANNEL"
 msgstr "Станица"
-
-msgid "IDS_ST_BODY_NOTIFY_ME_WHEN_AN_OPEN_NETWORK_IS_AVAILABLE"
-msgstr "Извести ме кога е достапна отворена мрежа"
 
 msgid "IDS_WIFI_POP_AUTOMATIC_CONNECTION_NETWORK_WILL_DISABLED_CONTINUE_Q_MSG"
 msgstr "Автоматското поврзување со оваа мрежа ќе се исклучи. Продолжи?"
@@ -142,14 +106,8 @@ msgstr "Потврдување, 2 фаза"
 msgid "IDS_WIFI_BODY_CONNECT"
 msgstr "Поврзи"
 
-msgid "IDS_ST_BODY_ADVANCED"
-msgstr "Дополнително"
-
 msgid "IDS_WIFI_BODY_ENTER_SSID"
 msgstr "Внесете SSID"
-
-msgid "IDS_WIFI_HEADER_PASSWORD"
-msgstr "Лозинка"
 
 msgid "IDS_WIFI_BODY_PROVISIONING"
 msgstr "Пружање"
@@ -166,15 +124,6 @@ msgstr "Притиснете WPS на пристапната точка за Wi-
 msgid "IDS_WIFI_BODY_SSID"
 msgstr "SSID"
 
-msgid "IDS_WIFI_BODY_ENTER_YOUR_IDENTITY"
-msgstr "Внесете го својот идентитет"
-
-msgid "IDS_WIFI_HEADER_ENTER_PASSWORD"
-msgstr "Внесете лозинка"
-
-msgid "IDS_COM_BODY_SETTING"
-msgstr "Нагодување"
-
 msgid "IDS_WIFI_BODY_NOTIFY_WHEN_WI_FI_NETWORK_IS_FOUND"
 msgstr "Извести ме кога ќе се најде Wi-Fi мрежа"
 
@@ -183,9 +132,6 @@ msgstr "(непроменето)"
 
 msgid "IDS_ST_HEADER_WPS_CONNECTION_ABB"
 msgstr "Поврзување WPS"
-
-msgid "IDS_WIFI_BODY_WPS_PIN"
-msgstr "PIN за WPS"
 
 msgid "IDS_WIFI_BUTTON_WPS_BUTTON"
 msgstr "Копче WPS"
@@ -198,4 +144,16 @@ msgstr "Ве молам почекајте..."
 
 msgid "IDS_WIFI_POP_UNABLE_TO_FIND_NETWORK"
 msgstr "Не може да се најде мрежа"
+
+msgid "IDS_ST_POP_INVALID_PASSWORD"
+msgstr "Погрешна лозинка"
+
+msgid "IDS_WIFI_BODY_ENTER_YOUR_PASSWORD"
+msgstr "Внесете ја лозинката"
+
+msgid "IDS_WIFI_BODY_ENTER_YOUR_ID"
+msgstr "Внесете идентификација"
+
+msgid "IDS_WIFI_BODY_DISABLE_WI_FI_TETHERING_TO_CONNECT_TO_A_WI_FI_NETWORK"
+msgstr "Исклучете го делењето Wi-Fi за да се поврзете со мрежа Wi-Fi"
 

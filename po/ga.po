@@ -1,9 +1,3 @@
-msgid "IDS_WIFI_BODY_CONNECTED"
-msgstr "Nasctha"
-
-msgid "IDS_WIFI_BODY_CONNECTING_ING"
-msgstr "Ag nascadh..."
-
 msgid "IDS_WIFI_BODY_STATIC_IP"
 msgstr "IP Statach"
 
@@ -49,23 +43,8 @@ msgstr "Líonraí Wi-Fi"
 msgid "IDS_WIFI_BODY_DISCONNECTING_ING"
 msgstr "Ag dínascadh..."
 
-msgid "IDS_WIFI_BODY_DYNAMIC_IP"
-msgstr "IP Dinimiciúil"
-
-msgid "IDS_WIFI_BODY_NO_APS"
-msgstr "Níl AP ann"
-
-msgid "IDS_WIFI_BODY_SECURITY_TYPE"
-msgstr "Cineál slándála"
-
-msgid "IDS_WIFI_HEADER_HIDDEN_NETWORK"
-msgstr "Líonra folaithe"
-
 msgid "IDS_WIFI_POP_DEACTIVATING_WI_FI_ING"
 msgstr "Wi-Fi á dhíghníomhachtú..."
-
-msgid "IDS_WIFI_POP_SELECT_NETWORK"
-msgstr "Roghnaigh líonra"
 
 msgid "IDS_WIFI_BODY_EAP_METHOD"
 msgstr "Modh EAP"
@@ -100,23 +79,14 @@ msgstr "Iontráil aitheantas"
 msgid "IDS_WIFI_BODY_ENTER_ANONYMOUS_IDENTITY"
 msgstr "Iontráil aitheantas gan ainm"
 
-msgid "IDS_CST_BODY_INPUT_PASSWORD"
-msgstr "Iontráil pasfhocal"
-
 msgid "IDS_ST_BODY_SHOW_PASSWORD"
 msgstr "Taispeáin pasfhocal"
 
 msgid "IDS_WIFI_HEADER_PROXY_ADDRESS"
 msgstr "Seoladh seachfhreastalaí"
 
-msgid "IDS_WIFI_BODY_SIGNAL_STRENGTH"
-msgstr "Neart comhartha"
-
 msgid "IDS_WIFI_BODY_GATEWAY"
 msgstr "Geata"
-
-msgid "IDS_WIFI_BODY_SECURITYTYPE_WEP"
-msgstr "WEP"
 
 msgid "IDS_WIFI_BODY_WEAK_M_STRENGTH"
 msgstr "Lag"
@@ -124,14 +94,8 @@ msgstr "Lag"
 msgid "IDS_ST_BODY_WPS_AVAILABLE"
 msgstr "WPS atá ar fáil"
 
-msgid "IDS_ST_BODY_OBTAINING_IP_ADDRESS_ING"
-msgstr "Seoladh IP á fháil..."
-
 msgid "IDS_WIFI_BODY_CHANNEL"
 msgstr "Cainéal"
-
-msgid "IDS_ST_BODY_NOTIFY_ME_WHEN_AN_OPEN_NETWORK_IS_AVAILABLE"
-msgstr "Cuir in iúl dom nuair a bhíonn líonra ar oscailt ar fáil"
 
 msgid "IDS_WIFI_POP_AUTOMATIC_CONNECTION_NETWORK_WILL_DISABLED_CONTINUE_Q_MSG"
 msgstr "Déanfar díchumasú ar an nasc uathoibríoch chuig an líonra seo. Ar aghaidh?"
@@ -142,14 +106,8 @@ msgstr "Fíordheimhniú chéim 2"
 msgid "IDS_WIFI_BODY_CONNECT"
 msgstr "Nasc"
 
-msgid "IDS_ST_BODY_ADVANCED"
-msgstr "Ardleibhéal"
-
 msgid "IDS_WIFI_BODY_ENTER_SSID"
 msgstr "Iontráil SSID"
-
-msgid "IDS_WIFI_HEADER_PASSWORD"
-msgstr "Pasfhocal"
 
 msgid "IDS_WIFI_BODY_PROVISIONING"
 msgstr "Soláthar"
@@ -166,15 +124,6 @@ msgstr "Brúigh WPS ar do phointe rochtana Wi-Fi laistigh de 2 nóiméad"
 msgid "IDS_WIFI_BODY_SSID"
 msgstr "SSID"
 
-msgid "IDS_WIFI_BODY_ENTER_YOUR_IDENTITY"
-msgstr "Iontráil d'aitheantas"
-
-msgid "IDS_WIFI_HEADER_ENTER_PASSWORD"
-msgstr "Iontráil pasfhocal"
-
-msgid "IDS_COM_BODY_SETTING"
-msgstr "Socrú"
-
 msgid "IDS_WIFI_BODY_NOTIFY_WHEN_WI_FI_NETWORK_IS_FOUND"
 msgstr "Cuir in iúl dom ar aimsiú líonra Wi-Fi"
 
@@ -183,9 +132,6 @@ msgstr "(neamhathraithe)"
 
 msgid "IDS_ST_HEADER_WPS_CONNECTION_ABB"
 msgstr "Nasc WPS"
-
-msgid "IDS_WIFI_BODY_WPS_PIN"
-msgstr "PIN WPS"
 
 msgid "IDS_WIFI_BUTTON_WPS_BUTTON"
 msgstr "Cnaipe WPS"
@@ -198,4 +144,16 @@ msgstr "Fan go fóill..."
 
 msgid "IDS_WIFI_POP_UNABLE_TO_FIND_NETWORK"
 msgstr "Ní féidir líonra a aimsiú"
+
+msgid "IDS_ST_POP_INVALID_PASSWORD"
+msgstr "Pasfhocal neamhbhailí"
+
+msgid "IDS_WIFI_BODY_ENTER_YOUR_PASSWORD"
+msgstr "Iontráil do phasfhocal"
+
+msgid "IDS_WIFI_BODY_ENTER_YOUR_ID"
+msgstr "Iontráil do ID"
+
+msgid "IDS_WIFI_BODY_DISABLE_WI_FI_TETHERING_TO_CONNECT_TO_A_WI_FI_NETWORK"
+msgstr "Díchumasaigh nascaireacht Wi-Fi le nascadh le líonra Wi-Fi"
 

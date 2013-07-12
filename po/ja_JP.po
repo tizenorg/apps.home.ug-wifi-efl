@@ -1,9 +1,3 @@
-msgid "IDS_WIFI_BODY_CONNECTED"
-msgstr "接続しました。"
-
-msgid "IDS_WIFI_BODY_CONNECTING_ING"
-msgstr "接続中..."
-
 msgid "IDS_WIFI_BODY_STATIC_IP"
 msgstr "静的IP"
 
@@ -49,23 +43,8 @@ msgstr "Wi-Fiネットワーク"
 msgid "IDS_WIFI_BODY_DISCONNECTING_ING"
 msgstr "切断中..."
 
-msgid "IDS_WIFI_BODY_DYNAMIC_IP"
-msgstr "ダイナミックIP"
-
-msgid "IDS_WIFI_BODY_NO_APS"
-msgstr "アクセスポイントはありません。"
-
-msgid "IDS_WIFI_BODY_SECURITY_TYPE"
-msgstr "セキュリティタイプ"
-
-msgid "IDS_WIFI_HEADER_HIDDEN_NETWORK"
-msgstr "非表示ネットワーク"
-
 msgid "IDS_WIFI_POP_DEACTIVATING_WI_FI_ING"
 msgstr "Wi-Fiを無効にしています..."
-
-msgid "IDS_WIFI_POP_SELECT_NETWORK"
-msgstr "ネットワークを選択"
 
 msgid "IDS_WIFI_BODY_EAP_METHOD"
 msgstr "EAP方法"
@@ -100,23 +79,14 @@ msgstr "IDを入力"
 msgid "IDS_WIFI_BODY_ENTER_ANONYMOUS_IDENTITY"
 msgstr "匿名IDを入力"
 
-msgid "IDS_CST_BODY_INPUT_PASSWORD"
-msgstr "パスワードを入力"
-
 msgid "IDS_ST_BODY_SHOW_PASSWORD"
 msgstr "パスワードを表示"
 
 msgid "IDS_WIFI_HEADER_PROXY_ADDRESS"
 msgstr "プロキシアドレス"
 
-msgid "IDS_WIFI_BODY_SIGNAL_STRENGTH"
-msgstr "電波強度"
-
 msgid "IDS_WIFI_BODY_GATEWAY"
 msgstr "ゲートウェイ"
-
-msgid "IDS_WIFI_BODY_SECURITYTYPE_WEP"
-msgstr "WEP"
 
 msgid "IDS_WIFI_BODY_WEAK_M_STRENGTH"
 msgstr "弱い"
@@ -124,14 +94,8 @@ msgstr "弱い"
 msgid "IDS_ST_BODY_WPS_AVAILABLE"
 msgstr "WPS利用可能"
 
-msgid "IDS_ST_BODY_OBTAINING_IP_ADDRESS_ING"
-msgstr "IPアドレスを取得中..."
-
 msgid "IDS_WIFI_BODY_CHANNEL"
 msgstr "チャンネル"
-
-msgid "IDS_ST_BODY_NOTIFY_ME_WHEN_AN_OPEN_NETWORK_IS_AVAILABLE"
-msgstr "オープンネットワークが利用可能な時に通知"
 
 msgid "IDS_WIFI_POP_AUTOMATIC_CONNECTION_NETWORK_WILL_DISABLED_CONTINUE_Q_MSG"
 msgstr "このネットワークへの自動接続を無効にします。続行しますか？"
@@ -142,14 +106,8 @@ msgstr "フェーズ2認証"
 msgid "IDS_WIFI_BODY_CONNECT"
 msgstr "接続"
 
-msgid "IDS_ST_BODY_ADVANCED"
-msgstr "詳細設定"
-
 msgid "IDS_WIFI_BODY_ENTER_SSID"
 msgstr "SSIDを入力"
-
-msgid "IDS_WIFI_HEADER_PASSWORD"
-msgstr "パスワード"
 
 msgid "IDS_WIFI_BODY_PROVISIONING"
 msgstr "プロビジョニング"
@@ -166,26 +124,14 @@ msgstr "2分以内にWi-FiアクセスポイントのWPSボタンを押してく
 msgid "IDS_WIFI_BODY_SSID"
 msgstr "SSID"
 
-msgid "IDS_WIFI_BODY_ENTER_YOUR_IDENTITY"
-msgstr "あなたのIDを入力"
-
-msgid "IDS_WIFI_HEADER_ENTER_PASSWORD"
-msgstr "パスワードを入力"
-
-msgid "IDS_COM_BODY_SETTING"
-msgstr "設定"
-
 msgid "IDS_WIFI_BODY_NOTIFY_WHEN_WI_FI_NETWORK_IS_FOUND"
 msgstr "Wi-Fiネットワークを検出すると通知"
 
 msgid "IDS_ST_BODY_HUNCHANGED"
-msgstr "(未変更)"
+msgstr "(変更なし)"
 
 msgid "IDS_ST_HEADER_WPS_CONNECTION_ABB"
 msgstr "WPS接続"
-
-msgid "IDS_WIFI_BODY_WPS_PIN"
-msgstr "WPS PIN"
 
 msgid "IDS_WIFI_BUTTON_WPS_BUTTON"
 msgstr "WPSボタン"
@@ -198,4 +144,16 @@ msgstr "し​ば​らく​お​待ち​く​ださ​い..."
 
 msgid "IDS_WIFI_POP_UNABLE_TO_FIND_NETWORK"
 msgstr "ネットワークが見つかりません"
+
+msgid "IDS_ST_POP_INVALID_PASSWORD"
+msgstr "無効なパスワードです。"
+
+msgid "IDS_WIFI_BODY_ENTER_YOUR_PASSWORD"
+msgstr "パスワードを入力してください。"
+
+msgid "IDS_WIFI_BODY_ENTER_YOUR_ID"
+msgstr "IDを入力してください。"
+
+msgid "IDS_WIFI_BODY_DISABLE_WI_FI_TETHERING_TO_CONNECT_TO_A_WI_FI_NETWORK"
+msgstr "Wi-Fiネットワークに接続するには、Wi-Fiテザリングを無効にしてください。"
 

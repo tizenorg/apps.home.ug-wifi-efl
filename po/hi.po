@@ -1,11 +1,5 @@
-msgid "IDS_WIFI_BODY_CONNECTED"
-msgstr "जोड़ा गया"
-
-msgid "IDS_WIFI_BODY_CONNECTING_ING"
-msgstr "जोड़ा जा रहा है…"
-
 msgid "IDS_WIFI_BODY_STATIC_IP"
-msgstr "स्थिर आईपी"
+msgstr "स्थिर IP"
 
 msgid "IDS_WIFI_POP_ACTIVATING_WI_FI_ING"
 msgstr "Wi-Fi सक्रिय हो रहा है..."
@@ -44,28 +38,13 @@ msgid "IDS_ST_BODY_GOOD_M_STRENGTH"
 msgstr "अच्छा"
 
 msgid "IDS_ST_BODY_WI_FI_NETWORKS"
-msgstr "Wi-Fi नेटवर्क्स"
+msgstr "Wi-Fi नेटवर्क"
 
 msgid "IDS_WIFI_BODY_DISCONNECTING_ING"
 msgstr "डिस्कनेक्ट हो रहा है..."
 
-msgid "IDS_WIFI_BODY_DYNAMIC_IP"
-msgstr "डायनामिक आईपी"
-
-msgid "IDS_WIFI_BODY_NO_APS"
-msgstr "APs नहीं"
-
-msgid "IDS_WIFI_BODY_SECURITY_TYPE"
-msgstr "सुरक्षा प्रकार"
-
-msgid "IDS_WIFI_HEADER_HIDDEN_NETWORK"
-msgstr "छुपा नेटवर्क"
-
 msgid "IDS_WIFI_POP_DEACTIVATING_WI_FI_ING"
 msgstr "Wi-Fi निष्क्रिय हो रहा है…"
-
-msgid "IDS_WIFI_POP_SELECT_NETWORK"
-msgstr "नेटवर्क चुनें"
 
 msgid "IDS_WIFI_BODY_EAP_METHOD"
 msgstr "EAP विधि"
@@ -100,23 +79,14 @@ msgstr "पहचान दर्ज करें"
 msgid "IDS_WIFI_BODY_ENTER_ANONYMOUS_IDENTITY"
 msgstr "अज्ञात पहचान दर्ज करें"
 
-msgid "IDS_CST_BODY_INPUT_PASSWORD"
-msgstr "पासवर्ड इनपुट करें"
-
 msgid "IDS_ST_BODY_SHOW_PASSWORD"
 msgstr "पासवर्ड दिखाएँ"
 
 msgid "IDS_WIFI_HEADER_PROXY_ADDRESS"
 msgstr "प्रॉक्‍सी पता"
 
-msgid "IDS_WIFI_BODY_SIGNAL_STRENGTH"
-msgstr "संकेत सामर्थ्य"
-
 msgid "IDS_WIFI_BODY_GATEWAY"
 msgstr "गेटवे"
-
-msgid "IDS_WIFI_BODY_SECURITYTYPE_WEP"
-msgstr "WEP"
 
 msgid "IDS_WIFI_BODY_WEAK_M_STRENGTH"
 msgstr "दुर्बल"
@@ -124,14 +94,8 @@ msgstr "दुर्बल"
 msgid "IDS_ST_BODY_WPS_AVAILABLE"
 msgstr "WPS उपलब्‍ध"
 
-msgid "IDS_ST_BODY_OBTAINING_IP_ADDRESS_ING"
-msgstr "IP पता मिल रहा है..."
-
 msgid "IDS_WIFI_BODY_CHANNEL"
 msgstr "चैनल"
-
-msgid "IDS_ST_BODY_NOTIFY_ME_WHEN_AN_OPEN_NETWORK_IS_AVAILABLE"
-msgstr "ज़ब ओपन नेटवर्क उपलब्‍ध हो तो मुझे सूचित करें"
 
 msgid "IDS_WIFI_POP_AUTOMATIC_CONNECTION_NETWORK_WILL_DISABLED_CONTINUE_Q_MSG"
 msgstr "इस नेटवर्क के साथ स्वचालित कनेक्शन अक्षम हो जाएगा। जारी रखें?"
@@ -142,14 +106,8 @@ msgstr "फ़ेज 2 प्रमाणीकरण"
 msgid "IDS_WIFI_BODY_CONNECT"
 msgstr "जोड़ें"
 
-msgid "IDS_ST_BODY_ADVANCED"
-msgstr "उन्नत"
-
 msgid "IDS_WIFI_BODY_ENTER_SSID"
-msgstr "एसएसआईडी प्रविष्ट करें"
-
-msgid "IDS_WIFI_HEADER_PASSWORD"
-msgstr "पासवर्ड"
+msgstr "SSID प्रविष्ट करें"
 
 msgid "IDS_WIFI_BODY_PROVISIONING"
 msgstr "प्रावधान"
@@ -158,22 +116,13 @@ msgid "IDS_WIFI_BODY_WPS_BUTTON_CONNECTION"
 msgstr "WPS बटन कनेक्‍शन"
 
 msgid "IDS_WIFI_OPT_FIND_HIDDEN_NETWORK"
-msgstr "छुपा नेटवर्क ढूँढें"
+msgstr "छिपा नेटवर्क ढूँढें"
 
 msgid "IDS_ST_BODY_PRESS_WPS_ON_YOUR_WI_FI_ACCESS_POINT_WITHIN_2_MINUTES"
-msgstr "2 मिनटों के अंदर आप के Wi-Fi ऍक्सेस पॉइंट पर WPS दबाएँ"
+msgstr "%d मिनट के अंदर आप के Wi-Fi एक्सेस पॉइंट पर WPS दबाएँ"
 
 msgid "IDS_WIFI_BODY_SSID"
-msgstr "एसएसआईडी"
-
-msgid "IDS_WIFI_BODY_ENTER_YOUR_IDENTITY"
-msgstr "अपनी पहचान दर्ज करें"
-
-msgid "IDS_WIFI_HEADER_ENTER_PASSWORD"
-msgstr "पासवर्ड प्रविष्ट करें"
-
-msgid "IDS_COM_BODY_SETTING"
-msgstr "सेटिंग"
+msgstr "SSID"
 
 msgid "IDS_WIFI_BODY_NOTIFY_WHEN_WI_FI_NETWORK_IS_FOUND"
 msgstr "Wi-Fi नेटवर्क के प्राप्त होने पर सूचित करें"
@@ -182,10 +131,7 @@ msgid "IDS_ST_BODY_HUNCHANGED"
 msgstr "(बदला नहीं)"
 
 msgid "IDS_ST_HEADER_WPS_CONNECTION_ABB"
-msgstr "डब्ल्यूपीएस कनेक्‍शन"
-
-msgid "IDS_WIFI_BODY_WPS_PIN"
-msgstr "डब्ल्यूपीएस PIN"
+msgstr "WPS कनेक्‍शन"
 
 msgid "IDS_WIFI_BUTTON_WPS_BUTTON"
 msgstr "WPS बटन"
@@ -194,8 +140,20 @@ msgid "IDS_ST_BODY_WI_FI_NETWORK_DETECTED_CONNECT_Q"
 msgstr "वाई-फाई नेटवर्क का पता लगाया गया। जोड़ें?"
 
 msgid "IDS_WIFI_POP_PLEASE_WAIT_ING"
-msgstr "कृपया प्रतीक्षा करें"
+msgstr "कृपया प्रतीक्षा करें..."
 
 msgid "IDS_WIFI_POP_UNABLE_TO_FIND_NETWORK"
 msgstr "नेटवर्क खोजने में अक्षम"
+
+msgid "IDS_ST_POP_INVALID_PASSWORD"
+msgstr "अवैध पासवर्ड"
+
+msgid "IDS_WIFI_BODY_ENTER_YOUR_PASSWORD"
+msgstr "अपना पासवर्ड दर्ज करें"
+
+msgid "IDS_WIFI_BODY_ENTER_YOUR_ID"
+msgstr "अपनी ID दर्ज करें"
+
+msgid "IDS_WIFI_BODY_DISABLE_WI_FI_TETHERING_TO_CONNECT_TO_A_WI_FI_NETWORK"
+msgstr "किसी Wi-Fi नेटवर्क से कनेक्ट होने हेतु Wi-Fi टेथरिंग अक्षम करें"
 

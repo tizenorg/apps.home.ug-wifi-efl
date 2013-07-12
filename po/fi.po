@@ -1,9 +1,3 @@
-msgid "IDS_WIFI_BODY_CONNECTED"
-msgstr "Yhdistetty"
-
-msgid "IDS_WIFI_BODY_CONNECTING_ING"
-msgstr "Yhdistetään..."
-
 msgid "IDS_WIFI_BODY_STATIC_IP"
 msgstr "Staattinen IP-osoite"
 
@@ -49,23 +43,8 @@ msgstr "Wi-Fi-verkot"
 msgid "IDS_WIFI_BODY_DISCONNECTING_ING"
 msgstr "Yhteyttä katkaistaan..."
 
-msgid "IDS_WIFI_BODY_DYNAMIC_IP"
-msgstr "Dynaaminen IP"
-
-msgid "IDS_WIFI_BODY_NO_APS"
-msgstr "Ei yhteyspisteitä"
-
-msgid "IDS_WIFI_BODY_SECURITY_TYPE"
-msgstr "Suojaustyyppi"
-
-msgid "IDS_WIFI_HEADER_HIDDEN_NETWORK"
-msgstr "Piilotettu verkko"
-
 msgid "IDS_WIFI_POP_DEACTIVATING_WI_FI_ING"
 msgstr "Wi-Fi poistetaan käytöstä..."
-
-msgid "IDS_WIFI_POP_SELECT_NETWORK"
-msgstr "Valitse verkko"
 
 msgid "IDS_WIFI_BODY_EAP_METHOD"
 msgstr "EAP-menetelmä"
@@ -100,23 +79,14 @@ msgstr "Anna käyttäjätiedot"
 msgid "IDS_WIFI_BODY_ENTER_ANONYMOUS_IDENTITY"
 msgstr "Anna nimettömät käyttäjätiedot"
 
-msgid "IDS_CST_BODY_INPUT_PASSWORD"
-msgstr "Anna salasana"
-
 msgid "IDS_ST_BODY_SHOW_PASSWORD"
 msgstr "Näytä salasana"
 
 msgid "IDS_WIFI_HEADER_PROXY_ADDRESS"
 msgstr "Välityspalvelimen osoite"
 
-msgid "IDS_WIFI_BODY_SIGNAL_STRENGTH"
-msgstr "Signaalinvoimakkuus"
-
 msgid "IDS_WIFI_BODY_GATEWAY"
 msgstr "Yhdyskäytävä"
-
-msgid "IDS_WIFI_BODY_SECURITYTYPE_WEP"
-msgstr "WEP"
 
 msgid "IDS_WIFI_BODY_WEAK_M_STRENGTH"
 msgstr "Heikko"
@@ -124,14 +94,8 @@ msgstr "Heikko"
 msgid "IDS_ST_BODY_WPS_AVAILABLE"
 msgstr "WPS käytettävissä"
 
-msgid "IDS_ST_BODY_OBTAINING_IP_ADDRESS_ING"
-msgstr "Haetaan IP-osoitetta..."
-
 msgid "IDS_WIFI_BODY_CHANNEL"
 msgstr "Kanava"
-
-msgid "IDS_ST_BODY_NOTIFY_ME_WHEN_AN_OPEN_NETWORK_IS_AVAILABLE"
-msgstr "Ilmoita, kun avoin verkko on käytettävissä"
 
 msgid "IDS_WIFI_POP_AUTOMATIC_CONNECTION_NETWORK_WILL_DISABLED_CONTINUE_Q_MSG"
 msgstr "Automaattinen yhteyden muodostaminen tähän verkkoon poistetaan käytöstä. Jatketaanko?"
@@ -142,14 +106,8 @@ msgstr "Vaiheen 2 todennus"
 msgid "IDS_WIFI_BODY_CONNECT"
 msgstr "Yhdistä"
 
-msgid "IDS_ST_BODY_ADVANCED"
-msgstr "Lisäasetukset"
-
 msgid "IDS_WIFI_BODY_ENTER_SSID"
 msgstr "Anna SSID"
-
-msgid "IDS_WIFI_HEADER_PASSWORD"
-msgstr "Salasana"
 
 msgid "IDS_WIFI_BODY_PROVISIONING"
 msgstr "Valmistelu"
@@ -166,15 +124,6 @@ msgstr "Paina Wi-Fi-yhteyspisteesi WPS-painiketta 2 minuutin kuluessa"
 msgid "IDS_WIFI_BODY_SSID"
 msgstr "SSID"
 
-msgid "IDS_WIFI_BODY_ENTER_YOUR_IDENTITY"
-msgstr "Anna käyttäjätiedot"
-
-msgid "IDS_WIFI_HEADER_ENTER_PASSWORD"
-msgstr "Kirjoita salasana"
-
-msgid "IDS_COM_BODY_SETTING"
-msgstr "Asetus"
-
 msgid "IDS_WIFI_BODY_NOTIFY_WHEN_WI_FI_NETWORK_IS_FOUND"
 msgstr "Ilmoita, kun Wi-Fi-verkko löytyy"
 
@@ -183,9 +132,6 @@ msgstr "(muuttumaton)"
 
 msgid "IDS_ST_HEADER_WPS_CONNECTION_ABB"
 msgstr "WPS-yhteys"
-
-msgid "IDS_WIFI_BODY_WPS_PIN"
-msgstr "WPS PIN"
 
 msgid "IDS_WIFI_BUTTON_WPS_BUTTON"
 msgstr "WPS-painike"
@@ -198,4 +144,16 @@ msgstr "Ole hyvä ja odota..."
 
 msgid "IDS_WIFI_POP_UNABLE_TO_FIND_NETWORK"
 msgstr "Verkkoa ei löydy"
+
+msgid "IDS_ST_POP_INVALID_PASSWORD"
+msgstr "Virheellinen salasana"
+
+msgid "IDS_WIFI_BODY_ENTER_YOUR_PASSWORD"
+msgstr "Anna salasanasi"
+
+msgid "IDS_WIFI_BODY_ENTER_YOUR_ID"
+msgstr "Anna tunnuksesi"
+
+msgid "IDS_WIFI_BODY_DISABLE_WI_FI_TETHERING_TO_CONNECT_TO_A_WI_FI_NETWORK"
+msgstr "Poista Wi-Fi-yhteyden jako käytöstä Wi-Fi-verkkoyhteyden muodostamista varten"
 

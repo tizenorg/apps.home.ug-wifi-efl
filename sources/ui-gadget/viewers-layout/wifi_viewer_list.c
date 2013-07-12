@@ -514,7 +514,7 @@ static char *viewer_list_get_device_status_txt(wifi_device_info_t *wifi_device, 
 	} else if (VIEWER_ITEM_RADIO_MODE_OFF == mode) {
 		status_txt = common_utils_get_ap_security_type_info_txt(PACKAGE, wifi_device);
 	} else {
-		status_txt = g_strdup(WIFI_UNKNOWN_DEVICE_STATUS_STR);
+		status_txt = g_strdup(sc(PACKAGE, I18N_TYPE_Unknown));
 		INFO_LOG(UG_NAME_NORMAL, "Invalid mode: %d", mode);
 	}
 	return status_txt;

@@ -1,9 +1,3 @@
-msgid "IDS_WIFI_BODY_CONNECTED"
-msgstr "З'єднано"
-
-msgid "IDS_WIFI_BODY_CONNECTING_ING"
-msgstr "З'єднання..."
-
 msgid "IDS_WIFI_BODY_STATIC_IP"
 msgstr "Статична IP-адреса"
 
@@ -49,23 +43,8 @@ msgstr "Мережі Wi-Fi"
 msgid "IDS_WIFI_BODY_DISCONNECTING_ING"
 msgstr "Роз'єднання..."
 
-msgid "IDS_WIFI_BODY_DYNAMIC_IP"
-msgstr "Динамічна IP-адреса"
-
-msgid "IDS_WIFI_BODY_NO_APS"
-msgstr "Немає APs"
-
-msgid "IDS_WIFI_BODY_SECURITY_TYPE"
-msgstr "Тип захисту"
-
-msgid "IDS_WIFI_HEADER_HIDDEN_NETWORK"
-msgstr "Прихована мережа"
-
 msgid "IDS_WIFI_POP_DEACTIVATING_WI_FI_ING"
 msgstr "Деактивація Wi-Fi..."
-
-msgid "IDS_WIFI_POP_SELECT_NETWORK"
-msgstr "Вибрати мережу"
 
 msgid "IDS_WIFI_BODY_EAP_METHOD"
 msgstr "Метод EAP"
@@ -100,23 +79,14 @@ msgstr "Введіть ідентифікатор"
 msgid "IDS_WIFI_BODY_ENTER_ANONYMOUS_IDENTITY"
 msgstr "Введіть анонімний ідентифікатор"
 
-msgid "IDS_CST_BODY_INPUT_PASSWORD"
-msgstr "Введіть пароль"
-
 msgid "IDS_ST_BODY_SHOW_PASSWORD"
 msgstr "Показати пароль"
 
 msgid "IDS_WIFI_HEADER_PROXY_ADDRESS"
 msgstr "Адреса проксі"
 
-msgid "IDS_WIFI_BODY_SIGNAL_STRENGTH"
-msgstr "Потужність сигналу"
-
 msgid "IDS_WIFI_BODY_GATEWAY"
 msgstr "Шлюз"
-
-msgid "IDS_WIFI_BODY_SECURITYTYPE_WEP"
-msgstr "WEP"
 
 msgid "IDS_WIFI_BODY_WEAK_M_STRENGTH"
 msgstr "Слабкий"
@@ -124,14 +94,8 @@ msgstr "Слабкий"
 msgid "IDS_ST_BODY_WPS_AVAILABLE"
 msgstr "WPS доступно"
 
-msgid "IDS_ST_BODY_OBTAINING_IP_ADDRESS_ING"
-msgstr "Отримання IP-адреси..."
-
 msgid "IDS_WIFI_BODY_CHANNEL"
 msgstr "Канал"
-
-msgid "IDS_ST_BODY_NOTIFY_ME_WHEN_AN_OPEN_NETWORK_IS_AVAILABLE"
-msgstr "Сповістити про доступність відкритої мережі"
 
 msgid "IDS_WIFI_POP_AUTOMATIC_CONNECTION_NETWORK_WILL_DISABLED_CONTINUE_Q_MSG"
 msgstr "Автоматичне підключення до цієї мережі буде вимкнено. Продовжити?"
@@ -142,14 +106,8 @@ msgstr "Аутентифікація фази 2"
 msgid "IDS_WIFI_BODY_CONNECT"
 msgstr "З'єднати"
 
-msgid "IDS_ST_BODY_ADVANCED"
-msgstr "Додатково"
-
 msgid "IDS_WIFI_BODY_ENTER_SSID"
 msgstr "Ввести SSID"
-
-msgid "IDS_WIFI_HEADER_PASSWORD"
-msgstr "Пароль"
 
 msgid "IDS_WIFI_BODY_PROVISIONING"
 msgstr "Підготовка"
@@ -166,15 +124,6 @@ msgstr "Натисніть кнопку WPS на точці доступу Wi-Fi
 msgid "IDS_WIFI_BODY_SSID"
 msgstr "SSID"
 
-msgid "IDS_WIFI_BODY_ENTER_YOUR_IDENTITY"
-msgstr "Введіть свій ідентифікатор"
-
-msgid "IDS_WIFI_HEADER_ENTER_PASSWORD"
-msgstr "Введіть пароль"
-
-msgid "IDS_COM_BODY_SETTING"
-msgstr "Установка"
-
 msgid "IDS_WIFI_BODY_NOTIFY_WHEN_WI_FI_NETWORK_IS_FOUND"
 msgstr "Сповіщати в разі знаходження мережі Wi-Fi"
 
@@ -183,9 +132,6 @@ msgstr "(незмінний)"
 
 msgid "IDS_ST_HEADER_WPS_CONNECTION_ABB"
 msgstr "З’єднання WPS"
-
-msgid "IDS_WIFI_BODY_WPS_PIN"
-msgstr "PIN-код WPS"
 
 msgid "IDS_WIFI_BUTTON_WPS_BUTTON"
 msgstr "Кнопка WPS"
@@ -198,4 +144,16 @@ msgstr "Зачекайте..."
 
 msgid "IDS_WIFI_POP_UNABLE_TO_FIND_NETWORK"
 msgstr "Неможливо знайти мережу"
+
+msgid "IDS_ST_POP_INVALID_PASSWORD"
+msgstr "Хибний пароль"
+
+msgid "IDS_WIFI_BODY_ENTER_YOUR_PASSWORD"
+msgstr "Введіть пароль"
+
+msgid "IDS_WIFI_BODY_ENTER_YOUR_ID"
+msgstr "Введіть ідентифікатор"
+
+msgid "IDS_WIFI_BODY_DISABLE_WI_FI_TETHERING_TO_CONNECT_TO_A_WI_FI_NETWORK"
+msgstr "Вимкніть прив'язку Wi-Fi, щоб підключитися до мережі Wi-Fi"
 

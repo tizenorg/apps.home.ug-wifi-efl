@@ -1,9 +1,3 @@
-msgid "IDS_WIFI_BODY_CONNECTED"
-msgstr "연결되었습니다"
-
-msgid "IDS_WIFI_BODY_CONNECTING_ING"
-msgstr "연결 중..."
-
 msgid "IDS_WIFI_BODY_STATIC_IP"
 msgstr "고정 IP"
 
@@ -49,23 +43,8 @@ msgstr "Wi-Fi 네트워크"
 msgid "IDS_WIFI_BODY_DISCONNECTING_ING"
 msgstr "연결을 끊는 중..."
 
-msgid "IDS_WIFI_BODY_DYNAMIC_IP"
-msgstr "유동 IP"
-
-msgid "IDS_WIFI_BODY_NO_APS"
-msgstr "AP가 없습니다"
-
-msgid "IDS_WIFI_BODY_SECURITY_TYPE"
-msgstr "보안 형식"
-
-msgid "IDS_WIFI_HEADER_HIDDEN_NETWORK"
-msgstr "허용되지 않은 네트워크"
-
 msgid "IDS_WIFI_POP_DEACTIVATING_WI_FI_ING"
 msgstr "Wi-Fi 연결을 끊는 중..."
-
-msgid "IDS_WIFI_POP_SELECT_NETWORK"
-msgstr "네트워크를 선택하세요"
 
 msgid "IDS_WIFI_BODY_EAP_METHOD"
 msgstr "EAP 방식"
@@ -100,23 +79,14 @@ msgstr "ID를 입력하세요"
 msgid "IDS_WIFI_BODY_ENTER_ANONYMOUS_IDENTITY"
 msgstr "익명 ID를 입력하세요"
 
-msgid "IDS_CST_BODY_INPUT_PASSWORD"
-msgstr "비밀번호를 입력하세요"
-
 msgid "IDS_ST_BODY_SHOW_PASSWORD"
 msgstr "비밀번호 표시"
 
 msgid "IDS_WIFI_HEADER_PROXY_ADDRESS"
 msgstr "프록시 주소"
 
-msgid "IDS_WIFI_BODY_SIGNAL_STRENGTH"
-msgstr "신호 세기"
-
 msgid "IDS_WIFI_BODY_GATEWAY"
 msgstr "게이트웨이"
-
-msgid "IDS_WIFI_BODY_SECURITYTYPE_WEP"
-msgstr "WEP"
 
 msgid "IDS_WIFI_BODY_WEAK_M_STRENGTH"
 msgstr "약함"
@@ -124,14 +94,8 @@ msgstr "약함"
 msgid "IDS_ST_BODY_WPS_AVAILABLE"
 msgstr "WPS 사용 가능"
 
-msgid "IDS_ST_BODY_OBTAINING_IP_ADDRESS_ING"
-msgstr "IP 주소 불러오는 중..."
-
 msgid "IDS_WIFI_BODY_CHANNEL"
 msgstr "채널"
-
-msgid "IDS_ST_BODY_NOTIFY_ME_WHEN_AN_OPEN_NETWORK_IS_AVAILABLE"
-msgstr "공개 네트워크를 사용할 수 있을 때 알려줍니다"
 
 msgid "IDS_WIFI_POP_AUTOMATIC_CONNECTION_NETWORK_WILL_DISABLED_CONTINUE_Q_MSG"
 msgstr "이 네트워크로 자동 연결이 해제됩니다. 계속할까요?"
@@ -142,14 +106,8 @@ msgstr "2단계 인증"
 msgid "IDS_WIFI_BODY_CONNECT"
 msgstr "연결"
 
-msgid "IDS_ST_BODY_ADVANCED"
-msgstr "고급설정"
-
 msgid "IDS_WIFI_BODY_ENTER_SSID"
 msgstr "SSID를 입력하세요"
-
-msgid "IDS_WIFI_HEADER_PASSWORD"
-msgstr "비밀번호"
 
 msgid "IDS_WIFI_BODY_PROVISIONING"
 msgstr "설정 준비"
@@ -166,15 +124,6 @@ msgstr "Wi-Fi 액세스 포인트에서 WPS 버튼을 2분 안에 누르세요"
 msgid "IDS_WIFI_BODY_SSID"
 msgstr "SSID"
 
-msgid "IDS_WIFI_BODY_ENTER_YOUR_IDENTITY"
-msgstr "ID를 입력하세요"
-
-msgid "IDS_WIFI_HEADER_ENTER_PASSWORD"
-msgstr "비밀번호를 입력하세요"
-
-msgid "IDS_COM_BODY_SETTING"
-msgstr "설정"
-
 msgid "IDS_WIFI_BODY_NOTIFY_WHEN_WI_FI_NETWORK_IS_FOUND"
 msgstr "Wi-Fi 네트워크가 검색되면 알려줍니다"
 
@@ -183,9 +132,6 @@ msgstr "(변경 없음)"
 
 msgid "IDS_ST_HEADER_WPS_CONNECTION_ABB"
 msgstr "WPS 버튼 연결"
-
-msgid "IDS_WIFI_BODY_WPS_PIN"
-msgstr "WPS PIN"
 
 msgid "IDS_WIFI_BUTTON_WPS_BUTTON"
 msgstr "WPS 버튼"
@@ -198,4 +144,16 @@ msgstr "잠시만 기다리세요..."
 
 msgid "IDS_WIFI_POP_UNABLE_TO_FIND_NETWORK"
 msgstr "네트워크를 찾을 수 없습니다"
+
+msgid "IDS_ST_POP_INVALID_PASSWORD"
+msgstr "비밀번호가 바르지 않습니다"
+
+msgid "IDS_WIFI_BODY_ENTER_YOUR_PASSWORD"
+msgstr "비밀번호를 입력하세요"
+
+msgid "IDS_WIFI_BODY_ENTER_YOUR_ID"
+msgstr "ID를 입력하세요"
+
+msgid "IDS_WIFI_BODY_DISABLE_WI_FI_TETHERING_TO_CONNECT_TO_A_WI_FI_NETWORK"
+msgstr "Wi-Fi 네트워크에 연결하기 위해 Wi-Fi 테더링을 해제합니다"
 

@@ -1,9 +1,3 @@
-msgid "IDS_WIFI_BODY_CONNECTED"
-msgstr "Συνδέθηκε"
-
-msgid "IDS_WIFI_BODY_CONNECTING_ING"
-msgstr "Σύνδεση..."
-
 msgid "IDS_WIFI_BODY_STATIC_IP"
 msgstr "Στατικό IP"
 
@@ -49,23 +43,8 @@ msgstr "Δίκτυα Wi-Fi"
 msgid "IDS_WIFI_BODY_DISCONNECTING_ING"
 msgstr "Αποσύνδεση..."
 
-msgid "IDS_WIFI_BODY_DYNAMIC_IP"
-msgstr "Δυναμικό IP"
-
-msgid "IDS_WIFI_BODY_NO_APS"
-msgstr "Δεν υπάρχουν AP"
-
-msgid "IDS_WIFI_BODY_SECURITY_TYPE"
-msgstr "Τύπος ασφαλείας"
-
-msgid "IDS_WIFI_HEADER_HIDDEN_NETWORK"
-msgstr "Κρυφό δίκτυο"
-
 msgid "IDS_WIFI_POP_DEACTIVATING_WI_FI_ING"
 msgstr "Απενεργοποίηση Wi-Fi..."
-
-msgid "IDS_WIFI_POP_SELECT_NETWORK"
-msgstr "Επιλογή δικτύου"
 
 msgid "IDS_WIFI_BODY_EAP_METHOD"
 msgstr "Μέθοδος EAP"
@@ -100,23 +79,14 @@ msgstr "Εισαγάγετε ταυτότητα"
 msgid "IDS_WIFI_BODY_ENTER_ANONYMOUS_IDENTITY"
 msgstr "Εισαγάγετε άγνωστη ταυτότητα"
 
-msgid "IDS_CST_BODY_INPUT_PASSWORD"
-msgstr "Εισαγωγή κωδικού πρόσβασης"
-
 msgid "IDS_ST_BODY_SHOW_PASSWORD"
 msgstr "Εμφάνιση κωδικού πρόσβασης"
 
 msgid "IDS_WIFI_HEADER_PROXY_ADDRESS"
 msgstr "Διεύθ.διακ.μεσολάβ."
 
-msgid "IDS_WIFI_BODY_SIGNAL_STRENGTH"
-msgstr "Ισχύς σήματος"
-
 msgid "IDS_WIFI_BODY_GATEWAY"
 msgstr "Πύλη"
-
-msgid "IDS_WIFI_BODY_SECURITYTYPE_WEP"
-msgstr "WEP"
 
 msgid "IDS_WIFI_BODY_WEAK_M_STRENGTH"
 msgstr "Ασθενές"
@@ -124,14 +94,8 @@ msgstr "Ασθενές"
 msgid "IDS_ST_BODY_WPS_AVAILABLE"
 msgstr "Υπάρχει διαθέσιμο WPS"
 
-msgid "IDS_ST_BODY_OBTAINING_IP_ADDRESS_ING"
-msgstr "Γίνεται λήψη διεύθυνσης IP..."
-
 msgid "IDS_WIFI_BODY_CHANNEL"
 msgstr "Κανάλι"
-
-msgid "IDS_ST_BODY_NOTIFY_ME_WHEN_AN_OPEN_NETWORK_IS_AVAILABLE"
-msgstr "Να ειδοποιούμαι όταν υπάρχει διαθέσιμο ανοικτό δίκτυο"
 
 msgid "IDS_WIFI_POP_AUTOMATIC_CONNECTION_NETWORK_WILL_DISABLED_CONTINUE_Q_MSG"
 msgstr "Η αυτόματη σύνδεση σε αυτό το δίκτυο θα απενεργοποιηθεί. Συνέχεια;"
@@ -142,14 +106,8 @@ msgstr "2η φάση ελέγχου ταυτότητας"
 msgid "IDS_WIFI_BODY_CONNECT"
 msgstr "Σύνδεση"
 
-msgid "IDS_ST_BODY_ADVANCED"
-msgstr "Για προχωρημένους"
-
 msgid "IDS_WIFI_BODY_ENTER_SSID"
 msgstr "Εισαγωγή στο SSID"
-
-msgid "IDS_WIFI_HEADER_PASSWORD"
-msgstr "Κωδικός πρόσβασης"
 
 msgid "IDS_WIFI_BODY_PROVISIONING"
 msgstr "Παροχή"
@@ -166,15 +124,6 @@ msgstr "Πιέστε το WPS του σημείου πρόσβασης Wi-Fi ε�
 msgid "IDS_WIFI_BODY_SSID"
 msgstr "SSID"
 
-msgid "IDS_WIFI_BODY_ENTER_YOUR_IDENTITY"
-msgstr "Εισαγάγετε την ταυτότητά σας"
-
-msgid "IDS_WIFI_HEADER_ENTER_PASSWORD"
-msgstr "Εισαγωγή κωδικού"
-
-msgid "IDS_COM_BODY_SETTING"
-msgstr "Ρύθμιση"
-
 msgid "IDS_WIFI_BODY_NOTIFY_WHEN_WI_FI_NETWORK_IS_FOUND"
 msgstr "Να ειδοποιούμαι, όταν εντοπίζεται δίκτυο Wi-Fi"
 
@@ -183,9 +132,6 @@ msgstr "(χωρίς αλλαγές)"
 
 msgid "IDS_ST_HEADER_WPS_CONNECTION_ABB"
 msgstr "Σύνδεση WPS"
-
-msgid "IDS_WIFI_BODY_WPS_PIN"
-msgstr "PIN WPS"
 
 msgid "IDS_WIFI_BUTTON_WPS_BUTTON"
 msgstr "Πλήκτρο WPS"
@@ -198,4 +144,16 @@ msgstr "Περιμένετε..."
 
 msgid "IDS_WIFI_POP_UNABLE_TO_FIND_NETWORK"
 msgstr "Δεν είναι δυνατή η εύρεση του δικτύου"
+
+msgid "IDS_ST_POP_INVALID_PASSWORD"
+msgstr "Μη έγκυρος κωδικός"
+
+msgid "IDS_WIFI_BODY_ENTER_YOUR_PASSWORD"
+msgstr "Εισαγωγή του κωδικού πρόσβασης"
+
+msgid "IDS_WIFI_BODY_ENTER_YOUR_ID"
+msgstr "Εισάγετε το ID σας"
+
+msgid "IDS_WIFI_BODY_DISABLE_WI_FI_TETHERING_TO_CONNECT_TO_A_WI_FI_NETWORK"
+msgstr "Απενεργοποιήστε το Wi-Fi tethering για να συνδεθείτε σε δίκτυο Wi-Fi"
 

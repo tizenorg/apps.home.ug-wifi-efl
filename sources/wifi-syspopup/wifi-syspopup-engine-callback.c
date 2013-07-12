@@ -26,6 +26,7 @@
 #include "common_utils.h"
 #include "wlan_connection.h"
 #include "wifi-syspopup-engine-callback.h"
+#include "i18nmanager.h"
 
 extern wifi_object* syspopup_app_state;
 
@@ -121,7 +122,7 @@ void wlan_engine_callback(wlan_mgr_event_info_t *event_info, void *user_data)
 		break;
 
 	case WLAN_MANAGER_RESPONSE_TYPE_CONNECTION_INVALID_KEY:
-		view_alerts_popup_ok_show(INVALID_PASSWORD);
+		view_alerts_popup_ok_show(sc(PACKAGE, I18N_TYPE_Invalid_password));
 		break;
 
 	default:

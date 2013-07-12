@@ -1,9 +1,3 @@
-msgid "IDS_WIFI_BODY_CONNECTED"
-msgstr "تم التوصيل"
-
-msgid "IDS_WIFI_BODY_CONNECTING_ING"
-msgstr "جاري التوصيل"
-
 msgid "IDS_WIFI_BODY_STATIC_IP"
 msgstr "ثابت IP"
 
@@ -49,23 +43,8 @@ msgstr "شبكات Wi-Fi"
 msgid "IDS_WIFI_BODY_DISCONNECTING_ING"
 msgstr "جاري الفصل..."
 
-msgid "IDS_WIFI_BODY_DYNAMIC_IP"
-msgstr "IP ديناميكي"
-
-msgid "IDS_WIFI_BODY_NO_APS"
-msgstr "بلا APs"
-
-msgid "IDS_WIFI_BODY_SECURITY_TYPE"
-msgstr "نوع الأمن"
-
-msgid "IDS_WIFI_HEADER_HIDDEN_NETWORK"
-msgstr "شبكة مخفية"
-
 msgid "IDS_WIFI_POP_DEACTIVATING_WI_FI_ING"
 msgstr "جاري إلعاء تنشيط Wi-Fi..."
-
-msgid "IDS_WIFI_POP_SELECT_NETWORK"
-msgstr "اختيار شبكة"
 
 msgid "IDS_WIFI_BODY_EAP_METHOD"
 msgstr "أسلوب EAP"
@@ -100,23 +79,14 @@ msgstr "إدخال الهوية"
 msgid "IDS_WIFI_BODY_ENTER_ANONYMOUS_IDENTITY"
 msgstr "إدخال هوية مجهولة"
 
-msgid "IDS_CST_BODY_INPUT_PASSWORD"
-msgstr "أدخل كلمة السر"
-
 msgid "IDS_ST_BODY_SHOW_PASSWORD"
 msgstr "عرض كلمة المرور"
 
 msgid "IDS_WIFI_HEADER_PROXY_ADDRESS"
 msgstr "عنوان التفويض"
 
-msgid "IDS_WIFI_BODY_SIGNAL_STRENGTH"
-msgstr "قوة الإشارة"
-
 msgid "IDS_WIFI_BODY_GATEWAY"
 msgstr "البوابة"
-
-msgid "IDS_WIFI_BODY_SECURITYTYPE_WEP"
-msgstr "WEP"
 
 msgid "IDS_WIFI_BODY_WEAK_M_STRENGTH"
 msgstr "ضعيفة"
@@ -124,14 +94,8 @@ msgstr "ضعيفة"
 msgid "IDS_ST_BODY_WPS_AVAILABLE"
 msgstr "WPS متوفر"
 
-msgid "IDS_ST_BODY_OBTAINING_IP_ADDRESS_ING"
-msgstr "جار الحصول على عنوان IP..."
-
 msgid "IDS_WIFI_BODY_CHANNEL"
 msgstr "القناة"
-
-msgid "IDS_ST_BODY_NOTIFY_ME_WHEN_AN_OPEN_NETWORK_IS_AVAILABLE"
-msgstr "إخطاري عند توفر شبكة مفتوحة"
 
 msgid "IDS_WIFI_POP_AUTOMATIC_CONNECTION_NETWORK_WILL_DISABLED_CONTINUE_Q_MSG"
 msgstr "الاتصال التلقائي بهذه الشبكة سيتم تعطيله. متابعة؟"
@@ -142,14 +106,8 @@ msgstr "مصادقة المرحلة الثانية"
 msgid "IDS_WIFI_BODY_CONNECT"
 msgstr "توصيل"
 
-msgid "IDS_ST_BODY_ADVANCED"
-msgstr "متقدم"
-
 msgid "IDS_WIFI_BODY_ENTER_SSID"
 msgstr "أدخل SSID"
-
-msgid "IDS_WIFI_HEADER_PASSWORD"
-msgstr "كلمة المرور"
 
 msgid "IDS_WIFI_BODY_PROVISIONING"
 msgstr "التزويد"
@@ -166,15 +124,6 @@ msgstr "اضغط علي WPS في نقطة وصول Wi-Fi لديك خلال دق�
 msgid "IDS_WIFI_BODY_SSID"
 msgstr "SSID"
 
-msgid "IDS_WIFI_BODY_ENTER_YOUR_IDENTITY"
-msgstr "إدخال الهوية"
-
-msgid "IDS_WIFI_HEADER_ENTER_PASSWORD"
-msgstr "أدخل كلمة المرور"
-
-msgid "IDS_COM_BODY_SETTING"
-msgstr "الضبط"
-
 msgid "IDS_WIFI_BODY_NOTIFY_WHEN_WI_FI_NETWORK_IS_FOUND"
 msgstr "إخطار عند العثور على شبكة Wi-Fi"
 
@@ -183,9 +132,6 @@ msgstr "(بدون تغيير)"
 
 msgid "IDS_ST_HEADER_WPS_CONNECTION_ABB"
 msgstr "اتصال WPS"
-
-msgid "IDS_WIFI_BODY_WPS_PIN"
-msgstr "WPS PIN"
 
 msgid "IDS_WIFI_BUTTON_WPS_BUTTON"
 msgstr "زر WPS"
@@ -198,4 +144,16 @@ msgstr "يرجى الانتظار ..."
 
 msgid "IDS_WIFI_POP_UNABLE_TO_FIND_NETWORK"
 msgstr "يتعذر البحث عن شبكة"
+
+msgid "IDS_ST_POP_INVALID_PASSWORD"
+msgstr "كلمة مرور غير صالحة"
+
+msgid "IDS_WIFI_BODY_ENTER_YOUR_PASSWORD"
+msgstr "أدخل كلمة المرور"
+
+msgid "IDS_WIFI_BODY_ENTER_YOUR_ID"
+msgstr "أدخل المعرف"
+
+msgid "IDS_WIFI_BODY_DISABLE_WI_FI_TETHERING_TO_CONNECT_TO_A_WI_FI_NETWORK"
+msgstr "ألغ تفعيل الربط عبر Wi-Fi للاتصال بشبكة Wi-Fi"
 

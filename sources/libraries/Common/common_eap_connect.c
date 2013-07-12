@@ -1042,7 +1042,7 @@ static void __common_eap_connect_done_cb(void *data, Evas_Object *obj,		void *ev
 		str_id = common_utils_get_list_item_entry_txt(eap_data->eap_id_item);
 		if (str_id == NULL || str_id[0] == '\0') {
 			common_utils_show_info_ok_popup(eap_data->win,
-					eap_data->str_pkg_name, EAP_CHECK_YOUR_ID_STR);
+					eap_data->str_pkg_name, sc(eap_data->str_pkg_name, I18N_TYPE_Enter_Your_Id));
 			eap_data->eap_done_ok = FALSE;
 
 			__COMMON_FUNC_EXIT__;
@@ -1052,7 +1052,7 @@ static void __common_eap_connect_done_cb(void *data, Evas_Object *obj,		void *ev
 		str_pw = common_utils_get_list_item_entry_txt(eap_data->eap_pw_item);
 		if (str_pw == NULL || str_pw[0] == '\0') {
 			common_utils_show_info_ok_popup(eap_data->win,
-					eap_data->str_pkg_name, EAP_CHECK_YOUR_PASWD_STR);
+					eap_data->str_pkg_name, sc(eap_data->str_pkg_name, I18N_TYPE_Enter_Your_Password));
 			eap_data->eap_done_ok = FALSE;
 
 			__COMMON_FUNC_EXIT__;

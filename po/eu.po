@@ -1,9 +1,3 @@
-msgid "IDS_WIFI_BODY_CONNECTED"
-msgstr "Konektatuta"
-
-msgid "IDS_WIFI_BODY_CONNECTING_ING"
-msgstr "Konektatzen"
-
 msgid "IDS_WIFI_BODY_STATIC_IP"
 msgstr "IP estatikoa"
 
@@ -49,23 +43,8 @@ msgstr "Wi-Fi sareak"
 msgid "IDS_WIFI_BODY_DISCONNECTING_ING"
 msgstr "Deskonektatzen"
 
-msgid "IDS_WIFI_BODY_DYNAMIC_IP"
-msgstr "IP dinamikoa"
-
-msgid "IDS_WIFI_BODY_NO_APS"
-msgstr "APs-ik ez"
-
-msgid "IDS_WIFI_BODY_SECURITY_TYPE"
-msgstr "Segurtasun mota"
-
-msgid "IDS_WIFI_HEADER_HIDDEN_NETWORK"
-msgstr "Sare ezkutua"
-
 msgid "IDS_WIFI_POP_DEACTIVATING_WI_FI_ING"
 msgstr "Wi-Fia desaktibatzen..."
-
-msgid "IDS_WIFI_POP_SELECT_NETWORK"
-msgstr "Sarea aukeratu"
 
 msgid "IDS_WIFI_BODY_EAP_METHOD"
 msgstr "EAP metodoa"
@@ -100,23 +79,14 @@ msgstr "Sartu identitatea"
 msgid "IDS_WIFI_BODY_ENTER_ANONYMOUS_IDENTITY"
 msgstr "Sartu identitate anonimoa"
 
-msgid "IDS_CST_BODY_INPUT_PASSWORD"
-msgstr "Sartu pasahitza"
-
 msgid "IDS_ST_BODY_SHOW_PASSWORD"
 msgstr "Erakutsi pasahitza"
 
 msgid "IDS_WIFI_HEADER_PROXY_ADDRESS"
 msgstr "Proxy helbidea"
 
-msgid "IDS_WIFI_BODY_SIGNAL_STRENGTH"
-msgstr "Seinalearen intentsitatea"
-
 msgid "IDS_WIFI_BODY_GATEWAY"
 msgstr "Atebidea"
-
-msgid "IDS_WIFI_BODY_SECURITYTYPE_WEP"
-msgstr "WEP"
 
 msgid "IDS_WIFI_BODY_WEAK_M_STRENGTH"
 msgstr "Ahula"
@@ -124,14 +94,8 @@ msgstr "Ahula"
 msgid "IDS_ST_BODY_WPS_AVAILABLE"
 msgstr "WPS eskuragarri"
 
-msgid "IDS_ST_BODY_OBTAINING_IP_ADDRESS_ING"
-msgstr "IP helbidea lortzen..."
-
 msgid "IDS_WIFI_BODY_CHANNEL"
 msgstr "Kanala"
-
-msgid "IDS_ST_BODY_NOTIFY_ME_WHEN_AN_OPEN_NETWORK_IS_AVAILABLE"
-msgstr "Jakinarazi sare ireki bat eskuragarri dagoenean"
 
 msgid "IDS_WIFI_POP_AUTOMATIC_CONNECTION_NETWORK_WILL_DISABLED_CONTINUE_Q_MSG"
 msgstr "Sare honetarako konexio automatikoa ezgaituko da. Jarraitu?"
@@ -142,14 +106,8 @@ msgstr "2. fasearen egiaztapena"
 msgid "IDS_WIFI_BODY_CONNECT"
 msgstr "Konektatu"
 
-msgid "IDS_ST_BODY_ADVANCED"
-msgstr "Aurreratua"
-
 msgid "IDS_WIFI_BODY_ENTER_SSID"
 msgstr "SSIDa idatzi"
-
-msgid "IDS_WIFI_HEADER_PASSWORD"
-msgstr "Pasahitza"
 
 msgid "IDS_WIFI_BODY_PROVISIONING"
 msgstr "Hornitzea"
@@ -166,15 +124,6 @@ msgstr "Sakatu WPS Wi-Fi sargunean 2 minutu igaro baino lehen"
 msgid "IDS_WIFI_BODY_SSID"
 msgstr "SSID"
 
-msgid "IDS_WIFI_BODY_ENTER_YOUR_IDENTITY"
-msgstr "Sartu zure identitatea"
-
-msgid "IDS_WIFI_HEADER_ENTER_PASSWORD"
-msgstr "Pasahitza idatzi"
-
-msgid "IDS_COM_BODY_SETTING"
-msgstr "Konfiguraz."
-
 msgid "IDS_WIFI_BODY_NOTIFY_WHEN_WI_FI_NETWORK_IS_FOUND"
 msgstr "Jakinarazi Wi-Fi sarea aurkitzen denean"
 
@@ -183,9 +132,6 @@ msgstr "(aldatugabea)"
 
 msgid "IDS_ST_HEADER_WPS_CONNECTION_ABB"
 msgstr "WPS konexioa"
-
-msgid "IDS_WIFI_BODY_WPS_PIN"
-msgstr "WPS PINa"
 
 msgid "IDS_WIFI_BUTTON_WPS_BUTTON"
 msgstr "WPS botoia"
@@ -198,4 +144,16 @@ msgstr "Zain..."
 
 msgid "IDS_WIFI_POP_UNABLE_TO_FIND_NETWORK"
 msgstr "Ezin da sarea aurkitu"
+
+msgid "IDS_ST_POP_INVALID_PASSWORD"
+msgstr "Pasahitz baliogabea"
+
+msgid "IDS_WIFI_BODY_ENTER_YOUR_PASSWORD"
+msgstr "Adierazi zure pasahitza"
+
+msgid "IDS_WIFI_BODY_ENTER_YOUR_ID"
+msgstr "Adierazi zure IDa"
+
+msgid "IDS_WIFI_BODY_DISABLE_WI_FI_TETHERING_TO_CONNECT_TO_A_WI_FI_NETWORK"
+msgstr "Ezgaitu Wi-Fi ainguraketa Wi-Fi sare batera konektatzeko"
 

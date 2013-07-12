@@ -1,9 +1,3 @@
-msgid "IDS_WIFI_BODY_CONNECTED"
-msgstr "Verbonden"
-
-msgid "IDS_WIFI_BODY_CONNECTING_ING"
-msgstr "Verbinden..."
-
 msgid "IDS_WIFI_BODY_STATIC_IP"
 msgstr "Vast IP"
 
@@ -49,23 +43,8 @@ msgstr "Wi-Fi-netwerken"
 msgid "IDS_WIFI_BODY_DISCONNECTING_ING"
 msgstr "Verbinding verbreken..."
 
-msgid "IDS_WIFI_BODY_DYNAMIC_IP"
-msgstr "Dynamische IP"
-
-msgid "IDS_WIFI_BODY_NO_APS"
-msgstr "Geen AP’s"
-
-msgid "IDS_WIFI_BODY_SECURITY_TYPE"
-msgstr "Beveiligingstype"
-
-msgid "IDS_WIFI_HEADER_HIDDEN_NETWORK"
-msgstr "Verborgen netwerk"
-
 msgid "IDS_WIFI_POP_DEACTIVATING_WI_FI_ING"
 msgstr "Wi-Fi deactiveren..."
-
-msgid "IDS_WIFI_POP_SELECT_NETWORK"
-msgstr "Netwerk kiezen"
 
 msgid "IDS_WIFI_BODY_EAP_METHOD"
 msgstr "EAP-methode"
@@ -100,23 +79,14 @@ msgstr "Identiteit opgeven"
 msgid "IDS_WIFI_BODY_ENTER_ANONYMOUS_IDENTITY"
 msgstr "Anonieme identiteit opgeven"
 
-msgid "IDS_CST_BODY_INPUT_PASSWORD"
-msgstr "Wachtwoord ingeven"
-
 msgid "IDS_ST_BODY_SHOW_PASSWORD"
 msgstr "Wachtwoord tonen"
 
 msgid "IDS_WIFI_HEADER_PROXY_ADDRESS"
 msgstr "Proxyadres"
 
-msgid "IDS_WIFI_BODY_SIGNAL_STRENGTH"
-msgstr "Signaalsterkte"
-
 msgid "IDS_WIFI_BODY_GATEWAY"
 msgstr "Gateway"
-
-msgid "IDS_WIFI_BODY_SECURITYTYPE_WEP"
-msgstr "WEP"
 
 msgid "IDS_WIFI_BODY_WEAK_M_STRENGTH"
 msgstr "Zwak"
@@ -124,14 +94,8 @@ msgstr "Zwak"
 msgid "IDS_ST_BODY_WPS_AVAILABLE"
 msgstr "WPS beschikbaar"
 
-msgid "IDS_ST_BODY_OBTAINING_IP_ADDRESS_ING"
-msgstr "IP-adres ophalen..."
-
 msgid "IDS_WIFI_BODY_CHANNEL"
 msgstr "Kanaal"
-
-msgid "IDS_ST_BODY_NOTIFY_ME_WHEN_AN_OPEN_NETWORK_IS_AVAILABLE"
-msgstr "Melden wanneer open netwerk beschikbaar is"
 
 msgid "IDS_WIFI_POP_AUTOMATIC_CONNECTION_NETWORK_WILL_DISABLED_CONTINUE_Q_MSG"
 msgstr "Automatische verbinding met dit netwerk wordt uitgeschakeld. Doorgaan?"
@@ -142,14 +106,8 @@ msgstr "Verificatie fase 2"
 msgid "IDS_WIFI_BODY_CONNECT"
 msgstr "Verbinden"
 
-msgid "IDS_ST_BODY_ADVANCED"
-msgstr "Geavanceerd"
-
 msgid "IDS_WIFI_BODY_ENTER_SSID"
 msgstr "Geef SSID in"
-
-msgid "IDS_WIFI_HEADER_PASSWORD"
-msgstr "Wachtwoord"
 
 msgid "IDS_WIFI_BODY_PROVISIONING"
 msgstr "Voorziening"
@@ -166,15 +124,6 @@ msgstr "Druk binnen 2 minuten op WPS op uw Wi-Fi-toegangspunt"
 msgid "IDS_WIFI_BODY_SSID"
 msgstr "SSID"
 
-msgid "IDS_WIFI_BODY_ENTER_YOUR_IDENTITY"
-msgstr "Uw identiteit opgeven"
-
-msgid "IDS_WIFI_HEADER_ENTER_PASSWORD"
-msgstr "Wachtwoord invoeren"
-
-msgid "IDS_COM_BODY_SETTING"
-msgstr "Instelling"
-
 msgid "IDS_WIFI_BODY_NOTIFY_WHEN_WI_FI_NETWORK_IS_FOUND"
 msgstr "Melden wanneer een Wi-Fi-netwerk is gevonden"
 
@@ -183,9 +132,6 @@ msgstr "(ongewijzigd)"
 
 msgid "IDS_ST_HEADER_WPS_CONNECTION_ABB"
 msgstr "WPS-verbinding"
-
-msgid "IDS_WIFI_BODY_WPS_PIN"
-msgstr "WPS PIN"
 
 msgid "IDS_WIFI_BUTTON_WPS_BUTTON"
 msgstr "WPS-knop"
@@ -198,4 +144,16 @@ msgstr "Even geduld..."
 
 msgid "IDS_WIFI_POP_UNABLE_TO_FIND_NETWORK"
 msgstr "Kan netwerk niet vinden"
+
+msgid "IDS_ST_POP_INVALID_PASSWORD"
+msgstr "Wachtwoord onjuist"
+
+msgid "IDS_WIFI_BODY_ENTER_YOUR_PASSWORD"
+msgstr "Geef uw wachtwoord in"
+
+msgid "IDS_WIFI_BODY_ENTER_YOUR_ID"
+msgstr "Geef uw id op"
+
+msgid "IDS_WIFI_BODY_DISABLE_WI_FI_TETHERING_TO_CONNECT_TO_A_WI_FI_NETWORK"
+msgstr "Schakel Wi-Fi-tethering uit om verbinding te maken met een Wi-Fi-netwerk"
 

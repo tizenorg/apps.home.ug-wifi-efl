@@ -1,9 +1,3 @@
-msgid "IDS_WIFI_BODY_CONNECTED"
-msgstr "已连接"
-
-msgid "IDS_WIFI_BODY_CONNECTING_ING"
-msgstr "连接中..."
-
 msgid "IDS_WIFI_BODY_STATIC_IP"
 msgstr "静态IP"
 
@@ -49,23 +43,8 @@ msgstr "Wi-Fi网络"
 msgid "IDS_WIFI_BODY_DISCONNECTING_ING"
 msgstr "正在断开..."
 
-msgid "IDS_WIFI_BODY_DYNAMIC_IP"
-msgstr "动态 IP"
-
-msgid "IDS_WIFI_BODY_NO_APS"
-msgstr "没有Ap"
-
-msgid "IDS_WIFI_BODY_SECURITY_TYPE"
-msgstr "安全类型"
-
-msgid "IDS_WIFI_HEADER_HIDDEN_NETWORK"
-msgstr "隐藏的网络"
-
 msgid "IDS_WIFI_POP_DEACTIVATING_WI_FI_ING"
 msgstr "正在取消Wi-Fi..."
-
-msgid "IDS_WIFI_POP_SELECT_NETWORK"
-msgstr "选择网络"
 
 msgid "IDS_WIFI_BODY_EAP_METHOD"
 msgstr "EAP 方法"
@@ -100,23 +79,14 @@ msgstr "输入 ID"
 msgid "IDS_WIFI_BODY_ENTER_ANONYMOUS_IDENTITY"
 msgstr "输入匿名 ID"
 
-msgid "IDS_CST_BODY_INPUT_PASSWORD"
-msgstr "输入密码"
-
 msgid "IDS_ST_BODY_SHOW_PASSWORD"
 msgstr "显示密码"
 
 msgid "IDS_WIFI_HEADER_PROXY_ADDRESS"
 msgstr "代理服务器地址"
 
-msgid "IDS_WIFI_BODY_SIGNAL_STRENGTH"
-msgstr "信号强度"
-
 msgid "IDS_WIFI_BODY_GATEWAY"
 msgstr "网关"
-
-msgid "IDS_WIFI_BODY_SECURITYTYPE_WEP"
-msgstr "WEP"
 
 msgid "IDS_WIFI_BODY_WEAK_M_STRENGTH"
 msgstr "弱"
@@ -124,14 +94,8 @@ msgstr "弱"
 msgid "IDS_ST_BODY_WPS_AVAILABLE"
 msgstr "WPS可用"
 
-msgid "IDS_ST_BODY_OBTAINING_IP_ADDRESS_ING"
-msgstr "正在获取 IP 地址…"
-
 msgid "IDS_WIFI_BODY_CHANNEL"
 msgstr "频道"
-
-msgid "IDS_ST_BODY_NOTIFY_ME_WHEN_AN_OPEN_NETWORK_IS_AVAILABLE"
-msgstr "开放网络可用时通知我"
 
 msgid "IDS_WIFI_POP_AUTOMATIC_CONNECTION_NETWORK_WILL_DISABLED_CONTINUE_Q_MSG"
 msgstr "自动连接到此网络将被禁用。继续吗？"
@@ -142,14 +106,8 @@ msgstr "阶段2认证"
 msgid "IDS_WIFI_BODY_CONNECT"
 msgstr "连接"
 
-msgid "IDS_ST_BODY_ADVANCED"
-msgstr "高级设定"
-
 msgid "IDS_WIFI_BODY_ENTER_SSID"
 msgstr "输入 SSID"
-
-msgid "IDS_WIFI_HEADER_PASSWORD"
-msgstr "密码"
 
 msgid "IDS_WIFI_BODY_PROVISIONING"
 msgstr "配置"
@@ -166,15 +124,6 @@ msgstr "在 2 分钟内按下您 Wi-Fi 接入点上的 WPS"
 msgid "IDS_WIFI_BODY_SSID"
 msgstr "SSID"
 
-msgid "IDS_WIFI_BODY_ENTER_YOUR_IDENTITY"
-msgstr "输入您的 ID"
-
-msgid "IDS_WIFI_HEADER_ENTER_PASSWORD"
-msgstr "输入密码"
-
-msgid "IDS_COM_BODY_SETTING"
-msgstr "设定"
-
 msgid "IDS_WIFI_BODY_NOTIFY_WHEN_WI_FI_NETWORK_IS_FOUND"
 msgstr "当找到 Wi-Fi 网络时通知"
 
@@ -183,9 +132,6 @@ msgstr "（未更改）"
 
 msgid "IDS_ST_HEADER_WPS_CONNECTION_ABB"
 msgstr "WPS连接"
-
-msgid "IDS_WIFI_BODY_WPS_PIN"
-msgstr "WPS PIN"
 
 msgid "IDS_WIFI_BUTTON_WPS_BUTTON"
 msgstr "WPS按钮"
@@ -198,4 +144,16 @@ msgstr "请稍等…"
 
 msgid "IDS_WIFI_POP_UNABLE_TO_FIND_NETWORK"
 msgstr "无法找到网络"
+
+msgid "IDS_ST_POP_INVALID_PASSWORD"
+msgstr "无效密码"
+
+msgid "IDS_WIFI_BODY_ENTER_YOUR_PASSWORD"
+msgstr "输入您的密码"
+
+msgid "IDS_WIFI_BODY_ENTER_YOUR_ID"
+msgstr "输入您的 ID"
+
+msgid "IDS_WIFI_BODY_DISABLE_WI_FI_TETHERING_TO_CONNECT_TO_A_WI_FI_NETWORK"
+msgstr "禁用 Wi-Fi 网络共享以连接至 Wi-Fi 网络"
 

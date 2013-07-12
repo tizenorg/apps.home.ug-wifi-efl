@@ -1,9 +1,3 @@
-msgid "IDS_WIFI_BODY_CONNECTED"
-msgstr "Connecté"
-
-msgid "IDS_WIFI_BODY_CONNECTING_ING"
-msgstr "Connexion ..."
-
 msgid "IDS_WIFI_BODY_STATIC_IP"
 msgstr "IP statique"
 
@@ -49,23 +43,8 @@ msgstr "Réseaux Wifi"
 msgid "IDS_WIFI_BODY_DISCONNECTING_ING"
 msgstr "Déconnexion ..."
 
-msgid "IDS_WIFI_BODY_DYNAMIC_IP"
-msgstr "IP dynamique"
-
-msgid "IDS_WIFI_BODY_NO_APS"
-msgstr "Aucun PA"
-
-msgid "IDS_WIFI_BODY_SECURITY_TYPE"
-msgstr "Type de sécurité"
-
-msgid "IDS_WIFI_HEADER_HIDDEN_NETWORK"
-msgstr "Réseau masqué"
-
 msgid "IDS_WIFI_POP_DEACTIVATING_WI_FI_ING"
 msgstr "Désactivation wifi..."
-
-msgid "IDS_WIFI_POP_SELECT_NETWORK"
-msgstr "Sélectionner un réseau"
 
 msgid "IDS_WIFI_BODY_EAP_METHOD"
 msgstr "Méthode EAP"
@@ -100,23 +79,14 @@ msgstr "Indiquer une identité"
 msgid "IDS_WIFI_BODY_ENTER_ANONYMOUS_IDENTITY"
 msgstr "Indiquer une identité anonyme"
 
-msgid "IDS_CST_BODY_INPUT_PASSWORD"
-msgstr "Saisissez le mot de passe"
-
 msgid "IDS_ST_BODY_SHOW_PASSWORD"
 msgstr "Afficher le mot de passe"
 
 msgid "IDS_WIFI_HEADER_PROXY_ADDRESS"
 msgstr "Adresse du serveur mandataire"
 
-msgid "IDS_WIFI_BODY_SIGNAL_STRENGTH"
-msgstr "Force du signal"
-
 msgid "IDS_WIFI_BODY_GATEWAY"
 msgstr "Passerelle"
-
-msgid "IDS_WIFI_BODY_SECURITYTYPE_WEP"
-msgstr "WEP"
 
 msgid "IDS_WIFI_BODY_WEAK_M_STRENGTH"
 msgstr "Faible"
@@ -124,14 +94,8 @@ msgstr "Faible"
 msgid "IDS_ST_BODY_WPS_AVAILABLE"
 msgstr "WPS disponible"
 
-msgid "IDS_ST_BODY_OBTAINING_IP_ADDRESS_ING"
-msgstr "Obtention de l'adresse IP..."
-
 msgid "IDS_WIFI_BODY_CHANNEL"
 msgstr "Chaine"
-
-msgid "IDS_ST_BODY_NOTIFY_ME_WHEN_AN_OPEN_NETWORK_IS_AVAILABLE"
-msgstr "M'avertir quand un réseau ouvert est disponible"
 
 msgid "IDS_WIFI_POP_AUTOMATIC_CONNECTION_NETWORK_WILL_DISABLED_CONTINUE_Q_MSG"
 msgstr "La connexion automatique à ce réseau va être désactivée. Continuer ?"
@@ -142,14 +106,8 @@ msgstr "Authentification Phase 2"
 msgid "IDS_WIFI_BODY_CONNECT"
 msgstr "Connexion"
 
-msgid "IDS_ST_BODY_ADVANCED"
-msgstr "Paramètres avancés"
-
 msgid "IDS_WIFI_BODY_ENTER_SSID"
 msgstr "Entrer SSID"
-
-msgid "IDS_WIFI_HEADER_PASSWORD"
-msgstr "Mot de passe"
 
 msgid "IDS_WIFI_BODY_PROVISIONING"
 msgstr "Préparation"
@@ -166,15 +124,6 @@ msgstr "Appuyez sur le bouton WPS de votre point d'accès Wifi d'ici 2 minutes p
 msgid "IDS_WIFI_BODY_SSID"
 msgstr "SSID"
 
-msgid "IDS_WIFI_BODY_ENTER_YOUR_IDENTITY"
-msgstr "Indiquer votre identité"
-
-msgid "IDS_WIFI_HEADER_ENTER_PASSWORD"
-msgstr "Saisir le mot de passe"
-
-msgid "IDS_COM_BODY_SETTING"
-msgstr "Paramètre"
-
 msgid "IDS_WIFI_BODY_NOTIFY_WHEN_WI_FI_NETWORK_IS_FOUND"
 msgstr "M'avertir lorsqu'un réseau Wifi est détecté"
 
@@ -183,9 +132,6 @@ msgstr "(aucune modification)"
 
 msgid "IDS_ST_HEADER_WPS_CONNECTION_ABB"
 msgstr "Connexion WPS"
-
-msgid "IDS_WIFI_BODY_WPS_PIN"
-msgstr "NIP WPS"
 
 msgid "IDS_WIFI_BUTTON_WPS_BUTTON"
 msgstr "Bouton WPS"
@@ -198,4 +144,16 @@ msgstr "Veuillez patienter..."
 
 msgid "IDS_WIFI_POP_UNABLE_TO_FIND_NETWORK"
 msgstr "Réseau introuvable"
+
+msgid "IDS_ST_POP_INVALID_PASSWORD"
+msgstr "Mot de passe invalide"
+
+msgid "IDS_WIFI_BODY_ENTER_YOUR_PASSWORD"
+msgstr "Entrez votre mot de passe"
+
+msgid "IDS_WIFI_BODY_ENTER_YOUR_ID"
+msgstr "Entrez votre ID"
+
+msgid "IDS_WIFI_BODY_DISABLE_WI_FI_TETHERING_TO_CONNECT_TO_A_WI_FI_NETWORK"
+msgstr "Désactiver le modem Wi-Fi pour se connecter à un réseau Wi-Fi"
 

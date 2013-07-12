@@ -187,7 +187,7 @@ void winset_popup_mode_set(popup_manager_object_t *manager_object,
 		if (NULL != manager_object->popup_user_prompt)
 			break;
 
-		popup_btn_data.info_txt = WIFI_TETHERING_FAILED_STR;
+		popup_btn_data.info_txt = sc(PACKAGE,I18N_TYPE_Disable_WiFi_Tethering_To_Connect_To_A_WiFi_Network);
 		popup_btn_data.btn1_cb = __wifi_tethering_off_ok_cb;
 		popup_btn_data.btn2_cb = __wifi_tethering_off_no_cb;
 		popup_btn_data.btn1_data = popup_btn_data.btn2_data = manager_object;
@@ -218,21 +218,21 @@ void winset_popup_mode_set(popup_manager_object_t *manager_object,
 		break;
 
 	case POPUP_OPTION_WEP_PSWD_LEN_ERROR:
-		info_txt = WEP_WRONG_PASSWORD_LEN_ERR_MSG_STR;
+		info_txt = sc(manager_object->str_pkg_name, I18N_TYPE_Invalid_password);
 		manager_object->popup =
 				common_utils_show_info_ok_popup(
 						manager_object->win, manager_object->str_pkg_name, info_txt);
 		break;
 
 	case POPUP_OPTION_WPA_PSWD_LEN_ERROR:
-		info_txt = WPA_WRONG_PASSWORD_LEN_ERR_MSG_STR;
+		info_txt = sc(manager_object->str_pkg_name, I18N_TYPE_Invalid_password);
 		manager_object->popup =
 				common_utils_show_info_ok_popup(
 						manager_object->win, manager_object->str_pkg_name, info_txt);
 		break;
 
 	case POPUP_OPTION_WIFI_INVALID_KEY:
-		info_txt = INVALID_PASSWORD;
+		info_txt = sc(manager_object->str_pkg_name, I18N_TYPE_Invalid_password);
 		manager_object->popup =
 				common_utils_show_info_ok_popup(
 						manager_object->win, manager_object->str_pkg_name, info_txt);

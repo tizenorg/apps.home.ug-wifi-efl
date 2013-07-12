@@ -1,9 +1,3 @@
-msgid "IDS_WIFI_BODY_CONNECTED"
-msgstr "Tilkoblet"
-
-msgid "IDS_WIFI_BODY_CONNECTING_ING"
-msgstr "Kobler til..."
-
 msgid "IDS_WIFI_BODY_STATIC_IP"
 msgstr "Statisk IP"
 
@@ -49,23 +43,8 @@ msgstr "Wi-Fi-nettverk"
 msgid "IDS_WIFI_BODY_DISCONNECTING_ING"
 msgstr "Kobler fra..."
 
-msgid "IDS_WIFI_BODY_DYNAMIC_IP"
-msgstr "Dynamisk IP"
-
-msgid "IDS_WIFI_BODY_NO_APS"
-msgstr "Ingen AP-er"
-
-msgid "IDS_WIFI_BODY_SECURITY_TYPE"
-msgstr "Sikkerhetstype"
-
-msgid "IDS_WIFI_HEADER_HIDDEN_NETWORK"
-msgstr "Skjult nettverk"
-
 msgid "IDS_WIFI_POP_DEACTIVATING_WI_FI_ING"
 msgstr "Deaktiverer Wi-Fi..."
-
-msgid "IDS_WIFI_POP_SELECT_NETWORK"
-msgstr "Velg nettverk"
 
 msgid "IDS_WIFI_BODY_EAP_METHOD"
 msgstr "EAP-metode"
@@ -100,23 +79,14 @@ msgstr "Angi identitet"
 msgid "IDS_WIFI_BODY_ENTER_ANONYMOUS_IDENTITY"
 msgstr "Angi anonym identitet"
 
-msgid "IDS_CST_BODY_INPUT_PASSWORD"
-msgstr "Skriv inn passord"
-
 msgid "IDS_ST_BODY_SHOW_PASSWORD"
 msgstr "Vis passord"
 
 msgid "IDS_WIFI_HEADER_PROXY_ADDRESS"
 msgstr "Proxy-adresse"
 
-msgid "IDS_WIFI_BODY_SIGNAL_STRENGTH"
-msgstr "Signalstyrke"
-
 msgid "IDS_WIFI_BODY_GATEWAY"
 msgstr "Gateway"
-
-msgid "IDS_WIFI_BODY_SECURITYTYPE_WEP"
-msgstr "WEP"
 
 msgid "IDS_WIFI_BODY_WEAK_M_STRENGTH"
 msgstr "Svak"
@@ -124,14 +94,8 @@ msgstr "Svak"
 msgid "IDS_ST_BODY_WPS_AVAILABLE"
 msgstr "WPS tilgjengelig"
 
-msgid "IDS_ST_BODY_OBTAINING_IP_ADDRESS_ING"
-msgstr "Henter IP-adresse..."
-
 msgid "IDS_WIFI_BODY_CHANNEL"
 msgstr "Kanal"
-
-msgid "IDS_ST_BODY_NOTIFY_ME_WHEN_AN_OPEN_NETWORK_IS_AVAILABLE"
-msgstr "Varsle meg når et åpent nettverk er tilgjengelig"
 
 msgid "IDS_WIFI_POP_AUTOMATIC_CONNECTION_NETWORK_WILL_DISABLED_CONTINUE_Q_MSG"
 msgstr "Automatisk tilkobling til dette nettverket vil bli deaktivert. Fortsette?"
@@ -142,14 +106,8 @@ msgstr "Fase 2 godkjenning"
 msgid "IDS_WIFI_BODY_CONNECT"
 msgstr "Koble til"
 
-msgid "IDS_ST_BODY_ADVANCED"
-msgstr "Avansert"
-
 msgid "IDS_WIFI_BODY_ENTER_SSID"
 msgstr "Angi SSID"
-
-msgid "IDS_WIFI_HEADER_PASSWORD"
-msgstr "Passord"
 
 msgid "IDS_WIFI_BODY_PROVISIONING"
 msgstr "Tilgang"
@@ -166,15 +124,6 @@ msgstr "Trykk på WPS på Wi-Fi-tilgangspunktet innen 2 minutter"
 msgid "IDS_WIFI_BODY_SSID"
 msgstr "SSID"
 
-msgid "IDS_WIFI_BODY_ENTER_YOUR_IDENTITY"
-msgstr "Angi din identitet"
-
-msgid "IDS_WIFI_HEADER_ENTER_PASSWORD"
-msgstr "Angi passord"
-
-msgid "IDS_COM_BODY_SETTING"
-msgstr "Innstilling"
-
 msgid "IDS_WIFI_BODY_NOTIFY_WHEN_WI_FI_NETWORK_IS_FOUND"
 msgstr "Varsle når Wi-Fi-nettverk blir funnet"
 
@@ -183,9 +132,6 @@ msgstr "(uendret)"
 
 msgid "IDS_ST_HEADER_WPS_CONNECTION_ABB"
 msgstr "WPS-forbindelse"
-
-msgid "IDS_WIFI_BODY_WPS_PIN"
-msgstr "WPS-nøkkel"
 
 msgid "IDS_WIFI_BUTTON_WPS_BUTTON"
 msgstr "WPS-knapp"
@@ -198,4 +144,16 @@ msgstr "Vent litt..."
 
 msgid "IDS_WIFI_POP_UNABLE_TO_FIND_NETWORK"
 msgstr "Kan ikke finne nettverk"
+
+msgid "IDS_ST_POP_INVALID_PASSWORD"
+msgstr "Ugyldig passord"
+
+msgid "IDS_WIFI_BODY_ENTER_YOUR_PASSWORD"
+msgstr "Angi passordet ditt"
+
+msgid "IDS_WIFI_BODY_ENTER_YOUR_ID"
+msgstr "Angi ID-en din"
+
+msgid "IDS_WIFI_BODY_DISABLE_WI_FI_TETHERING_TO_CONNECT_TO_A_WI_FI_NETWORK"
+msgstr "Du må deaktivere Wi-Fi-Internettdeling for å koble til et Wi-Fi-nettverk"
 

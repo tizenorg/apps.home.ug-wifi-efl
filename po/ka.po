@@ -1,9 +1,3 @@
-msgid "IDS_WIFI_BODY_CONNECTED"
-msgstr "დაკავშირებულია"
-
-msgid "IDS_WIFI_BODY_CONNECTING_ING"
-msgstr "უკავშირდება..."
-
 msgid "IDS_WIFI_BODY_STATIC_IP"
 msgstr "სტატიკური IP"
 
@@ -49,23 +43,8 @@ msgstr "Wi-Fi ქსელები"
 msgid "IDS_WIFI_BODY_DISCONNECTING_ING"
 msgstr "გამორთვა..."
 
-msgid "IDS_WIFI_BODY_DYNAMIC_IP"
-msgstr "დინამიკური IP"
-
-msgid "IDS_WIFI_BODY_NO_APS"
-msgstr "APs არ არის"
-
-msgid "IDS_WIFI_BODY_SECURITY_TYPE"
-msgstr "დაცვის ტიპი"
-
-msgid "IDS_WIFI_HEADER_HIDDEN_NETWORK"
-msgstr "დაფარული ქსელი"
-
 msgid "IDS_WIFI_POP_DEACTIVATING_WI_FI_ING"
 msgstr "თავიდან აქტიურდება Wi-Fi..."
-
-msgid "IDS_WIFI_POP_SELECT_NETWORK"
-msgstr "ქსელის შერჩევა"
 
 msgid "IDS_WIFI_BODY_EAP_METHOD"
 msgstr "EAP მეთოდი"
@@ -100,23 +79,14 @@ msgstr "შეიყვანეთ საიდენტიფიკაცი�
 msgid "IDS_WIFI_BODY_ENTER_ANONYMOUS_IDENTITY"
 msgstr "შეიყვანეთ ანონიმური საიდენტიფიკაციო ინფორმაცია"
 
-msgid "IDS_CST_BODY_INPUT_PASSWORD"
-msgstr "ჩაწერეთ პაროლი"
-
 msgid "IDS_ST_BODY_SHOW_PASSWORD"
 msgstr "გამოჩნდეს პაროლი"
 
 msgid "IDS_WIFI_HEADER_PROXY_ADDRESS"
 msgstr "პროქსი სერვერის მისამართი"
 
-msgid "IDS_WIFI_BODY_SIGNAL_STRENGTH"
-msgstr "სიგნალის სიძლიერე"
-
 msgid "IDS_WIFI_BODY_GATEWAY"
 msgstr "გასასვლელი"
-
-msgid "IDS_WIFI_BODY_SECURITYTYPE_WEP"
-msgstr "WEP"
 
 msgid "IDS_WIFI_BODY_WEAK_M_STRENGTH"
 msgstr "სუსტი"
@@ -124,14 +94,8 @@ msgstr "სუსტი"
 msgid "IDS_ST_BODY_WPS_AVAILABLE"
 msgstr "WPS მისაწვდომია"
 
-msgid "IDS_ST_BODY_OBTAINING_IP_ADDRESS_ING"
-msgstr "მიმდინარეობს IP მისამართის მიღება..."
-
 msgid "IDS_WIFI_BODY_CHANNEL"
 msgstr "არხი"
-
-msgid "IDS_ST_BODY_NOTIFY_ME_WHEN_AN_OPEN_NETWORK_IS_AVAILABLE"
-msgstr "მსურს მივიღო შეტყობინება, როცა ღია ქსელი მისაწვდომი იქნება"
 
 msgid "IDS_WIFI_POP_AUTOMATIC_CONNECTION_NETWORK_WILL_DISABLED_CONTINUE_Q_MSG"
 msgstr "ამ ქსელთან ავტომატური დაკავშირება გამოირთვება. განაგრძობთ?"
@@ -142,14 +106,8 @@ msgstr "ფაზა 2-ის ავტორიზაცია"
 msgid "IDS_WIFI_BODY_CONNECT"
 msgstr "დაკავშირება"
 
-msgid "IDS_ST_BODY_ADVANCED"
-msgstr "გაუმჯობესებული"
-
 msgid "IDS_WIFI_BODY_ENTER_SSID"
 msgstr "SSID შეტანა"
-
-msgid "IDS_WIFI_HEADER_PASSWORD"
-msgstr "პაროლი"
 
 msgid "IDS_WIFI_BODY_PROVISIONING"
 msgstr "მომზადება"
@@ -166,15 +124,6 @@ msgstr "მაქსიმუმ 2 წუთში დააჭირეთ WPS-
 msgid "IDS_WIFI_BODY_SSID"
 msgstr "SSID"
 
-msgid "IDS_WIFI_BODY_ENTER_YOUR_IDENTITY"
-msgstr "შეიყვანეთ თქვენი საიდენტიფიკაციო ინფორმაცია"
-
-msgid "IDS_WIFI_HEADER_ENTER_PASSWORD"
-msgstr "პაროლის შეყვანა"
-
-msgid "IDS_COM_BODY_SETTING"
-msgstr "პარამეტრები"
-
 msgid "IDS_WIFI_BODY_NOTIFY_WHEN_WI_FI_NETWORK_IS_FOUND"
 msgstr "შეტყობინება მოვიდეს, როდესაც მოიძებნება Wi-Fi ქსელი"
 
@@ -183,9 +132,6 @@ msgstr "(შეუცვლელი)"
 
 msgid "IDS_ST_HEADER_WPS_CONNECTION_ABB"
 msgstr "WPS კავშირი"
-
-msgid "IDS_WIFI_BODY_WPS_PIN"
-msgstr "WPS PIN"
 
 msgid "IDS_WIFI_BUTTON_WPS_BUTTON"
 msgstr "WPS ღილაკი"
@@ -198,4 +144,16 @@ msgstr "გთხოვთ, დაელოდოთ..."
 
 msgid "IDS_WIFI_POP_UNABLE_TO_FIND_NETWORK"
 msgstr "ქსელის პოვნა შეუძლებელია"
+
+msgid "IDS_ST_POP_INVALID_PASSWORD"
+msgstr "პაროლი არასწორია"
+
+msgid "IDS_WIFI_BODY_ENTER_YOUR_PASSWORD"
+msgstr "ჩაწერეთ პაროლი"
+
+msgid "IDS_WIFI_BODY_ENTER_YOUR_ID"
+msgstr "შეიყვანეთ თქვენი ID"
+
+msgid "IDS_WIFI_BODY_DISABLE_WI_FI_TETHERING_TO_CONNECT_TO_A_WI_FI_NETWORK"
+msgstr "გამორთეთ Wi-Fi მობილური ინტერნეტი, რომ დაუკავშირდეთ Wi-Fi ქსელს"
 

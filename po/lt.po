@@ -1,9 +1,3 @@
-msgid "IDS_WIFI_BODY_CONNECTED"
-msgstr "Prisijungta"
-
-msgid "IDS_WIFI_BODY_CONNECTING_ING"
-msgstr "Jungiamasi..."
-
 msgid "IDS_WIFI_BODY_STATIC_IP"
 msgstr "Statinis IP"
 
@@ -49,23 +43,8 @@ msgstr "„Wi-Fi“ tinklai"
 msgid "IDS_WIFI_BODY_DISCONNECTING_ING"
 msgstr "Atjungiama..."
 
-msgid "IDS_WIFI_BODY_DYNAMIC_IP"
-msgstr "Dinaminis IP"
-
-msgid "IDS_WIFI_BODY_NO_APS"
-msgstr "Nėra APs"
-
-msgid "IDS_WIFI_BODY_SECURITY_TYPE"
-msgstr "Saugos tipas"
-
-msgid "IDS_WIFI_HEADER_HIDDEN_NETWORK"
-msgstr "Paslėptasis tinklas"
-
 msgid "IDS_WIFI_POP_DEACTIVATING_WI_FI_ING"
 msgstr "Išjungiama „Wi-Fi“..."
-
-msgid "IDS_WIFI_POP_SELECT_NETWORK"
-msgstr "Rinktis tinklą"
 
 msgid "IDS_WIFI_BODY_EAP_METHOD"
 msgstr "EAP būdas"
@@ -100,23 +79,14 @@ msgstr "Įveskite tapatybę"
 msgid "IDS_WIFI_BODY_ENTER_ANONYMOUS_IDENTITY"
 msgstr "Įveskite anonimišką tapatybę"
 
-msgid "IDS_CST_BODY_INPUT_PASSWORD"
-msgstr "Įveskite slaptažodį"
-
 msgid "IDS_ST_BODY_SHOW_PASSWORD"
 msgstr "Rodyti slaptažodį"
 
 msgid "IDS_WIFI_HEADER_PROXY_ADDRESS"
 msgstr "Proxy serverio adresas"
 
-msgid "IDS_WIFI_BODY_SIGNAL_STRENGTH"
-msgstr "Signalo stiprumas"
-
 msgid "IDS_WIFI_BODY_GATEWAY"
 msgstr "Šliuzas"
-
-msgid "IDS_WIFI_BODY_SECURITYTYPE_WEP"
-msgstr "WEP"
 
 msgid "IDS_WIFI_BODY_WEAK_M_STRENGTH"
 msgstr "Silpnas"
@@ -124,14 +94,8 @@ msgstr "Silpnas"
 msgid "IDS_ST_BODY_WPS_AVAILABLE"
 msgstr "Prieinamas WPS"
 
-msgid "IDS_ST_BODY_OBTAINING_IP_ADDRESS_ING"
-msgstr "Gaunamas IP adresas..."
-
 msgid "IDS_WIFI_BODY_CHANNEL"
 msgstr "Kanalas"
-
-msgid "IDS_ST_BODY_NOTIFY_ME_WHEN_AN_OPEN_NETWORK_IS_AVAILABLE"
-msgstr "Pranešti man, kai atsiras atviras tinklas"
 
 msgid "IDS_WIFI_POP_AUTOMATIC_CONNECTION_NETWORK_WILL_DISABLED_CONTINUE_Q_MSG"
 msgstr "Automatinis jungimasis prie šio tinklo bus išjungtas. Tęsti?"
@@ -142,14 +106,8 @@ msgstr "2 fazės patvirtinimas"
 msgid "IDS_WIFI_BODY_CONNECT"
 msgstr "Jungtis"
 
-msgid "IDS_ST_BODY_ADVANCED"
-msgstr "Išsamiau"
-
 msgid "IDS_WIFI_BODY_ENTER_SSID"
 msgstr "Įvesti SSID"
-
-msgid "IDS_WIFI_HEADER_PASSWORD"
-msgstr "Slaptažodis"
 
 msgid "IDS_WIFI_BODY_PROVISIONING"
 msgstr "Teikimas"
@@ -166,15 +124,6 @@ msgstr "Per 2 min. paspauskite WPS mygtuką „Wi-Fi“ prieigos taške"
 msgid "IDS_WIFI_BODY_SSID"
 msgstr "SSID"
 
-msgid "IDS_WIFI_BODY_ENTER_YOUR_IDENTITY"
-msgstr "Įveskite savo tapatybę"
-
-msgid "IDS_WIFI_HEADER_ENTER_PASSWORD"
-msgstr "Įvesti slaptažodį"
-
-msgid "IDS_COM_BODY_SETTING"
-msgstr "Nustatymas"
-
 msgid "IDS_WIFI_BODY_NOTIFY_WHEN_WI_FI_NETWORK_IS_FOUND"
 msgstr "Pranešti aptikus „Wi-Fi“ tinklą"
 
@@ -183,9 +132,6 @@ msgstr "(nepakeista)"
 
 msgid "IDS_ST_HEADER_WPS_CONNECTION_ABB"
 msgstr "WPS ryšys"
-
-msgid "IDS_WIFI_BODY_WPS_PIN"
-msgstr "WPS PIN"
 
 msgid "IDS_WIFI_BUTTON_WPS_BUTTON"
 msgstr "WPS mygtuk."
@@ -198,4 +144,16 @@ msgstr "Palaukite..."
 
 msgid "IDS_WIFI_POP_UNABLE_TO_FIND_NETWORK"
 msgstr "Neįmanoma rasti tinklo"
+
+msgid "IDS_ST_POP_INVALID_PASSWORD"
+msgstr "Neteisingas slaptažodis"
+
+msgid "IDS_WIFI_BODY_ENTER_YOUR_PASSWORD"
+msgstr "Įveskite slaptažodį"
+
+msgid "IDS_WIFI_BODY_ENTER_YOUR_ID"
+msgstr "Įveskite savo ID"
+
+msgid "IDS_WIFI_BODY_DISABLE_WI_FI_TETHERING_TO_CONNECT_TO_A_WI_FI_NETWORK"
+msgstr "Išjunkite „Wi-Fi“ siejimą, kad prisijungtumėte prie „Wi-Fi“ tinklo"
 

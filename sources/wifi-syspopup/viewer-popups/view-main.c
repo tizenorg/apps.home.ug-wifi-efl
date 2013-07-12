@@ -70,7 +70,7 @@ static void __popup_ok_cb(void *data, Evas_Object *obj, void *event_info)
 	case WIFI_SECURITY_TYPE_WEP:
 		if (password_len != 5 && password_len != 13 &&
 				password_len != 26 && password_len != 10) {
-			view_alerts_popup_show(WEP_WRONG_PASSWORD_LEN_ERR_MSG_STR);
+			view_alerts_popup_show(sc(PACKAGE, I18N_TYPE_Invalid_password));
 			goto popup_ok_exit;
 		}
 		break;
@@ -78,7 +78,7 @@ static void __popup_ok_cb(void *data, Evas_Object *obj, void *event_info)
 	case WIFI_SECURITY_TYPE_WPA_PSK:
 	case WIFI_SECURITY_TYPE_WPA2_PSK:
 		if (password_len < 8 || password_len > 63) {
-			view_alerts_popup_show(WPA_WRONG_PASSWORD_LEN_ERR_MSG_STR);
+			view_alerts_popup_show(sc(PACKAGE, I18N_TYPE_Invalid_password));
 			goto popup_ok_exit;
 		}
 		break;

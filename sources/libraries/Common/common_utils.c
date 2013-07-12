@@ -113,7 +113,7 @@ char *common_utils_get_ap_security_type_info_txt(const char *pkg_name, wifi_devi
 			}
 			break;
 		default:						/** Unknown */
-			status_txt = g_strdup(WIFI_UNKNOWN_DEVICE_STATUS_STR);
+			status_txt = g_strdup(sc(pkg_name, I18N_TYPE_Unknown));
 			break;
 	}
 	return status_txt;

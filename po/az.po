@@ -1,9 +1,3 @@
-msgid "IDS_WIFI_BODY_CONNECTED"
-msgstr "Qoşuldu"
-
-msgid "IDS_WIFI_BODY_CONNECTING_ING"
-msgstr "qoşulur"
-
 msgid "IDS_WIFI_BODY_STATIC_IP"
 msgstr "Statik İP"
 
@@ -49,23 +43,8 @@ msgstr "Wi-Fi şəbəkələri"
 msgid "IDS_WIFI_BODY_DISCONNECTING_ING"
 msgstr "Bağlantı kəsilir"
 
-msgid "IDS_WIFI_BODY_DYNAMIC_IP"
-msgstr "Dinamik IP"
-
-msgid "IDS_WIFI_BODY_NO_APS"
-msgstr "APs yoxdur"
-
-msgid "IDS_WIFI_BODY_SECURITY_TYPE"
-msgstr "Təhlükəsizlik növü"
-
-msgid "IDS_WIFI_HEADER_HIDDEN_NETWORK"
-msgstr "Gizli şəbəkə"
-
 msgid "IDS_WIFI_POP_DEACTIVATING_WI_FI_ING"
 msgstr "Wi-Fi söndürülür..."
-
-msgid "IDS_WIFI_POP_SELECT_NETWORK"
-msgstr "Şəbəkə seç"
 
 msgid "IDS_WIFI_BODY_EAP_METHOD"
 msgstr "EAP metodu"
@@ -100,23 +79,14 @@ msgstr "Eyniliyi daxil edin"
 msgid "IDS_WIFI_BODY_ENTER_ANONYMOUS_IDENTITY"
 msgstr "Anonim eyniliyi daxil et"
 
-msgid "IDS_CST_BODY_INPUT_PASSWORD"
-msgstr "Parol daxil edin"
-
 msgid "IDS_ST_BODY_SHOW_PASSWORD"
 msgstr "Parolu göstərin"
 
 msgid "IDS_WIFI_HEADER_PROXY_ADDRESS"
 msgstr "Giriş modulu ünvanı"
 
-msgid "IDS_WIFI_BODY_SIGNAL_STRENGTH"
-msgstr "Signal gücləndirilsin"
-
 msgid "IDS_WIFI_BODY_GATEWAY"
 msgstr "Şlüz"
-
-msgid "IDS_WIFI_BODY_SECURITYTYPE_WEP"
-msgstr "WEP"
 
 msgid "IDS_WIFI_BODY_WEAK_M_STRENGTH"
 msgstr "Zəif"
@@ -124,14 +94,8 @@ msgstr "Zəif"
 msgid "IDS_ST_BODY_WPS_AVAILABLE"
 msgstr "WPS mümkündür"
 
-msgid "IDS_ST_BODY_OBTAINING_IP_ADDRESS_ING"
-msgstr "IP ünvanı əldə edilir..."
-
 msgid "IDS_WIFI_BODY_CHANNEL"
 msgstr "Kanal"
-
-msgid "IDS_ST_BODY_NOTIFY_ME_WHEN_AN_OPEN_NETWORK_IS_AVAILABLE"
-msgstr "Açıq şəbəkə mövcud olduqda məni xəbərdar edin"
 
 msgid "IDS_WIFI_POP_AUTOMATIC_CONNECTION_NETWORK_WILL_DISABLED_CONTINUE_Q_MSG"
 msgstr "Bu şəbəkəyə avtomatik bağlanma qeyri-aktiv ediləcək. Davam edilsin?"
@@ -142,14 +106,8 @@ msgstr "Mərhələ 2 əslliyin yoxlanması"
 msgid "IDS_WIFI_BODY_CONNECT"
 msgstr "Qoşul"
 
-msgid "IDS_ST_BODY_ADVANCED"
-msgstr "Təkmilləşdirilmiş"
-
 msgid "IDS_WIFI_BODY_ENTER_SSID"
 msgstr "SSİD daxil edin"
-
-msgid "IDS_WIFI_HEADER_PASSWORD"
-msgstr "Şifrə"
 
 msgid "IDS_WIFI_BODY_PROVISIONING"
 msgstr "Təminat"
@@ -166,15 +124,6 @@ msgstr "2 dəqiqə ərzində Wi-Fi giriş nöqtənizdə WPS basın"
 msgid "IDS_WIFI_BODY_SSID"
 msgstr "SSID"
 
-msgid "IDS_WIFI_BODY_ENTER_YOUR_IDENTITY"
-msgstr "Eyniliyinizi daxil edin"
-
-msgid "IDS_WIFI_HEADER_ENTER_PASSWORD"
-msgstr "Kodu daxil et"
-
-msgid "IDS_COM_BODY_SETTING"
-msgstr "Parametr"
-
 msgid "IDS_WIFI_BODY_NOTIFY_WHEN_WI_FI_NETWORK_IS_FOUND"
 msgstr "Wi-Fi şəbəkəsi tapılanda xəbər verin"
 
@@ -183,9 +132,6 @@ msgstr "(dəyişdirilməmiş)"
 
 msgid "IDS_ST_HEADER_WPS_CONNECTION_ABB"
 msgstr "WPS bağlantısı"
-
-msgid "IDS_WIFI_BODY_WPS_PIN"
-msgstr "WPS PIN"
 
 msgid "IDS_WIFI_BUTTON_WPS_BUTTON"
 msgstr "WPS düyməsi"
@@ -198,4 +144,16 @@ msgstr "Gözləyin"
 
 msgid "IDS_WIFI_POP_UNABLE_TO_FIND_NETWORK"
 msgstr "Şəbəkəni tapmaq mümkün deyil"
+
+msgid "IDS_ST_POP_INVALID_PASSWORD"
+msgstr "Yanlış şifrə"
+
+msgid "IDS_WIFI_BODY_ENTER_YOUR_PASSWORD"
+msgstr "Parolunu daxil et"
+
+msgid "IDS_WIFI_BODY_ENTER_YOUR_ID"
+msgstr "ID-nizi daxil edin"
+
+msgid "IDS_WIFI_BODY_DISABLE_WI_FI_TETHERING_TO_CONNECT_TO_A_WI_FI_NETWORK"
+msgstr "Wi-Fi şəbəkəsinə qoşulmaq üçün Wi-Fi bağlanmasını qeyri-aktiv et"
 
