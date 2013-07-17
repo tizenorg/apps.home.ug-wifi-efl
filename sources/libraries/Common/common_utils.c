@@ -339,8 +339,10 @@ Evas_Object *common_utils_show_info_popup(Evas_Object *parent, popup_btn_info_t 
 		elm_object_part_content_set(popup, "button1", btn_1);
 		if (popup_data->btn1_cb) {
 			evas_object_smart_callback_add(btn_1, "clicked", popup_data->btn1_cb, popup_data->btn1_data);
+			ea_object_event_callback_add(popup, EA_CALLBACK_BACK, popup_data->btn1_cb, popup_data->btn1_data);
 		} else {	// set the default callback
 			evas_object_smart_callback_add(btn_1, "clicked", __common_utils_del_popup, popup);
+			ea_object_event_callback_add(popup, EA_CALLBACK_BACK, ea_popup_back_cb, NULL);
 		}
 	}
 	if (popup_data->btn2_txt) {
@@ -351,10 +353,8 @@ Evas_Object *common_utils_show_info_popup(Evas_Object *parent, popup_btn_info_t 
 		evas_object_show(popup);
 		if (popup_data->btn2_cb) {
 			evas_object_smart_callback_add(btn_2, "clicked", popup_data->btn2_cb, popup_data->btn2_data);
-			ea_object_event_callback_add(popup, EA_CALLBACK_BACK, popup_data->btn2_cb, popup_data->btn2_data);
 		} else {	// set the default callback
 			evas_object_smart_callback_add(btn_2, "clicked", __common_utils_del_popup, popup);
-			ea_object_event_callback_add(popup, EA_CALLBACK_BACK, ea_popup_back_cb, NULL);
 		}
 	}
 

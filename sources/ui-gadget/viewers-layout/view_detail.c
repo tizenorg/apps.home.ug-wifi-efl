@@ -196,12 +196,12 @@ static void forget_sk_cb(void *data, Evas_Object *obj, void *event_info)
 		memset(&popup_data, 0, sizeof(popup_data));
 
 		popup_data.info_txt = g_strdup(sc(PACKAGE, I18N_TYPE_Autonomous_connection_to_s_will_be_turned_off_Continue));
-		popup_data.btn1_cb = ok_cb;
-		popup_data.btn1_txt = sc(PACKAGE, I18N_TYPE_Ok);
-		popup_data.btn1_data = _detail_data;
-		popup_data.btn2_cb = cancel_cb;
-		popup_data.btn2_txt = sc(PACKAGE, I18N_TYPE_Cancel);
+		popup_data.btn2_cb = ok_cb;
+		popup_data.btn2_txt = sc(PACKAGE, I18N_TYPE_Ok);
 		popup_data.btn2_data = _detail_data;
+		popup_data.btn1_cb = cancel_cb;
+		popup_data.btn1_txt = sc(PACKAGE, I18N_TYPE_Cancel);
+		popup_data.btn1_data = _detail_data;
 		_detail_data->forget_confirm_popup = common_utils_show_info_popup(_detail_data->win, &popup_data);
 
 		evas_object_show(_detail_data->forget_confirm_popup);

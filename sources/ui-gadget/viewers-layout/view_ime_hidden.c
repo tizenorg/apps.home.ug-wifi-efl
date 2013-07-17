@@ -82,12 +82,12 @@ hiddep_ap_popup_data_t *view_hidden_ap_popup_create(Evas_Object *win_main, const
 
 	memset(&popup_btn_data, 0, sizeof(popup_btn_data));
 	popup_btn_data.title_txt = sc(str_pkg_name,I18N_TYPE_Find_Hidden_Network);
-	popup_btn_data.btn1_cb = view_hidden_ap_popup_ok_cb;
-	popup_btn_data.btn1_data = hidden_ap_popup_data;
-	popup_btn_data.btn2_cb = view_hidden_ap_popup_cancel_cb;
+	popup_btn_data.btn2_cb = view_hidden_ap_popup_ok_cb;
 	popup_btn_data.btn2_data = hidden_ap_popup_data;
-	popup_btn_data.btn1_txt = sc(str_pkg_name, I18N_TYPE_Ok);
-	popup_btn_data.btn2_txt = sc(str_pkg_name, I18N_TYPE_Cancel);
+	popup_btn_data.btn1_cb = view_hidden_ap_popup_cancel_cb;
+	popup_btn_data.btn1_data = hidden_ap_popup_data;
+	popup_btn_data.btn2_txt = sc(str_pkg_name, I18N_TYPE_Ok);
+	popup_btn_data.btn1_txt = sc(str_pkg_name, I18N_TYPE_Cancel);
 	Evas_Object *passpopup = common_utils_show_info_popup(win_main, &popup_btn_data);
 
 	Evas_Object *box = elm_box_add(passpopup);

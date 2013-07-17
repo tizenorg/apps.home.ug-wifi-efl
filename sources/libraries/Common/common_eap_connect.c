@@ -980,8 +980,6 @@ static void __common_eap_connect_cleanup(eap_connect_data_t *eap_data)
 	evas_object_del(radio_main);
 	radio_main = NULL;
 
-	ea_object_event_callback_del(eap_data->navi_frame, EA_CALLBACK_BACK, ea_naviframe_back_cb);
-
 	if (eap_data->navi_frame) {
 		evas_object_smart_callback_del(eap_data->navi_frame, "title,clicked",
 				__eap_view_title_clicked_cb);
@@ -999,7 +997,9 @@ static void __common_eap_connect_destroy(void *data,  Evas_Object *obj, void *ev
 {
 	__COMMON_FUNC_ENTER__;
 
-	__common_eap_connect_cleanup((eap_connect_data_t *)data);
+	eap_connect_data_t *eap_data = (eap_connect_data_t *)data;
+	ea_object_event_callback_del(eap_data->navi_frame, EA_CALLBACK_BACK, ea_naviframe_back_cb);
+	__common_eap_connect_cleanup(eap_data);
 
 	__COMMON_FUNC_EXIT__;
 }
@@ -1290,16 +1290,16 @@ eap_connect_data_t *create_eap_popup(Evas_Object *win_main,
 	evas_object_size_hint_align_set(popup, EVAS_HINT_FILL, EVAS_HINT_FILL);
 
 	btn = elm_button_add(popup);
-	elm_object_text_set(btn, sc(pkg_name, I18N_TYPE_Connect));
+	elm_object_text_set(btn, sc(pkg_name, I18N_TYPE_Cancel));
 	elm_object_part_content_set(popup, "button1", btn);
 	evas_object_smart_callback_add(btn, "clicked",
-			__common_eap_connect_done_cb, eap_data);
+			__common_eap_connect_destroy, eap_data);
 
 	btn = elm_button_add(popup);
-	elm_object_text_set(btn, sc(pkg_name, I18N_TYPE_Cancel));
+	elm_object_text_set(btn, sc(pkg_name, I18N_TYPE_Connect));
 	elm_object_part_content_set(popup, "button2", btn);
 	evas_object_smart_callback_add(btn, "clicked",
-			__common_eap_connect_destroy, eap_data);
+			__common_eap_connect_done_cb, eap_data);
 
 	/* Create and add a box into the layout. */
 	box = elm_box_add(popup);
