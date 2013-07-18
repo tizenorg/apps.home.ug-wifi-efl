@@ -524,9 +524,12 @@ Evas_Object* viewer_list_create(Evas_Object *win)
 {
 	__COMMON_FUNC_ENTER__;
 
-	assertm_if(NULL == win, "NULL!!");
-	assertm_if(NULL != viewer_list, "Err!!");
+	viewer_list = NULL;
+	first_item = NULL;
+	last_item = NULL;
+	grouptitle = NULL;
 
+	assertm_if(NULL == win, "NULL!!");
 	viewer_list = elm_genlist_add(win);
 	assertm_if(NULL == viewer_list, "NULL!!");
 
@@ -557,6 +560,7 @@ int viewer_list_destroy(void)
 	__COMMON_FUNC_ENTER__;
 
 	assertm_if(NULL == viewer_list, "NULL!!");
+	viewer_list_title_item_del();
 	viewer_list_item_clear();
 	evas_object_del(viewer_list);
 	viewer_list = NULL;
