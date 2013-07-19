@@ -814,7 +814,7 @@ ip_info_list_t *ip_info_append_items(wifi_ap_h ap, const char *pkg_name,
 #endif
 	/* Mac address */
 	char *mac_addr = NULL;
-	wifi_get_mac_address(&mac_addr);
+	wifi_ap_get_bssid(ap, &mac_addr);
 	item =
 	_add_description(genlist,
 		sc(ip_info_list_data->str_pkg_name, I18N_TYPE_MAC_addr), mac_addr,
