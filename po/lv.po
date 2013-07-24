@@ -43,6 +43,9 @@ msgstr "Wi-Fi tīkli"
 msgid "IDS_WIFI_BODY_DISCONNECTING_ING"
 msgstr "Atvieno..."
 
+msgid "IDS_WIFI_BODY_NO_APS"
+msgstr "Nav APs"
+
 msgid "IDS_WIFI_POP_DEACTIVATING_WI_FI_ING"
 msgstr "Deaktivizē Wi-Fi..."
 

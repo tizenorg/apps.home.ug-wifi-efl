@@ -43,6 +43,9 @@ msgstr "Redes Wi-Fi"
 msgid "IDS_WIFI_BODY_DISCONNECTING_ING"
 msgstr "A desligar..."
 
+msgid "IDS_WIFI_BODY_NO_APS"
+msgstr "Nenhuns APs"
+
 msgid "IDS_WIFI_POP_DEACTIVATING_WI_FI_ING"
 msgstr "A desactivar Wi-Fi..."
 

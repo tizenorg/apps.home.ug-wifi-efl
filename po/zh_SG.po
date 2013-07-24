@@ -43,6 +43,9 @@ msgstr "Wi-Fi网络"
 msgid "IDS_WIFI_BODY_DISCONNECTING_ING"
 msgstr "正在中断连接…"
 
+msgid "IDS_WIFI_BODY_NO_APS"
+msgstr "没有Aps"
+
 msgid "IDS_WIFI_POP_DEACTIVATING_WI_FI_ING"
 msgstr "正在取消 Wi-Fi..."
 

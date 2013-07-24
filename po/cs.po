@@ -43,6 +43,9 @@ msgstr "Sítě Wi-Fi"
 msgid "IDS_WIFI_BODY_DISCONNECTING_ING"
 msgstr "Odpojování..."
 
+msgid "IDS_WIFI_BODY_NO_APS"
+msgstr "Žádné APs"
+
 msgid "IDS_WIFI_POP_DEACTIVATING_WI_FI_ING"
 msgstr "Probíhá deaktivace Wi-Fi..."
 

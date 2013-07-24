@@ -43,6 +43,9 @@ msgstr "Мрежи Wi-Fi"
 msgid "IDS_WIFI_BODY_DISCONNECTING_ING"
 msgstr "Врската се прекинува..."
 
+msgid "IDS_WIFI_BODY_NO_APS"
+msgstr "Нема APs"
+
 msgid "IDS_WIFI_POP_DEACTIVATING_WI_FI_ING"
 msgstr "Се исклучува Wi-Fi..."
 

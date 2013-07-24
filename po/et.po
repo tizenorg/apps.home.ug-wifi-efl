@@ -43,6 +43,9 @@ msgstr "Wi-Fi võrgud"
 msgid "IDS_WIFI_BODY_DISCONNECTING_ING"
 msgstr "Ühenduse katkestamine..."
 
+msgid "IDS_WIFI_BODY_NO_APS"
+msgstr "APs-id puuduvad"
+
 msgid "IDS_WIFI_POP_DEACTIVATING_WI_FI_ING"
 msgstr "Wi-Fi desaktiveerimine..."
 

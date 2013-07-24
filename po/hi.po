@@ -43,6 +43,9 @@ msgstr "Wi-Fi नेटवर्क"
 msgid "IDS_WIFI_BODY_DISCONNECTING_ING"
 msgstr "डिस्कनेक्ट हो रहा है..."
 
+msgid "IDS_WIFI_BODY_NO_APS"
+msgstr "कोई APs नहीं"
+
 msgid "IDS_WIFI_POP_DEACTIVATING_WI_FI_ING"
 msgstr "Wi-Fi निष्क्रिय हो रहा है…"
 

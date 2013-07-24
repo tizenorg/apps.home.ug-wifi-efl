@@ -43,6 +43,9 @@ msgstr "Xarxes Wi-Fi"
 msgid "IDS_WIFI_BODY_DISCONNECTING_ING"
 msgstr "Desconnectant..."
 
+msgid "IDS_WIFI_BODY_NO_APS"
+msgstr "Sense punts d'accés"
+
 msgid "IDS_WIFI_POP_DEACTIVATING_WI_FI_ING"
 msgstr "Desactivant Wi-Fi..."
 

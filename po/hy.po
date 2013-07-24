@@ -43,6 +43,9 @@ msgstr "Wi-Fi ցանցեր"
 msgid "IDS_WIFI_BODY_DISCONNECTING_ING"
 msgstr "Անջատվում է..."
 
+msgid "IDS_WIFI_BODY_NO_APS"
+msgstr "Ոչ մի APs"
+
 msgid "IDS_WIFI_POP_DEACTIVATING_WI_FI_ING"
 msgstr "Wi-Fi-ի ապաակտիվացում..."
 

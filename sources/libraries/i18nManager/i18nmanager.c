@@ -121,6 +121,8 @@ char* i18n_manager_get_text(const char *pkg_name, I18N_TYPES type)
 		return apply_i18n(pkg_name, I18N_MODE_SELF_MADE, "IDS_WIFI_BODY_DISABLE_WI_FI_TETHERING_TO_CONNECT_TO_A_WI_FI_NETWORK");
 	case I18N_TYPE_Disconnecting:
 		return apply_i18n(pkg_name, I18N_MODE_SELF_MADE, "IDS_WIFI_BODY_DISCONNECTING_ING");
+	case I18N_TYPE_No_AP:
+		return apply_i18n(pkg_name, I18N_MODE_SELF_MADE, "IDS_WIFI_BODY_NO_APS");
 	case I18N_TYPE_IP_address:
 		return apply_i18n(pkg_name, I18N_MODE_SELF_MADE, "IDS_WIFI_BODY_IP_ADDRESS");
 	case I18N_TYPE_Proxy_address:

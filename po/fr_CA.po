@@ -43,6 +43,9 @@ msgstr "Réseaux Wifi"
 msgid "IDS_WIFI_BODY_DISCONNECTING_ING"
 msgstr "Déconnexion ..."
 
+msgid "IDS_WIFI_BODY_NO_APS"
+msgstr "Aucun PA"
+
 msgid "IDS_WIFI_POP_DEACTIVATING_WI_FI_ING"
 msgstr "Désactivation wifi..."
 

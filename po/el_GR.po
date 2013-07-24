@@ -43,6 +43,9 @@ msgstr "Δίκτυα Wi-Fi"
 msgid "IDS_WIFI_BODY_DISCONNECTING_ING"
 msgstr "Αποσύνδεση..."
 
+msgid "IDS_WIFI_BODY_NO_APS"
+msgstr "Δεν υπάρχουν AP"
+
 msgid "IDS_WIFI_POP_DEACTIVATING_WI_FI_ING"
 msgstr "Απενεργοποίηση Wi-Fi..."
 

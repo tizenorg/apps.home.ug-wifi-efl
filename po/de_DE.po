@@ -43,6 +43,9 @@ msgstr "WLAN"
 msgid "IDS_WIFI_BODY_DISCONNECTING_ING"
 msgstr "Verbindung wird getrennt..."
 
+msgid "IDS_WIFI_BODY_NO_APS"
+msgstr "Keine APs"
+
 msgid "IDS_WIFI_POP_DEACTIVATING_WI_FI_ING"
 msgstr "WLAN wird deaktiviert..."
 

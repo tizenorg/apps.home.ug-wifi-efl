@@ -43,6 +43,9 @@ msgstr "Wi-Fi ağları"
 msgid "IDS_WIFI_BODY_DISCONNECTING_ING"
 msgstr "Bağlantı kesiliyor..."
 
+msgid "IDS_WIFI_BODY_NO_APS"
+msgstr "AP Yok"
+
 msgid "IDS_WIFI_POP_DEACTIVATING_WI_FI_ING"
 msgstr "Wi-Fi devre dışı bırakılıyor..."
 

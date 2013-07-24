@@ -92,6 +92,7 @@ typedef enum {
 /* etc */
 	I18N_TYPE_DNS_1,
 	I18N_TYPE_DNS_2,
+	I18N_TYPE_No_AP,
 	I18N_TYPE_Autonomous_connection_to_s_will_be_turned_off_Continue,
 	I18N_TYPE_Open,
 	I18N_TYPE_WPS_Available,

@@ -43,6 +43,9 @@ msgstr "Wi-Fi 네트워크"
 msgid "IDS_WIFI_BODY_DISCONNECTING_ING"
 msgstr "연결을 끊는 중..."
 
+msgid "IDS_WIFI_BODY_NO_APS"
+msgstr "AP가 없습니다"
+
 msgid "IDS_WIFI_POP_DEACTIVATING_WI_FI_ING"
 msgstr "Wi-Fi 연결을 끊는 중..."
 

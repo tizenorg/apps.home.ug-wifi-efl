@@ -43,6 +43,9 @@ msgstr "Сети Wi-Fi"
 msgid "IDS_WIFI_BODY_DISCONNECTING_ING"
 msgstr "Отключение..."
 
+msgid "IDS_WIFI_BODY_NO_APS"
+msgstr "Нет точек доступа"
+
 msgid "IDS_WIFI_POP_DEACTIVATING_WI_FI_ING"
 msgstr "Выключение Wi-Fi..."
 

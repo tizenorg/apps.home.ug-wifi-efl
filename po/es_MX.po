@@ -43,6 +43,9 @@ msgstr "Redes Wi-Fi"
 msgid "IDS_WIFI_BODY_DISCONNECTING_ING"
 msgstr "Desconectando..."
 
+msgid "IDS_WIFI_BODY_NO_APS"
+msgstr "No hay AP"
+
 msgid "IDS_WIFI_POP_DEACTIVATING_WI_FI_ING"
 msgstr "Desactivando Wi-Fi..."
 
@@ -155,5 +158,5 @@ msgid "IDS_WIFI_BODY_ENTER_YOUR_ID"
 msgstr "Introduzca su ID"
 
 msgid "IDS_WIFI_BODY_DISABLE_WI_FI_TETHERING_TO_CONNECT_TO_A_WI_FI_NETWORK"
-msgstr "Desactive la redirección Wi-Fi para conectarse a una red Wi-Fi"
+msgstr "Desactive el anclaje a red Wi-Fi para conectarse a una red Wi-Fi"
 

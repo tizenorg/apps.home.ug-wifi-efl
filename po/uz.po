@@ -43,6 +43,9 @@ msgstr "Wi-Fi tarmoqlar"
 msgid "IDS_WIFI_BODY_DISCONNECTING_ING"
 msgstr "Uzilmoqda..."
 
+msgid "IDS_WIFI_BODY_NO_APS"
+msgstr "APs yo‘q"
+
 msgid "IDS_WIFI_POP_DEACTIVATING_WI_FI_ING"
 msgstr "Wi-Fi o‘chirilmoqda..."
 

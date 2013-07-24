@@ -43,6 +43,9 @@ msgstr "Wi-Fi mreže"
 msgid "IDS_WIFI_BODY_DISCONNECTING_ING"
 msgstr "Odspajanje..."
 
+msgid "IDS_WIFI_BODY_NO_APS"
+msgstr "Nema AP"
+
 msgid "IDS_WIFI_POP_DEACTIVATING_WI_FI_ING"
 msgstr "WiFi isključivanje..."
 

@@ -20,11 +20,13 @@
 #include <vconf-keys.h>
 #include <syspopup_caller.h>
 
+#include "ug_wifi.h"
 #include "common.h"
 #include "wlan_manager.h"
 #include "common_utils.h"
 #include "wlan_connection.h"
 #include "wifi-engine-callback.h"
+#include "i18nmanager.h"
 
 typedef enum {
 	WLAN_MANAGER_REQ_TYPE_ACTIVATE,
@@ -715,9 +717,7 @@ wifi_device_info_t* wlan_manager_profile_device_info_blank_create()
 		return NULL;
 	}
 
-	char No_AP_found[] = "No AP found";
-
-	di_s0->ssid = g_strdup(No_AP_found);
+	di_s0->ssid = g_strdup(sc(PACKAGE, I18N_TYPE_No_AP));
 	if (NULL == di_s0->ssid) {
 		g_free(di_s0);
 		di_s0 = NULL;

@@ -43,6 +43,9 @@ msgstr "Líonraí Wi-Fi"
 msgid "IDS_WIFI_BODY_DISCONNECTING_ING"
 msgstr "Ag dínascadh..."
 
+msgid "IDS_WIFI_BODY_NO_APS"
+msgstr "Níl AP ann"
+
 msgid "IDS_WIFI_POP_DEACTIVATING_WI_FI_ING"
 msgstr "Wi-Fi á dhíghníomhachtú..."
 
