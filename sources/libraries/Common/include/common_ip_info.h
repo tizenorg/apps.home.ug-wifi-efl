@@ -33,8 +33,6 @@ extern "C"
 #define DEFAULT_GUIDE_PROXY_IP "proxy.example.com"
 #define DEFAULT_GUIDE_PROXY_PORT "8080"
 
-typedef struct ip_info_list ip_info_list_t;
-
 ip_info_list_t *ip_info_append_items(wifi_ap_h ap, const char *pkg_name, Evas_Object *genlist, imf_ctxt_panel_cb_t input_panel_cb,	void *input_panel_cb_data);
 void ip_info_save_data(ip_info_list_t *ip_info_list);
 void ip_info_remove(ip_info_list_t *ip_info_list);

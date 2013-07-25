@@ -39,7 +39,7 @@ static GSList *managed_idler_list = NULL;
 
 static char *__common_utils_2line_text_get(void *data, Evas_Object *obj, const char *part)
 {
-	two_line_disp_data_t *item_data = (two_line_disp_data_t *)data;
+	two_line_disp_data_t *item_data = (two_line_disp_data_t *)common_util_genlist_item_data_get(data);
 	if (!strcmp(part, "elm.text.1")) {
 		return g_strdup(item_data->info_str);
 	} else if (!strcmp(part, "elm.text.2")) {
@@ -50,12 +50,14 @@ static char *__common_utils_2line_text_get(void *data, Evas_Object *obj, const c
 
 static void __common_utils_2line_text_del(void *data, Evas_Object *obj)
 {
-	two_line_disp_data_t *item_data = (two_line_disp_data_t *)data;
+	two_line_disp_data_t *item_data = (two_line_disp_data_t *)common_util_genlist_item_data_get(data);
 	if (item_data) {
 		g_free(item_data->info_str);
 		g_free(item_data->title_str);
 		g_free(item_data);
 	}
+	g_free(data);
+	data = NULL;
 }
 
 static void __common_utils_separator_del(void *data, Evas_Object *obj)
@@ -204,6 +206,24 @@ void common_popup_size_get(Ecore_IMF_Context *target_imf, int *width, int *heigh
 	__COMMON_FUNC_EXIT__;
 }
 
+void common_util_genlist_item_style_set(Elm_Object_Item *target, GENLIST_ITEM_STYLE stype)
+{
+	switch(stype)
+	{
+		case GENLIST_ITEM_STYLE_TOP:
+			elm_object_item_signal_emit(target, "elm,state,top", "");
+			break;
+		case GENLIST_ITEM_STYLE_CENTER:
+			elm_object_item_signal_emit(target, "elm,state,center", "");
+			break;
+		case GENLIST_ITEM_STYLE_BOTTOM:
+			elm_object_item_signal_emit(target, "elm,state,bottom", "");
+			break;
+		case GENLIST_ITEM_STYLE_NONE:
+			break;
+	}
+}
+
 void common_utils_entry_password_set(Evas_Object *layout, Eina_Bool pswd_set)
 {
 	Evas_Object *entry = elm_object_part_content_get(layout, "elm.swallow.content");
@@ -214,8 +234,10 @@ void common_utils_set_edit_box_imf_panel_evnt_cb(Elm_Object_Item *item,
 						imf_ctxt_panel_cb_t input_panel_cb, void *user_data)
 {
 	__COMMON_FUNC_ENTER__;
-	common_utils_entry_info_t *entry_info;
-	entry_info = elm_object_item_data_get(item);
+
+	void *data = elm_object_item_data_get(item);
+	common_utils_entry_info_t *entry_info = elm_object_item_data_get(data);
+
 	if (!entry_info)
 		return;
 
@@ -253,7 +275,7 @@ void common_utils_edit_box_focus_set(Elm_Object_Item *item, Eina_Bool focus_set)
 	return;
 }
 
-Elm_Object_Item *common_utils_add_2_line_txt_disabled_item(Evas_Object* view_list, const char *style_name, const char *line1_txt, const char *line2_txt)
+Elm_Object_Item *common_utils_add_2_line_txt_disabled_item(Evas_Object* view_list, const char *style_name, const char *line1_txt, const char *line2_txt, GENLIST_ITEM_STYLE style)
 {
 	static Elm_Genlist_Item_Class two_line_display_itc;
 	two_line_disp_data_t *two_line_data = NULL;
@@ -270,7 +292,10 @@ Elm_Object_Item *common_utils_add_2_line_txt_disabled_item(Evas_Object* view_lis
 	two_line_data->info_str = g_strdup(line2_txt);
 	INFO_LOG(UG_NAME_NORMAL, "title_str = %s info_str = %s", two_line_data->title_str, two_line_data->info_str);
 
-	item = elm_genlist_item_append(view_list, &two_line_display_itc, two_line_data, NULL, ELM_GENLIST_ITEM_NONE, NULL, NULL);
+	genlist_item_data_t *item_data = g_new0(genlist_item_data_t, 1);
+	item_data->cast_data = two_line_data;
+	item_data->group_style = style;
+	item = elm_genlist_item_append(view_list, &two_line_display_itc, item_data, NULL, ELM_GENLIST_ITEM_NONE, NULL, NULL);
 	elm_object_item_disabled_set(item, TRUE);
 
 	return item;
@@ -278,8 +303,8 @@ Elm_Object_Item *common_utils_add_2_line_txt_disabled_item(Evas_Object* view_lis
 
 char *common_utils_get_list_item_entry_txt(Elm_Object_Item *entry_item)
 {
-	common_utils_entry_info_t *entry_info =
-			(common_utils_entry_info_t *)elm_object_item_data_get(entry_item);
+	void *data = elm_object_item_data_get(entry_item);
+	common_utils_entry_info_t *entry_info = (common_utils_entry_info_t *)common_util_genlist_item_data_get(data);
 	if (entry_info == NULL)
 		return NULL;
 
@@ -429,6 +454,12 @@ int common_utils_get_rotate_angle(enum appcore_rm rotate_mode)
 	}
 
 	return rotate_angle;
+}
+
+void* common_util_genlist_item_data_get(void *data)
+{
+	genlist_item_data_t *item_data = (genlist_item_data_t *)data;
+	return item_data->cast_data;
 }
 
 wlan_security_mode_type_t common_utils_get_sec_mode(wifi_security_type_e sec_type)

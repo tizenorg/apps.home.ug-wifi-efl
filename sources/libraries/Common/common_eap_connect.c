@@ -73,11 +73,6 @@ typedef struct {
 	Elm_Genlist_Item_Type flags;
 } _Expand_List_t;
 
-struct eap_info_list {
-	wifi_ap_h ap;
-	Elm_Object_Item *pswd_item;
-};
-
 static const _Expand_List_t list_eap_type[] = {
 	{1, "UNKNOWN", ELM_GENLIST_ITEM_NONE},
 	{1, "PEAP", ELM_GENLIST_ITEM_NONE},
@@ -251,7 +246,7 @@ static void _gl_eap_auth_sub_sel(void *data, Evas_Object *obj, void *event_info)
 
 static char *_gl_eap_type_text_get(void *data, Evas_Object *obj, const char *part)
 {
-	eap_connect_data_t *eap_data = (eap_connect_data_t *)data;
+	eap_connect_data_t *eap_data = (eap_connect_data_t *) common_util_genlist_item_data_get(data);
 	eap_type_t sel_sub_item_id = __common_eap_connect_popup_get_eap_type(eap_data->ap);
 	DEBUG_LOG(UG_NAME_NORMAL, "current selected subitem = %d", sel_sub_item_id);
 
@@ -290,7 +285,7 @@ static void _gl_eap_type_sub_menu_item_del(void *data, Evas_Object *obj)
 
 static char *_gl_eap_provision_text_get(void *data, Evas_Object *obj, const char *part)
 {
-	eap_connect_data_t *eap_data = (eap_connect_data_t *)data;
+	eap_connect_data_t *eap_data = (eap_connect_data_t *) common_util_genlist_item_data_get(data);
 	int sel_sub_item_id = 0;
 
 	/* TODO: Fetch the EAP provision. No CAPI available now. */
@@ -324,6 +319,13 @@ static Evas_Object *_gl_eap_provision_content_get(void *data, Evas_Object *obj, 
 	return NULL;
 }
 
+static void _gl_eap_auth_item_del(void *data, Evas_Object *obj)
+{
+	g_free(data);
+	data = NULL;
+	return;
+}
+
 static void _gl_eap_provision_sub_menu_item_del(void *data, Evas_Object *obj)
 {
 	evas_object_unref(data);
@@ -332,7 +334,7 @@ static void _gl_eap_provision_sub_menu_item_del(void *data, Evas_Object *obj)
 
 static char *_gl_eap_auth_text_get(void *data, Evas_Object *obj, const char *part)
 {
-	eap_connect_data_t *eap_data = (eap_connect_data_t *)data;
+	eap_connect_data_t *eap_data = (eap_connect_data_t *) common_util_genlist_item_data_get(data);
 	eap_auth_t sel_sub_item_id = __common_eap_connect_popup_get_auth_type(eap_data->ap);
 	if (!strcmp(part, "elm.text.1")) {
 		return g_strdup(list_eap_auth[sel_sub_item_id].name);
@@ -362,6 +364,20 @@ static Evas_Object *_gl_eap_auth_content_get(void *data, Evas_Object *obj, const
 	return NULL;
 }
 
+static void _gl_eap_user_cert_item_del(void *data, Evas_Object *obj)
+{
+	g_free(data);
+	data = NULL;
+	return;
+}
+
+static void _gl_eap_ca_cert_item_del(void *data, Evas_Object *obj)
+{
+	g_free(data);
+	data = NULL;
+	return;
+}
+
 static void _gl_eap_auth_sub_menu_item_del(void *data, Evas_Object *obj)
 {
 	evas_object_unref(data);
@@ -370,7 +386,7 @@ static void _gl_eap_auth_sub_menu_item_del(void *data, Evas_Object *obj)
 
 static char *_gl_eap_ca_cert_text_get(void *data, Evas_Object *obj, const char *part)
 {
-	eap_connect_data_t *eap_data = (eap_connect_data_t *)data;
+	eap_connect_data_t *eap_data = (eap_connect_data_t *)common_util_genlist_item_data_get(data);
 	if (!strcmp(part, "elm.text.2")) {
 		return g_strdup(sc(eap_data->str_pkg_name, I18N_TYPE_Ca_Certificate));
 	} else if (!strcmp(part, "elm.text.1")) {
@@ -382,7 +398,7 @@ static char *_gl_eap_ca_cert_text_get(void *data, Evas_Object *obj, const char *
 
 static char *_gl_eap_user_cert_text_get(void *data, Evas_Object *obj, const char *part)
 {
-	eap_connect_data_t *eap_data = (eap_connect_data_t *)data;
+	eap_connect_data_t *eap_data = (eap_connect_data_t *)common_util_genlist_item_data_get(data);
 	if (!strcmp(part, "elm.text.2")) {
 		return g_strdup(sc(eap_data->str_pkg_name, I18N_TYPE_User_Certificate));
 	} else if (!strcmp(part, "elm.text.1")) {
@@ -470,7 +486,8 @@ static void _gl_eap_entry_eraser_clicked_cb(void *data, Evas_Object *obj, void *
 
 static char *_gl_eap_entry_item_text_get(void *data, Evas_Object *obj, const char *part)
 {
-	common_utils_entry_info_t *entry_info = (common_utils_entry_info_t *)data;
+	common_utils_entry_info_t *entry_info = (common_utils_entry_info_t *)common_util_genlist_item_data_get(data);
+
 	if (!entry_info)
 		return NULL;
 
@@ -482,7 +499,7 @@ static char *_gl_eap_entry_item_text_get(void *data, Evas_Object *obj, const cha
 
 static Evas_Object *_gl_eap_entry_item_content_get(void *data, Evas_Object *obj, const char *part)
 {
-	common_utils_entry_info_t *entry_info = (common_utils_entry_info_t *)data;
+	common_utils_entry_info_t *entry_info = (common_utils_entry_info_t *)common_util_genlist_item_data_get(data);
 	if (!entry_info)
 		return NULL;
 
@@ -564,9 +581,31 @@ static Evas_Object *_gl_eap_entry_item_content_get(void *data, Evas_Object *obj,
 	return NULL;
 }
 
+static void _gl_eap_g_eap_provision_item_del(void *data, Evas_Object *obj)
+{
+	__COMMON_FUNC_ENTER__;
+
+	g_free(data);
+	data = NULL;
+
+	__COMMON_FUNC_ENTER__;
+	return;
+}
+
+static void _gl_eap_type_item_del(void *data, Evas_Object *obj)
+{
+	__COMMON_FUNC_ENTER__;
+
+	g_free(data);
+	data = NULL;
+
+	__COMMON_FUNC_ENTER__;
+	return;
+}
+
 static void _gl_eap_entry_item_del(void *data, Evas_Object *obj)
 {
-	common_utils_entry_info_t *entry_info = (common_utils_entry_info_t *)data;
+	common_utils_entry_info_t *entry_info = (common_utils_entry_info_t *)common_util_genlist_item_data_get(data);
 	if (entry_info == NULL)
 		return;
 
@@ -582,6 +621,22 @@ static void _gl_eap_entry_item_del(void *data, Evas_Object *obj)
 	}
 
 	g_free(entry_info);
+	g_free(data);
+	data = NULL;
+}
+
+static void _gl_realized(void *data, Evas_Object *obj, void *event_info)
+{
+	__COMMON_FUNC_ENTER__;
+
+	Elm_Object_Item *item = (Elm_Object_Item *)event_info;
+
+	genlist_item_data_t *item_data_t = (genlist_item_data_t *)elm_object_item_data_get(item);
+	assertm_if(NULL == item_data_t, "NULL!!");
+
+	common_util_genlist_item_style_set(item, item_data_t->group_style);
+
+	__COMMON_FUNC_EXIT__;
 }
 
 static void _gl_exp(void *data, Evas_Object *obj, void *event_info)
@@ -615,7 +670,8 @@ static void _gl_exp(void *data, Evas_Object *obj, void *event_info)
 			evas_object_ref(radio);
 			if (i == eap_type)
 				elm_radio_value_set(radio, i);
-			sub_item = elm_genlist_item_append(gl, &g_eap_type_sub_itc, (void*)radio, item, list_eap_type[i].flags, _gl_eap_type_sub_sel, eap_data);
+			sub_item = elm_genlist_item_append(gl, &g_eap_type_sub_itc, (void*)radio,
+					item, list_eap_type[i].flags, _gl_eap_type_sub_sel, eap_data);
 #ifdef DISABLE_FAST_EAP_METHOD
 			if (!g_strcmp0(list_eap_type[i].name, "FAST")) {
 				elm_object_item_disabled_set(sub_item, TRUE);
@@ -631,7 +687,8 @@ static void _gl_exp(void *data, Evas_Object *obj, void *event_info)
 			evas_object_ref(radio);
 			if (i == 0)	/* TODO: Fetch the EAP provision. CAPI not available now. */
 				elm_radio_value_set(radio, i);
-			elm_genlist_item_append(gl, &g_eap_provision_sub_itc, (void*)radio, item, ELM_GENLIST_ITEM_NONE, _gl_eap_provision_sub_sel, eap_data);
+			elm_genlist_item_append(gl, &g_eap_provision_sub_itc, (void*)radio,
+					item, ELM_GENLIST_ITEM_NONE, _gl_eap_provision_sub_sel, eap_data);
 			i++;
 		}
 		break;
@@ -643,7 +700,8 @@ static void _gl_exp(void *data, Evas_Object *obj, void *event_info)
 			evas_object_ref(radio);
 			if (i == auth_type)
 				elm_radio_value_set(radio, i);
-			elm_genlist_item_append(gl, &g_eap_auth_sub_itc, (void*)radio, item, list_eap_auth[i].flags, _gl_eap_auth_sub_sel, eap_data);
+			elm_genlist_item_append(gl, &g_eap_auth_sub_itc, (void*)radio,
+					item, list_eap_auth[i].flags, _gl_eap_auth_sub_sel, eap_data);
 			i++;
 		}
 		break;
@@ -665,7 +723,7 @@ static void __common_eap_connect_popup_init_item_class(void *data)
 	g_eap_type_itc.func.text_get = _gl_eap_type_text_get;
 	g_eap_type_itc.func.content_get = NULL;
 	g_eap_type_itc.func.state_get = NULL;
-	g_eap_type_itc.func.del = NULL;
+	g_eap_type_itc.func.del = _gl_eap_type_item_del;
 
 	g_eap_type_sub_itc.item_style = "dialogue/1text.1icon.2/expandable2";
 	g_eap_type_sub_itc.func.text_get = _gl_eap_subtext_get;
@@ -677,7 +735,7 @@ static void __common_eap_connect_popup_init_item_class(void *data)
 	g_eap_provision_itc.func.text_get = _gl_eap_provision_text_get;
 	g_eap_provision_itc.func.content_get = NULL;
 	g_eap_provision_itc.func.state_get = NULL;
-	g_eap_provision_itc.func.del = NULL;
+	g_eap_provision_itc.func.del = _gl_eap_g_eap_provision_item_del;
 
 	g_eap_provision_sub_itc.item_style = "dialogue/1text.1icon.2/expandable2";
 	g_eap_provision_sub_itc.func.text_get = _gl_eap_provision_subtext_get;
@@ -689,7 +747,7 @@ static void __common_eap_connect_popup_init_item_class(void *data)
 	g_eap_auth_itc.func.text_get = _gl_eap_auth_text_get;
 	g_eap_auth_itc.func.content_get = NULL;
 	g_eap_auth_itc.func.state_get = NULL;
-	g_eap_auth_itc.func.del = NULL;
+	g_eap_auth_itc.func.del = _gl_eap_auth_item_del;
 
 	g_eap_auth_sub_itc.item_style = "dialogue/1text.1icon.2/expandable2";
 	g_eap_auth_sub_itc.func.text_get = _gl_eap_auth_subtext_get;
@@ -701,13 +759,13 @@ static void __common_eap_connect_popup_init_item_class(void *data)
 	g_eap_ca_cert_itc.func.text_get = _gl_eap_ca_cert_text_get;
 	g_eap_ca_cert_itc.func.content_get = NULL;
 	g_eap_ca_cert_itc.func.state_get = NULL;
-	g_eap_ca_cert_itc.func.del = NULL;
+	g_eap_ca_cert_itc.func.del = _gl_eap_ca_cert_item_del;
 
 	g_eap_user_cert_itc.item_style = "dialogue/2text.2";
 	g_eap_user_cert_itc.func.text_get = _gl_eap_user_cert_text_get;
 	g_eap_user_cert_itc.func.content_get = NULL;
 	g_eap_user_cert_itc.func.state_get = NULL;
-	g_eap_user_cert_itc.func.del = NULL;
+	g_eap_user_cert_itc.func.del = _gl_eap_user_cert_item_del;
 
 	g_eap_entry_itc.item_style = "dialogue/editfield/title";
 	g_eap_entry_itc.func.text_get = _gl_eap_entry_item_text_get;
@@ -794,11 +852,16 @@ static void _create_and_update_list_items_based_on_rules(eap_type_t new_type, ea
 	Evas_Object* view_list = eap_data->genlist;
 	Elm_Object_Item *insert_after_item = NULL;
 	eap_type_t pre_type;
+	genlist_item_data_t *item_data = NULL;
 
 	if (NULL == eap_data->eap_type_item) {
 		/* Create EAP method/type */
 		pre_type = EAP_SEC_TYPE_SIM;
-		eap_data->eap_type_item = elm_genlist_item_append(view_list, &g_eap_type_itc, eap_data, NULL, ELM_GENLIST_ITEM_TREE, _gl_eap_type_sel, eap_data);
+		item_data = g_new0(genlist_item_data_t, 1);
+		item_data->cast_data = eap_data;
+		item_data->group_style = GENLIST_ITEM_STYLE_TOP;
+		eap_data->eap_type_item = elm_genlist_item_append(view_list, &g_eap_type_itc, item_data,
+				NULL, ELM_GENLIST_ITEM_TREE, _gl_eap_type_sel, eap_data);
 	} else {
 		pre_type = __common_eap_connect_popup_get_eap_type(eap_data->ap);
 	}
@@ -826,8 +889,13 @@ static void _create_and_update_list_items_based_on_rules(eap_type_t new_type, ea
 		break;
 	case EAP_SEC_TYPE_FAST:
 		/* Add EAP provision */
-		eap_data->eap_provision_item = elm_genlist_item_insert_after(view_list, &g_eap_provision_itc, eap_data, NULL, eap_data->eap_type_item, ELM_GENLIST_ITEM_TREE, _gl_eap_provision_sel, eap_data);
-		DEBUG_LOG(UG_NAME_NORMAL, "current selected provision = %d", 0); // TODO: Fetch the EAP provision. CAPI not yet available.
+		item_data = g_new0(genlist_item_data_t, 1);
+		item_data->cast_data = eap_data;
+		item_data->group_style = GENLIST_ITEM_STYLE_TOP;
+		eap_data->eap_provision_item = elm_genlist_item_insert_after(view_list, &g_eap_provision_itc, item_data,
+				NULL, eap_data->eap_type_item, ELM_GENLIST_ITEM_TREE, _gl_eap_provision_sel, eap_data);
+		DEBUG_LOG(UG_NAME_NORMAL, "current selected provision = %d", 0);
+		// TODO: Fetch the EAP provision. CAPI not yet available.
 		if (EAP_SEC_TYPE_UNKNOWN == pre_type || EAP_SEC_TYPE_SIM == pre_type || EAP_SEC_TYPE_AKA == pre_type) {
 			insert_after_item = eap_data->eap_provision_item;
 		}
@@ -839,15 +907,30 @@ static void _create_and_update_list_items_based_on_rules(eap_type_t new_type, ea
 	if (insert_after_item) {
 		common_utils_entry_info_t *edit_box_details;
 
+		item_data = g_new0(genlist_item_data_t, 1);
+		item_data->cast_data = eap_data;
+		item_data->group_style = GENLIST_ITEM_STYLE_CENTER;
+
 		/* Add EAP phase2 authentication */
-		eap_data->eap_auth_item = elm_genlist_item_insert_after(view_list, &g_eap_auth_itc, eap_data, NULL, insert_after_item, ELM_GENLIST_ITEM_TREE, _gl_eap_auth_sel, eap_data);
+		eap_data->eap_auth_item = elm_genlist_item_insert_after(view_list, &g_eap_auth_itc, item_data,
+				NULL, insert_after_item, ELM_GENLIST_ITEM_TREE, _gl_eap_auth_sel, eap_data);
+
+		item_data = g_new0(genlist_item_data_t, 1);
+		item_data->cast_data = eap_data;
+		item_data->group_style = GENLIST_ITEM_STYLE_CENTER;
 
 		/* Add CA certificate */
-		eap_data->eap_ca_cert_item = elm_genlist_item_insert_after(view_list, &g_eap_ca_cert_itc, eap_data, NULL, eap_data->eap_auth_item, ELM_GENLIST_ITEM_NONE, NULL, NULL);
+		eap_data->eap_ca_cert_item = elm_genlist_item_insert_after(view_list, &g_eap_ca_cert_itc, item_data,
+				NULL, eap_data->eap_auth_item, ELM_GENLIST_ITEM_NONE, NULL, NULL);
+
 		elm_genlist_item_select_mode_set(eap_data->eap_ca_cert_item, ELM_OBJECT_SELECT_MODE_DISPLAY_ONLY);
 
 		/* Add User certificate */
-		eap_data->eap_user_cert_item = elm_genlist_item_insert_after(view_list, &g_eap_user_cert_itc, eap_data, NULL, eap_data->eap_ca_cert_item, ELM_GENLIST_ITEM_NONE, NULL, NULL);
+		item_data = g_new0(genlist_item_data_t, 1);
+		item_data->cast_data = eap_data;
+		item_data->group_style = GENLIST_ITEM_STYLE_CENTER;
+		eap_data->eap_user_cert_item = elm_genlist_item_insert_after(view_list, &g_eap_user_cert_itc, item_data,
+				NULL, eap_data->eap_ca_cert_item, ELM_GENLIST_ITEM_NONE, NULL, NULL);
 		elm_genlist_item_select_mode_set(eap_data->eap_user_cert_item, ELM_OBJECT_SELECT_MODE_DISPLAY_ONLY);
 
 		/* Add EAP ID */
@@ -855,9 +938,13 @@ static void _create_and_update_list_items_based_on_rules(eap_type_t new_type, ea
 		edit_box_details->entry_id = ENTRY_TYPE_USER_ID;
 		edit_box_details->title_txt = sc(eap_data->str_pkg_name, I18N_TYPE_Identity);
 		edit_box_details->guide_txt = sc(eap_data->str_pkg_name, I18N_TYPE_Enter_Identity);
-		edit_box_details->item = elm_genlist_item_insert_after(view_list, &g_eap_entry_itc, edit_box_details, NULL, eap_data->eap_user_cert_item, ELM_GENLIST_ITEM_NONE, _gl_editbox_sel_cb, NULL);
-		elm_genlist_item_select_mode_set(edit_box_details->item, ELM_OBJECT_SELECT_MODE_NONE);
-		eap_data->eap_id_item = edit_box_details->item;
+		item_data = g_new0(genlist_item_data_t, 1);
+		item_data->cast_data = edit_box_details;
+		item_data->group_style = GENLIST_ITEM_STYLE_CENTER;
+
+		eap_data->eap_id_item = elm_genlist_item_insert_after(view_list, &g_eap_entry_itc, item_data,
+				NULL, eap_data->eap_user_cert_item, ELM_GENLIST_ITEM_NONE, _gl_editbox_sel_cb, NULL);
+		elm_genlist_item_select_mode_set(eap_data->eap_id_item, ELM_OBJECT_SELECT_MODE_NONE);
 		g_eap_id_show_keypad = FALSE;
 
 		/* Add EAP Anonymous Identity */
@@ -865,18 +952,24 @@ static void _create_and_update_list_items_based_on_rules(eap_type_t new_type, ea
 		edit_box_details->entry_id = ENTRY_TYPE_ANONYMOUS_ID;
 		edit_box_details->title_txt = sc(eap_data->str_pkg_name, I18N_TYPE_Anonymous_Identity);
 		edit_box_details->guide_txt = sc(eap_data->str_pkg_name, I18N_TYPE_Enter_Anonymous_Identity);
-		edit_box_details->item = elm_genlist_item_insert_after(view_list, &g_eap_entry_itc, edit_box_details, NULL, eap_data->eap_id_item, ELM_GENLIST_ITEM_NONE, _gl_editbox_sel_cb, NULL);
-		elm_genlist_item_select_mode_set(edit_box_details->item, ELM_OBJECT_SELECT_MODE_NONE);
-		eap_data->eap_anonyid_item = edit_box_details->item;
+		item_data = g_new0(genlist_item_data_t, 1);
+		item_data->cast_data = edit_box_details;
+		item_data->group_style = GENLIST_ITEM_STYLE_CENTER;
+		eap_data->eap_anonyid_item = elm_genlist_item_insert_after(view_list, &g_eap_entry_itc, item_data,
+				NULL, eap_data->eap_id_item, ELM_GENLIST_ITEM_NONE, _gl_editbox_sel_cb, NULL);
+		elm_genlist_item_select_mode_set(eap_data->eap_anonyid_item, ELM_OBJECT_SELECT_MODE_NONE);
 
 		/* Add EAP Password */
 		edit_box_details = g_new0(common_utils_entry_info_t, 1);
 		edit_box_details->entry_id = ENTRY_TYPE_PASSWORD;
 		edit_box_details->title_txt = sc(eap_data->str_pkg_name, I18N_TYPE_Password);
 		edit_box_details->guide_txt = sc(eap_data->str_pkg_name, I18N_TYPE_Enter_password);
-		edit_box_details->item = elm_genlist_item_insert_after(view_list, &g_eap_entry_itc, edit_box_details, NULL, eap_data->eap_anonyid_item, ELM_GENLIST_ITEM_NONE, _gl_editbox_sel_cb, NULL);
-		elm_genlist_item_select_mode_set(edit_box_details->item, ELM_OBJECT_SELECT_MODE_NONE);
-		eap_data->eap_pw_item = edit_box_details->item;
+		item_data = g_new0(genlist_item_data_t, 1);
+		item_data->cast_data = edit_box_details;
+		item_data->group_style = GENLIST_ITEM_STYLE_BOTTOM;
+		eap_data->eap_pw_item = elm_genlist_item_insert_after(view_list, &g_eap_entry_itc, item_data,
+				NULL, eap_data->eap_anonyid_item, ELM_GENLIST_ITEM_NONE, _gl_editbox_sel_cb, NULL);
+		elm_genlist_item_select_mode_set(eap_data->eap_pw_item, ELM_OBJECT_SELECT_MODE_NONE);
 
 		if (eap_data->popup) {	/* Popup */
 			__common_eap_popup_set_imf_ctxt_evnt_cb(eap_data);
@@ -942,6 +1035,7 @@ static Evas_Object* _create_list(Evas_Object* parent, void *data)
 	/* Create the entry items */
 	_create_and_update_list_items_based_on_rules(EAP_SEC_TYPE_PEAP, eap_data);
 
+	evas_object_smart_callback_add(view_list, "realized", _gl_realized, NULL);
 	evas_object_smart_callback_add(view_list, "expanded", _gl_exp, eap_data);
 	evas_object_smart_callback_add(view_list, "contracted", _gl_con, view_list);
 
@@ -1505,6 +1599,7 @@ eap_info_list_t *eap_info_append_items(wifi_ap_h ap, Evas_Object* view_list,
 	char *temp_str = NULL;
 	Eina_Bool append_continue = TRUE;
 	eap_info_list_t *eap_info_list_data = NULL;
+	genlist_item_data_t *item_data = NULL;
 	if (!view_list || !str_pkg_name || !ap) {
 		ERROR_LOG(UG_NAME_ERR, "Invalid params passed!");
 		return NULL;
@@ -1517,7 +1612,7 @@ eap_info_list_t *eap_info_append_items(wifi_ap_h ap, Evas_Object* view_list,
 	auth_type = __common_eap_connect_popup_get_auth_type(ap);
 	common_utils_add_dialogue_separator(view_list, "dialogue/separator.2");
 
-	common_utils_add_2_line_txt_disabled_item(view_list, "dialogue/2text.2", sc(str_pkg_name, I18N_TYPE_EAP_method), list_eap_type[eap_type].name);
+	common_utils_add_2_line_txt_disabled_item(view_list, "dialogue/2text.2", sc(str_pkg_name, I18N_TYPE_EAP_method), list_eap_type[eap_type].name, GENLIST_ITEM_STYLE_TOP);
 
 	switch (eap_type) {
 	case EAP_SEC_TYPE_UNKNOWN:
@@ -1529,7 +1624,7 @@ eap_info_list_t *eap_info_append_items(wifi_ap_h ap, Evas_Object* view_list,
 		/* Add EAP provision */
 		/* TODO: Fetch EAP provisioning. CAPI not available. */
 		temp_str = g_strdup("");
-		common_utils_add_2_line_txt_disabled_item(view_list, "dialogue/2text.2", sc(str_pkg_name, I18N_TYPE_Provisioning), temp_str);
+		common_utils_add_2_line_txt_disabled_item(view_list, "dialogue/2text.2", sc(str_pkg_name, I18N_TYPE_Provisioning), temp_str, GENLIST_ITEM_STYLE_CENTER);
 		g_free(temp_str);
 		temp_str = NULL;
 		break;
@@ -1544,33 +1639,33 @@ eap_info_list_t *eap_info_append_items(wifi_ap_h ap, Evas_Object* view_list,
 		common_utils_entry_info_t *edit_box_details;
 
 		/* Add EAP phase2 authentication */
-		common_utils_add_2_line_txt_disabled_item(view_list, "dialogue/2text.2", sc(str_pkg_name, I18N_TYPE_Phase_2_authentication), list_eap_auth[auth_type].name);
+		common_utils_add_2_line_txt_disabled_item(view_list, "dialogue/2text.2", sc(str_pkg_name, I18N_TYPE_Phase_2_authentication), list_eap_auth[auth_type].name, GENLIST_ITEM_STYLE_CENTER);
 
 		/* Add CA certificate */
 		temp_str = NULL;
 		wifi_ap_get_eap_ca_cert_file(ap, &temp_str);
 		temp_str = temp_str? temp_str : g_strdup(sc(str_pkg_name, I18N_TYPE_Unspecified));
-		common_utils_add_2_line_txt_disabled_item(view_list, "dialogue/2text.2", sc(str_pkg_name, I18N_TYPE_Ca_Certificate), temp_str);
+		common_utils_add_2_line_txt_disabled_item(view_list, "dialogue/2text.2", sc(str_pkg_name, I18N_TYPE_Ca_Certificate), temp_str, GENLIST_ITEM_STYLE_CENTER);
 		g_free(temp_str);
 
 		/* Add User certificate */
 		temp_str = NULL;
 		wifi_ap_get_eap_client_cert_file(ap, &temp_str);
 		temp_str = temp_str? temp_str : g_strdup(sc(str_pkg_name, I18N_TYPE_Unspecified));
-		common_utils_add_2_line_txt_disabled_item(view_list, "dialogue/2text.2", sc(str_pkg_name, I18N_TYPE_User_Certificate),temp_str);
+		common_utils_add_2_line_txt_disabled_item(view_list, "dialogue/2text.2", sc(str_pkg_name, I18N_TYPE_User_Certificate),temp_str, GENLIST_ITEM_STYLE_CENTER);
 		g_free(temp_str);
 
 		/* Add EAP ID */
 		bool is_paswd_set;
 		temp_str = NULL;
 		wifi_ap_get_eap_passphrase(ap, &temp_str, &is_paswd_set);
-		common_utils_add_2_line_txt_disabled_item(view_list, "dialogue/2text.2", sc(str_pkg_name, I18N_TYPE_Identity), temp_str);
+		common_utils_add_2_line_txt_disabled_item(view_list, "dialogue/2text.2", sc(str_pkg_name, I18N_TYPE_Identity), temp_str, GENLIST_ITEM_STYLE_CENTER);
 		g_free(temp_str);
 
 		/* Add EAP Anonymous Identity */
 		/* TODO: Fetch the anonymous user id. CAPI not available. */
 		temp_str = g_strdup("");
-		common_utils_add_2_line_txt_disabled_item(view_list, "dialogue/2text.2", sc(str_pkg_name, I18N_TYPE_Anonymous_Identity), temp_str);
+		common_utils_add_2_line_txt_disabled_item(view_list, "dialogue/2text.2", sc(str_pkg_name, I18N_TYPE_Anonymous_Identity), temp_str, GENLIST_ITEM_STYLE_CENTER);
 		g_free(temp_str);
 
 		/* Add EAP Password */
@@ -1587,7 +1682,10 @@ eap_info_list_t *eap_info_append_items(wifi_ap_h ap, Evas_Object* view_list,
 		edit_box_details->guide_txt = sc(str_pkg_name, I18N_TYPE_Unchanged);
 		edit_box_details->input_panel_cb = input_panel_cb;
 		edit_box_details->input_panel_cb_data = input_panel_cb_data;
-		edit_box_details->item = elm_genlist_item_append(view_list, &g_eap_entry_itc, edit_box_details, NULL, ELM_GENLIST_ITEM_NONE, _gl_editbox_sel_cb, NULL);
+		item_data = g_new0(genlist_item_data_t, 1);
+		item_data->cast_data = edit_box_details;
+		item_data->group_style = GENLIST_ITEM_STYLE_BOTTOM;
+		edit_box_details->item = elm_genlist_item_append(view_list, &g_eap_entry_itc, item_data, NULL, ELM_GENLIST_ITEM_NONE, _gl_editbox_sel_cb, NULL);
 		elm_genlist_item_select_mode_set(eap_info_list_data->pswd_item, ELM_OBJECT_SELECT_MODE_NONE);
 		eap_info_list_data->pswd_item = edit_box_details->item;
 	}

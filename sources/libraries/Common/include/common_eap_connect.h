@@ -32,7 +32,6 @@ extern "C"
 
 #define DISABLE_FAST_EAP_METHOD
 
-typedef struct eap_info_list eap_info_list_t;
 typedef struct common_eap_connect_data eap_connect_data_t;
 
 eap_connect_data_t *create_eap_view(Evas_Object *win_main,

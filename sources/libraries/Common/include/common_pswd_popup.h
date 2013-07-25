@@ -24,9 +24,8 @@
 extern "C"
 {
 #endif
-
-#include <Evas.h>
 #include <Ecore.h>
+#include <Evas.h>
 #include <wifi.h>
 
 typedef struct {

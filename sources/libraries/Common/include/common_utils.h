@@ -50,6 +50,18 @@ typedef enum {
 	ENTRY_TYPE_PROXY_PORT,
 } entry_id_type_t;
 
+typedef enum {
+	GENLIST_ITEM_STYLE_NONE = 0,
+	GENLIST_ITEM_STYLE_TOP,
+	GENLIST_ITEM_STYLE_CENTER,
+	GENLIST_ITEM_STYLE_BOTTOM,
+}GENLIST_ITEM_STYLE;
+
+typedef struct {
+	void *cast_data;
+	GENLIST_ITEM_STYLE group_style;
+} genlist_item_data_t;
+
 typedef struct {
 	entry_id_type_t entry_id;
 	char *title_txt;
@@ -71,6 +83,48 @@ typedef struct {
 	const void *btn2_data;
 } popup_btn_info_t;
 
+typedef struct {
+	wifi_ap_h ap;
+	Elm_Object_Item *pswd_item;
+}eap_info_list_t;
+
+typedef struct {
+	char* title;
+	char* description;
+} _view_detail_description_data_t;
+
+typedef struct {
+	const char *str_pkg_name;
+	Evas_Object *genlist;
+
+	Elm_Object_Item* ip_toggle_item;
+	Elm_Object_Item* ip_addr_item;
+	Elm_Object_Item* subnet_mask_item;
+	Elm_Object_Item* gateway_addr_item;
+	Elm_Object_Item* dns_1_item;
+	Elm_Object_Item* dns_2_item;
+	Elm_Object_Item* proxy_addr_item;
+	Elm_Object_Item* proxy_port_item;
+
+	imf_ctxt_panel_cb_t input_panel_cb;
+	void *input_panel_cb_data;
+
+	wifi_ap_h ap;
+	wifi_ip_config_type_e ip_type;
+} ip_info_list_t;
+
+typedef struct {
+	Evas_Object *win;
+	char *ap_image_path;
+	wifi_ap_h ap;
+	eap_info_list_t *eap_info_list;
+	ip_info_list_t *ip_info_list;
+	Evas_Object *forget_confirm_popup;
+	Evas_Object *view_detail_list;
+} view_detail_data;
+
+void* common_util_genlist_item_data_get(void *data);
+
 Elm_Object_Item *common_utils_add_dialogue_separator(
 		Evas_Object* genlist, const char *separator_style);
 char *common_utils_get_ap_security_type_info_txt(
@@ -90,7 +144,7 @@ void common_utils_edit_box_focus_set(Elm_Object_Item *item, Eina_Bool focus_set)
 void common_utils_entry_password_set(Evas_Object *layout, Eina_Bool pswd_set);
 Elm_Object_Item *common_utils_add_2_line_txt_disabled_item(
 		Evas_Object* view_list, const char *style_name,
-		const char *line1_txt, const char *line2_txt);
+		const char *line1_txt, const char *line2_txt, GENLIST_ITEM_STYLE style);
 char *common_utils_get_list_item_entry_txt(Elm_Object_Item *entry_item);
 Evas_Object *common_utils_create_radio_button(Evas_Object *parent,
 		const int value);
@@ -113,6 +167,7 @@ int common_util_get_system_registry(const char *key);
 guint common_util_managed_idle_add(GSourceFunc func, gpointer user_data);
 void common_util_managed_idle_cleanup(void);
 void common_popup_size_get(Ecore_IMF_Context *target_imf, int *width, int *height);
+void common_util_genlist_item_style_set(Elm_Object_Item *target, GENLIST_ITEM_STYLE stype);
 
 #ifdef __cplusplus
 }

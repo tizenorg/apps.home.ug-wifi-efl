@@ -218,6 +218,8 @@ static void _gl_realized(void *data, Evas_Object *obj, void *event_info)
 		return ;
 
 	Elm_Object_Item *item = (Elm_Object_Item *)event_info;
+	assertm_if(NULL == item, "item is NULL!!");
+
 	int index = (int)elm_genlist_item_index_get(item);
 	int first_item_index = (int)elm_genlist_item_index_get(viewer_list_get_first_item());
 	int last_item_index = (int)elm_genlist_item_index_get(viewer_list_get_last_item());

@@ -509,6 +509,7 @@ static int app_reset(bundle *b, void *data)
 		syspopup_reset(b);
 	} else {
 		win_main = appcore_create_win(PACKAGE);
+		elm_win_indicator_mode_set (win_main, ELM_WIN_INDICATOR_SHOW);
 		assertm_if(NULL == win_main, "win_main is NULL!!");
 		evas = evas_object_evas_get(win_main);
 		assertm_if(NULL == evas, "evas is NULL!!");

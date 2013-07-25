@@ -27,16 +27,6 @@
 #include "common_eap_connect.h"
 #include <efl_assist.h>
 
-typedef struct _view_detail_data {
-	Evas_Object *win;
-	char *ap_image_path;
-	wifi_ap_h ap;
-	eap_info_list_t *eap_info_list;
-	ip_info_list_t *ip_info_list;
-	Evas_Object *forget_confirm_popup;
-	Evas_Object *view_detail_list;
-} view_detail_data;
-
 static int view_detail_end = FALSE;
 
 static char *_view_detail_grouptitle_text_get(void *data,
@@ -266,6 +256,21 @@ static gboolean __view_detail_load_ip_info_list_cb(void *data)
 	return FALSE;
 }
 
+static void _gl_realized(void *data, Evas_Object *obj, void *event_info)
+{
+	__COMMON_FUNC_ENTER__;
+
+	Elm_Object_Item *item = (Elm_Object_Item *)event_info;
+	assertm_if(NULL == item, "item is NULL");
+
+	genlist_item_data_t *item_data_t = (genlist_item_data_t *)elm_object_item_data_get(item);
+	assertm_if(NULL == item_data_t, "NULL!!");
+
+	common_util_genlist_item_style_set(item, item_data_t->group_style);
+
+	__COMMON_FUNC_EXIT__;
+}
+
 void view_detail(wifi_device_info_t *device_info, Evas_Object *win_main)
 {
 	__COMMON_FUNC_ENTER__;
@@ -278,6 +283,7 @@ void view_detail(wifi_device_info_t *device_info, Evas_Object *win_main)
 		ERROR_LOG(UG_NAME_NORMAL, "Failed: device_info is NULL");
 		return;
 	}
+
 	Evas_Object *layout = NULL;
 	Evas_Object* navi_frame = viewer_manager_get_naviframe();
 	if (navi_frame == NULL) {
@@ -325,6 +331,8 @@ void view_detail(wifi_device_info_t *device_info, Evas_Object *win_main)
 
 	evas_object_data_set(navi_frame, SCREEN_TYPE_ID_KEY,
 				(void *)VIEW_MANAGER_VIEW_TYPE_DETAIL);
+
+	evas_object_smart_callback_add(detailview_list, "realized", _gl_realized, NULL);
 
 	/* Set pop callback */
 	elm_naviframe_item_pop_cb_set(navi_it, detailview_sk_cb, _detail_data);

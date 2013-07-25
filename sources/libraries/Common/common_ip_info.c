@@ -27,33 +27,8 @@
 
 #define MAX_PORT_NUMBER		65535
 
-typedef struct {
-	char* title;
-	char* description;
-} _view_detail_description_data_t;
-
-struct ip_info_list {
-	const char *str_pkg_name;
-	Evas_Object *genlist;
-
-	Elm_Object_Item* ip_toggle_item;
-	Elm_Object_Item* ip_addr_item;
-	Elm_Object_Item* subnet_mask_item;
-	Elm_Object_Item* gateway_addr_item;
-	Elm_Object_Item* dns_1_item;
-	Elm_Object_Item* dns_2_item;
-	Elm_Object_Item* proxy_addr_item;
-	Elm_Object_Item* proxy_port_item;
-
-	imf_ctxt_panel_cb_t input_panel_cb;
-	void *input_panel_cb_data;
-
-	wifi_ap_h ap;
-	wifi_ip_config_type_e ip_type;
-};
-
 static Elm_Object_Item* _add_description(Evas_Object* genlist, char* title,
-		char* description, Elm_Object_Item* insert_after);
+		char* description, Elm_Object_Item* insert_after, GENLIST_ITEM_STYLE item_style);
 
 static Elm_Genlist_Item_Class ip_toggle_itc ;
 static Elm_Genlist_Item_Class description_itc ;
@@ -71,12 +46,24 @@ static void _ip_info_detail_description_del(void *data, Evas_Object *obj)
 
 	retm_if(NULL == data);
 
-	_view_detail_description_data_t* det = (_view_detail_description_data_t*) data;
+	_view_detail_description_data_t* det = (_view_detail_description_data_t*) common_util_genlist_item_data_get(data);
 
 	g_free(det->description);
 	g_free(det->title);
 	g_free(det);
 	det = NULL;
+	g_free(data);
+	data = NULL;
+
+	__COMMON_FUNC_EXIT__;
+}
+
+static void _ip_toggle_item_del(void *data, Evas_Object *obj)
+{
+	__COMMON_FUNC_ENTER__;
+
+	g_free(data);
+	data = NULL;
 
 	__COMMON_FUNC_EXIT__;
 }
@@ -86,7 +73,7 @@ static char *_ip_info_detail_description_text_get(void *data,
 {
 	retvm_if(NULL == data || NULL == part, NULL);
 
-	_view_detail_description_data_t* det = (_view_detail_description_data_t*) data;
+	_view_detail_description_data_t* det = (_view_detail_description_data_t*) common_util_genlist_item_data_get(data);
 
 	if(0 == strncmp("elm.text.1", part, strlen(part))) {
 		return g_strdup(det->description);
@@ -238,7 +225,7 @@ static void _ip_info_entry_unfocused_cb(void *data, Evas_Object *obj, void *even
 
 static void _ip_info_entry_eraser_clicked_cb(void *data, Evas_Object *obj, void *event_info)
 {
-	common_utils_entry_info_t *entry_info = (common_utils_entry_info_t *)data;
+	common_utils_entry_info_t *entry_info = (common_utils_entry_info_t *) common_util_genlist_item_data_get(data);
 	if (!entry_info)
 		return;
 
@@ -249,7 +236,8 @@ static void _ip_info_entry_eraser_clicked_cb(void *data, Evas_Object *obj, void 
 
 static char *_ip_info_entry_item_text_get(void *data, Evas_Object *obj, const char *part)
 {
-	common_utils_entry_info_t *entry_info = (common_utils_entry_info_t *)data;
+	common_utils_entry_info_t *entry_info = (common_utils_entry_info_t *)common_util_genlist_item_data_get(data);
+
 	if (!entry_info)
 		return NULL;
 
@@ -261,7 +249,8 @@ static char *_ip_info_entry_item_text_get(void *data, Evas_Object *obj, const ch
 
 static Evas_Object *_ip_info_entry_item_content_get(void *data, Evas_Object *obj, const char *part)
 {
-	common_utils_entry_info_t *entry_info = (common_utils_entry_info_t *)data;
+	common_utils_entry_info_t *entry_info = (common_utils_entry_info_t *)common_util_genlist_item_data_get(data);
+
 	if (!entry_info)
 		return NULL;
 
@@ -358,7 +347,7 @@ static Evas_Object *_ip_info_entry_item_content_get(void *data, Evas_Object *obj
 
 static void _ip_info_entry_item_del(void *data, Evas_Object *obj)
 {
-	common_utils_entry_info_t *entry_info = (common_utils_entry_info_t *)data;
+	common_utils_entry_info_t *entry_info = (common_utils_entry_info_t *)common_util_genlist_item_data_get(data);
 	if (entry_info == NULL)
 		return;
 
@@ -374,11 +363,13 @@ static void _ip_info_entry_item_del(void *data, Evas_Object *obj)
 	}
 
 	g_free(entry_info);
+	g_free(data);
+	data = NULL;
 }
 
 static char *_access_info_cb(void *data, Evas_Object *obj)
 {
-	common_utils_entry_info_t *entry_info = (common_utils_entry_info_t *)data;
+	common_utils_entry_info_t *entry_info = (common_utils_entry_info_t *) common_util_genlist_item_data_get(data);
 	if (!entry_info)
 		return NULL;
 
@@ -404,7 +395,11 @@ static void _create_static_ip_table(ip_info_list_t *ip_info_list_data)
 	edit_box_details->entry_txt = txt;
 	edit_box_details->input_panel_cb = ip_info_list_data->input_panel_cb;
 	edit_box_details->input_panel_cb_data = ip_info_list_data->input_panel_cb_data;
-	edit_box_details->item = elm_genlist_item_insert_after(ip_info_list_data->genlist, &ip_entry_itc, edit_box_details, NULL, ip_info_list_data->ip_toggle_item, ELM_GENLIST_ITEM_NONE, _gl_editbox_sel_cb, NULL);
+
+	genlist_item_data_t *item_data = g_new0(genlist_item_data_t, 1);
+	item_data->cast_data = edit_box_details;
+	item_data->group_style = GENLIST_ITEM_STYLE_CENTER;
+	edit_box_details->item = elm_genlist_item_insert_after(ip_info_list_data->genlist, &ip_entry_itc, item_data, NULL, ip_info_list_data->ip_toggle_item, ELM_GENLIST_ITEM_NONE, _gl_editbox_sel_cb, NULL);
 	elm_genlist_item_select_mode_set(edit_box_details->item, ELM_OBJECT_SELECT_MODE_NONE);
 	Evas_Object *ao = elm_object_item_access_object_get(edit_box_details->item);
 	elm_access_info_cb_set(ao, ELM_ACCESS_INFO, _access_info_cb, edit_box_details);
@@ -418,7 +413,11 @@ static void _create_static_ip_table(ip_info_list_t *ip_info_list_data)
 	edit_box_details->entry_txt = txt;
 	edit_box_details->input_panel_cb = ip_info_list_data->input_panel_cb;
 	edit_box_details->input_panel_cb_data = ip_info_list_data->input_panel_cb_data;
-	edit_box_details->item = elm_genlist_item_insert_after(ip_info_list_data->genlist, &ip_entry_itc, edit_box_details, NULL, ip_info_list_data->ip_addr_item, ELM_GENLIST_ITEM_NONE, _gl_editbox_sel_cb, NULL);
+
+	item_data = g_new0(genlist_item_data_t, 1);
+	item_data->cast_data = edit_box_details;
+	item_data->group_style = GENLIST_ITEM_STYLE_CENTER;
+	edit_box_details->item = elm_genlist_item_insert_after(ip_info_list_data->genlist, &ip_entry_itc, item_data, NULL, ip_info_list_data->ip_addr_item, ELM_GENLIST_ITEM_NONE, _gl_editbox_sel_cb, NULL);
 	elm_genlist_item_select_mode_set(edit_box_details->item, ELM_OBJECT_SELECT_MODE_NONE);
 	ao = elm_object_item_access_object_get(edit_box_details->item);
 	elm_access_info_cb_set(ao, ELM_ACCESS_INFO, _access_info_cb, edit_box_details);
@@ -432,7 +431,11 @@ static void _create_static_ip_table(ip_info_list_t *ip_info_list_data)
 	edit_box_details->entry_txt = txt;
 	edit_box_details->input_panel_cb = ip_info_list_data->input_panel_cb;
 	edit_box_details->input_panel_cb_data = ip_info_list_data->input_panel_cb_data;
-	edit_box_details->item = elm_genlist_item_insert_after(ip_info_list_data->genlist, &ip_entry_itc, edit_box_details, NULL, ip_info_list_data->subnet_mask_item, ELM_GENLIST_ITEM_NONE, _gl_editbox_sel_cb, NULL);
+
+	item_data = g_new0(genlist_item_data_t, 1);
+	item_data->cast_data = edit_box_details;
+	item_data->group_style = GENLIST_ITEM_STYLE_CENTER;
+	edit_box_details->item = elm_genlist_item_insert_after(ip_info_list_data->genlist, &ip_entry_itc, item_data, NULL, ip_info_list_data->subnet_mask_item, ELM_GENLIST_ITEM_NONE, _gl_editbox_sel_cb, NULL);
 	elm_genlist_item_select_mode_set(edit_box_details->item, ELM_OBJECT_SELECT_MODE_NONE);
 	ao = elm_object_item_access_object_get(edit_box_details->item);
 	elm_access_info_cb_set(ao, ELM_ACCESS_INFO, _access_info_cb, edit_box_details);
@@ -446,7 +449,11 @@ static void _create_static_ip_table(ip_info_list_t *ip_info_list_data)
 	edit_box_details->entry_txt = txt;
 	edit_box_details->input_panel_cb = ip_info_list_data->input_panel_cb;
 	edit_box_details->input_panel_cb_data = ip_info_list_data->input_panel_cb_data;
-	edit_box_details->item = elm_genlist_item_insert_after(ip_info_list_data->genlist, &ip_entry_itc, edit_box_details, NULL, ip_info_list_data->gateway_addr_item, ELM_GENLIST_ITEM_NONE, _gl_editbox_sel_cb, NULL);
+
+	item_data = g_new0(genlist_item_data_t, 1);
+	item_data->cast_data = edit_box_details;
+	item_data->group_style = GENLIST_ITEM_STYLE_CENTER;
+	edit_box_details->item = elm_genlist_item_insert_after(ip_info_list_data->genlist, &ip_entry_itc, item_data, NULL, ip_info_list_data->gateway_addr_item, ELM_GENLIST_ITEM_NONE, _gl_editbox_sel_cb, NULL);
 	elm_genlist_item_select_mode_set(edit_box_details->item, ELM_OBJECT_SELECT_MODE_NONE);
 	ao = elm_object_item_access_object_get(edit_box_details->item);
 	elm_access_info_cb_set(ao, ELM_ACCESS_INFO, _access_info_cb, edit_box_details);
@@ -460,7 +467,11 @@ static void _create_static_ip_table(ip_info_list_t *ip_info_list_data)
 	edit_box_details->entry_txt = txt;
 	edit_box_details->input_panel_cb = ip_info_list_data->input_panel_cb;
 	edit_box_details->input_panel_cb_data = ip_info_list_data->input_panel_cb_data;
-	edit_box_details->item = elm_genlist_item_insert_after(ip_info_list_data->genlist, &ip_entry_itc, edit_box_details, NULL, ip_info_list_data->dns_1_item, ELM_GENLIST_ITEM_NONE, _gl_editbox_sel_cb, NULL);
+
+	item_data = g_new0(genlist_item_data_t, 1);
+	item_data->cast_data = edit_box_details;
+	item_data->group_style = GENLIST_ITEM_STYLE_BOTTOM;
+	edit_box_details->item = elm_genlist_item_insert_after(ip_info_list_data->genlist, &ip_entry_itc, item_data, NULL, ip_info_list_data->dns_1_item, ELM_GENLIST_ITEM_NONE, _gl_editbox_sel_cb, NULL);
 	elm_genlist_item_select_mode_set(edit_box_details->item, ELM_OBJECT_SELECT_MODE_NONE);
 	ao = elm_object_item_access_object_get(edit_box_details->item);
 	elm_access_info_cb_set(ao, ELM_ACCESS_INFO, _access_info_cb, edit_box_details);
@@ -512,7 +523,7 @@ static char* _ip_info_iptoggle_text_get(void *data, Evas_Object *obj,
 	retvm_if(NULL == data || NULL == part, NULL);
 
 	if (!strncmp(part, "elm.text", strlen(part))) {
-		ip_info_list_t *ip_info_list_data = (ip_info_list_t *)data;
+		ip_info_list_t *ip_info_list_data = (ip_info_list_t *)common_util_genlist_item_data_get(data);
 
 		Evas_Object *ao = elm_object_item_access_object_get(ip_info_list_data->ip_toggle_item);
 		elm_access_info_set(ao, ELM_ACCESS_TYPE, "on/off button");
@@ -529,7 +540,7 @@ static char* _ip_info_iptoggle_text_get(void *data, Evas_Object *obj,
 }
 
 static Elm_Object_Item* _add_description(Evas_Object* genlist, char* title,
-		char* description, Elm_Object_Item* insert_after)
+		char* description, Elm_Object_Item* insert_after, GENLIST_ITEM_STYLE item_style)
 {
 	retvm_if(NULL == genlist, NULL);
 
@@ -539,12 +550,16 @@ static Elm_Object_Item* _add_description(Evas_Object* genlist, char* title,
 	description_data->title = g_strdup(title);
 	description_data->description = g_strdup(description);
 
+	genlist_item_data_t *item_data = g_new0(genlist_item_data_t, 1);
+	item_data->cast_data = description_data;
+	item_data->group_style = item_style;
+
 	Elm_Object_Item* det = NULL;
 	if (insert_after) {
 		det = elm_genlist_item_insert_after(
 				genlist, /*obj*/
 				&description_itc,/*itc*/
-				description_data,/*data*/
+				item_data,/*data*/
 				NULL,/*parent*/
 				insert_after, /*after than*/
 				ELM_GENLIST_ITEM_NONE, /*flags*/
@@ -554,7 +569,7 @@ static Elm_Object_Item* _add_description(Evas_Object* genlist, char* title,
 		det = elm_genlist_item_append(
 				genlist,
 				&description_itc,
-				description_data,
+				item_data,
 				NULL,
 				ELM_GENLIST_ITEM_NONE,
 				_gl_deselect_callback,
@@ -612,7 +627,7 @@ static void __ip_info_toggle_item_sel_cb(void* data,
 					ip_info_list_data->genlist,
 					sc(ip_info_list_data->str_pkg_name, I18N_TYPE_IP_address),
 					ip_addr,
-					ip_info_list_data->ip_toggle_item);
+					ip_info_list_data->ip_toggle_item, GENLIST_ITEM_STYLE_BOTTOM);
 
 			elm_object_item_disabled_set(ip_info_list_data->ip_addr_item, EINA_TRUE);
 
@@ -645,7 +660,7 @@ static Evas_Object *_ip_info_iptoggle_content_get(void *data,
 {
 	retvm_if(NULL == data || NULL == obj || NULL == part, NULL);
 
-	ip_info_list_t *ip_info_list_data = (ip_info_list_t *)data;
+	ip_info_list_t *ip_info_list_data = (ip_info_list_t *)common_util_genlist_item_data_get(data);
 
 	Evas_Object *toggle_btn = elm_check_add(obj);
 	retvm_if(NULL == toggle_btn, NULL);
@@ -760,7 +775,7 @@ ip_info_list_t *ip_info_append_items(wifi_ap_h ap, const char *pkg_name,
 	ip_toggle_itc.func.text_get = _ip_info_iptoggle_text_get;
 	ip_toggle_itc.func.content_get = _ip_info_iptoggle_content_get;
 	ip_toggle_itc.func.state_get = NULL;
-	ip_toggle_itc.func.del = NULL;
+	ip_toggle_itc.func.del = _ip_toggle_item_del;
 
 	description_itc.item_style = "dialogue/2text.2";
 	description_itc.func.text_get = _ip_info_detail_description_text_get;
@@ -780,8 +795,12 @@ ip_info_list_t *ip_info_append_items(wifi_ap_h ap, const char *pkg_name,
 	wifi_ip_config_type_e type = WIFI_IP_CONFIG_TYPE_NONE;
 	wifi_ap_get_ip_config_type(ap, WIFI_ADDRESS_FAMILY_IPV4, &type);
 	ip_info_list_data->ip_type = type;
+
+	genlist_item_data_t *item_data = g_new0(genlist_item_data_t, 1);
+	item_data->cast_data = ip_info_list_data;
+
 	ip_info_list_data->ip_toggle_item = elm_genlist_item_append(genlist,
-			&ip_toggle_itc, ip_info_list_data, NULL, ELM_GENLIST_ITEM_NONE,
+			&ip_toggle_itc, item_data, NULL, ELM_GENLIST_ITEM_NONE,
 			__ip_info_toggle_item_sel_cb, ip_info_list_data);
 
 	/* IP address */
@@ -795,7 +814,7 @@ ip_info_list_t *ip_info_append_items(wifi_ap_h ap, const char *pkg_name,
 		ip_info_list_data->ip_addr_item =
 		_add_description(genlist,
 			sc(ip_info_list_data->str_pkg_name, I18N_TYPE_IP_address),
-			ip_addr, NULL);
+			ip_addr, NULL, GENLIST_ITEM_STYLE_BOTTOM);
 		elm_object_item_disabled_set(ip_info_list_data->ip_addr_item, TRUE);
 		g_free(ip_addr);
 	}
@@ -818,7 +837,7 @@ ip_info_list_t *ip_info_append_items(wifi_ap_h ap, const char *pkg_name,
 	item =
 	_add_description(genlist,
 		sc(ip_info_list_data->str_pkg_name, I18N_TYPE_MAC_addr), mac_addr,
-		NULL);
+		NULL, GENLIST_ITEM_STYLE_TOP);
 	elm_object_item_disabled_set(item, TRUE);
 	g_free(mac_addr);
 
@@ -845,7 +864,10 @@ ip_info_list_t *ip_info_append_items(wifi_ap_h ap, const char *pkg_name,
 	edit_box_details->guide_txt = DEFAULT_GUIDE_PROXY_IP;
 	edit_box_details->input_panel_cb = input_panel_cb;
 	edit_box_details->input_panel_cb_data = input_panel_cb_data;
-	edit_box_details->item = elm_genlist_item_append(genlist, &ip_entry_itc, edit_box_details, NULL, ELM_GENLIST_ITEM_NONE, _gl_editbox_sel_cb, NULL);
+	item_data = g_new0(genlist_item_data_t, 1);
+	item_data->cast_data = edit_box_details;
+	item_data->group_style = GENLIST_ITEM_STYLE_CENTER;
+	edit_box_details->item = elm_genlist_item_append(genlist, &ip_entry_itc, item_data, NULL, ELM_GENLIST_ITEM_NONE, _gl_editbox_sel_cb, NULL);
 	elm_genlist_item_select_mode_set(edit_box_details->item, ELM_OBJECT_SELECT_MODE_NONE);
 	Evas_Object *ao = elm_object_item_access_object_get(edit_box_details->item);
 	elm_access_info_cb_set(ao, ELM_ACCESS_INFO, _access_info_cb, edit_box_details);
@@ -858,7 +880,10 @@ ip_info_list_t *ip_info_append_items(wifi_ap_h ap, const char *pkg_name,
 	edit_box_details->guide_txt = DEFAULT_GUIDE_PROXY_PORT;
 	edit_box_details->input_panel_cb = input_panel_cb;
 	edit_box_details->input_panel_cb_data = input_panel_cb_data;
-	edit_box_details->item = elm_genlist_item_append(genlist, &ip_entry_itc, edit_box_details, NULL, ELM_GENLIST_ITEM_NONE, _gl_editbox_sel_cb, NULL);
+	item_data = g_new0(genlist_item_data_t, 1);
+	item_data->cast_data = edit_box_details;
+	item_data->group_style = GENLIST_ITEM_STYLE_BOTTOM;
+	edit_box_details->item = elm_genlist_item_append(genlist, &ip_entry_itc, item_data, NULL, ELM_GENLIST_ITEM_NONE, _gl_editbox_sel_cb, NULL);
 	elm_genlist_item_select_mode_set(edit_box_details->item, ELM_OBJECT_SELECT_MODE_NONE);
 	ao = elm_object_item_access_object_get(edit_box_details->item);
 	elm_access_info_cb_set(ao, ELM_ACCESS_INFO, _access_info_cb, edit_box_details);

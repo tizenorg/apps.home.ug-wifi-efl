@@ -17,7 +17,6 @@
  *
  */
 
-#include <Ecore_X.h>
 #include <Elementary.h>
 
 #include "common.h"
