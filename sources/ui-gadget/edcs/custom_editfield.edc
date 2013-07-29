@@ -13,8 +13,6 @@
 #define EDITFIELD_GUIDE_TEXT_COLOR_INC 121 131 138 255
 #define EDITFIELD_DEFAULT_ERASER_MINW_INC 48
 #define EDITFIELD_DEFAULT_ERASER_MINH_INC 48
-#define EDITFIELD_SEARCHBAR_ERASER_EVENT_MINW_INC 38
-#define EDITFIELD_SEARCHBAR_ERASER_EVENT_MINH_INC 50
 #define ENTRY_TEXT_SIZE_INC 44
 
 
@@ -96,7 +94,7 @@ collections {
 				description {
 					state: "default" 0.0;
 					min: 500 EDITFIELD_HEIGHT_INC;
-					max: 500 EDITFIELD_HEIGHT_INC;
+					max: 900 EDITFIELD_HEIGHT_INC;
 					align: 0.0 0.5;
 					image {
 						normal: "00_search_edit_field_bg.png";
@@ -365,18 +363,18 @@ collections {
 				description {
 					state: "default" 0.0;
 					visible: 0;
-					min: EDITFIELD_SEARCHBAR_ERASER_EVENT_MINW_INC EDITFIELD_SEARCHBAR_ERASER_EVENT_MINH_INC;
+					min: EDITFIELD_DEFAULT_ERASER_MINW_INC EDITFIELD_DEFAULT_ERASER_MINH_INC;
 					fixed: 1 1;
 					align: 1 0.5;
 					color: 0 0 0 0;
 					rel1 {
 						relative: 0.0 0.5;
-						to_x : "bottom_right_padding";
+						to_x : "right_eraser_padding";
 						to_y : "inputfield_rect";
 					}
 					rel2 {
 						relative: 0.0 0.5;
-						to_x : "bottom_right_padding";
+						to_x : "right_eraser_padding";
 						to_y : "inputfield_rect";
 					}
 				}
