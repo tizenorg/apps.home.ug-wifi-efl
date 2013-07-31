@@ -993,7 +993,7 @@ static void __common_eap_connect_cleanup(eap_connect_data_t *eap_data)
 	wlan_manager_enable_scan_result_update();
 }
 
-static void __common_eap_connect_destroy(void *data,  Evas_Object *obj, void *event_info)
+static void __common_eap_connect_destroy(void *data, Evas_Object *obj, void *event_info)
 {
 	__COMMON_FUNC_ENTER__;
 
@@ -1001,6 +1001,16 @@ static void __common_eap_connect_destroy(void *data,  Evas_Object *obj, void *ev
 	ea_object_event_callback_del(eap_data->navi_frame, EA_CALLBACK_BACK, ea_naviframe_back_cb);
 	__common_eap_connect_cleanup(eap_data);
 
+	__COMMON_FUNC_EXIT__;
+}
+
+static Eina_Bool __common_eap_connect_remove(void *data, Elm_Object_Item *it)
+{
+	__COMMON_FUNC_ENTER__;
+
+	__common_eap_connect_destroy(data, NULL, NULL);
+
+	return EINA_TRUE;
 	__COMMON_FUNC_EXIT__;
 }
 
@@ -1221,7 +1231,7 @@ eap_connect_data_t *create_eap_view(Evas_Object *win_main,
 	elm_toolbar_transverse_expanded_set(toolbar, EINA_TRUE);
 
 	elm_toolbar_select_mode_set(toolbar, ELM_OBJECT_SELECT_MODE_NONE);
-	Evas_Object* btn = elm_toolbar_item_append(toolbar, NULL, NULL, NULL, NULL);
+	Elm_Object_Item* btn = elm_toolbar_item_append(toolbar, NULL, NULL, NULL, NULL);
 
 	elm_object_item_part_content_set(btn, "object", connect_btn);
 	elm_object_item_part_content_set(navi_it, "toolbar", toolbar);
@@ -1247,7 +1257,7 @@ eap_connect_data_t *create_eap_view(Evas_Object *win_main,
 	elm_object_item_part_content_set(navi_it, "title_prev_btn", back_btn);
 
 	ea_object_event_callback_add(eap_data->navi_frame, EA_CALLBACK_BACK, ea_naviframe_back_cb, NULL);
-	elm_naviframe_item_pop_cb_set(navi_it, __common_eap_connect_destroy, eap_data);
+	elm_naviframe_item_pop_cb_set(navi_it, __common_eap_connect_remove, eap_data);
 
 
 	/* Register imf event cbs */

@@ -13,7 +13,7 @@ SET(ENGINE_PKGCONFIGS
 	capi-network-wifi
 	network)
 
-SET(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wall -Wextra -Wno-unused-parameter -Wno-missing-field-initializers -Wcast-align -Wmissing-declarations")
+SET(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wall -Wextra -Wno-unused-parameter -Wno-missing-field-initializers -Wmissing-declarations")
 
 INCLUDE(FindPkgConfig)
 pkg_check_modules(pkgs REQUIRED

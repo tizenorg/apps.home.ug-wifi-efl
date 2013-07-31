@@ -223,7 +223,7 @@ static void _rbutton_click_cb(void *data, Evas_Object *obj, void *event_info)
 	__COMMON_FUNC_EXIT__;
 }
 
-static Eina_Bool _back_sk_cb(void *data, Evas_Object *obj, void *event_info)
+static Eina_Bool _back_sk_cb(void *data, Elm_Object_Item *it)
 {
 	__COMMON_FUNC_ENTER__;
 
@@ -726,10 +726,10 @@ Evas_Object* viewer_manager_create(Evas_Object* _parent)
 		elm_toolbar_transverse_expanded_set(toolbar, EINA_TRUE);
 		elm_toolbar_select_mode_set(toolbar, ELM_OBJECT_SELECT_MODE_NONE);
 
-		manager_object->prev_button = elm_toolbar_item_append(toolbar, NULL,
+		manager_object->prev_button = (Evas_Object *)elm_toolbar_item_append(toolbar, NULL,
 						ug_app_state->lbutton_setup_wizard_prev,
 						_lbutton_click_cb, NULL);
-		manager_object->next_button = elm_toolbar_item_append(toolbar, NULL,
+		manager_object->next_button = (Evas_Object *)elm_toolbar_item_append(toolbar, NULL,
 						ug_app_state->rbutton_setup_wizard_next,
 						_rbutton_click_cb, NULL);
 
@@ -765,7 +765,7 @@ Evas_Object* viewer_manager_create(Evas_Object* _parent)
 		evas_object_smart_callback_add(manager_object->scan_button,
 				"clicked", __refresh_scan_callback, NULL);
 
-		Evas_Object* btn = elm_toolbar_item_append(toolbar, NULL, NULL, NULL, NULL);
+		Elm_Object_Item* btn = elm_toolbar_item_append(toolbar, NULL, NULL, NULL, NULL);
 		elm_object_item_part_content_set(btn, "object", manager_object->scan_button);
 		elm_object_item_part_content_set(navi_it, "toolbar", toolbar);
 

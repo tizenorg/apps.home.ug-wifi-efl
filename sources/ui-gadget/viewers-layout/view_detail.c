@@ -353,7 +353,7 @@ void view_detail(wifi_device_info_t *device_info, Evas_Object *win_main)
 		elm_toolbar_transverse_expanded_set(toolbar, EINA_TRUE);
 
 		elm_toolbar_select_mode_set(toolbar, ELM_OBJECT_SELECT_MODE_NONE);
-		Evas_Object* btn = elm_toolbar_item_append(toolbar, NULL, NULL, NULL, NULL);
+		Elm_Object_Item* btn = elm_toolbar_item_append(toolbar, NULL, NULL, NULL, NULL);
 
 		elm_object_item_part_content_set(btn, "object", forget_button);
 		elm_object_item_part_content_set(navi_it, "toolbar", toolbar);
