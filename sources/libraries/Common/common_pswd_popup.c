@@ -152,7 +152,6 @@ void create_pbc_popup(pswd_popup_t *pswd_popup_data, Evas_Smart_Cb cancel_cb, vo
 	popup = common_utils_show_info_popup(pswd_popup_data->win, &popup_btn_data);
 
 	label = elm_label_add(popup);
-	elm_object_style_set(label, "popup/default");
 	elm_label_line_wrap_set(label, ELM_WRAP_MIXED);
 	elm_object_text_set(label, sc(pswd_popup_data->str_pkg_name,I18N_TYPE_Press_WPS_On_Your_Wi_Fi_Access_Point));
 	evas_object_size_hint_weight_set(label, EVAS_HINT_EXPAND, 0.0);
