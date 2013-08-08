@@ -78,6 +78,7 @@ typedef struct {
 	char *rbutton_setup_wizard_skip;
 	popup_manager_object_t *popup_manager;
 	eap_connect_data_t *eap_view;
+	bool is_disconnect;
 } wifi_appdata ;
 
 int wifi_exit(void);

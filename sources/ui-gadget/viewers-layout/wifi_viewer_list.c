@@ -464,6 +464,7 @@ static void __viewer_list_item_clicked_cb(void *data, Evas_Object *obj,
 
 	int item_state = gdata->radio_mode;
 	int current_state = 0;
+	int ret = -1;
 
 	INFO_LOG(UG_NAME_NORMAL, "ssid --- %s", device_info->ssid);
 	INFO_LOG(UG_NAME_NORMAL, "ap --- 0x%x", device_info->ap);
@@ -477,8 +478,8 @@ static void __viewer_list_item_clicked_cb(void *data, Evas_Object *obj,
 		INFO_LOG(UG_NAME_NORMAL, "header mode [%d]", current_state);
 
 		switch (current_state) {
-		case HEADER_MODE_ON:
 		case HEADER_MODE_CONNECTED:
+		case HEADER_MODE_ON:
 		case HEADER_MODE_CONNECTING:
 			__viewer_list_wifi_connect(device_info);
 			break;
@@ -493,8 +494,15 @@ static void __viewer_list_item_clicked_cb(void *data, Evas_Object *obj,
 		}
 		break;
 
-	case VIEWER_ITEM_RADIO_MODE_CONNECTING:
 	case VIEWER_ITEM_RADIO_MODE_CONNECTED:
+		ret = wlan_manager_disconnect(device_info->ap);
+		if (ret != WLAN_MANAGER_ERR_NONE)
+			ERROR_LOG(UG_NAME_NORMAL, "Failed disconnect [0x%x]", device_info);
+		else
+			ug_app_state->is_disconnect = true;
+		break;
+
+	case VIEWER_ITEM_RADIO_MODE_CONNECTING:
 	default:
 		INFO_LOG(UG_NAME_NORMAL, "Ignore click");
 		break;
@@ -510,7 +518,10 @@ static char *viewer_list_get_device_status_txt(wifi_device_info_t *wifi_device, 
 	char *status_txt = NULL;
 	/* The strings are currently hard coded. It will be replaced with string ids later */
 	if (VIEWER_ITEM_RADIO_MODE_CONNECTING == mode) {
-		status_txt = g_strdup(sc(PACKAGE, I18N_TYPE_Connecting));
+		if (ug_app_state->is_disconnect)
+			status_txt = g_strdup(sc(PACKAGE, I18N_TYPE_Disconnecting));
+		else
+			status_txt = g_strdup(sc(PACKAGE, I18N_TYPE_Connecting));
 	} else if (VIEWER_ITEM_RADIO_MODE_CONNECTED == mode) {
 		status_txt = g_strdup(sc(PACKAGE, I18N_TYPE_Connected));
 	} else if (VIEWER_ITEM_RADIO_MODE_OFF == mode) {
@@ -519,6 +530,7 @@ static char *viewer_list_get_device_status_txt(wifi_device_info_t *wifi_device, 
 		status_txt = g_strdup(sc(PACKAGE, I18N_TYPE_Unknown));
 		INFO_LOG(UG_NAME_NORMAL, "Invalid mode: %d", mode);
 	}
+	ug_app_state->is_disconnect = false;
 	return status_txt;
 }
 
@@ -530,6 +542,7 @@ Evas_Object* viewer_list_create(Evas_Object *win)
 	first_item = NULL;
 	last_item = NULL;
 	grouptitle = NULL;
+	ug_app_state->is_disconnect = false;
 
 	assertm_if(NULL == win, "NULL!!");
 	viewer_list = elm_genlist_add(win);
