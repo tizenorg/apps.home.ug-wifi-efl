@@ -594,8 +594,6 @@ static void __ip_info_toggle_item_sel_cb(void* data,
 
 	wifi_ap_h ap = ip_info_list_data->ap;
 
-	elm_object_item_disabled_set(ip_info_list_data->ip_toggle_item, EINA_TRUE);
-
 	object_type = evas_object_type_get(obj);
 
 	if (g_strcmp0(object_type, "elm_check") == 0) {
@@ -629,7 +627,8 @@ static void __ip_info_toggle_item_sel_cb(void* data,
 					ip_addr,
 					ip_info_list_data->ip_toggle_item, GENLIST_ITEM_STYLE_BOTTOM);
 
-			elm_object_item_disabled_set(ip_info_list_data->ip_addr_item, EINA_TRUE);
+			Evas_Object *toggle_item = elm_object_item_part_content_get(ip_info_list_data->ip_toggle_item, "elm.icon");
+			elm_check_state_set(toggle_item, EINA_FALSE);
 
 			g_free(ip_addr);
 
@@ -645,12 +644,14 @@ static void __ip_info_toggle_item_sel_cb(void* data,
 			_create_static_ip_table(ip_info_list_data);
 			ip_info_list_data->ip_type = WIFI_IP_CONFIG_TYPE_STATIC;
 		}
+		Evas_Object *toggle_item = elm_object_item_part_content_get(ip_info_list_data->ip_toggle_item, "elm.icon");
+		elm_check_state_set(toggle_item, EINA_TRUE);
 	}
 
-	elm_genlist_item_update(ip_info_list_data->ip_toggle_item);
-	elm_object_item_disabled_set(ip_info_list_data->ip_toggle_item, FALSE);
-
 	common_util_managed_idle_add(__genlist_item_disable_later, event_info);
+
+	Evas_Object *toggle_item = elm_object_item_part_content_get(ip_info_list_data->ip_toggle_item, "elm.icon");
+	elm_object_focus_set(toggle_item, EINA_TRUE);
 
 	__COMMON_FUNC_EXIT__;
 }
@@ -798,6 +799,7 @@ ip_info_list_t *ip_info_append_items(wifi_ap_h ap, const char *pkg_name,
 
 	genlist_item_data_t *item_data = g_new0(genlist_item_data_t, 1);
 	item_data->cast_data = ip_info_list_data;
+	item_data->group_style = GENLIST_ITEM_STYLE_TOP;
 
 	ip_info_list_data->ip_toggle_item = elm_genlist_item_append(genlist,
 			&ip_toggle_itc, item_data, NULL, ELM_GENLIST_ITEM_NONE,
