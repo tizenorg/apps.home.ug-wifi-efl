@@ -509,7 +509,6 @@ static int app_reset(bundle *b, void *data)
 		syspopup_reset(b);
 	} else {
 		win_main = appcore_create_win(PACKAGE);
-		elm_win_indicator_mode_set (win_main, ELM_WIN_INDICATOR_SHOW);
 		assertm_if(NULL == win_main, "win_main is NULL!!");
 		evas = evas_object_evas_get(win_main);
 		assertm_if(NULL == evas, "evas is NULL!!");
@@ -521,14 +520,12 @@ static int app_reset(bundle *b, void *data)
 
 		elm_win_alpha_set(syspopup_app_state->win_main, EINA_TRUE); /* invisible window */
 		elm_win_borderless_set(syspopup_app_state->win_main, EINA_TRUE); /* No borders */
-		elm_win_conformant_set(syspopup_app_state->win_main, TRUE); /* Popup autoscroll */
+		elm_win_conformant_set(syspopup_app_state->win_main, EINA_TRUE); /* Popup autoscroll */
 
 		Evas_Object *conformant = elm_conformant_add(syspopup_app_state->win_main);
-		elm_win_conformant_set(syspopup_app_state->win_main, EINA_TRUE);
 		elm_win_resize_object_add(syspopup_app_state->win_main, conformant);
 		evas_object_size_hint_weight_set(conformant, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
 		evas_object_size_hint_align_set(conformant, EVAS_HINT_FILL, EVAS_HINT_FILL);
-		evas_object_show(conformant);
 		syspopup_app_state->conformant = conformant;
 
 		Evas_Object *layout = elm_layout_add(conformant);
