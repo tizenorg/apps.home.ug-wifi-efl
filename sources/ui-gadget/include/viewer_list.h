@@ -54,6 +54,7 @@ void viewer_list_item_del(Elm_Object_Item *item);
 Elm_Object_Item *viewer_list_item_first_get(Evas_Object* list);
 Elm_Object_Item *viewer_list_item_next_get(const Elm_Object_Item* current);
 Elm_Object_Item *viewer_list_item_at_index(int index);
+Elm_Object_Item *viewer_list_connecting_item_get(VIEWER_ITEM_RADIO_MODES mode);
 /////////////////////////////////////////////////////////////////////////////////////////////////
 
 //////// item control /////////////////////////////////////////////////////////////////////////

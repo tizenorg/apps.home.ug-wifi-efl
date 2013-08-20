@@ -444,6 +444,46 @@ static void __viewer_list_wifi_connect(wifi_device_info_t *device_info)
 	}
 }
 
+Elm_Object_Item *viewer_list_target_item_get(VIEWER_ITEM_RADIO_MODES mode)
+{
+	__COMMON_FUNC_ENTER__;
+
+	Elm_Object_Item *target = viewer_list_get_first_item();
+
+	while(target) {
+		ug_genlist_data_t *gdata = (ug_genlist_data_t *)elm_object_item_data_get(target);
+		retvm_if(NULL == gdata, NULL);
+		if (gdata->radio_mode == mode)
+			return target;
+
+		if (target == viewer_list_get_last_item())
+			break;
+		else
+			target = elm_genlist_item_next_get(target);
+	}
+
+	__COMMON_FUNC_EXIT__;
+	return NULL;
+}
+
+static void __viewer_list_force_set_wifi_status_connecting(Elm_Object_Item *target)
+{
+	__COMMON_FUNC_ENTER__;
+
+	Elm_Object_Item *connecting_target = viewer_list_target_item_get(VIEWER_ITEM_RADIO_MODE_CONNECTING);
+
+	ug_genlist_data_t *target_data = NULL;
+
+	if (viewer_manager_header_mode_get() == HEADER_MODE_CONNECTING) {
+		target_data = (ug_genlist_data_t *)elm_object_item_data_get(connecting_target);
+		if (target_data)
+			wlan_manager_disconnect(target_data->device_info->ap);
+		viewer_list_item_radio_mode_set(connecting_target, VIEWER_ITEM_RADIO_MODE_OFF);
+	}
+
+	__COMMON_FUNC_EXIT__;
+}
+
 static void __viewer_list_item_clicked_cb(void *data, Evas_Object *obj,
 		void *event_info)
 {
@@ -482,6 +522,8 @@ static void __viewer_list_item_clicked_cb(void *data, Evas_Object *obj,
 		case HEADER_MODE_ON:
 		case HEADER_MODE_CONNECTING:
 			__viewer_list_wifi_connect(device_info);
+			__viewer_list_force_set_wifi_status_connecting(it);
+			viewer_list_item_radio_mode_set(it, VIEWER_ITEM_RADIO_MODE_CONNECTING);
 			break;
 
 		case HEADER_MODE_OFF:
