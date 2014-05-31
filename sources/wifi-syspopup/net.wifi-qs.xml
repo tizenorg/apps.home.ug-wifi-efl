@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?> 
+<manifest xmlns="http://tizen.org/ns/packages" package="net.wifi-qs" version="0.4.55-7" install-location="internal-only">
+	<label>Wi-Fi device picker</label>
+	<author email="sanghoon80.cho@samsung.com" href="www.samsung.com">Sanghoon Cho</author>
+	<description>Wi-Fi device picker</description>
+	<ui-application appid="net.wifi-qs" exec="/usr/bin/wifi-qs" nodisplay="true" multiple="false" type="capp" taskmanage="false">
+		<label>Wi-Fi device picker</label>
+	</ui-application>
+</manifest>

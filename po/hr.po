@@ -1,0 +1,162 @@
+msgid "IDS_WIFI_BODY_STATIC_IP"
+msgstr "Statički IP"
+
+msgid "IDS_WIFI_POP_ACTIVATING_WI_FI_ING"
+msgstr "WiFi uključivanje..."
+
+msgid "IDS_WIFI_SK_FORGET"
+msgstr "Zaboravi"
+
+msgid "IDS_WIFI_BODY_IP_ADDRESS"
+msgstr "IP adresa"
+
+msgid "IDS_WIFI_BODY_SUBNET_MASK"
+msgstr "Maska podmreže"
+
+msgid "IDS_WIFI_BODY_DNS_1"
+msgstr "DNS 1"
+
+msgid "IDS_WIFI_BODY_DNS_2"
+msgstr "DNS 2"
+
+msgid "IDS_ST_BODY_NETWORK_NOTIFICATION"
+msgstr "Obavijest o mreži"
+
+msgid "IDS_ST_BODY_SECURED_ABB_M_WIFI_AP_SUMMARY"
+msgstr "Zaštićeno"
+
+msgid "IDS_WIFI_BODY_MAC_ADDRESS"
+msgstr "MAC adresa"
+
+msgid "IDS_WIFI_BODY_PROXY_PORT"
+msgstr "Proxy ulaz"
+
+msgid "IDS_ST_BODY_EXCELLENT"
+msgstr "Odličan"
+
+msgid "IDS_ST_BODY_GOOD_M_STRENGTH"
+msgstr "Signal dobar"
+
+msgid "IDS_ST_BODY_WI_FI_NETWORKS"
+msgstr "Wi-Fi mreže"
+
+msgid "IDS_WIFI_BODY_DISCONNECTING_ING"
+msgstr "Odspajanje..."
+
+msgid "IDS_WIFI_BODY_NO_APS"
+msgstr "Nema AP"
+
+msgid "IDS_WIFI_POP_DEACTIVATING_WI_FI_ING"
+msgstr "WiFi isključivanje..."
+
+msgid "IDS_WIFI_BODY_EAP_METHOD"
+msgstr "EAP način"
+
+msgid "IDS_WIFI_BODY_EAP"
+msgstr "EAP"
+
+msgid "IDS_WIFI_BODY_GATEWAY_ADDRESS"
+msgstr "Adresa pristupnika"
+
+msgid "IDS_WIFI_BODY_ENTER_PASSWORD"
+msgstr "Unesite lozinku"
+
+msgid "IDS_WIFI_BODY_CA_CERTIFICATE"
+msgstr "CA certifikat"
+
+msgid "IDS_WIFI_BODY_UNSPECIFIED"
+msgstr "Neodređeno"
+
+msgid "IDS_WIFI_BODY_USER_CERTIFICATE_ABB"
+msgstr "Korisnič. potvrda"
+
+msgid "IDS_WIFI_BODY_IDENTITY"
+msgstr "Identitet"
+
+msgid "IDS_WIFI_BODY_ANONYMOUS_IDENTITY"
+msgstr "Anonimni identitet"
+
+msgid "IDS_WIFI_BODY_ENTER_IDENTITY"
+msgstr "Unesi identitet"
+
+msgid "IDS_WIFI_BODY_ENTER_ANONYMOUS_IDENTITY"
+msgstr "Unesi anonimni identitet"
+
+msgid "IDS_ST_BODY_SHOW_PASSWORD"
+msgstr "Prikaži lozinku"
+
+msgid "IDS_WIFI_HEADER_PROXY_ADDRESS"
+msgstr "Proxy adresa"
+
+msgid "IDS_WIFI_BODY_GATEWAY"
+msgstr "Gateway"
+
+msgid "IDS_WIFI_BODY_WEAK_M_STRENGTH"
+msgstr "Slaba"
+
+msgid "IDS_ST_BODY_WPS_AVAILABLE"
+msgstr "WPS dostupan"
+
+msgid "IDS_WIFI_BODY_CHANNEL"
+msgstr "Postaja"
+
+msgid "IDS_WIFI_POP_AUTOMATIC_CONNECTION_NETWORK_WILL_DISABLED_CONTINUE_Q_MSG"
+msgstr "Isključiti će se automatsko spajanje na tu mrežu. Nastaviti?"
+
+msgid "IDS_COM_BODY_PHASE_2_AUTHENTICATION"
+msgstr "2. faza autorizacije"
+
+msgid "IDS_WIFI_BODY_CONNECT"
+msgstr "Spoji"
+
+msgid "IDS_WIFI_BODY_ENTER_SSID"
+msgstr "Unesite SSID"
+
+msgid "IDS_WIFI_BODY_PROVISIONING"
+msgstr "Preuzimanje"
+
+msgid "IDS_WIFI_BODY_WPS_BUTTON_CONNECTION"
+msgstr "Spajanje WPS tipkom"
+
+msgid "IDS_WIFI_OPT_FIND_HIDDEN_NETWORK"
+msgstr "Traži skrivenu mrežu"
+
+msgid "IDS_ST_BODY_PRESS_WPS_ON_YOUR_WI_FI_ACCESS_POINT_WITHIN_2_MINUTES"
+msgstr "Pritisnite WPS na Wi-Fi pristupnoj točki u roku od 2 min"
+
+msgid "IDS_WIFI_BODY_SSID"
+msgstr "SSID"
+
+msgid "IDS_WIFI_BODY_NOTIFY_WHEN_WI_FI_NETWORK_IS_FOUND"
+msgstr "Obavijesti kad je Wi-Fi mreža pronađena"
+
+msgid "IDS_ST_BODY_HUNCHANGED"
+msgstr "(nepromijenjeno)"
+
+msgid "IDS_ST_HEADER_WPS_CONNECTION_ABB"
+msgstr "WPS veza"
+
+msgid "IDS_WIFI_BUTTON_WPS_BUTTON"
+msgstr "WPS tipka"
+
+msgid "IDS_ST_BODY_WI_FI_NETWORK_DETECTED_CONNECT_Q"
+msgstr "Wi-Fi mreža prepoznata. Spojiti?"
+
+msgid "IDS_WIFI_POP_PLEASE_WAIT_ING"
+msgstr "Pričekajte..."
+
+msgid "IDS_WIFI_POP_UNABLE_TO_FIND_NETWORK"
+msgstr "Nemoguće pronaći mrežu"
+
+msgid "IDS_ST_POP_INVALID_PASSWORD"
+msgstr "Neispravna lozinka"
+
+msgid "IDS_WIFI_BODY_ENTER_YOUR_PASSWORD"
+msgstr "Unesite svoju lozinku"
+
+msgid "IDS_WIFI_BODY_ENTER_YOUR_ID"
+msgstr "Upišite svoj ID"
+
+msgid "IDS_WIFI_BODY_DISABLE_WI_FI_TETHERING_TO_CONNECT_TO_A_WI_FI_NETWORK"
+msgstr "Isključi Wi-Fi dijeljenje za spajanje na Wi-Fi mrežu"
+

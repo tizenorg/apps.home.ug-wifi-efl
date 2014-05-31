@@ -1,0 +1,81 @@
+<manifest>
+	<define>
+		<domain name="net.wifi-qs"/>
+	</define>
+	<assign>
+		<filesystem path="/usr/share/license/net.wifi-qs" label="_"/>
+		<filesystem path="/usr/share/packages/net.wifi-qs.xml" label="_"/>
+		<filesystem path="/usr/share/process-info/wifi-qs.ini" label="_"/>
+		<filesystem path="/usr/share/icon/37_wifi_icon_00.png" label="_"/>
+		<filesystem path="/usr/share/icon/37_wifi_icon_01.png" label="_"/>
+		<filesystem path="/usr/share/icon/37_wifi_icon_02.png" label="_"/>
+		<filesystem path="/usr/share/icon/37_wifi_icon_03.png" label="_"/>
+		<filesystem path="/usr/share/icon/37_wifi_icon_lock_00.png" label="_"/>
+		<filesystem path="/usr/share/icon/37_wifi_icon_lock_01.png" label="_"/>
+		<filesystem path="/usr/share/icon/37_wifi_icon_lock_02.png" label="_"/>
+		<filesystem path="/usr/share/icon/37_wifi_icon_lock_03.png" label="_"/>
+		<filesystem path="/usr/share/icon/37_wifi_icon_00_press.png" label="_"/>
+		<filesystem path="/usr/share/icon/37_wifi_icon_01_press.png" label="_"/>
+		<filesystem path="/usr/share/icon/37_wifi_icon_02_press.png" label="_"/>
+		<filesystem path="/usr/share/icon/37_wifi_icon_03_press.png" label="_"/>
+		<filesystem path="/usr/share/icon/37_wifi_icon_lock_00_press.png" label="_"/>
+		<filesystem path="/usr/share/icon/37_wifi_icon_lock_01_press.png" label="_"/>
+		<filesystem path="/usr/share/icon/37_wifi_icon_lock_02_press.png" label="_"/>
+		<filesystem path="/usr/share/icon/37_wifi_icon_lock_03_press.png" label="_"/>
+		<filesystem path="/usr/share/icon/Q02_Notification__wifi_in_range.png" label="_"/>
+		<filesystem path="/usr/share/locale/ar/LC_MESSAGES/wifi-qs.mo" label="_"/>
+		<filesystem path="/usr/share/locale/az/LC_MESSAGES/wifi-qs.mo" label="_"/>
+		<filesystem path="/usr/share/locale/bg/LC_MESSAGES/wifi-qs.mo" label="_"/>
+		<filesystem path="/usr/share/locale/ca/LC_MESSAGES/wifi-qs.mo" label="_"/>
+		<filesystem path="/usr/share/locale/cs/LC_MESSAGES/wifi-qs.mo" label="_"/>
+		<filesystem path="/usr/share/locale/da/LC_MESSAGES/wifi-qs.mo" label="_"/>
+		<filesystem path="/usr/share/locale/de_DE/LC_MESSAGES/wifi-qs.mo" label="_"/>
+		<filesystem path="/usr/share/locale/el_GR/LC_MESSAGES/wifi-qs.mo" label="_"/>
+		<filesystem path="/usr/share/locale/en/LC_MESSAGES/wifi-qs.mo" label="_"/>
+		<filesystem path="/usr/share/locale/en_PH/LC_MESSAGES/wifi-qs.mo" label="_"/>
+		<filesystem path="/usr/share/locale/en_US/LC_MESSAGES/wifi-qs.mo" label="_"/>
+		<filesystem path="/usr/share/locale/es_ES/LC_MESSAGES/wifi-qs.mo" label="_"/>
+		<filesystem path="/usr/share/locale/es_MX/LC_MESSAGES/wifi-qs.mo" label="_"/>
+		<filesystem path="/usr/share/locale/et/LC_MESSAGES/wifi-qs.mo" label="_"/>
+		<filesystem path="/usr/share/locale/eu/LC_MESSAGES/wifi-qs.mo" label="_"/>
+		<filesystem path="/usr/share/locale/fi/LC_MESSAGES/wifi-qs.mo" label="_"/>
+		<filesystem path="/usr/share/locale/fr_CA/LC_MESSAGES/wifi-qs.mo" label="_"/>
+		<filesystem path="/usr/share/locale/fr_FR/LC_MESSAGES/wifi-qs.mo" label="_"/>
+		<filesystem path="/usr/share/locale/ga/LC_MESSAGES/wifi-qs.mo" label="_"/>
+		<filesystem path="/usr/share/locale/gl/LC_MESSAGES/wifi-qs.mo" label="_"/>
+		<filesystem path="/usr/share/locale/hi/LC_MESSAGES/wifi-qs.mo" label="_"/>
+		<filesystem path="/usr/share/locale/hr/LC_MESSAGES/wifi-qs.mo" label="_"/>
+		<filesystem path="/usr/share/locale/hu/LC_MESSAGES/wifi-qs.mo" label="_"/>
+		<filesystem path="/usr/share/locale/hy/LC_MESSAGES/wifi-qs.mo" label="_"/>
+		<filesystem path="/usr/share/locale/is/LC_MESSAGES/wifi-qs.mo" label="_"/>
+		<filesystem path="/usr/share/locale/it_IT/LC_MESSAGES/wifi-qs.mo" label="_"/>
+		<filesystem path="/usr/share/locale/ja_JP/LC_MESSAGES/wifi-qs.mo" label="_"/>
+		<filesystem path="/usr/share/locale/ka/LC_MESSAGES/wifi-qs.mo" label="_"/>
+		<filesystem path="/usr/share/locale/kk/LC_MESSAGES/wifi-qs.mo" label="_"/>
+		<filesystem path="/usr/share/locale/ko_KR/LC_MESSAGES/wifi-qs.mo" label="_"/>
+		<filesystem path="/usr/share/locale/lt/LC_MESSAGES/wifi-qs.mo" label="_"/>
+		<filesystem path="/usr/share/locale/lv/LC_MESSAGES/wifi-qs.mo" label="_"/>
+		<filesystem path="/usr/share/locale/mk/LC_MESSAGES/wifi-qs.mo" label="_"/>
+		<filesystem path="/usr/share/locale/nb/LC_MESSAGES/wifi-qs.mo" label="_"/>
+		<filesystem path="/usr/share/locale/nl_NL/LC_MESSAGES/wifi-qs.mo" label="_"/>
+		<filesystem path="/usr/share/locale/pl/LC_MESSAGES/wifi-qs.mo" label="_"/>
+		<filesystem path="/usr/share/locale/pt_BR/LC_MESSAGES/wifi-qs.mo" label="_"/>
+		<filesystem path="/usr/share/locale/pt_PT/LC_MESSAGES/wifi-qs.mo" label="_"/>
+		<filesystem path="/usr/share/locale/ro/LC_MESSAGES/wifi-qs.mo" label="_"/>
+		<filesystem path="/usr/share/locale/ru_RU/LC_MESSAGES/wifi-qs.mo" label="_"/>
+		<filesystem path="/usr/share/locale/sk/LC_MESSAGES/wifi-qs.mo" label="_"/>
+		<filesystem path="/usr/share/locale/sl/LC_MESSAGES/wifi-qs.mo" label="_"/>
+		<filesystem path="/usr/share/locale/sr/LC_MESSAGES/wifi-qs.mo" label="_"/>
+		<filesystem path="/usr/share/locale/sv/LC_MESSAGES/wifi-qs.mo" label="_"/>
+		<filesystem path="/usr/share/locale/tr_TR/LC_MESSAGES/wifi-qs.mo" label="_"/>
+		<filesystem path="/usr/share/locale/uk/LC_MESSAGES/wifi-qs.mo" label="_"/>
+		<filesystem path="/usr/share/locale/uz/LC_MESSAGES/wifi-qs.mo" label="_"/>
+		<filesystem path="/usr/share/locale/zh_CN/LC_MESSAGES/wifi-qs.mo" label="_"/>
+		<filesystem path="/usr/share/locale/zh_HK/LC_MESSAGES/wifi-qs.mo" label="_"/>
+		<filesystem path="/usr/share/locale/zh_SG/LC_MESSAGES/wifi-qs.mo" label="_"/>
+		<filesystem path="/usr/share/locale/zh_TW/LC_MESSAGES/wifi-qs.mo" label="_"/>
+	</assign>
+	<request>
+		<domain name="net.wifi-qs"/>
+	</request>
+</manifest>

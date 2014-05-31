@@ -1,0 +1,162 @@
+msgid "IDS_WIFI_BODY_STATIC_IP"
+msgstr "Ստատիկ IP"
+
+msgid "IDS_WIFI_POP_ACTIVATING_WI_FI_ING"
+msgstr "Wi-Fi-ի ակտիվացում..."
+
+msgid "IDS_WIFI_SK_FORGET"
+msgstr "Մոռանալ"
+
+msgid "IDS_WIFI_BODY_IP_ADDRESS"
+msgstr "IP հասցե"
+
+msgid "IDS_WIFI_BODY_SUBNET_MASK"
+msgstr "Ենթացանցի դիմակ"
+
+msgid "IDS_WIFI_BODY_DNS_1"
+msgstr "DNS 1"
+
+msgid "IDS_WIFI_BODY_DNS_2"
+msgstr "DNS 2"
+
+msgid "IDS_ST_BODY_NETWORK_NOTIFICATION"
+msgstr "Ցանցային ծանուցում"
+
+msgid "IDS_ST_BODY_SECURED_ABB_M_WIFI_AP_SUMMARY"
+msgstr "Ապահով"
+
+msgid "IDS_WIFI_BODY_MAC_ADDRESS"
+msgstr "MAC հասցե"
+
+msgid "IDS_WIFI_BODY_PROXY_PORT"
+msgstr "Պրոքսիի պորտ"
+
+msgid "IDS_ST_BODY_EXCELLENT"
+msgstr "Գերազանց"
+
+msgid "IDS_ST_BODY_GOOD_M_STRENGTH"
+msgstr "Լավ"
+
+msgid "IDS_ST_BODY_WI_FI_NETWORKS"
+msgstr "Wi-Fi ցանցեր"
+
+msgid "IDS_WIFI_BODY_DISCONNECTING_ING"
+msgstr "Անջատվում է..."
+
+msgid "IDS_WIFI_BODY_NO_APS"
+msgstr "Ոչ մի APs"
+
+msgid "IDS_WIFI_POP_DEACTIVATING_WI_FI_ING"
+msgstr "Wi-Fi-ի ապաակտիվացում..."
+
+msgid "IDS_WIFI_BODY_EAP_METHOD"
+msgstr "EAP եղանակ"
+
+msgid "IDS_WIFI_BODY_EAP"
+msgstr "EAP"
+
+msgid "IDS_WIFI_BODY_GATEWAY_ADDRESS"
+msgstr "Ուղեմուտի հասցե"
+
+msgid "IDS_WIFI_BODY_ENTER_PASSWORD"
+msgstr "Մուտքագրեք գաղտնաբառը"
+
+msgid "IDS_WIFI_BODY_CA_CERTIFICATE"
+msgstr "CA վկայական"
+
+msgid "IDS_WIFI_BODY_UNSPECIFIED"
+msgstr "Սահմանված չէ"
+
+msgid "IDS_WIFI_BODY_USER_CERTIFICATE_ABB"
+msgstr "Օգտվողի վկայական"
+
+msgid "IDS_WIFI_BODY_IDENTITY"
+msgstr "Ինքնություն"
+
+msgid "IDS_WIFI_BODY_ANONYMOUS_IDENTITY"
+msgstr "Անանուն ինքնություն"
+
+msgid "IDS_WIFI_BODY_ENTER_IDENTITY"
+msgstr "Մուտքագրել ինքնությունը"
+
+msgid "IDS_WIFI_BODY_ENTER_ANONYMOUS_IDENTITY"
+msgstr "Մուտքագրել անանուն ինքնությունը"
+
+msgid "IDS_ST_BODY_SHOW_PASSWORD"
+msgstr "Ցույց տալ գաղտնաբառը"
+
+msgid "IDS_WIFI_HEADER_PROXY_ADDRESS"
+msgstr "Պրոքսիի հասցե"
+
+msgid "IDS_WIFI_BODY_GATEWAY"
+msgstr "Մուտք"
+
+msgid "IDS_WIFI_BODY_WEAK_M_STRENGTH"
+msgstr "Թույլ"
+
+msgid "IDS_ST_BODY_WPS_AVAILABLE"
+msgstr "WPS-ը հասանելի է"
+
+msgid "IDS_WIFI_BODY_CHANNEL"
+msgstr "Ալիք"
+
+msgid "IDS_WIFI_POP_AUTOMATIC_CONNECTION_NETWORK_WILL_DISABLED_CONTINUE_Q_MSG"
+msgstr "Ինքնամիացումն այս ցանցին կկասեցվի: Շարունակե՞լ:"
+
+msgid "IDS_COM_BODY_PHASE_2_AUTHENTICATION"
+msgstr "Փուլ 2 նույնականացում"
+
+msgid "IDS_WIFI_BODY_CONNECT"
+msgstr "Միանալ"
+
+msgid "IDS_WIFI_BODY_ENTER_SSID"
+msgstr "Մուտքագրեք SSID-ն"
+
+msgid "IDS_WIFI_BODY_PROVISIONING"
+msgstr "Աշխատանքին նախապատրաստում"
+
+msgid "IDS_WIFI_BODY_WPS_BUTTON_CONNECTION"
+msgstr "WPS կոճակի միացում"
+
+msgid "IDS_WIFI_OPT_FIND_HIDDEN_NETWORK"
+msgstr "Փնտրել թաքնված ցանց"
+
+msgid "IDS_ST_BODY_PRESS_WPS_ON_YOUR_WI_FI_ACCESS_POINT_WITHIN_2_MINUTES"
+msgstr "Սեղմեք Ձեր Wi-Fi մուտքի կետի WPS-ը 2 րոպե"
+
+msgid "IDS_WIFI_BODY_SSID"
+msgstr "SSID"
+
+msgid "IDS_WIFI_BODY_NOTIFY_WHEN_WI_FI_NETWORK_IS_FOUND"
+msgstr "Ծանուցել, երբ Wi-Fi ցանց է գտնվում"
+
+msgid "IDS_ST_BODY_HUNCHANGED"
+msgstr "(անփոփոխ)"
+
+msgid "IDS_ST_HEADER_WPS_CONNECTION_ABB"
+msgstr "WPS միացում"
+
+msgid "IDS_WIFI_BUTTON_WPS_BUTTON"
+msgstr "WPS կոճակ"
+
+msgid "IDS_ST_BODY_WI_FI_NETWORK_DETECTED_CONNECT_Q"
+msgstr "Wi-Fi ցանց է հայտնաբերվել: Միացնե՞լ:"
+
+msgid "IDS_WIFI_POP_PLEASE_WAIT_ING"
+msgstr "Սպասեք..."
+
+msgid "IDS_WIFI_POP_UNABLE_TO_FIND_NETWORK"
+msgstr "Անհնար է ցանց գտնել"
+
+msgid "IDS_ST_POP_INVALID_PASSWORD"
+msgstr "Սխալ գաղտնաբառ"
+
+msgid "IDS_WIFI_BODY_ENTER_YOUR_PASSWORD"
+msgstr "Մուտքագրել նոր գաղտնաբառ"
+
+msgid "IDS_WIFI_BODY_ENTER_YOUR_ID"
+msgstr "Մուտքագրեք Ձեր ID-ն"
+
+msgid "IDS_WIFI_BODY_DISABLE_WI_FI_TETHERING_TO_CONNECT_TO_A_WI_FI_NETWORK"
+msgstr "Կասեցրեք Wi-Fi տեղակապումը՝ Wi-Fi ցանցի միանալու համար"
+

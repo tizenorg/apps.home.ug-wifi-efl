@@ -1,0 +1,162 @@
+msgid "IDS_WIFI_BODY_STATIC_IP"
+msgstr "Statisk IP"
+
+msgid "IDS_WIFI_POP_ACTIVATING_WI_FI_ING"
+msgstr "Aktiverer Wi-Fi ..."
+
+msgid "IDS_WIFI_SK_FORGET"
+msgstr "Glem"
+
+msgid "IDS_WIFI_BODY_IP_ADDRESS"
+msgstr "IP-adresse"
+
+msgid "IDS_WIFI_BODY_SUBNET_MASK"
+msgstr "Subnet-maske"
+
+msgid "IDS_WIFI_BODY_DNS_1"
+msgstr "DNS 1"
+
+msgid "IDS_WIFI_BODY_DNS_2"
+msgstr "DNS 2"
+
+msgid "IDS_ST_BODY_NETWORK_NOTIFICATION"
+msgstr "Netværksbesked"
+
+msgid "IDS_ST_BODY_SECURED_ABB_M_WIFI_AP_SUMMARY"
+msgstr "Sikret"
+
+msgid "IDS_WIFI_BODY_MAC_ADDRESS"
+msgstr "MAC-adresse"
+
+msgid "IDS_WIFI_BODY_PROXY_PORT"
+msgstr "Proxy-port"
+
+msgid "IDS_ST_BODY_EXCELLENT"
+msgstr "Fremragende"
+
+msgid "IDS_ST_BODY_GOOD_M_STRENGTH"
+msgstr "God"
+
+msgid "IDS_ST_BODY_WI_FI_NETWORKS"
+msgstr "Wi-Fi-netværk"
+
+msgid "IDS_WIFI_BODY_DISCONNECTING_ING"
+msgstr "Afbryder..."
+
+msgid "IDS_WIFI_BODY_NO_APS"
+msgstr "Ingen APs"
+
+msgid "IDS_WIFI_POP_DEACTIVATING_WI_FI_ING"
+msgstr "Deaktiverer Wi-Fi ..."
+
+msgid "IDS_WIFI_BODY_EAP_METHOD"
+msgstr "EAP-metode"
+
+msgid "IDS_WIFI_BODY_EAP"
+msgstr "EAP"
+
+msgid "IDS_WIFI_BODY_GATEWAY_ADDRESS"
+msgstr "Gateway-adresse"
+
+msgid "IDS_WIFI_BODY_ENTER_PASSWORD"
+msgstr "Angiv adgangskode"
+
+msgid "IDS_WIFI_BODY_CA_CERTIFICATE"
+msgstr "CA-certifikat"
+
+msgid "IDS_WIFI_BODY_UNSPECIFIED"
+msgstr "Ikke specificeret"
+
+msgid "IDS_WIFI_BODY_USER_CERTIFICATE_ABB"
+msgstr "Brugercertifikat"
+
+msgid "IDS_WIFI_BODY_IDENTITY"
+msgstr "Identitet"
+
+msgid "IDS_WIFI_BODY_ANONYMOUS_IDENTITY"
+msgstr "Anonym identitet"
+
+msgid "IDS_WIFI_BODY_ENTER_IDENTITY"
+msgstr "Indtast identitet"
+
+msgid "IDS_WIFI_BODY_ENTER_ANONYMOUS_IDENTITY"
+msgstr "Indtast anonym identitet"
+
+msgid "IDS_ST_BODY_SHOW_PASSWORD"
+msgstr "Vis adgangskode"
+
+msgid "IDS_WIFI_HEADER_PROXY_ADDRESS"
+msgstr "Proxy-adresse"
+
+msgid "IDS_WIFI_BODY_GATEWAY"
+msgstr "Gateway"
+
+msgid "IDS_WIFI_BODY_WEAK_M_STRENGTH"
+msgstr "Svag"
+
+msgid "IDS_ST_BODY_WPS_AVAILABLE"
+msgstr "WPS tilgængelig"
+
+msgid "IDS_WIFI_BODY_CHANNEL"
+msgstr "Kanal"
+
+msgid "IDS_WIFI_POP_AUTOMATIC_CONNECTION_NETWORK_WILL_DISABLED_CONTINUE_Q_MSG"
+msgstr "Automatisk forbindelse til dette netværk deaktiveres. Vil du fortsætte?"
+
+msgid "IDS_COM_BODY_PHASE_2_AUTHENTICATION"
+msgstr "Fase 2-godkendelse"
+
+msgid "IDS_WIFI_BODY_CONNECT"
+msgstr "Tilslut"
+
+msgid "IDS_WIFI_BODY_ENTER_SSID"
+msgstr "Angiv SSID"
+
+msgid "IDS_WIFI_BODY_PROVISIONING"
+msgstr "Anskaffelse"
+
+msgid "IDS_WIFI_BODY_WPS_BUTTON_CONNECTION"
+msgstr "WPS-knap forbundet"
+
+msgid "IDS_WIFI_OPT_FIND_HIDDEN_NETWORK"
+msgstr "Find skjult netværk"
+
+msgid "IDS_ST_BODY_PRESS_WPS_ON_YOUR_WI_FI_ACCESS_POINT_WITHIN_2_MINUTES"
+msgstr "Tryk på WPS på dit Wi-Fi-adgangspunkt inden for 2 minutter"
+
+msgid "IDS_WIFI_BODY_SSID"
+msgstr "SSID"
+
+msgid "IDS_WIFI_BODY_NOTIFY_WHEN_WI_FI_NETWORK_IS_FOUND"
+msgstr "Giv mig besked, når der er fundet et Wi-Fi-netværk"
+
+msgid "IDS_ST_BODY_HUNCHANGED"
+msgstr "(uændret)"
+
+msgid "IDS_ST_HEADER_WPS_CONNECTION_ABB"
+msgstr "WPS-forbindelse"
+
+msgid "IDS_WIFI_BUTTON_WPS_BUTTON"
+msgstr "WPS-knap"
+
+msgid "IDS_ST_BODY_WI_FI_NETWORK_DETECTED_CONNECT_Q"
+msgstr "Wi-Fi-netværk detekteret. Tilslut?"
+
+msgid "IDS_WIFI_POP_PLEASE_WAIT_ING"
+msgstr "Vent..."
+
+msgid "IDS_WIFI_POP_UNABLE_TO_FIND_NETWORK"
+msgstr "Kunne ikke finde netværk"
+
+msgid "IDS_ST_POP_INVALID_PASSWORD"
+msgstr "Ugyldig adgangskode"
+
+msgid "IDS_WIFI_BODY_ENTER_YOUR_PASSWORD"
+msgstr "Indtast din adgangskode"
+
+msgid "IDS_WIFI_BODY_ENTER_YOUR_ID"
+msgstr "Indtast dit id"
+
+msgid "IDS_WIFI_BODY_DISABLE_WI_FI_TETHERING_TO_CONNECT_TO_A_WI_FI_NETWORK"
+msgstr "Deaktivér Wi-Fi-internetdeling for at oprette forbindelse til et Wi-Fi-netværk"
+

@@ -1,0 +1,8 @@
+<manifest>
+	<request>
+		<domain name="_"/>
+	</request>
+	<assign>
+		<filesystem path="/usr/share/packages/wifi-efl-ug.xml" label="_"/>
+	</assign>
+</manifest>

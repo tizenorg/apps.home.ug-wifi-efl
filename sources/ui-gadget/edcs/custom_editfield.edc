@@ -1,0 +1,441 @@
+#define EDITFIELD_TOP_PADDING 46
+#define EDITFIELD_BOTTOM_PADDING 6
+#define EDITFIELD_RIGHT_PADDING 26
+#define EDITFIELD_TOP_TEXT_PADDING 6
+#define EDITFIELD_RIGHT_TEXT_PADDING 56
+#define EDITFIELD_RIGHT_ERASER_PADDING 10
+#define EDITFIELD_HEIGHT_INC 66
+#define EDITFIELD_INPUTFIELD_BORDER_INC 9 9 9 9
+#define EDITFIELD_LEFT_PADDING_SEARCHFIELD_INC 16
+#define EDITFIELD_RIGHT_PADDING_SEARCHFIELD_INC 48
+#define EDITFIELD_TITLE_COLOR_INC 42 137 194 255
+#define EDITFIELD_TITLE_SIZE_INC 32
+#define EDITFIELD_GUIDE_TEXT_COLOR_INC 121 131 138 255
+#define EDITFIELD_DEFAULT_ERASER_MINW_INC 48
+#define EDITFIELD_DEFAULT_ERASER_MINH_INC 48
+#define ENTRY_TEXT_SIZE_INC 44
+
+
+collections {
+	group { name: "custom_editfield";
+		images {
+			image: "00_EditField_clear.png" COMP;
+			image: "00_EditField_clear_press.png" COMP;
+			image: "00_search_edit_field_bg.png" COMP;
+		}
+		parts {
+			part {
+				name: "base";
+				type: RECT;
+				scale: 1;
+				description {
+					state: "default" 0.0;
+					align: 0.0 0.0;
+					visible: 0;
+				}
+			}
+			part {
+				name: "top_left_padding";
+				type: RECT;
+				mouse_events: 0;
+				scale: 1;
+				description {
+					state: "default" 0.0;
+					min: 0 EDITFIELD_TOP_PADDING;
+					fixed: 1 1;
+					align: 0.0 0.0;
+					rel1 {
+						relative : 0.0 0.0;
+						to: "base";
+					}
+					rel2 {
+						relative : 0.0 0.0;
+						to: "base";
+					}
+					visible: 0;
+				}
+			}
+			part { name: "bottom_right_padding";
+				type: RECT;
+				scale: 1;
+				description {
+					state: "default" 0.0;
+					min: EDITFIELD_RIGHT_PADDING EDITFIELD_BOTTOM_PADDING;
+					fixed: 1 1;
+					align: 1.0 1.0;
+					rel1 { relative: 1.0 1.0; to: "base"; }
+					rel2 { relative: 1.0 1.0; to: "base"; }
+					visible: 0;
+				}
+			}
+			part { name: "top_text_padding";
+				type: RECT;
+				scale: 1;
+				ignore_flags: ON_HOLD;
+				description {
+					state: "default" 0.0;
+					visible: 0;
+					min: 0 EDITFIELD_TOP_TEXT_PADDING;
+					fixed: 1 1;
+					align: 0 1;
+					rel1 {
+						relative: 0.0 0.0;
+						to: "base";
+					}
+					rel2 {
+						relative: 1.0 0.0;
+						to: "base";
+					}
+				}
+			}
+			part { name: "inputfield_rect";
+				type: IMAGE;
+				scale: 1;
+				description {
+					state: "default" 0.0;
+					min: 500 EDITFIELD_HEIGHT_INC;
+					max: 900 EDITFIELD_HEIGHT_INC;
+					align: 0.0 0.5;
+					image {
+						normal: "00_search_edit_field_bg.png";
+						border: EDITFIELD_INPUTFIELD_BORDER_INC;
+					}
+					rel1 { relative: 1.0 1.0; to: "top_left_padding"; }
+					rel2 { relative: 0.0 0.0; to: "bottom_right_padding"; }
+				}
+			}
+			part { name: "left_padding_inputfield";
+				type: RECT;
+				scale: 1;
+				description {
+					state: "default" 0.0;
+					visible: 0;
+					min: EDITFIELD_LEFT_PADDING_SEARCHFIELD_INC 0;
+					fixed: 1 0;
+					align: 0.0 0.5;
+					rel1 { relative: 0.0 0.0; to: "inputfield_rect"; }
+					rel2 { relative: 0.0 1.0; to: "inputfield_rect"; }
+				}
+			}
+			part { name: "right_padding_inputfield";
+				type: RECT;
+				scale: 1;
+				description {
+					state: "default" 0.0;
+					visible: 0;
+					min: EDITFIELD_RIGHT_PADDING_SEARCHFIELD_INC 0;
+					fixed: 1 0;
+					align: 1.0 0.5;
+					rel1 { relative: 1.0 0.0; to: "inputfield_rect"; }
+					rel2 { relative: 1.0 1.0; to: "inputfield_rect"; }
+				}
+			}
+			part { name: "right_eraser_padding";
+				type: RECT;
+				scale: 1;
+				ignore_flags: ON_HOLD;
+				description {
+					state: "default" 0.0;
+					visible: 0;
+					min: EDITFIELD_RIGHT_ERASER_PADDING 0;
+					fixed: 1 0;
+					align: 1.0 0.5;
+					rel1 { relative: 1.0 0.0; to: "inputfield_rect"; }
+					rel2 { relative: 1.0 1.0; to: "inputfield_rect"; }
+				}
+			}
+			part { name: "textfield";
+				type: RECT;
+				mouse_events: 1;
+				scale: 1;
+				ignore_flags: ON_HOLD;
+				description {
+					state: "default" 0.0;
+					color: 0 0 0 0;
+					min: 0 EDITFIELD_HEIGHT_INC;
+					fixed: 0 1;
+					align: 0.0 0.5;
+					rel1 {
+						relative: 1.0 0.0;
+						to: "left_padding_inputfield";
+					}
+					rel2 {
+						relative: 0.0 1.0;
+						to: "right_padding_inputfield";
+					}
+				}
+			}
+			part { name: "top";
+				type: RECT;
+				scale: 1;
+				ignore_flags: ON_HOLD;
+				description {
+					state: "default" 0.0;
+					visible: 0;
+					min: 0 EDITFIELD_TOP_TEXT_PADDING;
+					fixed: 1 1;
+					align: 0.5 0;
+					rel1 {
+						relative: 0.0 0.0;
+						to: "textfield";
+					}
+					rel2 {
+						relative: 1.0 0.0;
+						to: "textfield";
+					}
+				}
+			}
+			part { name: "left";
+				type: RECT;
+				scale: 1;
+				ignore_flags: ON_HOLD;
+				description {
+					state: "default" 0.0;
+					visible: 0;
+					fixed: 1 1;
+					align: 0 0;
+					rel1 {
+						relative: 0.0 0.0;
+						to: "textfield";
+					}
+					rel2 {
+						relative: 0.0 1.0;
+						to: "textfield";
+					}
+				}
+			}
+			part { name: "right";
+				type: RECT;
+				scale: 1;
+				ignore_flags: ON_HOLD;
+				description {
+					state: "default" 0.0;
+					visible: 0;
+					min: EDITFIELD_RIGHT_TEXT_PADDING 0;
+					fixed: 1 1;
+					align: 1 0;
+					rel1 {
+						relative: 1.0 0.0;
+						to: "textfield";
+					}
+					rel2.to: "textfield";
+				}
+			}
+			part { name: "bottom";
+				type: RECT;
+				scale: 1;
+				ignore_flags: ON_HOLD;
+				description {
+					state: "default" 0.0;
+					visible: 0;
+					min: 0 EDITFIELD_TOP_TEXT_PADDING;
+					fixed: 1 1;
+					align: 0 1;
+					rel1 {
+						relative: 0.0 1.0;
+						to: "textfield";
+					}
+				}
+			}
+			part {
+				name: "elm.text";
+				type: TEXT;
+				scale: 1;
+				ignore_flags: ON_HOLD;
+				description {
+					state: "default" 0.0;
+					align: 0.0 0.0;
+					min: 0 32;
+					fixed: 1 1;
+					rel1 {
+						relative: 0.0 1.0;
+						to_x: "left_padding_inputfield";
+						to_y: "top_text_padding";
+					}
+					rel2 {
+						relative: 0.0 1.0;
+						to_x: "left_padding_inputfield";
+						to_y: "top_text_padding";
+					}
+					color: EDITFIELD_TITLE_COLOR_INC;
+					text {
+						font: "Tizen:style=Medium";
+						size: EDITFIELD_TITLE_SIZE_INC;
+						min: 1 1;
+						align: 0.0 0.0;
+						text_class: "tizen";
+					}
+				}
+			}
+			part {
+				name: "elm.guidetext";
+				type: TEXT;
+				scale: 1;
+				ignore_flags: ON_HOLD;
+				description {
+					state: "default" 0.0;
+					align: 0.0 0.0;
+					fixed: 1 1;
+					rel1.to: "elm.swallow.content";
+					rel2.to: "elm.swallow.content";
+					color: EDITFIELD_GUIDE_TEXT_COLOR_INC;
+					text {
+						font: "Tizen:style=Roman";
+						size: ENTRY_TEXT_SIZE_INC;
+						min: 0 0;
+						align: 0.0 0.5;
+						text_class: "tizen";
+					}
+				}
+				description {
+					state: "hidden" 0.0;
+					inherit: "default" 0.0;
+					visible: 0;
+				}
+			}
+			part {
+				name: "elm.swallow.content";
+				type: SWALLOW;
+				scale: 1;
+				ignore_flags: ON_HOLD;
+				description {
+					state: "default" 0.0;
+					min: 0 40;
+					rel1 {
+						relative : 1.0 1.0;
+						to_x: "left";
+						to_y: "top";
+					}
+					rel2 {
+						relative : 0.0 0.0;
+						to_x: "right";
+						to_y: "bottom";
+					}
+					align: 0.0 0.5;
+				}
+			}
+			part {
+				name: "eraser_image";
+				scale: 1;
+				description {
+					state: "default" 0.0;
+					visible: 0;
+					min: EDITFIELD_DEFAULT_ERASER_MINW_INC EDITFIELD_DEFAULT_ERASER_MINH_INC;
+					fixed: 1 1;
+					align: 1 0.5;
+					rel1 {
+						relative: 0.0 0.5;
+						to_x : "right_eraser_padding";
+						to_y : "inputfield_rect";
+					}
+					rel2 {
+						relative: 0.0 0.5;
+						to_x : "right_eraser_padding";
+						to_y : "inputfield_rect";
+					}
+				}
+				description {
+					state: "elm.eraser.show" 0.0;
+					inherit: "default" 0.0;
+					visible: 1;
+					image {
+						normal: "00_EditField_clear.png";
+						border: 10 10 10 10;
+						border_scale: 1;
+					}
+				}
+				description {
+					state: "elm.eraser.pressed" 0.0;
+					inherit: "default" 0.0;
+					visible: 1;
+					image {
+						normal: "00_EditField_clear_press.png";
+						border: 8 8 8 8;
+						border_scale: 1;
+					}
+				}
+			}
+			part {
+				name: "eraser";
+				type: RECT;
+				scale: 1;
+				mouse_events: 1;
+				description {
+					state: "default" 0.0;
+					visible: 0;
+					min: EDITFIELD_DEFAULT_ERASER_MINW_INC EDITFIELD_DEFAULT_ERASER_MINH_INC;
+					fixed: 1 1;
+					align: 1 0.5;
+					color: 0 0 0 0;
+					rel1 {
+						relative: 0.0 0.5;
+						to_x : "right_eraser_padding";
+						to_y : "inputfield_rect";
+					}
+					rel2 {
+						relative: 0.0 0.5;
+						to_x : "right_eraser_padding";
+						to_y : "inputfield_rect";
+					}
+				}
+				description {
+					state: "elm.eraser.show" 0.0;
+					inherit: "default" 0.0;
+					visible: 1;
+				}
+			}
+		}
+		programs {
+			program {
+				name: "guidetext_show";
+				signal: "elm,state,guidetext,show";
+				source: "elm";
+				action: STATE_SET "default" 0.0;
+				target: "elm.guidetext";
+			}
+			program {
+				name: "guidetext_hide";
+				signal: "elm,state,guidetext,hide";
+				source: "elm";
+				action: STATE_SET "hidden" 0.0;
+				target: "elm.guidetext";
+			}
+			program {
+				name: "eraser_show";
+				signal: "elm,state,eraser,show";
+				source: "elm";
+				action: STATE_SET "elm.eraser.show" 0.0;
+				target: "eraser_image";
+				target: "eraser";
+			}
+			program {
+				name: "eraser_hide";
+				signal: "elm,state,eraser,hide";
+				source: "elm";
+				action: STATE_SET "default" 0.0;
+				target: "eraser_image";
+				target: "eraser";
+			}
+			program {
+				name: "eraser_clicked";
+				signal: "mouse,clicked,1";
+				source: "eraser";
+				action: SIGNAL_EMIT "elm,eraser,clicked" "elm";
+			}
+			program {
+				name: "eraser_pressed";
+				signal: "mouse,down,1";
+				source: "eraser";
+				action: STATE_SET "elm.eraser.pressed" 0.0;
+				target: "eraser_image";
+			}
+			program {
+				name: "eraser_unpressed";
+				signal: "mouse,up,1";
+				source: "eraser";
+				action: STATE_SET "elm.eraser.show" 0.0;
+				target: "eraser_image";
+			}
+		}
+	}
+}

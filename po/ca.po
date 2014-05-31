@@ -1,0 +1,162 @@
+msgid "IDS_WIFI_BODY_STATIC_IP"
+msgstr "IP estàtica"
+
+msgid "IDS_WIFI_POP_ACTIVATING_WI_FI_ING"
+msgstr "Activant Wi-Fi..."
+
+msgid "IDS_WIFI_SK_FORGET"
+msgstr "Oblidar"
+
+msgid "IDS_WIFI_BODY_IP_ADDRESS"
+msgstr "Adreça IP"
+
+msgid "IDS_WIFI_BODY_SUBNET_MASK"
+msgstr "Màscara de subxarxa"
+
+msgid "IDS_WIFI_BODY_DNS_1"
+msgstr "DNS 1"
+
+msgid "IDS_WIFI_BODY_DNS_2"
+msgstr "DNS 2"
+
+msgid "IDS_ST_BODY_NETWORK_NOTIFICATION"
+msgstr "Notificació de xarxa"
+
+msgid "IDS_ST_BODY_SECURED_ABB_M_WIFI_AP_SUMMARY"
+msgstr "Protegit"
+
+msgid "IDS_WIFI_BODY_MAC_ADDRESS"
+msgstr "Adreça MAC"
+
+msgid "IDS_WIFI_BODY_PROXY_PORT"
+msgstr "Port de servidor intermediari"
+
+msgid "IDS_ST_BODY_EXCELLENT"
+msgstr "Excel·lent"
+
+msgid "IDS_ST_BODY_GOOD_M_STRENGTH"
+msgstr "Bo"
+
+msgid "IDS_ST_BODY_WI_FI_NETWORKS"
+msgstr "Xarxes Wi-Fi"
+
+msgid "IDS_WIFI_BODY_DISCONNECTING_ING"
+msgstr "Desconnectant..."
+
+msgid "IDS_WIFI_BODY_NO_APS"
+msgstr "Sense punts d'accés"
+
+msgid "IDS_WIFI_POP_DEACTIVATING_WI_FI_ING"
+msgstr "Desactivant Wi-Fi..."
+
+msgid "IDS_WIFI_BODY_EAP_METHOD"
+msgstr "Mètode EAP"
+
+msgid "IDS_WIFI_BODY_EAP"
+msgstr "EAP"
+
+msgid "IDS_WIFI_BODY_GATEWAY_ADDRESS"
+msgstr "Adreça passarel·la"
+
+msgid "IDS_WIFI_BODY_ENTER_PASSWORD"
+msgstr "Introduir contrasenya"
+
+msgid "IDS_WIFI_BODY_CA_CERTIFICATE"
+msgstr "Certificat CA"
+
+msgid "IDS_WIFI_BODY_UNSPECIFIED"
+msgstr "Sense especificar"
+
+msgid "IDS_WIFI_BODY_USER_CERTIFICATE_ABB"
+msgstr "Certificat usuari"
+
+msgid "IDS_WIFI_BODY_IDENTITY"
+msgstr "Identitat"
+
+msgid "IDS_WIFI_BODY_ANONYMOUS_IDENTITY"
+msgstr "Identitat anònima"
+
+msgid "IDS_WIFI_BODY_ENTER_IDENTITY"
+msgstr "Introduir identitat"
+
+msgid "IDS_WIFI_BODY_ENTER_ANONYMOUS_IDENTITY"
+msgstr "Introduir identitat anònima"
+
+msgid "IDS_ST_BODY_SHOW_PASSWORD"
+msgstr "Mostrar contrasenya"
+
+msgid "IDS_WIFI_HEADER_PROXY_ADDRESS"
+msgstr "Adreça de proxy"
+
+msgid "IDS_WIFI_BODY_GATEWAY"
+msgstr "Passarel·la"
+
+msgid "IDS_WIFI_BODY_WEAK_M_STRENGTH"
+msgstr "Feble"
+
+msgid "IDS_ST_BODY_WPS_AVAILABLE"
+msgstr "WPS disponible"
+
+msgid "IDS_WIFI_BODY_CHANNEL"
+msgstr "Canal"
+
+msgid "IDS_WIFI_POP_AUTOMATIC_CONNECTION_NETWORK_WILL_DISABLED_CONTINUE_Q_MSG"
+msgstr "Es deshabilitarà la connexió automàtica a aquesta xarxa. Continuar?"
+
+msgid "IDS_COM_BODY_PHASE_2_AUTHENTICATION"
+msgstr "Autenticació de fase 2"
+
+msgid "IDS_WIFI_BODY_CONNECT"
+msgstr "Connectar"
+
+msgid "IDS_WIFI_BODY_ENTER_SSID"
+msgstr "Introdueixi SSID"
+
+msgid "IDS_WIFI_BODY_PROVISIONING"
+msgstr "Provisió"
+
+msgid "IDS_WIFI_BODY_WPS_BUTTON_CONNECTION"
+msgstr "Connexió de botó WPS"
+
+msgid "IDS_WIFI_OPT_FIND_HIDDEN_NETWORK"
+msgstr "Cercar xarxa oculta"
+
+msgid "IDS_ST_BODY_PRESS_WPS_ON_YOUR_WI_FI_ACCESS_POINT_WITHIN_2_MINUTES"
+msgstr "Premi WPS al seu punt d'accés Wi-Fi en 2 minuts"
+
+msgid "IDS_WIFI_BODY_SSID"
+msgstr "SSID"
+
+msgid "IDS_WIFI_BODY_NOTIFY_WHEN_WI_FI_NETWORK_IS_FOUND"
+msgstr "Notificar quan es trobi una xarxa Wi-Fi"
+
+msgid "IDS_ST_BODY_HUNCHANGED"
+msgstr "(no s'ha modificat)"
+
+msgid "IDS_ST_HEADER_WPS_CONNECTION_ABB"
+msgstr "Connexió WPS"
+
+msgid "IDS_WIFI_BUTTON_WPS_BUTTON"
+msgstr "Botó WPS"
+
+msgid "IDS_ST_BODY_WI_FI_NETWORK_DETECTED_CONNECT_Q"
+msgstr "S'ha detectat una xarxa Wi-Fi. Connectar?"
+
+msgid "IDS_WIFI_POP_PLEASE_WAIT_ING"
+msgstr "Esperi..."
+
+msgid "IDS_WIFI_POP_UNABLE_TO_FIND_NETWORK"
+msgstr "No es pot trobar la xarxa"
+
+msgid "IDS_ST_POP_INVALID_PASSWORD"
+msgstr "Contrasenya no vàlida"
+
+msgid "IDS_WIFI_BODY_ENTER_YOUR_PASSWORD"
+msgstr "Introdueixi la seva contrasenya"
+
+msgid "IDS_WIFI_BODY_ENTER_YOUR_ID"
+msgstr "Introdueixi l'ID"
+
+msgid "IDS_WIFI_BODY_DISABLE_WI_FI_TETHERING_TO_CONNECT_TO_A_WI_FI_NETWORK"
+msgstr "Deshabiliti el tethering Wi-Fi per connectar-se a una xarxa Wi-Fi"
+
