@@ -1,13 +1,13 @@
 /*
  * Wi-Fi
  *
- * Copyright 2012-2013 Samsung Electronics Co., Ltd
+ * Copyright 2012 Samsung Electronics Co., Ltd
  *
- * Licensed under the Flora License, Version 1.1 (the "License");
+ * Licensed under the Flora License, Version 1.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://floralicense.org/license
+ * http://www.tizenopensource.org/license
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -18,13 +18,10 @@
  */
 
 #include <wifi.h>
-#include <syspopup.h>
 #include <vconf.h>
 #include <vconf-keys.h>
 #include <appcore-efl.h>
-#include <X11/Xatom.h>
-#include <X11/Xutil.h>
-#include <Ecore_X.h>
+#include <ui-gadget-module.h>
 #include <utilX.h>
 
 #include "common.h"
@@ -37,285 +34,347 @@
 #include "appcoreWrapper.h"
 #include "wifi-syspopup-engine-callback.h"
 
-#define POPUP_HEAD_AREA 160
-#define POPUP_BUTTON_AREA 200
-#define MAX_INITIAL_QS_POPUP_LIST_SIZE	8
+typedef enum {
+	SIZE_INDEX_SMALL = 0,
+	SIZE_INDEX_NORMAL,
+	SIZE_INDEX_LARGE,
+	SIZE_INDEX_HUGE,
+	SIZE_INDEX_GIANT
+} font_size_index;
 
-wifi_object* syspopup_app_state = NULL;
+#define FONT_SIZE_SMALL_GENLIST_H 96
+#define FONT_SIZE_NORMAL_GENLIST_H 96
+#define FONT_SIZE_LARGE_GENLIST_H 163
+#define FONT_SIZE_HUGE_GENLIST_H 182
+#define FONT_SIZE_GIANT_GENLIST_H 216
+#define FONT_SIZE_SMALL_GRP_TITLE_GENLIST_H 51
+#define FONT_SIZE_NORMAL_GRP_TITLE_GENLIST_H 51
+#define FONT_SIZE_LARGE_GRP_TITLE_GENLIST_H 95
+#define FONT_SIZE_HUGE_GRP_TITLE_GENLIST_H 108
+#define FONT_SIZE_GIANT_GRP_TITLE_GENLIST_H 132
 
-static int __get_window_property(Display *dpy, Window win, Atom atom,
-		Atom type, unsigned int *val,
-		unsigned int len)
+wifi_object* devpkr_app_state = NULL;
+
+static void __idle_lock_state_change_cb(keynode_t *node, void *user_data);
+
+gboolean wifi_devpkr_get_scan_status(void)
 {
-	__COMMON_FUNC_ENTER__;
-	unsigned char *prop_ret = NULL;
-	Atom type_ret = -1;
-	unsigned long bytes_after = 0;
-	unsigned long  num_ret = -1;
-	int format_ret = -1;
-	unsigned int i = 0;
-	int num = 0;
+	Evas_Object *btn_scan = NULL;
+	Eina_Bool status = EINA_FALSE;
+	gboolean ret = FALSE;
 
-	prop_ret = NULL;
-	if (XGetWindowProperty(dpy, win, atom, 0, 0x7fffffff, False,
-				type, &type_ret, &format_ret, &num_ret,
-				&bytes_after, &prop_ret) != Success) {
-		return -1;
+	btn_scan = elm_object_part_content_get(devpkr_app_state->popup,
+			"button2");
+	status = elm_object_disabled_get(btn_scan);
+
+	if (status == EINA_TRUE) {
+		ret = TRUE;
 	}
 
-	if (type_ret != type || format_ret != 32) {
-		num = -1;
-	} else if (num_ret == 0 || !prop_ret) {
-		num = 0;
+	return ret;
+}
+
+void wifi_devpkr_enable_scan_btn(void)
+{
+	Evas_Object *btn_scan = NULL;
+
+	btn_scan = elm_object_part_content_get(devpkr_app_state->popup,
+			"button2");
+	elm_object_disabled_set(btn_scan, EINA_FALSE);
+}
+
+void wifi_devpkr_disable_scan_btn(void)
+{
+	Evas_Object *btn_scan = NULL;
+
+	btn_scan = elm_object_part_content_get(devpkr_app_state->popup,
+			"button2");
+	elm_object_disabled_set(btn_scan, EINA_TRUE);
+}
+
+static void _scan_cb(void *data, Evas_Object *obj, void *event_info)
+{
+	__COMMON_FUNC_ENTER__;
+
+	int scan_result;
+
+	wifi_devpkr_disable_scan_btn();
+	view_main_update_group_title(FALSE);
+
+	scan_result = wlan_manager_scan();
+	if (scan_result != WLAN_MANAGER_ERR_NONE) {
+		wifi_devpkr_enable_scan_btn();
+		ERROR_LOG(SP_NAME_ERR, "Scan failed");
+	}
+
+	__COMMON_FUNC_EXIT__;
+}
+
+static int __wifi_devpkr_calculate_height(int rotate_angle,
+		int profile_count)
+{
+	int height = 0;
+	int item_h = 0;
+	int grp_title_h = 0;
+	int x = 0;
+	font_size_index font_index;
+
+	if (profile_count == 0) {
+		height = (int)(ELM_SCALE_SIZE(DEVICE_PICKER_EMPTY_POPUP_H));
+	}
+
+	vconf_get_int(VCONFKEY_SETAPPL_ACCESSIBILITY_FONT_SIZE, &x);
+	font_index = x;
+
+	switch (font_index) {
+	case SIZE_INDEX_SMALL :
+		item_h = (int)(ELM_SCALE_SIZE(FONT_SIZE_SMALL_GENLIST_H));
+		grp_title_h = (int)(ELM_SCALE_SIZE(FONT_SIZE_SMALL_GRP_TITLE_GENLIST_H));
+		break;
+	case SIZE_INDEX_NORMAL :
+		item_h = (int)(ELM_SCALE_SIZE(FONT_SIZE_NORMAL_GENLIST_H));
+		grp_title_h = (int)(ELM_SCALE_SIZE(FONT_SIZE_NORMAL_GRP_TITLE_GENLIST_H));
+		break;
+	case SIZE_INDEX_LARGE :
+		item_h = (int)(ELM_SCALE_SIZE(FONT_SIZE_LARGE_GENLIST_H));
+		grp_title_h = (int)(ELM_SCALE_SIZE(FONT_SIZE_LARGE_GRP_TITLE_GENLIST_H));
+		break;
+	case SIZE_INDEX_HUGE :
+		item_h = (int)(ELM_SCALE_SIZE(FONT_SIZE_HUGE_GENLIST_H));
+		grp_title_h = (int)(ELM_SCALE_SIZE(FONT_SIZE_HUGE_GRP_TITLE_GENLIST_H));
+		break;
+	case SIZE_INDEX_GIANT :
+		item_h = (int)(ELM_SCALE_SIZE(FONT_SIZE_GIANT_GENLIST_H));
+		grp_title_h = (int)(ELM_SCALE_SIZE(FONT_SIZE_GIANT_GRP_TITLE_GENLIST_H));
+		break;
+	default:
+		item_h = (int)(ELM_SCALE_SIZE(FONT_SIZE_NORMAL_GENLIST_H));
+		grp_title_h = (int)(ELM_SCALE_SIZE(FONT_SIZE_NORMAL_GRP_TITLE_GENLIST_H));
+	}
+
+	if (profile_count) {
+		height = profile_count * item_h;
+		height += grp_title_h;
+	} else if (wifi_devpkr_get_scan_status() == TRUE) {
+		height += grp_title_h;
+	}
+
+	if (0 == rotate_angle || 180 == rotate_angle) {
+		if (height > DEVICE_PICKER_POPUP_H) {
+			height = ELM_SCALE_SIZE(DEVICE_PICKER_POPUP_H);
+		}
 	} else {
-		if (num_ret < len) {
-			len = num_ret;
+		if (height > DEVICE_PICKER_POPUP_LN_H) {
+			height = ELM_SCALE_SIZE(DEVICE_PICKER_POPUP_LN_H);
 		}
-		for (i = 0; i < len; i++) {
-			val[i] = ((unsigned long *)prop_ret)[i];
-		}
-		num = len;
 	}
 
-	if (prop_ret) {
-		XFree(prop_ret);
-	}
-
-	__COMMON_FUNC_EXIT__;
-	return num;
+	return height;
 }
 
-static int __x_rotation_get(Display *dpy, Window win)
+static void wifi_devpkr_rotate_cb(void *data, Evas_Object *obj, void *event)
 {
-	__COMMON_FUNC_ENTER__;
-	Window active_win = 0;
-	Window root_win = 0;
-	int rotation = -1;
-	int ret = -1;
-
-	Atom atom_active_win;
-	Atom atom_win_rotate_angle;
-
-	root_win = XDefaultRootWindow(dpy);
-
-	atom_active_win = XInternAtom(dpy, "_NET_ACTIVE_WINDOW", False);
-	ret = __get_window_property(dpy, root_win, atom_active_win,
-			XA_WINDOW,
-			(unsigned int *)&active_win, 1);
-
-	if (ret != 1)
-		return 0;
-
-	atom_win_rotate_angle =
-		XInternAtom(dpy, "_E_ILLUME_ROTATE_WINDOW_ANGLE", False);
-	ret = __get_window_property(dpy, active_win	,
-			atom_win_rotate_angle, XA_CARDINAL,
-			(unsigned int *)&rotation, 1);
-
-	__COMMON_FUNC_EXIT__;
-
-	if (ret == 1)
-		return rotation;
-	else
-		return 0;
-}
-
-static void __common_popup_size_set(Ecore_IMF_Context *target_imf, int *width, int *height, int rotate_angle)
-{
-	__COMMON_FUNC_ENTER__;
-
-	int window_width, window_height;
-	int start_x, start_y, imf_width, imf_height;
-	float resize_scale = 0.7f;
-
-	ecore_x_window_size_get(ecore_x_window_root_first_get(), &window_width, &window_height);
-
-	*width = -1;
-
-	if (rotate_angle == 0 || rotate_angle == 180)
-		*height = window_height * resize_scale;
-	else
-		*height = window_width;
-
-	if (target_imf != NULL) {
-		ecore_imf_context_input_panel_geometry_get(target_imf, &start_x, &start_y, &imf_width, &imf_height);
-		*height = start_y * resize_scale;
-	}else
-		*height = *height-POPUP_HEAD_AREA-POPUP_BUTTON_AREA;
-
-	__COMMON_FUNC_EXIT__;
-}
-
-static Eina_Bool __rotate(void *data, int type, void *event)
-{
-	__COMMON_FUNC_ENTER__;
-	Ecore_X_Event_Client_Message *ev = event;
-	int visible_area_width, visible_area_height;
-	int rotate_angle = 0;
-
+	int rotate_angle;
 	Evas_Object *box = NULL;
+	int profile_count = 0;
+	int height = 0;
 
-	if (!event)
-		return ECORE_CALLBACK_RENEW;
-
-	if (ev->message_type == ECORE_X_ATOM_E_ILLUME_ROTATE_ROOT_ANGLE) {
-		box = elm_object_content_get(syspopup_app_state->syspopup);
-
-		if (box) {
-			rotate_angle = __x_rotation_get(ecore_x_display_get(), elm_win_xwindow_get(syspopup_app_state->win_main));
-			if (rotate_angle < 0)
-				rotate_angle = 0;
-			__common_popup_size_set(NULL ,&visible_area_width, &visible_area_height, rotate_angle);
-			elm_win_rotation_with_resize_set(syspopup_app_state->win_main, rotate_angle);
-			evas_object_size_hint_min_set(box, visible_area_width * elm_config_scale_get(), visible_area_height * elm_config_scale_get());
-		}
-
-		if (syspopup_app_state->eap_popup)
-			eap_view_rotate_popup(syspopup_app_state->eap_popup, rotate_angle);
+	if (obj == NULL) {
+		return;
 	}
 
+	rotate_angle = elm_win_rotation_get(obj);
+	box = elm_object_content_get(devpkr_app_state->popup);
 
-	__COMMON_FUNC_EXIT__;
-	return 0;
+	profile_count = view_main_get_profile_count();
+	INFO_LOG(SP_NAME_NORMAL, "Profiles count: %d", profile_count);
+
+	height = __wifi_devpkr_calculate_height(rotate_angle, profile_count);
+
+	evas_object_size_hint_min_set(box, -1, height);
+
+	if (0 == rotate_angle || 180 == rotate_angle) {
+		common_utils_contents_rotation_adjust(UG_EVENT_ROTATE_PORTRAIT);
+	} else {
+		common_utils_contents_rotation_adjust(UG_EVENT_ROTATE_LANDSCAPE);
+	}
+
+	if (devpkr_app_state->eap_popup) {
+		eap_view_rotate_popup(devpkr_app_state->eap_popup, rotate_angle);
+	}
+
+	INFO_LOG(SP_NAME_NORMAL, "rotate_angle: %d", rotate_angle);
 }
 
-static void wifi_syspopup_exit(void)
+static void wifi_devpkr_set_rotation(Evas_Object *win)
 {
-	__COMMON_FUNC_ENTER__;
+	/* TODO: Temporarily disable rotation for device-picker as default width
+	 * is quite less for the popup
+	 */
+	/* int rots[4] = { 0, 90, 180, 270 }; */
+	int rots[1] = { 0 };
 
-	view_main_destroy();
-
-	if (VCONFKEY_WIFI_QS_WIFI_CONNECTED == syspopup_app_state->connection_result)
-		INFO_LOG(SP_NAME_NORMAL, "Wi-Fi connected");
-	else if (VCONFKEY_WIFI_QS_3G == syspopup_app_state->connection_result)
-		INFO_LOG(SP_NAME_NORMAL, "Cellular connected");
-	else {
-		WARN_LOG(SP_NAME_NORMAL, "Result: [%d]",
-				syspopup_app_state->connection_result);
-
-		syspopup_app_state->connection_result = VCONFKEY_WIFI_QS_3G;
+	if (!elm_win_wm_rotation_supported_get(win)) {
+		return;
 	}
 
-	common_util_set_system_registry("memory/wifi/wifi_qs_exit",
-								syspopup_app_state->connection_result);
+	/* elm_win_wm_rotation_available_rotations_set(win, rots, 4); */
+	elm_win_wm_rotation_available_rotations_set(win, rots, 1);
 
-	elm_exit();
-
-	__COMMON_FUNC_EXIT__;
+	/* evas_object_smart_callback_add(win, "wm,rotation,changed",
+			wifi_devpkr_rotate_cb, NULL); */
 }
 
 static void _exit_cb(void *data, Evas_Object *obj, void *event_info)
 {
 	__COMMON_FUNC_ENTER__;
 
-	wifi_syspopup_destroy();
+	wifi_devpkr_destroy();
 
 	__COMMON_FUNC_EXIT__;
 }
 
-int wifi_syspopup_destroy(void)
+static void __idle_lock_state_change_cb(keynode_t *node, void *user_data)
 {
 	__COMMON_FUNC_ENTER__;
-	if (syspopup_app_state->passpopup) {
-		passwd_popup_free(syspopup_app_state->passpopup);
-		syspopup_app_state->passpopup = NULL;
+
+	wifi_devpkr_destroy();
+
+	__COMMON_FUNC_EXIT__;
+}
+
+void wifi_devpkr_redraw(void)
+{
+	__COMMON_FUNC_ENTER__;
+
+	wifi_devpkr_rotate_cb(NULL, devpkr_app_state->win_main, NULL);
+
+	__COMMON_FUNC_EXIT__;
+}
+
+int wifi_devpkr_destroy(void)
+{
+	if (VCONFKEY_WIFI_QS_WIFI_CONNECTED == devpkr_app_state->connection_result) {
+		INFO_LOG(SP_NAME_NORMAL, "Wi-Fi connected");
+	} else if (VCONFKEY_WIFI_QS_3G == devpkr_app_state->connection_result) {
+		INFO_LOG(SP_NAME_NORMAL, "Cellular connected");
+	} else {
+		WARN_LOG(SP_NAME_NORMAL, "Result: [%d]",
+				devpkr_app_state->connection_result);
+
+		devpkr_app_state->connection_result = VCONFKEY_WIFI_QS_3G;
 	}
 
-	if (syspopup_app_state->syspopup) {
-		evas_object_del(syspopup_app_state->syspopup);
-		syspopup_app_state->syspopup = NULL;
-	}
+	common_util_set_system_registry("memory/wifi/wifi_qs_exit",
+			devpkr_app_state->connection_result);
 
-	if (syspopup_app_state->layout_main) {
-		evas_object_del(syspopup_app_state->layout_main);
-		syspopup_app_state->layout_main = NULL;
-	}
-
-	if (syspopup_app_state->conformant) {
-		evas_object_del(syspopup_app_state->conformant);
-		syspopup_app_state->conformant = NULL;
-	}
-
-	if (syspopup_app_state->win_main) {
-		evas_object_del(syspopup_app_state->win_main);
-		syspopup_app_state->win_main = NULL;
-	}
+	vconf_ignore_key_changed(VCONFKEY_IDLE_LOCK_STATE, __idle_lock_state_change_cb);
 
 	connman_request_scan_mode_set(WIFI_BGSCAN_MODE_EXPONENTIAL);
 
-	wifi_syspopup_exit();
-	__COMMON_FUNC_EXIT__;
+	elm_exit();
 
 	return 1;
 }
 
-static void __keydown_cb(void *data, Evas *e, Evas_Object *obj,
-		void *event_info) {
+static void __keydown_cb(void *data, Evas *e, Evas_Object *obj, void *event_info)
+{
 	__COMMON_FUNC_ENTER__;
 
 	Evas_Event_Key_Down *event = event_info;
 
-	if (g_strcmp0(event->keyname, KEY_BACK) == 0)
-		wifi_syspopup_destroy();
+	if (g_strcmp0(event->keyname, KEY_BACK) == 0) {
+		wifi_devpkr_destroy();
+	}
 
 	__COMMON_FUNC_EXIT__;
 }
 
-static int wifi_syspopup_create(void)
+static int wifi_devpkr_create(void)
 {
 	__COMMON_FUNC_ENTER__;
-	int rotate_angle;
-	int visible_area_height;
-	int visible_area_width;
 
-	if (NULL == syspopup_app_state->syspopup) {
-		syspopup_app_state->syspopup = elm_popup_add(syspopup_app_state->layout_main);
-		elm_object_content_set(syspopup_app_state->layout_main, syspopup_app_state->syspopup);
-		assertm_if(NULL == syspopup_app_state->syspopup, "syspopup is NULL!!");
+	Evas_Object *btn_scan = NULL;
+	Evas_Object *btn_cancel = NULL;
+
+	if (NULL == devpkr_app_state->popup) {
+		devpkr_app_state->popup = elm_popup_add(devpkr_app_state->layout_main);
+		elm_object_content_set(devpkr_app_state->layout_main, devpkr_app_state->popup);
+		assertm_if(NULL == devpkr_app_state->popup, "syspopup is NULL!!");
 	}
 
-	evas_object_event_callback_add(syspopup_app_state->syspopup, EVAS_CALLBACK_KEY_DOWN, __keydown_cb, NULL);
+	evas_object_event_callback_add(devpkr_app_state->popup, EVAS_CALLBACK_KEY_DOWN, __keydown_cb, NULL);
 
-	elm_object_style_set(syspopup_app_state->syspopup,"content_no_vhpad");
-	elm_object_part_text_set(syspopup_app_state->syspopup, "title,text", sc(PACKAGE, I18N_TYPE_WiFi_network));
-	evas_object_size_hint_weight_set(syspopup_app_state->syspopup, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
+	elm_object_style_set(devpkr_app_state->popup, "default");
+	elm_object_part_text_set(devpkr_app_state->popup, "title,text", sc(PACKAGE, I18N_TYPE_Wi_Fi));
+	evas_object_size_hint_weight_set(devpkr_app_state->popup, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
 
-	Evas_Object *btn_cancel = elm_button_add(syspopup_app_state->syspopup);
+	btn_cancel = elm_button_add(devpkr_app_state->popup);
+	elm_object_style_set(btn_cancel, "popup");
 	elm_object_text_set(btn_cancel, sc(PACKAGE, I18N_TYPE_Cancel));
-	elm_object_part_content_set(syspopup_app_state->syspopup, "button1", btn_cancel);
+	elm_object_part_content_set(devpkr_app_state->popup, "button1", btn_cancel);
 	evas_object_smart_callback_add(btn_cancel, "clicked", _exit_cb, NULL);
 
-	/* Create and add a box into the layout. */
-	Evas_Object *box = elm_box_add(syspopup_app_state->syspopup);
-	evas_object_size_hint_weight_set(box, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
-	Evas_Object *main_list = view_main_create(box);
-	elm_box_pack_end(box, main_list);
-	evas_object_show(main_list);
+	btn_scan = elm_button_add(devpkr_app_state->popup);
+	elm_object_style_set(btn_scan, "popup");
+	elm_object_text_set(btn_scan, sc(PACKAGE, I18N_TYPE_Scan));
+	elm_object_part_content_set(devpkr_app_state->popup, "button2", btn_scan);
+	evas_object_smart_callback_add(btn_scan, "clicked", _scan_cb, NULL);
 
-	rotate_angle = __x_rotation_get(ecore_x_display_get(), elm_win_xwindow_get(syspopup_app_state->win_main));
+	view_main_create_main_list();
 
-	if (rotate_angle < 0)
-		rotate_angle = 0;
+	wifi_devpkr_set_rotation(devpkr_app_state->win_main);
+	wifi_devpkr_redraw();
 
-	ecore_x_icccm_hints_set(elm_win_xwindow_get(syspopup_app_state->win_main), 1, 0, 0, 0, 0, 0, 0);
+	elm_win_indicator_mode_set(devpkr_app_state->win_main, ELM_WIN_INDICATOR_SHOW);
+	elm_win_indicator_opacity_set(devpkr_app_state->win_main, ELM_WIN_INDICATOR_TRANSPARENT);
 
-	elm_win_rotation_with_resize_set(syspopup_app_state->win_main, rotate_angle);
-
-	__common_popup_size_set(NULL ,&visible_area_width, &visible_area_height, rotate_angle);
-
-	evas_object_size_hint_min_set(box, visible_area_width * elm_config_scale_get(), visible_area_height * elm_config_scale_get());
-
-	elm_object_content_set(syspopup_app_state->syspopup, box);
-	evas_object_show(syspopup_app_state->syspopup);
-	evas_object_show(syspopup_app_state->win_main);
-
-	memset(&g_pending_call, 0, sizeof(wifi_pending_call_info_t));
+	vconf_notify_key_changed(VCONFKEY_IDLE_LOCK_STATE, __idle_lock_state_change_cb, NULL);
 
 	__COMMON_FUNC_EXIT__;
 	return 1;
 }
 
-static int wifi_syspopup_init()
+static void _bg_scan_status_callback(GDBusConnection *conn,
+		const gchar *name, const gchar *path, const gchar *interface,
+		const gchar *sig, GVariant *param, gpointer user_data)
+{
+	__COMMON_FUNC_ENTER__;
+
+	GVariantIter *iter = NULL;
+	GVariant *var = NULL;
+	gchar *key = NULL;
+	gboolean value = FALSE;
+
+	if (NULL == devpkr_app_state) {
+		INFO_LOG(SP_NAME_ERR, "devpkr_app_state is NULL!! Is it test mode?");
+
+		__COMMON_FUNC_EXIT__;
+		return;
+	}
+
+	g_variant_get(param, "(a{sv})", &iter);
+	while (g_variant_iter_loop(iter, "{sv}", &key, &var)) {
+		if (g_strcmp0(key, "Scanning") == 0) {
+			value = g_variant_get_boolean(var);
+			if (value) {
+				wifi_devpkr_disable_scan_btn();
+				view_main_update_group_title(TRUE);
+			} else
+				wifi_devpkr_enable_scan_btn();
+
+			g_variant_unref(var);
+			g_free(key);
+			break;
+		}
+	}
+
+	g_variant_iter_free(iter);
+
+	__COMMON_FUNC_EXIT__;
+}
+
+static int wifi_devpkr_init()
 {
 	__COMMON_FUNC_ENTER__;
 
@@ -325,6 +384,7 @@ static int wifi_syspopup_init()
 	wlan_manager_create();
 	wlan_manager_set_message_callback(wlan_engine_callback);
 	wlan_manager_set_refresh_callback(wlan_engine_refresh_callback);
+	common_util_subscribe_scanning_signal(_bg_scan_status_callback);
 
 	wlan_ret = wlan_manager_start();
 	switch (wlan_ret) {
@@ -333,8 +393,9 @@ static int wifi_syspopup_init()
 		/* fall through */
 	case WLAN_MANAGER_ERR_NONE:
 		wlan_ret = wifi_is_activated(&activated);
-		if (WIFI_ERROR_NONE == wlan_ret)
+		if (WIFI_ERROR_NONE == wlan_ret) {
 			INFO_LOG(SP_NAME_NORMAL, "Wi-Fi activated: %d", activated);
+		}
 
 		INFO_LOG(SP_NAME_NORMAL, "wlan_manager start complete" );
 		break;
@@ -350,7 +411,11 @@ static int wifi_syspopup_init()
 	return wlan_ret;
 }
 
-static int syspopup_support_set(const char* support)
+#if 0
+/* TODO: Check if bundle paramter check is required later:
+ * "[Wi-Fi_syspopup wifi_syspopup_supports:support]"
+ */
+static int devpkr_support_set(const char* support)
 {
 	__COMMON_FUNC_ENTER__;
 
@@ -359,10 +424,10 @@ static int syspopup_support_set(const char* support)
 		return 0;
 	}
 
-	if (g_strcmp0("WIFI_SYSPOPUP_SUPPORT_QUICKPANEL",support) == 0)
-		syspopup_app_state->wifi_syspopup_support =
-									WIFI_SYSPOPUP_SUPPORT_QUICKPANEL;
-	else {
+	if (g_strcmp0("WIFI_SYSPOPUP_SUPPORT_QUICKPANEL",support) == 0) {
+		devpkr_app_state->wifi_devpkr_support =
+			WIFI_DEVPKR_SUPPORT_QUICKPANEL;
+	} else {
 		__COMMON_FUNC_EXIT__;
 		return 0;
 	}
@@ -370,6 +435,7 @@ static int syspopup_support_set(const char* support)
 	__COMMON_FUNC_EXIT__;
 	return 1;
 }
+#endif
 
 static gboolean _power_on_check(void)
 {
@@ -386,9 +452,14 @@ static gboolean _power_on_check(void)
 
 			__COMMON_FUNC_EXIT__;
 			return TRUE;
+#if defined TIZEN_TETHERING_ENABLE
 		} else if (wlan_ret == WLAN_MANAGER_ERR_WIFI_TETHERING_OCCUPIED) {
 			__COMMON_FUNC_EXIT__;
 			return TRUE;
+		} else if (wlan_ret == WLAN_MANAGER_ERR_WIFI_AP_TETHERING_OCCUPIED) {
+			__COMMON_FUNC_EXIT__;
+			return TRUE;
+#endif
 		} else {
 			__COMMON_FUNC_EXIT__;
 			return FALSE;
@@ -423,238 +494,154 @@ static gboolean _power_on_check(void)
 	return TRUE;
 }
 
-/* implements */
-static int myterm(bundle* b, void* data)
+static gboolean load_initial_ap_list(void)
 {
 	__COMMON_FUNC_ENTER__;
 
-	wifi_syspopup_exit();
-
-	__COMMON_FUNC_EXIT__;
-	return 0;
-}
-
-static int mytimeout(bundle *b, void* data)
-{
-	__COMMON_FUNC_ENTER__;
-
-	__COMMON_FUNC_EXIT__;
-	return 0;
-}
-
-syspopup_handler handler = {
-		.def_term_fn = myterm,
-		.def_timeout_fn = mytimeout
-};
-
-static gboolean __wifi_syspopup_del_found_ap_noti(void *data)
-{
-	common_utils_send_message_to_net_popup(NULL, NULL,
-										"del_found_ap_noti", NULL);
-
-	return FALSE;
-}
-
-static gboolean load_initial_ap_list(gpointer data)
-{
-	__COMMON_FUNC_ENTER__;
-
-	/* Because of transition effect performance,
-	 * Wi-Fi lists might be better to be updated at maximum delayed
-	 */
 	wlan_manager_scanned_profile_refresh();
 
 	__COMMON_FUNC_EXIT__;
 	return FALSE;
 }
 
-static void __pw_lock_state_change_cb(keynode_t *node, void *user_data)
-{
-	__COMMON_FUNC_ENTER__;
-
-	int pw_lock_state = 0;
-	if (0 != vconf_get_int(VCONFKEY_PWLOCK_STATE, &pw_lock_state) ||
-			pw_lock_state != VCONFKEY_PWLOCK_BOOTING_LOCK) {
-		vconf_ignore_key_changed(VCONFKEY_PWLOCK_STATE, __pw_lock_state_change_cb);
-		wifi_syspopup_create();
-		ecore_event_handler_add(ECORE_X_EVENT_CLIENT_MESSAGE, __rotate, (void *)syspopup_app_state);
-		common_util_managed_idle_add(load_initial_ap_list, NULL);
-	}
-
-	INFO_LOG(SP_NAME_NORMAL, "pwlock state = %d", pw_lock_state);
-
-	__COMMON_FUNC_EXIT__;
-	return;
-}
-
-static int app_reset(bundle *b, void *data)
+static void app_control(app_control_h request, void *data)
 {
 	__COMMON_FUNC_ENTER__;
 
 	Evas_Object *win_main = NULL;
 	Evas *evas = NULL;
-	int ret = 0;
 	int pw_lock_state = 0;
-	int w, h = 0;
 
 	assertm_if(NULL == data, "data param is NULL!!");
-	assertm_if(NULL == b, "bundle is NULL!!");
 
-	/* Remove the "WiFi networks found" from the notification tray.*/
-	common_util_managed_idle_add(__wifi_syspopup_del_found_ap_noti, NULL);
+	INFO_LOG(SP_NAME_NORMAL, "Creating device-picker popup");
 
-	if (syspopup_has_popup(b)) {
-		INFO_LOG(SP_NAME_NORMAL, "Wi-Fi device picker is already launched");
+	win_main = appcore_create_win(PACKAGE);
+	assertm_if(NULL == win_main, "win_main is NULL!!");
+	evas = evas_object_evas_get(win_main);
+	assertm_if(NULL == evas, "evas is NULL!!");
 
-		syspopup_reset(b);
-	} else {
-		win_main = appcore_create_win(PACKAGE);
-		assertm_if(NULL == win_main, "win_main is NULL!!");
-		evas = evas_object_evas_get(win_main);
-		assertm_if(NULL == evas, "evas is NULL!!");
+	devpkr_app_state = data;
+	devpkr_app_state->win_main = win_main;
+	devpkr_app_state->evas = evas;
 
-		syspopup_app_state = data;
-		syspopup_app_state->win_main = win_main;
-		syspopup_app_state->evas = evas;
-		syspopup_app_state->b = bundle_dup(b);
+	elm_win_alpha_set(devpkr_app_state->win_main, EINA_TRUE); /* invisible window */
+	elm_win_borderless_set(devpkr_app_state->win_main, EINA_TRUE); /* No borders */
+	elm_win_conformant_set(devpkr_app_state->win_main, TRUE); /* Popup autoscroll */
 
-		elm_win_alpha_set(syspopup_app_state->win_main, EINA_TRUE); /* invisible window */
-		elm_win_borderless_set(syspopup_app_state->win_main, EINA_TRUE); /* No borders */
-		elm_win_conformant_set(syspopup_app_state->win_main, EINA_TRUE); /* Popup autoscroll */
+	Evas_Object *conformant = elm_conformant_add(devpkr_app_state->win_main);
+	elm_win_conformant_set(devpkr_app_state->win_main, EINA_TRUE);
+	elm_win_resize_object_add(devpkr_app_state->win_main, conformant);
+	evas_object_size_hint_weight_set(conformant, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
+	evas_object_size_hint_align_set(conformant, EVAS_HINT_FILL, EVAS_HINT_FILL);
+	devpkr_app_state->conformant = conformant;
 
-		Evas_Object *conformant = elm_conformant_add(syspopup_app_state->win_main);
-		elm_win_resize_object_add(syspopup_app_state->win_main, conformant);
-		evas_object_size_hint_weight_set(conformant, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
-		evas_object_size_hint_align_set(conformant, EVAS_HINT_FILL, EVAS_HINT_FILL);
-		syspopup_app_state->conformant = conformant;
+	Evas_Object *layout = elm_layout_add(conformant);
+	elm_object_content_set(conformant, layout);
+	devpkr_app_state->layout_main = layout;
 
-		Evas_Object *layout = elm_layout_add(conformant);
-		elm_object_content_set(conformant, layout);
-		syspopup_app_state->layout_main = layout;
+	/* TODO: Check if the parameter check '-t' is required later */
 
-		const char* is_onoff = bundle_get_val(b, "-t");
+	devpkr_app_state->devpkr_type = WIFI_DEVPKR_WITH_AP_LIST;
 
-		if (is_onoff != NULL) {
-			INFO_LOG(SP_NAME_NORMAL, "is_onoff [%s]", is_onoff);
-
-			syspopup_app_state->syspopup_type = WIFI_SYSPOPUP_WITHOUT_AP_LIST;
-			int wlan_ret = wifi_syspopup_init();
-
-			if (WLAN_MANAGER_ERR_NONE != wlan_ret)
-				INFO_LOG(SP_NAME_ERR, "wifi_syspopup_init failed. wlan_ret = %d", wlan_ret);
-			else if (strcmp(is_onoff, "on") == 0) {
-				ret = wlan_manager_power_on();
-
-				INFO_LOG(SP_NAME_NORMAL, "Wi-Fi power on: [%d]", ret);
-			} else if (strcmp(is_onoff, "off") == 0) {
-				ret = wlan_manager_power_off();
-
-				INFO_LOG(SP_NAME_NORMAL, "Wi-Fi power off: [%d]", ret);
-			}
-
-			wifi_syspopup_destroy();
-
-			__COMMON_FUNC_EXIT__;
-			return 0;
-		} else {
-			syspopup_app_state->syspopup_type = WIFI_SYSPOPUP_WITH_AP_LIST;
-
-			int wlan_ret = wifi_syspopup_init();
-			if (WLAN_MANAGER_ERR_NONE != wlan_ret ||
-								_power_on_check() == FALSE) {
-				wifi_syspopup_destroy();
-
-				__COMMON_FUNC_EXIT__;
-				return 0;
-			}
-		}
-
-		syspopup_app_state->syspopup =
-				elm_popup_add(syspopup_app_state->win_main);
-
-		ret = syspopup_create(b, &handler,
-				syspopup_app_state->win_main, syspopup_app_state);
-		if (ret != 0){
-			ERROR_LOG(SP_NAME_ERR, "Fail to create popup [%d]", ret );
-
-			wlan_manager_destroy();
-
-			elm_exit();
-
-			__COMMON_FUNC_EXIT__;
-			return 0;
-		} else {
-			const char* support = bundle_get_val(b,
-					"[Wi-Fi_syspopup wifi_syspopup_supports:support]");
-			if(NULL != support)
-				syspopup_support_set(support);
-
-			if (0 != vconf_get_int(VCONFKEY_PWLOCK_STATE, &pw_lock_state) ||
-					pw_lock_state == VCONFKEY_PWLOCK_BOOTING_LOCK) {
-				/* The PW lock is in lock mode during the booting stage.
-				 * Lets wait for the lock state to change.
-				 * After the lock state is changed we can create the popup
-				 */
-				vconf_notify_key_changed(VCONFKEY_PWLOCK_STATE, __pw_lock_state_change_cb, NULL);
-			} else {
-				ecore_x_window_size_get(ecore_x_window_root_first_get(), &w, &h);
-
-				wifi_syspopup_create();
-				ecore_event_handler_add(ECORE_X_EVENT_CLIENT_MESSAGE, __rotate, (void *)syspopup_app_state);
-				common_util_managed_idle_add(load_initial_ap_list, NULL);
-			}
-
-			INFO_LOG(SP_NAME_NORMAL, "pwlock state = %d", pw_lock_state);
-		}
+	int wlan_ret = wifi_devpkr_init();
+	if (WLAN_MANAGER_ERR_NONE != wlan_ret || _power_on_check() == FALSE) {
+		INFO_LOG(SP_NAME_ERR, "failed to wifi_devpkr_init()");
+		goto exit;
 	}
 
+	devpkr_app_state->popup = elm_popup_add(devpkr_app_state->win_main);
+
+	/* Enablee Changeable UI feature */
+	ea_theme_object_changeable_ui_enabled_set(layout, EINA_TRUE);
+
+	devpkr_app_state->color_table = common_utils_color_table_set();
+	ea_theme_object_colors_set(layout, devpkr_app_state->color_table,
+			EA_THEME_STYLE_DEFAULT);
+
+	devpkr_app_state->font_table = common_utils_font_table_set();
+	ea_theme_object_fonts_set(layout, devpkr_app_state->font_table);
+
+	/* TODO: Check if below bundle parameter check is required later:
+	 * "[Wi-Fi_syspopup wifi_syspopup_supports:support]" */
+
+	if (vconf_get_int(VCONFKEY_PWLOCK_STATE, &pw_lock_state) != 0) {
+		INFO_LOG(SP_NAME_ERR, "failed to get vconfkey : VCONFKEY_PWLOCK_STATE");
+		goto exit;
+	}
+
+	if (pw_lock_state == VCONFKEY_PWLOCK_BOOTING_LOCK) {
+		INFO_LOG(SP_NAME_ERR, "pw_lock state is BOOTING_LOCK");
+		goto exit;
+	}
+
+	wifi_devpkr_create();
+
+	load_initial_ap_list();
+
 	__COMMON_FUNC_EXIT__;
-	return 0;
+	return;
+
+exit:
+	wifi_devpkr_destroy();
+	__COMMON_FUNC_EXIT__;
+
+	return;
 }
 
-static int app_create(void *data)
+static bool app_create(void *data)
 {
 	__COMMON_FUNC_ENTER__;
 
+	elm_app_base_scale_set(1.8);
 	bindtextdomain(PACKAGE, LOCALEDIR);
 
 	__COMMON_FUNC_EXIT__;
-	return 0;
+	return true;
 }
 
-static int app_exit(void *data)
+static void app_terminate(void *data)
 {
 	__COMMON_FUNC_ENTER__;
 
+	if (devpkr_app_state->passpopup) {
+		passwd_popup_free(devpkr_app_state->passpopup);
+		devpkr_app_state->passpopup = NULL;
+	}
+
+	if (devpkr_app_state->win_main) {
+		evas_object_del(devpkr_app_state->win_main);
+		devpkr_app_state->win_main = NULL;
+	}
+
+	common_util_managed_ecore_scan_update_timer_del();
 	wlan_manager_destroy();
 
 	__COMMON_FUNC_EXIT__;
-	return 0;
+	return;
 }
 
-static int app_pause(void *data)
+static void app_pause(void *data)
 {
 	__COMMON_FUNC_ENTER__;
 
 	connman_request_scan_mode_set(WIFI_BGSCAN_MODE_EXPONENTIAL);
 
-	wifi_syspopup_destroy();
-
 	__COMMON_FUNC_EXIT__;
-	return 0;
+	return;
 }
 
-static int app_resume(void *data)
+static void app_resume(void *data)
 {
 	__COMMON_FUNC_ENTER__;
 
 	connman_request_scan_mode_set(WIFI_BGSCAN_MODE_PERIODIC);
 
 	__COMMON_FUNC_EXIT__;
-	return 0;
+	return;
 }
 
-int main(int argc, char* argv[])
+EXPORT_API int main(int argc, char *argv[])
 {
 	__COMMON_FUNC_ENTER__;
 
@@ -666,21 +653,17 @@ int main(int argc, char* argv[])
 	ad.connection_result = VCONFKEY_WIFI_QS_3G;
 	ad.win_main = NULL;
 	ad.evas = NULL;
-	ad.b = NULL;
-	ad.syspopup = NULL;
+	ad.popup = NULL;
 	ad.passpopup = NULL;
 	ad.alertpopup = NULL;
 
-	struct appcore_ops ops = {
-			.create = app_create,
-			.terminate = app_exit,
-			.pause = app_pause,
-			.resume = app_resume,
-			.reset = app_reset,
+	app_event_callback_s app_callback = {
+		.create = app_create,
+		.terminate = app_terminate,
+		.pause = app_pause,
+		.resume = app_resume,
+		.app_control = app_control,
 	};
 
-	ops.data = &ad;
-
-	__COMMON_FUNC_EXIT__;
-	return appcore_efl_main(PACKAGE, &argc, &argv, &ops);
+	return app_efl_main(&argc, &argv, &app_callback, &ad);
 }

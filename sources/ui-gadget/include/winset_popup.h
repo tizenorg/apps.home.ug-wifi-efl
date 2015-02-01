@@ -1,13 +1,13 @@
 /*
  * Wi-Fi
  *
- * Copyright 2012-2013 Samsung Electronics Co., Ltd
+ * Copyright 2012 Samsung Electronics Co., Ltd
  *
- * Licensed under the Flora License, Version 1.1 (the "License");
+ * Licensed under the Flora License, Version 1.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://floralicense.org/license
+ * http://www.tizenopensource.org/license
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -29,13 +29,9 @@ extern "C"
 #include <Evas.h>
 
 typedef enum {
-	POPUP_OPTION_NONE 									= 0X01,
+	POPUP_OPTION_NONE  = 0X01,
 	POPUP_OPTION_POWER_ON_FAILED_TETHERING_OCCUPIED,
-	POPUP_OPTION_CONNECTING_FAILED,
-	POPUP_OPTION_HIDDEN_AP_SSID_LEN_ERROR,
-	POPUP_OPTION_WEP_PSWD_LEN_ERROR,
-	POPUP_OPTION_WPA_PSWD_LEN_ERROR,
-	POPUP_OPTION_WIFI_INVALID_KEY,
+	POPUP_OPTION_POWER_ON_FAILED_TETHERING_AP_OCCUPIED,
 	POPUP_OPTION_MAX
 } POPUP_MODE_OPTIONS;
 

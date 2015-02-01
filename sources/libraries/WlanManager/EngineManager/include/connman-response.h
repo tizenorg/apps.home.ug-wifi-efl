@@ -1,13 +1,13 @@
 /*
  * Wi-Fi
  *
- * Copyright 2012-2013 Samsung Electronics Co., Ltd
+ * Copyright 2012 Samsung Electronics Co., Ltd
  *
- * Licensed under the Flora License, Version 1.1 (the "License");
+ * Licensed under the Flora License, Version 1.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://floralicense.org/license
+ * http://www.tizenopensource.org/license
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -34,6 +34,7 @@ extern "C"
 * @see wifi_set_specific_scan_cb()
 */
 typedef void(*wifi_specific_scan_finished_cb)(wifi_error_e error_code, GSList *bss_info_list, void* user_data);
+
 
 int wifi_set_specific_scan_cb(wifi_specific_scan_finished_cb cb, void *data);
 int wifi_unset_specific_scan_cb(void);

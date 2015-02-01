@@ -1,13 +1,13 @@
 /*
  * Wi-Fi
  *
- * Copyright 2012-2013 Samsung Electronics Co., Ltd
+ * Copyright 2012 Samsung Electronics Co., Ltd
  *
- * Licensed under the Flora License, Version 1.1 (the "License");
+ * Licensed under the Flora License, Version 1.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://floralicense.org/license
+ * http://www.tizenopensource.org/license
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -27,7 +27,7 @@ extern "C"
 
 #include <Evas.h>
 
-void view_detail(wifi_device_info_t *device_info, Evas_Object *parent);
+void view_detail(wifi_device_info_t *device_info, Evas_Object *win_main);
 
 int detailview_ip_and_dns_type_set_as_static();
 

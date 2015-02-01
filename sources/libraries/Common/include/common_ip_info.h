@@ -1,13 +1,13 @@
 /*
  * Wi-Fi
  *
- * Copyright 2012-2013 Samsung Electronics Co., Ltd
+ * Copyright 2012 Samsung Electronics Co., Ltd
  *
- * Licensed under the Flora License, Version 1.1 (the "License");
+ * Licensed under the Flora License, Version 1.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://floralicense.org/license
+ * http://www.tizenopensource.org/license
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -33,10 +33,16 @@ extern "C"
 #define DEFAULT_GUIDE_PROXY_IP "proxy.example.com"
 #define DEFAULT_GUIDE_PROXY_PORT "8080"
 
-ip_info_list_t *ip_info_append_items(wifi_ap_h ap, const char *pkg_name, Evas_Object *genlist, imf_ctxt_panel_cb_t input_panel_cb,	void *input_panel_cb_data);
+typedef struct ip_info_list ip_info_list_t;
+
+ip_info_list_t *ip_info_append_items(wifi_ap_h ap, const char *pkg_name,
+		Evas_Object *genlist,
+		imf_ctxt_panel_cb_t input_panel_cb, void *input_panel_cb_data);
 void ip_info_save_data(ip_info_list_t *ip_info_list);
 void ip_info_remove(ip_info_list_t *ip_info_list);
 void ip_info_close_all_keypads(ip_info_list_t *ip_info_list);
+void ip_info_enable_all_keypads(ip_info_list_t *ip_info_list);
+void ip_info_items_realize(ip_info_list_t *ip_info_list);
 
 #ifdef __cplusplus
 }

@@ -1,13 +1,13 @@
 /*
  * Wi-Fi
  *
- * Copyright 2012-2013 Samsung Electronics Co., Ltd
+ * Copyright 2012 Samsung Electronics Co., Ltd
  *
- * Licensed under the Flora License, Version 1.1 (the "License");
+ * Licensed under the Flora License, Version 1.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://floralicense.org/license
+ * http://www.tizenopensource.org/license
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -39,6 +39,11 @@ extern "C"
 #define SP_NAME_NORMAL		"wifi_sp"
 #define SP_NAME_ERR			"wifi_sp/err"
 
+#define CUSTOM_EDITFIELD_PATH \
+			"/usr/apps/wifi-efl-ug/res/edje/wifi-efl-UG/custom_editfield.edj"
+#define SETUP_WIZARD_EDJ_PATH \
+			"/usr/apps/wifi-efl-ug/res/edje/wifi-efl-UG/setup_wizard.edj"
+
 /* Log Level */
 #define COMMON_LOG_DEBUG	LOG_DEBUG
 #define COMMON_LOG_INFO		LOG_INFO
@@ -48,16 +53,29 @@ extern "C"
 #define MAX_DEVICE_ICON_PATH_STR_LEN			256
 #define SCREEN_TYPE_ID_KEY				"screen_type_id_key"
 
-/* Syspopup height for portrait mode*/
-#define DEVICE_PICKER_POPUP_H		530
+/* Device-picker height for portrait mode*/
+#define DEVICE_PICKER_POPUP_H		550
 
-/* Syspopup height for landscape mode */
-#define DEVICE_PICKER_POPUP_LN_H		480
+/* Device-picker height for landscape mode */
+#define DEVICE_PICKER_POPUP_LN_H		220
+
+/* Device-picker height for zero profiles (same as defined in EDC file)*/
+#define DEVICE_PICKER_EMPTY_POPUP_H 100
+
+/* Device-picker width for landscape mode */
+#define DEVICE_PICKER_POPUP_LN_W		600
+
+typedef enum {
+	UG_VIEW_DEFAULT = 0,
+	UG_VIEW_SETUP_WIZARD
+} UG_TYPE;
 
 typedef enum {
 	VIEW_MANAGER_VIEW_TYPE_MAIN,
 	VIEW_MANAGER_VIEW_TYPE_DETAIL,
+	VIEW_MANAGER_VIEW_TYPE_ADVANCED,
 	VIEW_MANAGER_VIEW_TYPE_EAP,
+	VIEW_MANAGER_VIEW_TYPE_PASSWD_POPUP,
 } view_manager_view_type_t;
 
 #define __COMMON_FUNC_ENTER__ \
@@ -75,6 +93,17 @@ typedef enum {
 	SLOG(LOG_WARN, MID, "\033[43m[%s:%d]\033[0m\033[33m " format "\033[0m", __func__, __LINE__, ##args)
 #define ERROR_LOG(MID, format, args...) \
 	SLOG(LOG_ERROR, MID, "\033[41m[%s:%d]\033[0m\033[31m " format "\033[0m", __func__, __LINE__, ##args)
+
+#define SECURE_FUNC_LOG(MID, format, args...) \
+	SECURE_SLOG(LOG_INFO, MID, "\033[2m[%s:%d]\033[2m " format "\033[0m", __func__, __LINE__, ##args)
+#define SECURE_DEBUG_LOG(MID, format, args...) \
+	SECURE_SLOG(LOG_DEBUG, MID, "\033[42m[%s:%d]\033[0m\033[32m " format "\033[0m", __func__, __LINE__, ##args)
+#define SECURE_INFO_LOG(MID, format, args...) \
+	SECURE_SLOG(LOG_INFO, MID, "\033[0m[%s:%d]\033[0m " format, __func__, __LINE__, ##args)
+#define SECURE_WARN_LOG(MID, format, args...) \
+	SECURE_SLOG(LOG_WARN, MID, "\033[43m[%s:%d]\033[0m\033[33m " format "\033[0m", __func__, __LINE__, ##args)
+#define SECURE_ERROR_LOG(MID, format, args...) \
+	SECURE_SLOG(LOG_ERROR, MID, "\033[41m[%s:%d]\033[0m\033[31m " format "\033[0m", __func__, __LINE__, ##args)
 
 #define retm_if(expr) do { \
 	if (expr) { \

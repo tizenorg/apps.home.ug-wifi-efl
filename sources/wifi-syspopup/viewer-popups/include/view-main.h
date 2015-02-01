@@ -1,13 +1,13 @@
 /*
  * Wi-Fi
  *
- * Copyright 2012-2013 Samsung Electronics Co., Ltd
+ * Copyright 2012 Samsung Electronics Co., Ltd
  *
- * Licensed under the Flora License, Version 1.1 (the "License");
+ * Licensed under the Flora License, Version 1.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://floralicense.org/license
+ * http://www.tizenopensource.org/license
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -31,11 +31,14 @@ extern "C"
 #include "wlan_manager.h"
 #include "wifi-syspopup.h"
 
-/* create */
-Evas_Object *view_main_create(Evas_Object* parent);
-int view_main_destroy(void);
+void view_main_create_main_list(void);
 void view_main_item_state_set(wifi_ap_h ap, ITEM_CONNECTION_MODES state);
 gboolean view_main_show(void *data);
+void view_main_wifi_connect(devpkr_gl_data_t *gdata);
+void view_main_wifi_reconnect(devpkr_gl_data_t *gdata);
+Elm_Object_Item *view_main_item_get_for_ap(wifi_ap_h ap);
+int view_main_get_profile_count(void);
+void view_main_update_group_title(gboolean is_bg_scan);
 
 #ifdef __cplusplus
 }

@@ -1,13 +1,13 @@
 /*
  * Wi-Fi
  *
- * Copyright 2012-2013 Samsung Electronics Co., Ltd
+ * Copyright 2012 Samsung Electronics Co., Ltd
  *
- * Licensed under the Flora License, Version 1.1 (the "License");
+ * Licensed under the Flora License, Version 1.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://floralicense.org/license
+ * http://www.tizenopensource.org/license
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -28,6 +28,7 @@ extern "C"
 #endif
 
 #include <ui-gadget-module.h>
+#include <efl_assist.h>
 
 #include "common.h"
 #include "common_pswd_popup.h"
@@ -38,26 +39,10 @@ extern "C"
 #include "viewer_manager.h"
 
 #define PACKAGE					"ug-wifi-efl-UG"
-#define LOCALEDIR				"/usr/ug/res/locale"
-#define CUSTOM_EDITFIELD_PATH \
-					"/usr/ug/res/edje/wifi-efl-UG/custom_editfield.edj"
-
-#define FACTORYFS				"/usr/ug"
-#define WIFI_APP_IMAGE_DIR		FACTORYFS "/res/images/wifi-efl-UG"
-#define WIFI_APP_ICON_PATH_SCAN \
-				WIFI_APP_IMAGE_DIR"/01_controlbar_icon_update.png"
-#define WIFI_APP_ICON_PATH_DONE \
-				WIFI_APP_IMAGE_DIR"/01_controlbar_icon_edit.png"
-#define WIFI_APP_ICON_PATH_FORGET \
-				WIFI_APP_IMAGE_DIR"/01_controlbar_icon_delete.png"
 
 #define UG_CALLER "caller"
+#define UG_VIEWTYPE "viewtype"
 #define UG_MAIN_MESSAGE_DESTROY 1
-
-typedef enum {
-	UG_VIEW_DEFAULT = 0,
-	UG_VIEW_SETUP_WIZARD
-} UG_TYPE;
 
 typedef struct {
 	/* ui gadget object */
@@ -68,7 +53,6 @@ typedef struct {
 	Evas_Object *layout_main;
 	Evas *evas;
 	pswd_popup_t *passpopup;
-	hiddep_ap_popup_data_t *hidden_ap_popup;
 
 	UG_TYPE ug_type;
 	Eina_Bool bAlive;
@@ -76,13 +60,22 @@ typedef struct {
 	char *lbutton_setup_wizard_prev;
 	char *rbutton_setup_wizard_next;
 	char *rbutton_setup_wizard_skip;
+#if defined TIZEN_TETHERING_ENABLE
 	popup_manager_object_t *popup_manager;
+#endif
 	eap_connect_data_t *eap_view;
-
-	bool ap_connected;
+	Ea_Theme_Color_Table *color_table;
+	Ea_Theme_Font_Table *font_table;
 } wifi_appdata ;
 
+struct ug_data {
+	Evas_Object *base;
+	Evas_Object *win_main;
+	ui_gadget_h ug;
+};
+
 int wifi_exit(void);
+bool wifi_is_scan_required(void);
 
 #ifdef __cplusplus
 }

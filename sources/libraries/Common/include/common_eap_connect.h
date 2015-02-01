@@ -1,13 +1,13 @@
 /*
  * Wi-Fi
  *
- * Copyright 2012-2013 Samsung Electronics Co., Ltd
+ * Copyright 2012 Samsung Electronics Co., Ltd
  *
- * Licensed under the Flora License, Version 1.1 (the "License");
+ * Licensed under the Flora License, Version 1.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://floralicense.org/license
+ * http://www.tizenopensource.org/license
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -32,12 +32,14 @@ extern "C"
 
 #define DISABLE_FAST_EAP_METHOD
 
+typedef struct eap_info_list eap_info_list_t;
 typedef struct common_eap_connect_data eap_connect_data_t;
 
-eap_connect_data_t *create_eap_view(Evas_Object *win_main,
-		Evas_Object *navi_frame, const char *pkg_name,
-		wifi_device_info_t *device_info);
-eap_connect_data_t *create_eap_popup(Evas_Object *win_main,
+eap_connect_data_t *create_eap_view(int ug_type,
+		Evas_Object *layout_main, Evas_Object *navi_frame,
+		const char *pkg_name, wifi_device_info_t *device_info,
+		Evas_Object *win);
+eap_connect_data_t *create_eap_popup(Evas_Object *layout, Evas_Object *win,
 		const char *pkg_name, wifi_device_info_t *device_info);
 
 void eap_connect_data_free(eap_connect_data_t *eap_data);
@@ -48,6 +50,7 @@ eap_info_list_t *eap_info_append_items(wifi_ap_h ap, Evas_Object* view_list,
 void eap_info_save_data(eap_info_list_t *eap_info_list_data);
 void eap_info_remove(eap_info_list_t *eap_info_list_data);
 void eap_view_rotate_popup(eap_connect_data_t *eap_data, int rotate_angle);
+void eap_info_items_realize(eap_info_list_t *eap_info_list);
 
 #ifdef __cplusplus
 }

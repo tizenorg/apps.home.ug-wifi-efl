@@ -1,13 +1,13 @@
 /*
  * Wi-Fi
  *
- * Copyright 2012-2013 Samsung Electronics Co., Ltd
+ * Copyright 2012 Samsung Electronics Co., Ltd
  *
- * Licensed under the Flora License, Version 1.1 (the "License");
+ * Licensed under the Flora License, Version 1.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://floralicense.org/license
+ * http://www.tizenopensource.org/license
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -36,11 +36,11 @@ static void wlan_connect_debug(wifi_ap_h ap)
 	wifi_ap_get_essid(ap, &ap_ssid);
 
 	if (next_item.ap == NULL) {
-		ERROR_LOG(UG_NAME_REQ, "%s will be connected", ap_ssid);
+		SECURE_ERROR_LOG(UG_NAME_REQ, "%s will be connected", ap_ssid);
 	} else {
 		wifi_ap_get_essid(next_item.ap, &next_ssid);
 
-		ERROR_LOG(UG_NAME_REQ, "%s will be connected (%s replaced)",
+		SECURE_ERROR_LOG(UG_NAME_REQ, "%s will be connected (%s replaced)",
 				ap_ssid, next_ssid);
 
 		g_free(next_ssid);
@@ -55,20 +55,23 @@ static gboolean wlan_is_same_with_next(wifi_ap_h ap)
 	char *next_ssid, *ap_ssid;
 	wifi_security_type_e next_sec, ap_sec;
 
-	if (next_item.ap == NULL)
+	if (next_item.ap == NULL) {
 		return FALSE;
+	}
 
 	wifi_ap_get_security_type(ap, &ap_sec);
 	wifi_ap_get_security_type(next_item.ap, &next_sec);
 
-	if (ap_sec != next_sec)
+	if (ap_sec != next_sec) {
 		return is_same;
+	}
 
 	wifi_ap_get_essid(ap, &ap_ssid);
 	wifi_ap_get_essid(next_item.ap, &next_ssid);
 
-	if (g_strcmp0(ap_ssid, next_ssid) == 0)
+	if (g_strcmp0(ap_ssid, next_ssid) == 0) {
 		is_same = TRUE;
+	}
 
 	g_free(ap_ssid);
 	g_free(next_ssid);
@@ -80,12 +83,14 @@ static void wlan_go_fast_next(void)
 {
 	bool favorite = false;
 
-	if (current_item.ap == NULL || next_item.ap == NULL)
+	if (current_item.ap == NULL || next_item.ap == NULL) {
 		return;
+	}
 
 	wifi_ap_is_favorite(current_item.ap, &favorite);
-	if (favorite == true)
+	if (favorite == true) {
 		return;
+	}
 
 	wifi_disconnect(current_item.ap, NULL, NULL);
 }
@@ -120,8 +125,9 @@ static void wlan_connect_next(void)
 	current_item.callback = next_item.callback;
 	current_item.user_data = next_item.user_data;
 
-	if (next_item.ap == NULL)
+	if (next_item.ap == NULL) {
 		return;
+	}
 
 	next_item.ap = NULL;
 	next_item.callback = NULL;
@@ -149,12 +155,14 @@ void wlan_validate_alt_connection(void)
 {
 	wifi_connection_state_e state = WIFI_CONNECTION_STATE_DISCONNECTED;
 
-	if (current_item.ap == NULL)
+	if (current_item.ap == NULL) {
 		return;
+	}
 
 	wifi_get_connection_state(&state);
 
 	switch (state) {
+	case WIFI_CONNECTION_STATE_FAILURE:
 	case WIFI_CONNECTION_STATE_CONNECTED:
 	case WIFI_CONNECTION_STATE_DISCONNECTED:
 		wlan_connect_next();
