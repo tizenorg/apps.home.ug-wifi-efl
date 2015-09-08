@@ -1,210 +1,221 @@
 /*
-*  Wi-Fi syspopup
-*
-* Copyright 2012  Samsung Electronics Co., Ltd
-
-* Licensed under the Flora License, Version 1.0 (the "License");
-* you may not use this file except in compliance with the License.
-* You may obtain a copy of the License at
-
-* http://www.tizenopensource.org/license
-
-* Unless required by applicable law or agreed to in writing, software
-* distributed under the License is distributed on an "AS IS" BASIS,
-* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-* See the License for the specific language governing permissions and
-* limitations under the License.
-*
-*/
-
-
+ * Wi-Fi
+ *
+ * Copyright 2012 Samsung Electronics Co., Ltd
+ *
+ * Licensed under the Flora License, Version 1.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.tizenopensource.org/license
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ */
 
 #include <vconf-keys.h>
-#include <syspopup_caller.h>
+
 #include "common.h"
-#include "common_datamodel.h"
-#include "wifi-syspopup-engine-callback.h"
-#include "wlan_manager.h"
 #include "view-main.h"
 #include "view-alerts.h"
+#include "common_utils.h"
+#include "wlan_connection.h"
+#include "wifi-syspopup-engine-callback.h"
+#include "i18nmanager.h"
 
+extern wifi_object* devpkr_app_state;
 
-extern wifi_object* syspopup_app_state;
-
-int wlan_show_network_syspopup_message(const char *title, const char *content, const char *type, const char *ssid)
-{
-	int ret = 0;
-	bundle *b = bundle_create();
-
-	bundle_add(b, "_SYSPOPUP_TITLE_", title);
-	bundle_add(b, "_SYSPOPUP_CONTENT_", content);
-	bundle_add(b, "_SYSPOPUP_TYPE_", type);
-	bundle_add(b, "_AP_NAME_", ssid);
-
-	ret = syspopup_launch("net-popup", b);
-	bundle_free(b);
-
-	return ret;
-}
-
-/* wlan_manager handler */
-void wlan_engine_callback(void *user_data, void *wlan_data)
+void wlan_engine_callback(wlan_mgr_event_info_t *event_info, void *user_data)
 {
 	__COMMON_FUNC_ENTER__;
 
-	assertm_if(NULL == wlan_data, "wlan data is NULL!!");
+	Elm_Object_Item *item = NULL;
+	devpkr_gl_data_t *gdata = NULL;
+	Elm_Object_Item *target_item = NULL;
 
-	callback_data* det = (callback_data*)wlan_data;
+	if (event_info == NULL) {
+		__COMMON_FUNC_EXIT__;
+		return;
+	}
 
-	INFO_LOG(SP_NAME_NORMAL, "callback data response type [%d]", det->type);
+	INFO_LOG(SP_NAME_NORMAL, "event type [%d]", event_info->event_type);
 
-	switch (det->type) {
+	switch (event_info->event_type) {
 	case WLAN_MANAGER_RESPONSE_TYPE_NONE:
-		ERROR_LOG(SP_NAME_ERR, "case NONE:");
-		break;
-
-	case WLAN_MANAGER_RESPONSE_TYPE_WPS_ENROLL_OK:
-		INFO_LOG(SP_NAME_NORMAL, "case WPS ENROLL OK:");
-		syspopup_app_state->connection_result = VCONFKEY_WIFI_QS_WIFI_CONNECTED;
-		wifi_syspopup_destroy();
 		break;
 
 	case WLAN_MANAGER_RESPONSE_TYPE_CONNECTION_OK:
-		INFO_LOG(SP_NAME_NORMAL, "case CONNECTION_OK:");
-		syspopup_app_state->connection_result = VCONFKEY_WIFI_QS_WIFI_CONNECTED;
-		wifi_syspopup_destroy();
-		break;
+	case WLAN_MANAGER_RESPONSE_TYPE_WPS_ENROLL_OK:
+		devpkr_app_state->connection_result = VCONFKEY_WIFI_QS_WIFI_CONNECTED;
 
-	case WLAN_MANAGER_RESPONSE_TYPE_CONNECTION_FAIL_IN_PROGRESS:
-	case WLAN_MANAGER_RESPONSE_TYPE_CONNECTION_FAIL_ALREADY_EXIST:
-	case WLAN_MANAGER_RESPONSE_TYPE_CONNECTION_FAIL_ABORTED:
-	case WLAN_MANAGER_RESPONSE_TYPE_CONNECTION_FAIL_UNKNOWN:
-		ERROR_LOG(SP_NAME_NORMAL, "Connection failed.");
+		wifi_devpkr_destroy();
+		return;
 
-		if (syspopup_app_state->passpopup) {
-			common_pswd_popup_destroy(syspopup_app_state->passpopup);
-			syspopup_app_state->passpopup = NULL;
-		}
-
-		view_main_refresh();
-		break;
-
-	case WLAN_MANAGER_RESPONSE_TYPE_CONNECTION_INVALID_KEY:
 	case WLAN_MANAGER_RESPONSE_TYPE_CONNECTION_CONNECT_FAILED:
-	case WLAN_MANAGER_RESPONSE_TYPE_CONNECTION_FAIL_UNKNOWN_METHOD:
-	case WLAN_MANAGER_RESPONSE_TYPE_CONNECTION_FAIL_TIMEOUT:
-	case WLAN_MANAGER_RESPONSE_TYPE_WPS_ENROLL_FAIL:
-		INFO_LOG(SP_NAME_NORMAL, "Connection failed.");
+		view_main_item_state_set(event_info->ap, ITEM_CONNECTION_MODE_OFF);
 
-		if (syspopup_app_state->passpopup) {
-			common_pswd_popup_destroy(syspopup_app_state->passpopup);
-			syspopup_app_state->passpopup = NULL;
+		item = view_main_item_get_for_ap(event_info->ap);
+		if (!item)
+			break;
+
+		gdata = (devpkr_gl_data_t *)elm_object_item_data_get(item);
+		if (gdata) {
+			if (!gdata->dev_info)
+				break;
+
+			if (wlan_connetion_next_item_exist() == FALSE &&
+					wlan_is_same_with_current(gdata->dev_info->ap) == TRUE) {
+				view_main_wifi_reconnect(gdata);
+			}
+			if (gdata->dev_info)
+				view_main_clear_disconnect_popup(gdata->dev_info->ap);
+		}
+		break;
+
+	case WLAN_MANAGER_RESPONSE_TYPE_WPS_ENROLL_FAIL:
+		if (devpkr_app_state->passpopup) {
+			passwd_popup_free(devpkr_app_state->passpopup);
+			devpkr_app_state->passpopup = NULL;
 		}
 
-		view_main_refresh();
+		item = view_main_item_get_for_ap(event_info->ap);
+		if (!item)
+			break;
+
+		gdata = (devpkr_gl_data_t *)elm_object_item_data_get(item);
+		if (gdata && gdata->dev_info)
+			view_main_clear_disconnect_popup(gdata->dev_info->ap);
+
+		view_main_item_state_set(event_info->ap, ITEM_CONNECTION_MODE_OFF);
 		break;
 
 	case WLAN_MANAGER_RESPONSE_TYPE_DISCONNECTION_OK:
-		ERROR_LOG(SP_NAME_NORMAL, "case DISCONNECTION OK:");
+		view_main_item_state_set(event_info->ap, ITEM_CONNECTION_MODE_OFF);
+
+		item = view_main_item_get_for_ap(event_info->ap);
+		if (!item)
+			break;
+
+		gdata = (devpkr_gl_data_t *)elm_object_item_data_get(item);
+		if (gdata && gdata->dev_info)
+			view_main_clear_disconnect_popup(gdata->dev_info->ap);
 		break;
 
 	case WLAN_MANAGER_RESPONSE_TYPE_POWER_ON_OK:
-		INFO_LOG(SP_NAME_NORMAL, "case POWER ON OK:");
-		wlan_manager_request_scan(); /* First scan request after power on */
-		if (syspopup_app_state->syspopup_type == WIFI_SYSPOPUP_WITHOUT_AP_LIST) {
-			wifi_syspopup_destroy();
+		if (devpkr_app_state->devpkr_type == WIFI_DEVPKR_WITHOUT_AP_LIST) {
+			wifi_devpkr_destroy();
+			return;
 		}
 		break;
 
 	case WLAN_MANAGER_RESPONSE_TYPE_POWER_ON_NOT_SUPPORTED:
-		INFO_LOG(SP_NAME_NORMAL, "case POWER ON NOT SUPPORTED:");
-		if (syspopup_app_state->alertpopup) {
-			evas_object_del(syspopup_app_state->alertpopup);
-			syspopup_app_state->alertpopup = NULL;
+		if (devpkr_app_state->alertpopup) {
+			evas_object_del(devpkr_app_state->alertpopup);
+			devpkr_app_state->alertpopup = NULL;
 		}
-		wlan_show_network_syspopup_message("Network connection popup", "not support", "notification", NULL);
-		wifi_syspopup_destroy();
-		break;
+
+		common_utils_send_message_to_net_popup("Network connection popup",
+				"not support", "notification", NULL);
+
+		wifi_devpkr_destroy();
+		return;
 
 	case WLAN_MANAGER_RESPONSE_TYPE_POWER_ON_RESTRICTED:
-		INFO_LOG(SP_NAME_NORMAL, "case POWER ON RESTRICTED:");
-		if (syspopup_app_state->alertpopup) {
-			evas_object_del(syspopup_app_state->alertpopup);
-			syspopup_app_state->alertpopup = NULL;
+		if (devpkr_app_state->alertpopup) {
+			evas_object_del(devpkr_app_state->alertpopup);
+			devpkr_app_state->alertpopup = NULL;
 		}
-		wlan_show_network_syspopup_message("Network connection popup", "wifi restricted", "popup", NULL);
-		wifi_syspopup_destroy();
-		break;
+
+		common_utils_send_message_to_net_popup("Network connection popup",
+				"wifi restricted", "popup", NULL);
+
+		wifi_devpkr_destroy();
+		return;
 
 	case WLAN_MANAGER_RESPONSE_TYPE_POWER_OFF_OK:
-		INFO_LOG(SP_NAME_NORMAL, "case POWER OFF OK:");
-		wifi_syspopup_destroy();
-		break;
+		wifi_devpkr_destroy();
+		return;
 
 	case WLAN_MANAGER_RESPONSE_TYPE_SCAN_OK:
-		INFO_LOG(SP_NAME_NORMAL, "case SCAN OK:");
 		wlan_manager_scanned_profile_refresh();
-		break;
-
-	case WLAN_MANAGER_RESPONSE_TYPE_CANCEL_WPS_ENROLL_OK:
-		INFO_LOG(SP_NAME_NORMAL, "case CANCEL WPS ENROLL OK:");
-		break;
-
-	case WLAN_MANAGER_RESPONSE_TYPE_CANCEL_WPS_ENROLL_FAIL:
-		INFO_LOG(SP_NAME_NORMAL, "case CANCEL WPS ENROLL FAIL:");
-		break;
-
-	case WLAN_MANAGER_RESPONSE_TYPE_CONNECTION_IND:
-		INFO_LOG(SP_NAME_NORMAL, "case CONNECTION IND:");
-		const char *ssid = wlan_manager_get_connected_ssid();
-		wlan_show_network_syspopup_message("Network connection popup", "wifi connected", "notification", ssid);
-		syspopup_app_state->connection_result = VCONFKEY_WIFI_QS_WIFI_CONNECTED;
-		wifi_syspopup_destroy();
 		break;
 
 	case WLAN_MANAGER_RESPONSE_TYPE_CONNECTING:
-		/* TODO: We need to show the connecting progress indi. Check this later. */
+		view_main_item_state_set(event_info->ap,
+				ITEM_CONNECTION_MODE_CONNECTING);
+
+		target_item = view_main_item_get_for_ap(event_info->ap);
+		if (target_item != NULL) {
+			view_main_refresh_ap_info(target_item);
+			elm_genlist_item_update(target_item);
+			view_main_move_item_to_top(target_item);
+		}
+
 		break;
 
-	case WLAN_MANAGER_RESPONSE_TYPE_DISCONNECTION_IND:
-		INFO_LOG(SP_NAME_NORMAL, "case DISCONNECTION IND:");
+	case WLAN_MANAGER_RESPONSE_TYPE_CONFIGURATION:
+		view_main_item_state_set(event_info->ap,
+				ITEM_CONNECTION_MODE_CONFIGURATION);
 		break;
 
 	case WLAN_MANAGER_RESPONSE_TYPE_SCAN_RESULT_IND:
-		INFO_LOG(SP_NAME_NORMAL, "case SCAN RESULT IND:");
 		wlan_manager_scanned_profile_refresh();
 		break;
 
+	case WLAN_MANAGER_RESPONSE_TYPE_CONNECTION_INVALID_KEY:
+		common_utils_send_message_to_net_popup(
+				"Network connection popup", "unable to connect",
+				"toast_popup", NULL);
+
+		item = view_main_item_get_for_ap(event_info->ap);
+		if (!item)
+			break;
+
+		gdata = (devpkr_gl_data_t *)elm_object_item_data_get(item);
+		if (gdata) {
+			if (!gdata->dev_info)
+				break;
+
+			view_main_wifi_connect(gdata);
+
+			if (gdata->dev_info)
+				view_main_clear_disconnect_popup(gdata->dev_info->ap);
+		}
+		break;
+
 	default:
-		ERROR_LOG(SP_NAME_ERR, "case Err [%d]", det->type);
 		break;
 	}
 
+	wlan_validate_alt_connection();
 	__COMMON_FUNC_EXIT__;
-	return;
 }
 
 void wlan_engine_refresh_callback(void)
 {
 	__COMMON_FUNC_ENTER__;
 
-	if (NULL == syspopup_app_state) {
-		INFO_LOG(SP_NAME_ERR, "syspopup_app_state is NULL!! Is it test mode?");
+	if (NULL == devpkr_app_state) {
+		INFO_LOG(SP_NAME_ERR, "devpkr_app_state is NULL!! Is it test mode?");
 
 		__COMMON_FUNC_EXIT__;
 		return;
 	}
 
 	/* Make System popup filled, if it was first launched */
-	if (NULL != syspopup_app_state->alertpopup) {
+	if (NULL != devpkr_app_state->alertpopup) {
 		/* deallocate alert popup if it has allocated */
-		evas_object_del(syspopup_app_state->alertpopup);
-		syspopup_app_state->alertpopup = NULL;
+		evas_object_del(devpkr_app_state->alertpopup);
+		devpkr_app_state->alertpopup = NULL;
 	}
 
-	INFO_LOG(SP_NAME_NORMAL, "Wi-Fi QS launch");
+	INFO_LOG(SP_NAME_NORMAL, "Wi-Fi QS Refresh");
 
-	ecore_idler_add(view_main_show, NULL);
+	common_util_managed_idle_add(view_main_show, NULL);
 
 	__COMMON_FUNC_EXIT__;
 	return;

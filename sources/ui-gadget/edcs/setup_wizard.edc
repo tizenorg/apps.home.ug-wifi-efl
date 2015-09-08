@@ -1,0 +1,458 @@
+#define INDICATOR_H 32
+#define TITLE_P_H 72
+#define TITLE_L_H 30
+#define TOOLBAR_H 108
+#define BUTTON_HEIGHT 56
+
+styles {
+	style { name: "style_title_text";
+		base: "font=Tizen:style=Regular align=center font_size="36" color=#FFFFFF color_class=T020 wrap=mixed ellipsis=1.0 text_class=T020 style=shadow,bottom shadow_color=#000000BF";
+		tag: "br" "\n";
+		tag: "tab" "\t";
+	}
+}
+
+collections {
+	base_scale: 1.8;
+	group { name: "detail_pwlock";
+		parts {
+			part { name: "bg";
+				type: RECT;
+				scale: 1;
+				description { state: "default" 0.0;
+					rel1 { relative: 0.0 0.0;}
+					rel2 { relative: 1.0 1.0;}
+					color: 0 0 0 0;
+				}
+				description { state: "horizontal" 0.0;
+					rel1 { relative: 0.0 0.0;}
+					rel2 { relative: 1.0 1.0;}
+					color: 0 0 0 0;
+				}
+			}
+			part { name: "title_img";
+				type: RECT;
+				scale: 1;
+				description { state: "default" 0.0;
+					rel1 { relative: 0.0 0.0;}
+					rel2 { relative: 1.0 1.0;}
+					color_class: "B011";
+				}
+				description { state: "horizontal" 0.0;
+					rel1 { relative: 0.0 0.0;}
+					rel2 { relative: 1.0 1.0;}
+					color_class: "B011";
+				}
+			}
+			part { name: "title_bg";
+				type: RECT;
+				scale: 1;
+				description { state: "default" 0.0;
+					rel1 { relative: 0.0 0.0; to: "bg";}
+					rel2 { relative: 1.0 0.0; to: "bg"; offset: 0 TITLE_P_H;}
+					color: 0 0 0 0;
+				}
+				description { state: "horizontal" 0.0;
+					rel1 { relative: 0.0 0.0; to: "bg";}
+					rel2 { relative: 1.0 0.0; to: "bg"; offset: 0 TITLE_L_H;}
+					color: 0 0 0 0;
+				}
+			}
+			part { name: "text.title";
+				type: TEXTBLOCK;
+				mouse_events: 0;
+				scale: 1;
+				description { state: "default" 0.0;
+					align: 0.5 0;
+					min: 1 1;
+					rel1 {
+						relative: 0.0 0.0;
+						to: "title_bg";
+					}
+					rel2 {
+						relative: 1.0 1.0;
+						to: "title_bg";
+					}
+					text{
+						style: style_title_text;
+					}
+				}
+				description { state: "horizontal" 0.0;
+					min: 1 1;
+					align: 0.5 0.5;
+					rel1 {
+						relative: 0.0 0.0;
+						to: "title_bg";
+					}
+					rel2 {
+						relative: 1.0 1.0;
+						to: "title_bg";
+					}
+					text{
+						style: style_title_text;
+					}
+				}
+			}
+			part { name: "genlist-bg";
+				type: RECT;
+				scale: 1;
+				description { state: "default" 0.0;
+					rel1 {
+						relative: 0.0 0.0;
+						to: "bg";
+						offset: 0 TITLE_P_H;
+					}
+					rel2 {
+						relative: 1.0 1.0;
+						to: "bg";
+					}
+					color_class: "B041";
+				}
+				description { state: "horizontal" 0.0;
+					rel1 {
+						relative: 0.0 0.0;
+						to: "bg";
+						offset: 0 TITLE_P_H;
+					}
+					rel2 {
+						relative: 1.0 1.0;
+						to: "bg";
+					}
+					color_class: "B041";
+				}
+			}
+
+			part { name: "elm.swallow.content";
+				type: "SWALLOW";
+				scale: 1;
+				description {	state: "default" 0.0;
+					fixed: 0 0;
+					rel1 {
+						relative: 0.0 0.0;
+						to: "bg";
+						offset: 0 TITLE_P_H;
+					}
+					rel2 {
+						relative: 1.0 1.0;
+						to: "bg";
+					}
+				}
+				description {	state: "horizontal" 0.0;
+					fixed: 0 0;
+					rel1 {
+						relative: 0.0 0.0;
+						to: "bg";
+						offset: 0 TITLE_P_H;
+					}
+					rel2 {
+						relative: 1.0 1.0;
+						to: "bg";
+					}
+				}
+			}
+		}
+		programs {
+			program {
+				name: "location_vertical";
+				signal: "location,vertical";
+				source: "elm";
+				action: STATE_SET "default" 0.0;
+				target: "elm.swallow.content";
+				target: "text.title";
+				target: "genlist-bg";
+			}
+			program {
+				name: "location_horizontal";
+				signal: "location,horizontal";
+				source: "elm";
+				action: STATE_SET "horizontal" 0.0;
+				target: "elm.swallow.content";
+				target: "text.title";
+				target: "genlist-bg";
+			}
+		}
+	}
+
+	group { name: "main_pwlock";
+		inherit: "detail_pwlock";
+		parts {
+			part {
+				name: "button_bg";
+				type: RECT;
+				scale: 1;
+				description {
+					state: "default" 0.0;
+					min: 0 TOOLBAR_H;
+					max: -1 TOOLBAR_H;
+					fixed: 0 0;
+					rel1 {
+						relative: 0.0 1.0;
+						offset: 0 -TOOLBAR_H;
+					}
+					rel2 {
+						relative: 1.0 1.0;
+						offset: 0 0;
+					}
+					color_class: "B062";
+				}
+			}
+			part {
+				name: "button.prev";
+				type: SWALLOW;
+				scale: 1;
+				description {
+					state: "default" 0.0;
+					min: 0 74;
+					max: -1 TOOLBAR_H;
+					fixed: 0 0;
+					rel1 {
+						relative: 0.0 1.0;
+						offset: 15 -TOOLBAR_H;
+					}
+					rel2 {
+						relative: 0.5 1.0;
+						offset: -6 0;
+					}
+				}
+				description { state: "horizontal" 0.0;
+					inherit: "default" 0.0;
+				}
+			}
+			part {
+				name: "button.next";
+				type: SWALLOW;
+				scale: 1;
+				description {
+					state: "default" 0.0;
+					min: 0 74;
+					max: -1 TOOLBAR_H;
+					fixed: 0 0;
+					rel1 {
+						relative: 0.5 1.0;
+						offset: 6 -TOOLBAR_H;
+					}
+					rel2 {
+						relative: 1.0 1.0;
+						offset: -15 0;
+					}
+				}
+				description { state: "horizontal" 0.0;
+					inherit: "default" 0.0;
+				}
+			}
+			part {
+				name: "genlist-buttons-bg";
+				type: RECT;
+				scale: 1;
+				description {
+					state: "default" 0.0;
+					min: 0 159;
+					max: -1 159;
+					align: 0 1;
+					fixed: 1 1;
+					visible: 1;
+					rel1 {
+						relative: 0.0 0.0;
+						to: "button_bg";
+					}
+					rel2 {
+						relative: 1.0 0.0;
+						to: "button_bg";
+					}
+					color_class: "off_color";
+				}
+				description {
+					state: "on_state" 0.0;
+					min: 0 159;
+					max: -1 159;
+					align: 0 1;
+					fixed: 1 1;
+					visible: 1;
+					rel1 {
+						relative: 0.0 0.0;
+						to: "button_bg";
+					}
+					rel2 {
+						relative: 1.0 0.0;
+						to: "button_bg";
+					}
+					color_class: "on_color";
+				}
+			}
+			part {
+				name: "genlist-buttons-bg-top-pad";
+				type: SPACER;
+				scale: 1;
+				description {
+					state: "default" 0.0;
+					min: 0 15;
+					max: -1 15;
+					align: 0 0;
+					fixed: 1 1;
+					rel1 {
+						relative: 0.0 0.0;
+						to: "genlist-buttons-bg";
+					}
+					rel2 {
+						relative: 1.0 0.0;
+						to: "genlist-buttons-bg";
+					}
+				}
+			}
+			part {
+				name: "button1";
+				type: SWALLOW;
+				scale: 1;
+				ignore_flags: ON_HOLD;
+				description {
+					state: "default" 0.0;
+					min: 0 BUTTON_HEIGHT;
+					max: -1 BUTTON_HEIGHT;
+					fixed: 1 1;
+					align: 0 0;
+					rel1 {
+						relative : 0.0 1.0;
+						to: "genlist-buttons-bg-top-pad";
+						offset: 15 0;
+					}
+					rel2 {
+						relative : 1.0 1.0;
+						to: "genlist-buttons-bg-top-pad";
+						offset: -15 0;
+					}
+				}
+			}
+			part {
+				name: "genlist-buttons-bg-mid-pad";
+				type: SPACER;
+				scale: 1;
+				description {
+					state: "default" 0.0;
+					min: 0 BUTTON_HEIGHT+16;
+					max: -1 BUTTON_HEIGHT+16;
+					align: 0 0;
+					fixed: 1 1;
+					rel1 {
+						relative: 0.0 1.0;
+						to: "genlist-buttons-bg-top-pad";
+					}
+					rel2 {
+						relative: 1.0 1.0;
+						to: "genlist-buttons-bg-top-pad";
+					}
+				}
+			}
+			part {
+				name: "button2";
+				type: SWALLOW;
+				scale: 1;
+				ignore_flags: ON_HOLD;
+				description {
+					state: "default" 0.0;
+					min: 0 BUTTON_HEIGHT;
+					max: -1 BUTTON_HEIGHT;
+					fixed: 1 1;
+					align: 0 0;
+					rel1 {
+						relative : 0.0 1.0;
+						to: "genlist-buttons-bg-mid-pad";
+						offset: 15 0;
+					}
+					rel2 {
+						relative : 1.0 1.0;
+						to: "genlist-buttons-bg-mid-pad";
+						offset: -15 0;
+					}
+				}
+			}
+			part { name: "genlist-bg";
+				type: RECT;
+				scale: 1;
+				description { state: "default" 0.0;
+					rel1 {
+						relative: 0.0 0.0;
+						to: "bg";
+						offset: 0 TITLE_P_H;
+					}
+					rel2 {
+						relative: 1.0 0.0;
+						to: "genlist-buttons-bg";
+					}
+					color_class: "B041";
+				}
+				description { state: "horizontal" 0.0;
+					rel1 {
+						relative: 0.0 0.0;
+						to: "bg";
+						offset: 0 TITLE_P_H;
+					}
+					rel2 {
+						relative: 1.0 0.0;
+						to: "genlist-buttons-bg";
+					}
+					color_class: "B041";
+				}
+			}
+			part { name: "elm.swallow.content";
+				type: SWALLOW;
+				scale: 1;
+				description { state: "default" 0.0;
+					fixed: 0 0;
+					rel1 {
+						relative: 0.0 0.0;
+						to: "bg";
+					}
+					rel2 {
+						relative: 1.0 0.0;
+						to: "genlist-buttons-bg";
+					}
+				}
+				description { state: "horizontal" 0.0;
+					fixed: 0 0;
+					rel1 {
+						relative: 0.0 0.0;
+						to: "bg";
+					}
+					rel2 {
+						relative: 1.0 0.0;
+						to: "genlist-buttons-bg";
+					}
+				}
+			}
+		}
+		programs {
+			program {
+				name: "location_vertical";
+				signal: "location,vertical";
+				source: "elm";
+				action: STATE_SET "default" 0.0;
+				target: "elm.swallow.content";
+				target: "text.title";
+				target: "genlist-bg";
+			}
+			program {
+				name: "location_horizontal";
+				signal: "location,horizontal";
+				source: "elm";
+				action: STATE_SET "horizontal" 0.0;
+				target: "elm.swallow.content";
+				target: "text.title";
+				target: "genlist-bg";
+			}
+			program {
+				name: "rect_bg_color_off";
+				signal: "rect_bg_color_off";
+				source: "elm";
+				action: STATE_SET "default" 0.0;
+				target: "genlist-buttons-bg";
+			}
+			program {
+				name: "rect_bg_color_on";
+				signal: "rect_bg_color_on";
+				source: "elm";
+				action: STATE_SET "on_state" 0.0;
+				target: "genlist-buttons-bg";
+			}
+		}
+	}
+}

@@ -1,0 +1,297 @@
+msgid "IDS_ST_BODY_NONE"
+msgstr "Ohne"
+
+msgid "IDS_BT_BODY_CONNECT_TO_DEVICE"
+msgstr "Mit Gerät verbinden"
+
+msgid "IDS_BR_POP_INVALID_CERTIFICATE"
+msgstr "Ungültiges Zertifikat"
+
+msgid "IDS_BR_BODY_BUTTON_T_TTS"
+msgstr "Taste"
+
+msgid "IDS_CLD_OPT_ALWAYS_ABB"
+msgstr "Immer"
+
+msgid "IDS_COM_BODY_PHASE_2_AUTHENTICATION"
+msgstr "Phase 2-Authentifizierung"
+
+msgid "IDS_COM_BODY_FIND"
+msgstr "Finden"
+
+msgid "IDS_STU_BUTTON_PREVIOUS"
+msgstr "Vorherige"
+
+msgid "IDS_STU_BUTTON_NEXT"
+msgstr "Weiter"
+
+msgid "IDS_MOBILEAP_POP_DO_NOT_SHOW_AGAIN"
+msgstr "Nicht mehr anzeigen"
+
+msgid "IDS_EMAIL_POP_ALPHABETICAL"
+msgstr "Alphabetisch"
+
+msgid "IDS_ST_SBODY_INCREASES_DATA_USAGE_ABB"
+msgstr "Erhöht die Datennutzung"
+
+msgid "IDS_ST_POP_WRONG_PASSWORD"
+msgstr "Falsches Passwort"
+
+msgid "IDS_ST_POP_TURNING_ON_WI_FI_WILL_DISABLE_WI_FI_TETHERING"
+msgstr "Durch das Einschalten von WLAN wird WLAN-Tethering deaktiviert."
+
+msgid "IDS_ST_HEADER_DOUBLE_TAP"
+msgstr "Zweimal tippen"
+
+msgid "IDS_ST_HEADER_AVAILABLE_NETWORKS"
+msgstr "Verfügbare Netze"
+
+msgid "IDS_ST_BODY_WPS_AVAILABLE"
+msgstr "WPS verfügbar"
+
+msgid "IDS_ST_BODY_SECURED_ABB_M_WIFI_AP_SUMMARY"
+msgstr "Gesichert"
+
+msgid "IDS_ST_BODY_OBTAINING_IP_ADDRESS_ING"
+msgstr "IP-Adresse wird abgerufen..."
+
+msgid "IDS_ST_BODY_NETWORK_SSID"
+msgstr "Netz-SSID"
+
+msgid "IDS_ST_BODY_NETWORK_NOTIFICATION"
+msgstr "Netzbenachrichtigung"
+
+msgid "IDS_ST_BODY_KEEP_WI_FI_ON_DURING_SLEEP"
+msgstr "WLAN im Standbymodus eingeschaltet lassen"
+
+msgid "IDS_ST_BODY_GOOD_M_BATTERY"
+msgstr "Gut"
+
+msgid "IDS_ST_BODY_EXCELLENT"
+msgstr "Exzellent"
+
+msgid "IDS_ST_BODY_ENTER_THE_P1SS_PIN_ON_YOUR_WI_FI_ROUTER_THE_SETUP_CAN_TAKE_UP_TO_P2SD_MINUTES_TO_COMPLETE"
+msgstr "Geben Sie die %1$s-PIN auf Ihrem WLAN-Router ein. Die Einrichtung kann bis zu %2$d Minuten dauern."
+
+msgid "IDS_ST_BODY_ADVANCED"
+msgstr "Erweitert"
+
+msgid "IDS_GC_POP_INVALID_PIN"
+msgstr "Ungültige PIN"
+
+msgid "IDS_WIFI_TPOP_MAXIMUM_NUMBER_OF_CHARACTERS_PD_REACHED"
+msgstr "Maximale Anzahl %d von Zeichen erreicht."
+
+msgid "IDS_WIFI_TPOP_FAILED_TO_OBTAIN_IP_ADDRESS"
+msgstr "IP-Adresse konnte nicht abgerufen werden."
+
+msgid "IDS_WIFI_TPOP_CONNECTED_TO_WI_FI_NETWORK_PS"
+msgstr "Mit WLAN-Netz %s verbunden."
+
+msgid "IDS_WIFI_TMBODY_NEVER_M_ALWAYS_OFF"
+msgstr "Niemals"
+
+msgid "IDS_WIFI_SK_WPS_PIN"
+msgstr "WPS-PIN"
+
+msgid "IDS_WIFI_SK_FORGET"
+msgstr "Entfernen"
+
+msgid "IDS_WIFI_SK_CANCEL"
+msgstr "Abbrechen"
+
+msgid "IDS_WIFI_SK2_OK"
+msgstr "OK"
+
+msgid "IDS_WIFI_SBODY_CONNECTED_M_STATUS"
+msgstr "Verbunden"
+
+msgid "IDS_WIFI_SBODY_AUTOMATICALLY_SWITCH_BETWEEN_WI_FI_AND_MOBILE_NETWORKS_TO_MAINTAIN_A_STABLE_INTERNET_CONNECTION"
+msgstr "Automatisch zwischen WLAN und mobilen Netzwerken umschalten, um eine stabile Internetverbindung aufrechtzuerhalten."
+
+msgid "IDS_WIFI_SBODY_AUTHENTICATION_ERROR_OCCURRED_M_STATUS"
+msgstr "Authentifizierungsfehler aufgetreten"
+
+msgid "IDS_WIFI_POP_SMART_NETWORK_SWITCH_HAS_BEEN_ENABLED_MSG"
+msgstr "Der intelligente Netzwechsel wurde aktiviert. Diese Funktion hilft Ihnen dabei eine stabile Internetverbindung aufrechtzuerhalten, indem sie zwischen mobilen Netzen und WLAN-Netzwerken hin und her schaltet. Dadurch kann sich Ihr genutztes Datenvolumen erhöhen."
+
+msgid "IDS_WIFI_POP_PRESS_WPS_ON_YOUR_WI_FI_ACCESS_POINT_WITHIN_PD_MINUTES"
+msgstr "Drücken Sie die WPS-Taste an Ihrem WLAN-Zugangspunkt innerhalb von %d Minuten."
+
+msgid "IDS_WIFI_POP_OPEN"
+msgstr "Offen"
+
+msgid "IDS_WIFI_POP_NO_WI_FI_AP_FOUND"
+msgstr "Keine WLAN-AP gefunden"
+
+msgid "IDS_WIFI_POP_CURRENT_NETWORK_WILL_BE_DISCONNECTED"
+msgstr "Aktuelle Netzwerkverbindung wird getrennt."
+
+msgid "IDS_WIFI_OPT_WPS"
+msgstr "WPS"
+
+msgid "IDS_WIFI_OPT_SHOW_PASSWORD"
+msgstr "Passwort anzeigen"
+
+msgid "IDS_WIFI_OPT_MOBILEACCESSSERVICEATCIVATION_ON"
+msgstr "Ein"
+
+msgid "IDS_WIFI_OPT_MOBILEACCESSSERVICEATCIVATION_OFF"
+msgstr "Aus"
+
+msgid "IDS_WIFI_OPT_FORGET_NETWORK"
+msgstr "Netzwerk entfernen"
+
+msgid "IDS_WIFI_MBODY_SMART_NETWORK_SWITCH"
+msgstr "Intelligenter Netzwechsel"
+
+msgid "IDS_WIFI_MBODY_SIGNAL_STRENGTH_KOR_SKT"
+msgstr "Signalstärke"
+
+msgid "IDS_WIFI_HEADER_WI_FI_NETWORK_INFO_ABB"
+msgstr "Info zum WLAN-Netzwerk"
+
+msgid "IDS_WIFI_HEADER_SELECT_WPS_METHOD_ABB"
+msgstr "WPS-Methode auswählen"
+
+msgid "IDS_WIFI_HEADER_PASSWORD"
+msgstr "Passwort"
+
+msgid "IDS_WIFI_HEADER_ENTER_PASSWORD"
+msgstr "Passwort eingeben"
+
+msgid "IDS_WIFI_BUTTON_WPS_BUTTON"
+msgstr "WPS-Taste"
+
+msgid "IDS_WIFI_BUTTON_SCAN"
+msgstr "Suchen"
+
+msgid "IDS_WIFI_BUTTON_FIND_HIDDEN_NETWORK"
+msgstr "Nach verborgenen Netzwerken suchen"
+
+msgid "IDS_WIFI_BODY_WI_FI_DIRECT_ABB"
+msgstr "Wi-Fi Direct"
+
+msgid "IDS_WIFI_BODY_WI_FI"
+msgstr "WLAN"
+
+msgid "IDS_WIFI_BODY_WHILE_CHARGING_ONLY_ABB"
+msgstr "Nur beim Laden"
+
+msgid "IDS_WIFI_BODY_WEAK_M_STRENGTH"
+msgstr "Schwach"
+
+msgid "IDS_WIFI_BODY_USER_CERTIFICATE_ABB"
+msgstr "Nutzerzertifikat"
+
+msgid "IDS_WIFI_BODY_UNSPECIFIED"
+msgstr "Nicht angegeben"
+
+msgid "IDS_WIFI_BODY_UNKNOWN"
+msgstr "Unbekannt"
+
+msgid "IDS_WIFI_BODY_SUBNET_MASK"
+msgstr "Subnetzmaske"
+
+msgid "IDS_WIFI_BODY_STATIC_IP"
+msgstr "Statische IP-Adresse"
+
+msgid "IDS_WIFI_BODY_SORT_BY"
+msgstr "Sortieren nach"
+
+msgid "IDS_WIFI_BODY_SCANNING_ING"
+msgstr "Scannen..."
+
+msgid "IDS_WIFI_BODY_RECEIVE_NOTIFICATIONS_WHEN_NETWORKS_ARE_AVAILABLE"
+msgstr "Benachrichtigung erhalten, wenn Netzwerke verfügbar sind."
+
+msgid "IDS_WIFI_BODY_NAME"
+msgstr "Name"
+
+msgid "IDS_WIFI_BODY_MAC_ADDRESS"
+msgstr "MAC-Adresse"
+
+msgid "IDS_WIFI_BODY_IP_ADDRESS"
+msgstr "IP-Adresse"
+
+msgid "IDS_WIFI_BODY_IDENTITY"
+msgstr "Identität"
+
+msgid "IDS_WIFI_BODY_GATEWAY_ADDRESS"
+msgstr "Gateway-Adresse"
+
+msgid "IDS_WIFI_BODY_ENTER_IDENTITY"
+msgstr "Identität eingeben"
+
+msgid "IDS_WIFI_BODY_EAP_METHOD"
+msgstr "EAP-Methode"
+
+msgid "IDS_WIFI_BODY_EAP"
+msgstr "EAP"
+
+msgid "IDS_WIFI_BODY_DNS_2"
+msgstr "DNS 2"
+
+msgid "IDS_WIFI_BODY_DNS_1"
+msgstr "DNS 1"
+
+msgid "IDS_WIFI_BODY_CONNECTING_ING"
+msgstr "Verbindung wird hergestellt..."
+
+msgid "IDS_WIFI_BODY_CONNECT"
+msgstr "Verbinden"
+
+msgid "IDS_WIFI_BODY_CONFIGURATION_SAVED_M_STATUS"
+msgstr "Gespeichert"
+
+msgid "IDS_WIFI_BODY_A_WI_FI_NETWORK_HAS_BEEN_DETECTED_YOU_WILL_BE_CONNECTED"
+msgstr "Es wurde ein WLAN-Netzwerk erkannt. Die Verbindung wird hergestellt."
+
+msgid "IDS_WIFI_BODY_ADVANCED_SETTINGS"
+msgstr "Weitere Einstellungen"
+
+msgid "IDS_ST_BODY_TURNING_ON_ING"
+msgstr "Einschalten..."
+
+msgid "IDS_HELP_POP_INVALID_ACTION_TRY_AGAIN"
+msgstr "Ungültige Aktion. Erneut versuchen."
+
+msgid "IDS_ST_BODY_INSTALL_CERTIFICATE"
+msgstr "Zertifikat installieren"
+
+msgid "IDS_WIFI_HEADER_PASSPOINT"
+msgstr "Passpoint"
+
+msgid "IDS_ST_OPT_SKIP"
+msgstr "Überspringen"
+
+msgid "IDS_ST_MBODY_ALWAYS_ALLOW_SCANNING"
+msgstr "Suche immer erlauben"
+
+msgid "IDS_WIFI_POP_SELECT_SIM_CARD_OR_AKA_OPTION_ON_EAP_METHOD_GUIDE_MSG"
+msgstr "%s wurde ausgewählt.\n\nWenn Sie keine Verbindung mit einem AP herstellen können, ändern Sie die SIM-Karte für die Bestätigung in der SIM-Kartenverwaltung. Wählen Sie dann die SIM-Karte aus, die Sie für mobile Daten verwenden möchten. Als Alternative können Sie die SIM-Karte, die Sie nicht verwenden möchten, deaktivieren."
+
+msgid "IDS_HELP_BODY_TAP_THE_NETWORK_YOU_WANT_TO_CONNECT_TO"
+msgstr "Auf das Netzwerk tippen, mit dem Sie eine Verbindung herstellen möchten."
+
+msgid "IDS_HELP_BODY_YOU_HAVE_BEEN_AUTOMATICALLY_CONNECTED_TO_THE_REMEMBERED_NETWORK_TO_SEE_THE_NETWORK_DETAILS_TAP_THE_PS_ICON"
+msgstr "Sie wurden automatisch mit dem gespeichertem Netzwerk verbunden. Tippen Sie auf das %s-Symbol, um Details zum Netzwerk anzuzeigen."
+
+msgid "IDS_HELP_BODY_YOU_HAVE_BEEN_CONNECTED_TO_THE_NETWORK_TO_SEE_THE_NETWORK_DETAILS_TAP_THE_PS_ICON"
+msgstr "Sie wurden automatisch mit dem Netzwerk verbunden. Tippen Sie auf das %s-Symbol, um Details zum Netzwerk anzuzeigen."
+
+msgid "IDS_HELP_POP_NO_WI_FI_NETWORKS_FOUND_CHANGE_YOUR_LOCATION_OR_TRY_LATER"
+msgstr "Keine WLAN-Netzwerke gefunden. Wechseln Sie Ihren Standort oder versuchen Sie es später noch einmal."
+
+msgid "IDS_HELP_POP_TAP_TO_SCAN_FOR_WI_FI_NETWORKS"
+msgstr "Tippen, um die nach WLAN-Netzwerken zu suchen."
+
+msgid "IDS_HELP_POP_TO_CONNECT_TO_A_SECURED_NETWORK_YOU_MAY_NEED_TO_ENTER_A_PASSWORD_OR_OTHER_CREDENTIALS"
+msgstr "Um eine Verbindung mit einem gesicherten Netzwerk herzustellen, müssen Sie möglicherweise ein Passwort oder andere Anmeldedaten eingeben."
+
+msgid "IDS_ST_SBODY_PROXY_ADDRESS"
+msgstr "Proxy-Adresse"
+
+msgid "IDS_ST_SBODY_PROXY_PORT"
+msgstr "Proxy-Anschluss"
+

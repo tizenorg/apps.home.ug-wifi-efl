@@ -1,235 +1,105 @@
 /*
-*  Wi-Fi UG
-*
-* Copyright 2012  Samsung Electronics Co., Ltd
-
-* Licensed under the Flora License, Version 1.0 (the "License");
-* you may not use this file except in compliance with the License.
-* You may obtain a copy of the License at
-
-* http://www.tizenopensource.org/license
-
-* Unless required by applicable law or agreed to in writing, software
-* distributed under the License is distributed on an "AS IS" BASIS,
-* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-* See the License for the specific language governing permissions and
-* limitations under the License.
-*
-*/
-
-
+ * Wi-Fi
+ *
+ * Copyright 2012 Samsung Electronics Co., Ltd
+ *
+ * Licensed under the Flora License, Version 1.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.tizenopensource.org/license
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ */
 
 #include "common.h"
 #include "wlan_manager.h"
 
+struct _wifi_cb_s {
+	wifi_specific_scan_finished_cb specific_scan_cb;
+	void *specific_scan_user_data;
+};
 
-void network_evt_cb(net_event_info_t* net_event, void* user_data)
+static struct _wifi_cb_s wifi_callbacks = {NULL, NULL};
+
+int wifi_set_specific_scan_cb(wifi_specific_scan_finished_cb cb, void *data)
 {
 	__COMMON_FUNC_ENTER__;
 
-	wlan_manager_object* manager_object = wlan_manager_get_singleton();
-
-	callback_data *ret = (callback_data *) g_malloc0(sizeof(callback_data));
-	ret->profile_name = g_strdup(net_event->ProfileName);
-	ret->type = WLAN_MANAGER_RESPONSE_TYPE_NONE;
-
-	switch (net_event->Event) {
-		/** Wi-Fi interface Power On/Off Response Event */ 
-		case NET_EVENT_WIFI_POWER_RSP:
-		/** Wi-Fi interface Power On/Off Indication Event */ 
-		case NET_EVENT_WIFI_POWER_IND:
-			INFO_LOG(COMMON_NAME_LIB, "Callback - NET_EVENT_WIFI_POWER_IND : %d", net_event->Error);
-			net_wifi_state_t* wifi_state = (net_wifi_state_t*)net_event->Data;
-			if (net_event->Error == NET_ERR_NONE && net_event->Datalength == sizeof(net_wifi_state_t)) {
-				if (*wifi_state == WIFI_ON) {
-					ret->type = WLAN_MANAGER_RESPONSE_TYPE_POWER_ON_OK;
-				}
-				else if (*wifi_state == WIFI_OFF) {
-					ret->type = WLAN_MANAGER_RESPONSE_TYPE_POWER_OFF_OK;
-				}
-				else {
-					INFO_LOG(COMMON_NAME_LIB, "State!! - %d", *wifi_state);
-				}
-			} else if (net_event->Error == NET_ERR_WIFI_DRIVER_FAILURE) {
-				ret->type = WLAN_MANAGER_RESPONSE_TYPE_POWER_ON_NOT_SUPPORTED;
-			} else if (net_event->Error == NET_ERR_SECURITY_RESTRICTED) {
-				ret->type = WLAN_MANAGER_RESPONSE_TYPE_POWER_ON_RESTRICTED;
-			} else {
-				goto cleanup;
-			}
-			break;
-		/** Open Connection Response Event */
-		case NET_EVENT_OPEN_RSP:
-			INFO_LOG(COMMON_NAME_LIB, "Callback - NET_EVENT_OPEN_RSP : %s", ret->profile_name);
-
-			if (net_event->Error == NET_ERR_NONE) {
-				if (strstr(ret->profile_name, "wifi_") == NULL) {
-					INFO_LOG(COMMON_NAME_LIB, "RESULT: NOT WIFI");
-					goto cleanup;
-				}
-				INFO_LOG(COMMON_NAME_LIB, "RESULT: CONNECTION OK");
-				ret->type = WLAN_MANAGER_RESPONSE_TYPE_CONNECTION_OK;		
-				connman_profile_manager_connected_ssid_set((const char *)ret->profile_name);
-			} else if (net_event->Error == NET_ERR_TIME_OUT) {	/* The connection timeout occured. */
-				ERROR_LOG(COMMON_NAME_LIB, "Open response: NET_ERR_TIME_OUT");
-				ret->type = WLAN_MANAGER_RESPONSE_TYPE_CONNECTION_FAIL_TIMEOUT;
-				wlan_manager_reset_connected_AP();
-				connman_request_connection_close(ret->profile_name);
-			} else if (net_event->Error == NET_ERR_IN_PROGRESS) { /* Already a conncetion is in progress */
-				ERROR_LOG(COMMON_NAME_LIB, "Open response: NET_ERR_IN_PROGRESS");
-				ret->type = WLAN_MANAGER_RESPONSE_TYPE_CONNECTION_FAIL_IN_PROGRESS;
-			} else if (net_event->Error == NET_ERR_ACTIVE_CONNECTION_EXISTS) { /* If the AP is already conected. WEIRD. Check when this can occur */
-				ERROR_LOG(COMMON_NAME_LIB, "Open response: NET_ERR_ACTIVE_CONNECTION_EXISTS");
-				ret->type = WLAN_MANAGER_RESPONSE_TYPE_CONNECTION_FAIL_ALREADY_EXIST;
-			} else if (net_event->Error == NET_ERR_UNKNOWN_METHOD) { /* Unable to send connection request due to dbus failure. */
-				ERROR_LOG(COMMON_NAME_LIB, "Open response: NET_ERR_UNKNOWN_METHOD");
-				ret->type = WLAN_MANAGER_RESPONSE_TYPE_CONNECTION_FAIL_UNKNOWN_METHOD;
-				wlan_manager_reset_connected_AP();
-			} else if (net_event->Error == NET_ERR_OPERATION_ABORTED) { /* The connection was aborted due to connman internal problem OR some other issue */
-				ERROR_LOG(COMMON_NAME_LIB, "Open response: NET_ERR_OPERATION_ABORTED");
-				ret->type = WLAN_MANAGER_RESPONSE_TYPE_CONNECTION_FAIL_ABORTED;
-				wlan_manager_reset_connected_AP();
-			} else if (net_event->Error == NET_ERR_CONNECTION_CONNECT_FAILED) { /* The connection failed to connect */
-				ERROR_LOG(COMMON_NAME_LIB, "Open response: NET_ERR_CONNECTION_CONNECT_FAILED");
-				ret->type = WLAN_MANAGER_RESPONSE_TYPE_CONNECTION_CONNECT_FAILED;
-				wlan_manager_reset_connected_AP();
-			} else if (net_event->Error == NET_ERR_CONNECTION_INVALID_KEY) { /* Wrong password entered */
-				ERROR_LOG(COMMON_NAME_LIB, "Open response: NET_ERR_CONNECTION_CONNECT_FAILED");
-				ret->type = WLAN_MANAGER_RESPONSE_TYPE_CONNECTION_INVALID_KEY;
-				wlan_manager_reset_connected_AP();
-			} else { /* WEIRD. What can be these other cases? */
-				ERROR_LOG(COMMON_NAME_LIB, "Open response: %d", net_event->Error);
-				ret->type = WLAN_MANAGER_RESPONSE_TYPE_CONNECTION_FAIL_UNKNOWN;
-				wlan_manager_reset_connected_AP();
-			}
-			break;
-		/** Open connection Indication (auto join) */
-		case NET_EVENT_OPEN_IND:
-			INFO_LOG(COMMON_NAME_LIB, "Callback - NET_EVENT_OPEN_IND : %s", ret->profile_name);
-			if (strstr(ret->profile_name, "wifi_") == NULL) {
-				goto cleanup;
-			}
-			
-			ret->type = WLAN_MANAGER_RESPONSE_TYPE_CONNECTION_IND;
-			connman_profile_manager_connected_ssid_set((const char *)ret->profile_name);
-			break;
-		/** Close Connection Response Event */ 
-		case NET_EVENT_CLOSE_RSP:
-			INFO_LOG(COMMON_NAME_LIB, "Callback - NET_EVENT_CLOSE_RSP : %s", ret->profile_name);
-			if (strstr(ret->profile_name, "wifi_") == NULL) {
-				goto cleanup;
-			}
-
-			ret->type = WLAN_MANAGER_RESPONSE_TYPE_DISCONNECTION_OK;
-			connman_profile_manager_disconnected_ssid_set((const char *)ret->profile_name);
-			break;
-		/** Connection Close Indication Event */
-		case NET_EVENT_CLOSE_IND:
-			INFO_LOG(COMMON_NAME_LIB, "Callback - NET_EVENT_CLOSE_IND : %s", ret->profile_name);
-			if (strstr(ret->profile_name, "wifi_") == NULL) {
-				goto cleanup;
-			}
-
-			ret->type = WLAN_MANAGER_RESPONSE_TYPE_DISCONNECTION_IND;
-			connman_profile_manager_disconnected_ssid_set((const char *)ret->profile_name);
-			break;
-		/** Network PS state change Indication Event */
-		case NET_EVENT_NET_STATE_IND:
-			INFO_LOG(COMMON_NAME_LIB, "Callback - NET_EVENT_NET_STATE_IND");
-
-			if (net_event->Error != NET_ERR_NONE || !strstr(ret->profile_name, "wifi_")) {
-				goto cleanup;
-			} else {
-				net_state_type_t state_type = *(net_state_type_t *)(net_event->Data);
-				if (state_type == NET_STATE_TYPE_ASSOCIATION) {
-					INFO_LOG(COMMON_NAME_LIB, "STATE_IND : ASSOCIATION");
-					ret->type = WLAN_MANAGER_RESPONSE_TYPE_CONNECTING;
-				} else if (state_type == NET_STATE_TYPE_FAILURE) {
-					INFO_LOG(COMMON_NAME_LIB, "STATE_IND : FAILURE");
-					ret->type = WLAN_MANAGER_RESPONSE_TYPE_DISCONNECTION_OK;
-				} else {
-					if (state_type == NET_STATE_TYPE_DISCONNECT) {
-						INFO_LOG(COMMON_NAME_LIB, "STATE_IND : DISCONNECT");
-					} else if (state_type == NET_STATE_TYPE_IDLE) {
-						INFO_LOG(COMMON_NAME_LIB, "STATE_IND : IDLE");
-					} else if (state_type == NET_STATE_TYPE_CONFIGURATION) {
-						INFO_LOG(COMMON_NAME_LIB, "STATE_IND : CONFIGURATION");
-					} else if (state_type == NET_STATE_TYPE_READY) {
-						INFO_LOG(COMMON_NAME_LIB, "STATE_IND : READY");
-					} else if (state_type == NET_STATE_TYPE_ONLINE) {
-						INFO_LOG(COMMON_NAME_LIB, "STATE_IND : ONLINE");
-					} else {
-						INFO_LOG(COMMON_NAME_LIB, "STATE_IND : ?????????");
-					}
-					goto cleanup;
-				}
-			}
-			break;
-		/** Profile modify indication Event */
-		case NET_EVENT_PROFILE_MODIFY_IND:
-			INFO_LOG(COMMON_NAME_LIB, "Callback - NET_EVENT_PROFILE_MODIFY_IND");
-			break;
-		/** Wi-Fi interface Mac Address */
-		case NET_EVENT_WIFI_MAC_ID_IND:
-			INFO_LOG(COMMON_NAME_LIB, "Callback - NET_EVENT_WIFI_MAC_ID_IND");
-			ret->type = WLAN_MANAGER_RESPONSE_TYPE_MAC_ID_IND;
-			break;
-		/** Scan Indication Event(BG scan) */ 
-		case NET_EVENT_WIFI_SCAN_IND:
-			INFO_LOG(COMMON_NAME_LIB, "Callback - NET_EVENT_WIFI_SCAN_IND");
-			ret->type = WLAN_MANAGER_RESPONSE_TYPE_SCAN_RESULT_IND;
-			break;
-		/** Scan Response Event */ 
-		case NET_EVENT_WIFI_SCAN_RSP:
-			INFO_LOG(COMMON_NAME_LIB, "Callback - NET_EVENT_WIFI_SCAN_RSP");
-			ret->type = WLAN_MANAGER_RESPONSE_TYPE_SCAN_OK;
-			break;
-		/** Network Configure/Reconfigure Response Event */ 
-		case NET_EVENT_NET_CONFIGURE_RSP:
-			INFO_LOG(COMMON_NAME_LIB, "Callback - NET_EVENT_NET_CONFIGURE_RSP");
-			break;
-		case NET_EVENT_WIFI_WPS_RSP:
-			INFO_LOG(COMMON_NAME_LIB, "Callback - NET_EVENT_WIFI_WPS_RSP");
-
-			if (net_event->Error == NET_ERR_NONE) {
-				if (strstr(ret->profile_name, "wifi_") == NULL) {
-					INFO_LOG(COMMON_NAME_LIB, "RESULT : NOT WIFI");
-					goto cleanup;
-				}
-				INFO_LOG(COMMON_NAME_LIB, "RESULT : CONNECTION OK");
-				ret->type = WLAN_MANAGER_RESPONSE_TYPE_WPS_ENROLL_OK;
-				connman_profile_manager_connected_ssid_set(ret->profile_name);
-			} else if (net_event->Error == NET_ERR_OPERATION_ABORTED) {
-				INFO_LOG(COMMON_NAME_LIB, "RESULT : ERR_ABORTED");
-				ret->type = WLAN_MANAGER_RESPONSE_TYPE_CANCEL_WPS_ENROLL_FAIL;
-				wlan_manager_reset_connected_AP();
-			} else {
-				INFO_LOG(COMMON_NAME_LIB, "RESULT : CONNECTION FAIL");
-				ret->type = WLAN_MANAGER_RESPONSE_TYPE_WPS_ENROLL_FAIL;
-			}
-			break;
-		case NET_EVENT_SPECIFIC_SCAN_RSP:
-			INFO_LOG(COMMON_NAME_LIB, "Callback - NET_EVENT_SPECIFIC_SCAN_RSP");
-			if (net_event->Error == NET_ERR_NONE) {
-				ret->type = WLAN_MANAGER_RESPONSE_TYPE_SPECIFIC_SCAN_OK;
-			} else {
-				ret->type = WLAN_MANAGER_RESPONSE_TYPE_SPECIFIC_SCAN_FAIL;
-			}
-			break;
-		case NET_EVENT_SPECIFIC_SCAN_IND:
-			INFO_LOG(COMMON_NAME_LIB, "Callback - NET_EVENT_SPECIFIC_SCAN_IND");
-			ret->type = WLAN_MANAGER_RESPONSE_TYPE_SPECIFIC_SCAN_IND;
-			break;
-		default:
-			INFO_LOG(COMMON_NAME_LIB, "Callback - %d", net_event->Event);
-			break;
+	if (!cb) {
+		__COMMON_FUNC_EXIT__;
+		return WIFI_ERROR_INVALID_PARAMETER;
 	}
 
-	if (manager_object->message_func)
-		manager_object->message_func((void*)net_event->Data, (void*)ret);
+	wifi_callbacks.specific_scan_cb = cb;
+	wifi_callbacks.specific_scan_user_data = data;
 
-cleanup:
-	g_free(ret->profile_name);
-	g_free(ret);
+	__COMMON_FUNC_EXIT__;
+	return WIFI_ERROR_NONE;
+}
+
+int wifi_unset_specific_scan_cb(void)
+{
+	__COMMON_FUNC_ENTER__;
+
+	if (wifi_callbacks.specific_scan_cb == NULL) {
+		__COMMON_FUNC_EXIT__;
+		return WIFI_ERROR_INVALID_OPERATION;
+	}
+
+	wifi_callbacks.specific_scan_cb = NULL;
+	wifi_callbacks.specific_scan_user_data = NULL;
+
+	__COMMON_FUNC_EXIT__;
+	return WIFI_ERROR_NONE;
+}
+
+void network_evt_cb(const net_event_info_t *net_event, void *user_data)
+{
+	__COMMON_FUNC_ENTER__;
+
+	switch (net_event->Event) {
+	case NET_EVENT_SPECIFIC_SCAN_RSP:
+		INFO_LOG(COMMON_NAME_LIB, "NET_EVENT_SPECIFIC_SCAN_RSP");
+
+		if (wifi_callbacks.specific_scan_cb) {
+			if (net_event->Error != NET_ERR_NONE) {
+				wifi_callbacks.specific_scan_cb(
+						WIFI_ERROR_OPERATION_FAILED,
+						NULL,
+						wifi_callbacks.specific_scan_user_data);
+			} else {
+				INFO_LOG(COMMON_NAME_LIB, "Specific scan request successful");
+			}
+		} else {
+			ERROR_LOG(COMMON_NAME_LIB, "Specific scan cb is not set !!!");
+		}
+		break;
+
+	case NET_EVENT_SPECIFIC_SCAN_IND:
+		INFO_LOG(COMMON_NAME_LIB, "SSID scan results (%d found)", (int)net_event->Datalength);
+
+		if (wifi_callbacks.specific_scan_cb) {
+			if (net_event->Error == NET_ERR_NONE) {
+				wifi_callbacks.specific_scan_cb(WIFI_ERROR_NONE,
+						net_event->Data,
+						wifi_callbacks.specific_scan_user_data);
+			} else {
+				wifi_callbacks.specific_scan_cb(WIFI_ERROR_OPERATION_FAILED,
+						NULL,
+						wifi_callbacks.specific_scan_user_data);
+			}
+		}
+		break;
+
+	default:
+		break;
+	}
+
 	__COMMON_FUNC_EXIT__;
 }

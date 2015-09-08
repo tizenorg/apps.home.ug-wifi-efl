@@ -1,6 +1,0 @@
-#!/bin/sh
-
-if [ ${USER} = "root" ]
-then
-	vconftool set -t int memory/wifi/ug_run_state 3 -i -g 6519
-fi

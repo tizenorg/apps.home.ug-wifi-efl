@@ -1,0 +1,297 @@
+msgid "IDS_ST_BODY_NONE"
+msgstr "Ништо"
+
+msgid "IDS_BT_BODY_CONNECT_TO_DEVICE"
+msgstr "Поврзи со уред"
+
+msgid "IDS_BR_POP_INVALID_CERTIFICATE"
+msgstr "Неправилен сертификат."
+
+msgid "IDS_BR_BODY_BUTTON_T_TTS"
+msgstr "Копче"
+
+msgid "IDS_CLD_OPT_ALWAYS_ABB"
+msgstr "Секогаш"
+
+msgid "IDS_COM_BODY_PHASE_2_AUTHENTICATION"
+msgstr "Потврдување, 2 фаза"
+
+msgid "IDS_COM_BODY_FIND"
+msgstr "Најди"
+
+msgid "IDS_STU_BUTTON_PREVIOUS"
+msgstr "Претходно"
+
+msgid "IDS_STU_BUTTON_NEXT"
+msgstr "Следно"
+
+msgid "IDS_MOBILEAP_POP_DO_NOT_SHOW_AGAIN"
+msgstr "Не прикажувај веќе"
+
+msgid "IDS_EMAIL_POP_ALPHABETICAL"
+msgstr "Азбучно"
+
+msgid "IDS_ST_SBODY_INCREASES_DATA_USAGE_ABB"
+msgstr "Го зголемува користењето податоци."
+
+msgid "IDS_ST_POP_WRONG_PASSWORD"
+msgstr "Погрешна лозинка."
+
+msgid "IDS_ST_POP_TURNING_ON_WI_FI_WILL_DISABLE_WI_FI_TETHERING"
+msgstr "Вклучувањето Wi-Fi ќе го исклучи поврзувањето Wi-Fi."
+
+msgid "IDS_ST_HEADER_DOUBLE_TAP"
+msgstr "Двоен допир"
+
+msgid "IDS_ST_HEADER_AVAILABLE_NETWORKS"
+msgstr "Достапни мрежи"
+
+msgid "IDS_ST_BODY_WPS_AVAILABLE"
+msgstr "Достапно е WPS"
+
+msgid "IDS_ST_BODY_SECURED_ABB_M_WIFI_AP_SUMMARY"
+msgstr "Обезбедено"
+
+msgid "IDS_ST_BODY_OBTAINING_IP_ADDRESS_ING"
+msgstr "Се добива IP-адреса..."
+
+msgid "IDS_ST_BODY_NETWORK_SSID"
+msgstr "Мрежен SSID"
+
+msgid "IDS_ST_BODY_NETWORK_NOTIFICATION"
+msgstr "Мрежно известување"
+
+msgid "IDS_ST_BODY_KEEP_WI_FI_ON_DURING_SLEEP"
+msgstr "Остави Wi-Fi вклучено за време на спиење"
+
+msgid "IDS_ST_BODY_GOOD_M_BATTERY"
+msgstr "Добро"
+
+msgid "IDS_ST_BODY_EXCELLENT"
+msgstr "Одлично"
+
+msgid "IDS_ST_BODY_ENTER_THE_P1SS_PIN_ON_YOUR_WI_FI_ROUTER_THE_SETUP_CAN_TAKE_UP_TO_P2SD_MINUTES_TO_COMPLETE"
+msgstr "Внесете го PIN-от %1$s на рутерот за Wi-Fi. Поставувањето може да трае %2$d минути додека заврши."
+
+msgid "IDS_ST_BODY_ADVANCED"
+msgstr "Дополнително"
+
+msgid "IDS_GC_POP_INVALID_PIN"
+msgstr "Неважечки PIN."
+
+msgid "IDS_WIFI_TPOP_MAXIMUM_NUMBER_OF_CHARACTERS_PD_REACHED"
+msgstr "Достигнат е максималниот број знаци %d."
+
+msgid "IDS_WIFI_TPOP_FAILED_TO_OBTAIN_IP_ADDRESS"
+msgstr "Не можеше да се добие IP-адреса."
+
+msgid "IDS_WIFI_TPOP_CONNECTED_TO_WI_FI_NETWORK_PS"
+msgstr "Поврзано со мрежа Wi-Fi %s."
+
+msgid "IDS_WIFI_TMBODY_NEVER_M_ALWAYS_OFF"
+msgstr "Никогаш"
+
+msgid "IDS_WIFI_SK_WPS_PIN"
+msgstr "PIN за WPS"
+
+msgid "IDS_WIFI_SK_FORGET"
+msgstr "Заборави"
+
+msgid "IDS_WIFI_SK_CANCEL"
+msgstr "Откажи"
+
+msgid "IDS_WIFI_SK2_OK"
+msgstr "OK"
+
+msgid "IDS_WIFI_SBODY_CONNECTED_M_STATUS"
+msgstr "Поврзано"
+
+msgid "IDS_WIFI_SBODY_AUTOMATICALLY_SWITCH_BETWEEN_WI_FI_AND_MOBILE_NETWORKS_TO_MAINTAIN_A_STABLE_INTERNET_CONNECTION"
+msgstr "Автоматски префрлувај меѓу Wi-Fi и мобилни мрежи за да се одржи стабилна врска со интернет."
+
+msgid "IDS_WIFI_SBODY_AUTHENTICATION_ERROR_OCCURRED_M_STATUS"
+msgstr "Дојде до грешка при потврдувањето"
+
+msgid "IDS_WIFI_POP_SMART_NETWORK_SWITCH_HAS_BEEN_ENABLED_MSG"
+msgstr "Вклучено е Паметно менување мрежи. Функцијава помага да се одржи стабилно поврзување со интернет менувајќи меѓу мобилни и мрежи Wi-Fi. Тоа може да го зголеми користењето податоци."
+
+msgid "IDS_WIFI_POP_PRESS_WPS_ON_YOUR_WI_FI_ACCESS_POINT_WITHIN_PD_MINUTES"
+msgstr "Притиснете WPS на пристапната точка за Wi-Fi во рок од %d минути."
+
+msgid "IDS_WIFI_POP_OPEN"
+msgstr "Отворени"
+
+msgid "IDS_WIFI_POP_NO_WI_FI_AP_FOUND"
+msgstr "Нема пристапна точка за Wi-Fi."
+
+msgid "IDS_WIFI_POP_CURRENT_NETWORK_WILL_BE_DISCONNECTED"
+msgstr "Ќе се прекине врската со моменталната мрежа."
+
+msgid "IDS_WIFI_OPT_WPS"
+msgstr "WPS"
+
+msgid "IDS_WIFI_OPT_SHOW_PASSWORD"
+msgstr "Прикажи лозинка"
+
+msgid "IDS_WIFI_OPT_MOBILEACCESSSERVICEATCIVATION_ON"
+msgstr "Вклучено"
+
+msgid "IDS_WIFI_OPT_MOBILEACCESSSERVICEATCIVATION_OFF"
+msgstr "Исклучено"
+
+msgid "IDS_WIFI_OPT_FORGET_NETWORK"
+msgstr "Заборави мрежа"
+
+msgid "IDS_WIFI_MBODY_SMART_NETWORK_SWITCH"
+msgstr "Паметно менување мрежи"
+
+msgid "IDS_WIFI_MBODY_SIGNAL_STRENGTH_KOR_SKT"
+msgstr "Јачина на сигналот"
+
+msgid "IDS_WIFI_HEADER_WI_FI_NETWORK_INFO_ABB"
+msgstr "Информации за мрежа Wi-Fi"
+
+msgid "IDS_WIFI_HEADER_SELECT_WPS_METHOD_ABB"
+msgstr "Изберете начин за WPS"
+
+msgid "IDS_WIFI_HEADER_PASSWORD"
+msgstr "Лозинка"
+
+msgid "IDS_WIFI_HEADER_ENTER_PASSWORD"
+msgstr "Внесете лозинка."
+
+msgid "IDS_WIFI_BUTTON_WPS_BUTTON"
+msgstr "Копче WPS"
+
+msgid "IDS_WIFI_BUTTON_SCAN"
+msgstr "Скенирај"
+
+msgid "IDS_WIFI_BUTTON_FIND_HIDDEN_NETWORK"
+msgstr "Најди скриена мрежа"
+
+msgid "IDS_WIFI_BODY_WI_FI_DIRECT_ABB"
+msgstr "Wi-Fi Direct"
+
+msgid "IDS_WIFI_BODY_WI_FI"
+msgstr "Wi-Fi"
+
+msgid "IDS_WIFI_BODY_WHILE_CHARGING_ONLY_ABB"
+msgstr "Само при полнење"
+
+msgid "IDS_WIFI_BODY_WEAK_M_STRENGTH"
+msgstr "Слаб"
+
+msgid "IDS_WIFI_BODY_USER_CERTIFICATE_ABB"
+msgstr "Кор. сертификат"
+
+msgid "IDS_WIFI_BODY_UNSPECIFIED"
+msgstr "Неодредено"
+
+msgid "IDS_WIFI_BODY_UNKNOWN"
+msgstr "Непознато"
+
+msgid "IDS_WIFI_BODY_SUBNET_MASK"
+msgstr "Подмрежна маска"
+
+msgid "IDS_WIFI_BODY_STATIC_IP"
+msgstr "Статичен IP"
+
+msgid "IDS_WIFI_BODY_SORT_BY"
+msgstr "Подреди според"
+
+msgid "IDS_WIFI_BODY_SCANNING_ING"
+msgstr "Пребарување..."
+
+msgid "IDS_WIFI_BODY_RECEIVE_NOTIFICATIONS_WHEN_NETWORKS_ARE_AVAILABLE"
+msgstr "Примај известувања кога се достапни мрежи"
+
+msgid "IDS_WIFI_BODY_NAME"
+msgstr "Име"
+
+msgid "IDS_WIFI_BODY_MAC_ADDRESS"
+msgstr "MAC-адреса"
+
+msgid "IDS_WIFI_BODY_IP_ADDRESS"
+msgstr "IP адреса"
+
+msgid "IDS_WIFI_BODY_IDENTITY"
+msgstr "Идентитет"
+
+msgid "IDS_WIFI_BODY_GATEWAY_ADDRESS"
+msgstr "Адреса на порта"
+
+msgid "IDS_WIFI_BODY_ENTER_IDENTITY"
+msgstr "Внесете идентитет."
+
+msgid "IDS_WIFI_BODY_EAP_METHOD"
+msgstr "Начин за EAP"
+
+msgid "IDS_WIFI_BODY_EAP"
+msgstr "EAP"
+
+msgid "IDS_WIFI_BODY_DNS_2"
+msgstr "DNS 2"
+
+msgid "IDS_WIFI_BODY_DNS_1"
+msgstr "DNS 1"
+
+msgid "IDS_WIFI_BODY_CONNECTING_ING"
+msgstr "Поврзување..."
+
+msgid "IDS_WIFI_BODY_CONNECT"
+msgstr "Поврзи"
+
+msgid "IDS_WIFI_BODY_CONFIGURATION_SAVED_M_STATUS"
+msgstr "Меморирано"
+
+msgid "IDS_WIFI_BODY_A_WI_FI_NETWORK_HAS_BEEN_DETECTED_YOU_WILL_BE_CONNECTED"
+msgstr "Откриена е мрежа Wi-Fi. Ќе се поврзете."
+
+msgid "IDS_WIFI_BODY_ADVANCED_SETTINGS"
+msgstr "Напредни опции"
+
+msgid "IDS_ST_BODY_TURNING_ON_ING"
+msgstr "Се вклучува..."
+
+msgid "IDS_HELP_POP_INVALID_ACTION_TRY_AGAIN"
+msgstr "Неважечо дејство. Обидете се повторно."
+
+msgid "IDS_ST_BODY_INSTALL_CERTIFICATE"
+msgstr "Инсталирај сертификати"
+
+msgid "IDS_WIFI_HEADER_PASSPOINT"
+msgstr "Passpoint"
+
+msgid "IDS_ST_OPT_SKIP"
+msgstr "Скокни"
+
+msgid "IDS_ST_MBODY_ALWAYS_ALLOW_SCANNING"
+msgstr "Секогаш дозв. скенирање"
+
+msgid "IDS_WIFI_POP_SELECT_SIM_CARD_OR_AKA_OPTION_ON_EAP_METHOD_GUIDE_MSG"
+msgstr "Избрано е %s.\n\nАко не можете да се поврзете со пристапна точка, сменете ја SIM-картичката за потврда преку уредувањето SIM-картички. Потоа изберете ја SIM-картичката што сакате да ја користите за Мобилни податоци. Можете и да ја демонтирате SIM-картичката што не сакате да ја користите."
+
+msgid "IDS_HELP_BODY_TAP_THE_NETWORK_YOU_WANT_TO_CONNECT_TO"
+msgstr "Допрете ја мрежата со којашто сакате да се поврзете."
+
+msgid "IDS_HELP_BODY_YOU_HAVE_BEEN_AUTOMATICALLY_CONNECTED_TO_THE_REMEMBERED_NETWORK_TO_SEE_THE_NETWORK_DETAILS_TAP_THE_PS_ICON"
+msgstr "Автоматски сте поврзани со запомнетата мрежа. За да ги видите деталите за мрежата, допрете ја иконата %s."
+
+msgid "IDS_HELP_BODY_YOU_HAVE_BEEN_CONNECTED_TO_THE_NETWORK_TO_SEE_THE_NETWORK_DETAILS_TAP_THE_PS_ICON"
+msgstr "Поврзани сте со мрежата. За да ги видите деталите за мрежата, допрете ја иконата %s."
+
+msgid "IDS_HELP_POP_NO_WI_FI_NETWORKS_FOUND_CHANGE_YOUR_LOCATION_OR_TRY_LATER"
+msgstr "Не се најдени мрежи Wi-Fi. Сменете ја локацијата или обидете се повторно."
+
+msgid "IDS_HELP_POP_TAP_TO_SCAN_FOR_WI_FI_NETWORKS"
+msgstr "Допрете за сканирање за мрежи Wi-Fi."
+
+msgid "IDS_HELP_POP_TO_CONNECT_TO_A_SECURED_NETWORK_YOU_MAY_NEED_TO_ENTER_A_PASSWORD_OR_OTHER_CREDENTIALS"
+msgstr "За да се поврзете со безбедна мрежа, може треба да внесете лозинка или други препораки."
+
+msgid "IDS_ST_SBODY_PROXY_ADDRESS"
+msgstr "Прокси адреса"
+
+msgid "IDS_ST_SBODY_PROXY_PORT"
+msgstr "Порта за прокси"
+

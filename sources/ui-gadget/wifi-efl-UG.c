@@ -1,85 +1,165 @@
 /*
-*  Wi-Fi UG
-*
-* Copyright 2012  Samsung Electronics Co., Ltd
-
-* Licensed under the Flora License, Version 1.0 (the "License");
-* you may not use this file except in compliance with the License.
-* You may obtain a copy of the License at
-
-* http://www.tizenopensource.org/license
-
-* Unless required by applicable law or agreed to in writing, software
-* distributed under the License is distributed on an "AS IS" BASIS,
-* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-* See the License for the specific language governing permissions and
-* limitations under the License.
-*
-*/
+ * Wi-Fi
+ *
+ * Copyright 2012 Samsung Electronics Co., Ltd
+ *
+ * Licensed under the Flora License, Version 1.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.tizenopensource.org/license
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ */
 
 #ifndef UG_MODULE_API
 #define UG_MODULE_API __attribute__ ((visibility("default")))
 #endif
 
-
-#include "wifi.h"
+#include <vconf-keys.h>
+//#include <setting-cfg.h>
+#include "ug_wifi.h"
+#include "view_detail.h"
+#include "i18nmanager.h"
 #include "wlan_manager.h"
 #include "winset_popup.h"
+#include "common_utils.h"
 #include "viewer_manager.h"
-#include "wifi-engine-callback.h"
-#include "i18nmanager.h"
-#include "wifi-setting.h"
-#include "view_detail.h"
 #include "view_ime_hidden.h"
-#include "motion_control.h"
+#include "view_advanced.h"
+#include "wifi-engine-callback.h"
+
+#define STR_ATOM_PANEL_SCROLLABLE_STATE	"_E_MOVE_PANEL_SCROLLABLE_STATE"
 
 static int wifi_exit_end = FALSE;
-
+static bool is_scan_reqd = false;
 wifi_appdata *ug_app_state = NULL;
 
-struct ug_data 
-{
-	Evas_Object *base;
-	ui_gadget_h ug;
-};
+UG_MODULE_API int UG_MODULE_INIT(struct ug_module_ops *ops);
+UG_MODULE_API void UG_MODULE_EXIT(struct ug_module_ops *ops);
+UG_MODULE_API int setting_plugin_reset(bundle *data, void *priv);
+UG_MODULE_API int setting_plugin_search_init(app_control_h app_control, void *priv, char **domainname);
 
-static void *on_create(ui_gadget_h ug, enum ug_mode mode, service_h service, void *priv)
+static gboolean __wifi_efl_ug_del_found_ap_noti(void *data)
+{
+	common_utils_send_message_to_net_popup(NULL, NULL,
+			"del_found_ap_noti", NULL);
+
+	return FALSE;
+}
+
+static void _bg_scan_status_callback(GDBusConnection *conn,
+		const gchar *name, const gchar *path, const gchar *interface,
+		const gchar *sig, GVariant *param, gpointer user_data)
 {
 	__COMMON_FUNC_ENTER__;
 
+	GVariantIter *iter = NULL;
+	GVariant *var = NULL;
+	gchar *key = NULL;
+	gboolean value = FALSE;
+
+	int header_mode = viewer_manager_header_mode_get();
+	viewer_manager_create_scan_btn();
+	if (header_mode == HEADER_MODE_DEACTIVATING ||
+			header_mode == HEADER_MODE_OFF) {
+		__COMMON_FUNC_EXIT__;
+		return;
+	}
+
+	g_variant_get(param, "(a{sv})", &iter);
+	while (g_variant_iter_loop(iter, "{sv}", &key, &var)) {
+		if (g_strcmp0(key, "Scanning") == 0) {
+			value = g_variant_get_boolean(var);
+			if (value) {
+				if (header_mode != HEADER_MODE_CONNECTING) {
+					viewer_manager_show(VIEWER_WINSET_SEARCHING_GRP_TITLE);
+					viewer_manager_header_mode_set(HEADER_MODE_SEARCHING);
+				}
+			}
+
+			g_variant_unref(var);
+			g_free(key);
+			break;
+		}
+	}
+
+	g_variant_iter_free(iter);
+
+	__COMMON_FUNC_EXIT__;
+}
+
+static void _set_rotation(Evas_Object *win)
+{
+	int rots[1] = { 0 };
+
+	if (!elm_win_wm_rotation_supported_get(win)) {
+		return;
+	}
+
+	elm_win_wm_rotation_available_rotations_set(win, rots, 1);
+}
+
+static void *on_create(ui_gadget_h ug, enum ug_mode mode,
+		app_control_h app_control, void *priv)
+{
+	__COMMON_FUNC_ENTER__;
+
+	const char *uri = NULL;
+	int state;
+
 	if (!ug || !priv) {
-		INFO_LOG(UG_NAME_ERR, "[Error]Data is NULL - ug or priv");
+		INFO_LOG(UG_NAME_ERR, "UG and PRIV should not be NULL");
+
+		__COMMON_FUNC_EXIT__;
 		return NULL;
 	}
 
-	ug_app_state = (wifi_appdata *) g_malloc0(sizeof(wifi_appdata));
-	assertm_if(NULL == ug_app_state, "Err!! ug_app_state == NULL");
-	memset(ug_app_state, 0x0, sizeof(wifi_appdata));
+	ug_app_state = g_new0(wifi_appdata, 1);
+	retvm_if(NULL == ug_app_state, NULL);
 
 	struct ug_data *ugd;
 	ugd = (struct ug_data*)priv;
 	ugd->ug = ug;
 
-	if (NULL != service) {
+	if (NULL != app_control) {
 		INFO_LOG(UG_NAME_NORMAL, "message load from caller");
 
 		char *caller = NULL;
-		if (service_get_extra_data(service, UG_CALLER, &caller)) {
-			ERROR_LOG(UG_NAME_NORMAL, "Failed to get service extra data");
-			return NULL;
-		}
+		app_control_get_extra_data(app_control, UG_CALLER, &caller);
+
+		if (app_control_get_uri(app_control, (char **)&uri) < 0)
+			ERROR_LOG(UG_NAME_NORMAL, "Failed to get app_control URI");
+
+		if (uri)
+			free((void *)uri);
 
 		if (caller != NULL) {
-			INFO_LOG(UG_NAME_NORMAL, "caller = [%s]", caller);
-			if (strcmp(caller, "pwlock") == 0) {
+			SECURE_INFO_LOG(UG_NAME_NORMAL, "caller: %s", caller);
+
+			if (g_strcmp0(caller, "pwlock") == 0) {
+				ugd->elm_conform = ug_get_conformant();
 				ug_app_state->ug_type = UG_VIEW_SETUP_WIZARD;
-				service_get_extra_data(service, "lbutton", &ug_app_state->lbutton_setup_wizard);
-				service_get_extra_data(service, "rbutton_skip", &ug_app_state->rbutton_setup_wizard_skip);
-				service_get_extra_data(service, "rbutton_next", &ug_app_state->rbutton_setup_wizard_next);
-				service_get_extra_data(service, "lbutton_icon", &ug_app_state->lbutton_setup_wizard_prev_icon);
-				service_get_extra_data(service, "rbutton_skip_icon", &ug_app_state->rbutton_setup_wizard_skip_icon);
-				service_get_extra_data(service, "scan_icon", &ug_app_state->rbutton_setup_wizard_scan_icon);
-				service_get_extra_data(service, "rbutton_next_icon", &ug_app_state->rbutton_setup_wizard_next_icon);
+
+				ug_app_state->rbutton_setup_wizard_next = g_strdup(sc(PACKAGE,
+					I18N_TYPE_Next));
+				ug_app_state->rbutton_setup_wizard_skip = g_strdup(sc(PACKAGE,
+					I18N_TYPE_Skip));
+				ug_app_state->lbutton_setup_wizard_prev = g_strdup(sc(PACKAGE,
+					I18N_TYPE_Prev));
+			} else if (g_strcmp0(caller, "notification") == 0){
+				/* Remove the "WiFi networks found" from the notification tray.*/
+				common_util_managed_idle_add(__wifi_efl_ug_del_found_ap_noti, NULL);
+				ug_app_state->ug_type = UG_VIEW_DEFAULT;
+			} else if (g_strcmp0(caller, "lbhome") == 0){
+				ug_app_state->ug_type = UG_VIEW_DEFAULT;
+				ug_app_state->app_control = app_control;
+				ug_app_state->is_lbhome = EINA_TRUE;
 			} else {
 				ug_app_state->ug_type = UG_VIEW_DEFAULT;
 			}
@@ -89,208 +169,358 @@ static void *on_create(ui_gadget_h ug, enum ug_mode mode, service_h service, voi
 			INFO_LOG(UG_NAME_NORMAL, "caller is not defined");
 			ug_app_state->ug_type = UG_VIEW_DEFAULT;
 		}
+
+
 	} else {
 		INFO_LOG(UG_NAME_NORMAL, "caller is not defined");
 		ug_app_state->ug_type = UG_VIEW_DEFAULT;
 	}
 
-	bindtextdomain(PACKAGE, LOCALEDIR);
+	Evas_Object *parent_layout = ug_get_parent_layout(ug);
+	if (parent_layout == NULL) {
+		ERROR_LOG(UG_NAME_NORMAL, "Failed to get parent layout");
 
-	ug_app_state->win_main = ug_get_parent_layout(ug);
-	assertm_if( NULL == ug_app_state->win_main, "Err!! win_main == NULL");
-
-	elm_win_conformant_set(ug_app_state->win_main, TRUE);
-	ug_app_state->gadget= ugd;
-	ug_app_state->ug = ug;
-
-	if (wifi_setting_value_set(VCONFKEY_WIFI_UG_RUN_STATE, VCONFKEY_WIFI_UG_RUN_STATE_ON_FOREGROUND) < 0) {
-		INFO_LOG(UG_NAME_ERR, "[Error]Failed to set vconf - VCONFKEY_WIFI_UG_RUN_STATE_ON_FOREGROUND");
+		__COMMON_FUNC_EXIT__;
+		return NULL;
 	}
 
-	evas_object_show(ug_app_state->win_main);
-	elm_win_indicator_mode_set(ug_app_state->win_main, ELM_WIN_INDICATOR_SHOW);
+	ugd->win_main = ug_get_window();
+	ug_app_state->gadget= ugd;
+	ug_app_state->ug = ug;
+	ug_app_state->conformant = ug_get_conformant();
 
-	memset(&g_pending_call, 0, sizeof(wifi_pending_call_info_t));
+	_set_rotation(ugd->win_main);
 
-	Evas_Object* base = viewer_manager_create(ug_app_state->win_main);
-	assertm_if(NULL == base, "Err!! main_layout == NULL");
-	ugd->base = base;
+	common_util_set_system_registry(VCONFKEY_WIFI_UG_RUN_STATE,
+			VCONFKEY_WIFI_UG_RUN_STATE_ON_FOREGROUND);
 
-	ug_app_state->popup_manager = winset_popup_manager_create(ug_app_state->win_main, PACKAGE);
+	Evas_Object *layout_main = viewer_manager_create(parent_layout, ugd->win_main);
+	if (layout_main == NULL) {
+		INFO_LOG(UG_NAME_ERR, "Failed to create viewer_manager");
 
+		__COMMON_FUNC_EXIT__;
+		return NULL;
+	}
+
+	if (app_control != NULL) {
+		char *zorder = NULL;
+		app_control_get_extra_data(app_control, "z_order", &zorder);
+		INFO_LOG(UG_NAME_NORMAL, "zorder [%s]", zorder);
+		if (zorder != NULL && 0 == g_strcmp0(zorder, "highest")) {
+			Ecore_X_Window xwin = elm_win_xwindow_get(ugd->win_main);
+			unsigned int val[3] = {0, 0, 0};
+			ecore_x_netwm_window_type_set(xwin,
+				ECORE_X_WINDOW_TYPE_NOTIFICATION);
+			efl_util_set_notification_window_level(ugd->win_main,
+				UTILX_NOTIFICATION_LEVEL_NORMAL);
+			Ecore_X_Atom ATOM_PANEL_SCROLLABLE_STATE =
+					ecore_x_atom_get(STR_ATOM_PANEL_SCROLLABLE_STATE);
+			ecore_x_window_prop_card32_set(xwin, ATOM_PANEL_SCROLLABLE_STATE, val, 3);
+			g_free(zorder);
+			zorder = NULL;
+		}
+	}
+
+	/* Enablee Changeable UI feature */
+	ea_theme_changeable_ui_enabled_set(EINA_TRUE);
+
+	ug_app_state->color_table = common_utils_color_table_set();
+	ug_app_state->font_table = common_utils_font_table_set();
+
+#if defined TIZEN_TETHERING_ENABLE
+	ug_app_state->popup_manager = winset_popup_manager_create(layout_main, PACKAGE);
+#endif
+
+	ugd->base = layout_main;
+	ug_app_state->layout_main = layout_main;
 	ug_app_state->bAlive = EINA_TRUE;
 
 	wlan_manager_create();
 	wlan_manager_set_message_callback(wlan_engine_callback);
 	wlan_manager_set_refresh_callback(wlan_engine_refresh_callback);
+	common_util_subscribe_scanning_signal(_bg_scan_status_callback);
 
 	switch (wlan_manager_start()) {
 	case WLAN_MANAGER_ERR_NONE:
 		break;
+
 	case WLAN_MANAGER_ERR_ALREADY_REGISTERED:
-		winset_popup_mode_set(ug_app_state->popup_manager, POPUP_OPTION_REGISTER_FAILED_UNKNOWN, NULL);
-		return ugd->base;
-	case WLAN_MANAGER_ERR_UNKNOWN:
-		winset_popup_mode_set(ug_app_state->popup_manager, POPUP_OPTION_REGISTER_FAILED_COMMUNICATION_FAILED, NULL);
-		return ugd->base;
+		break;
+
 	default:
+		ERROR_LOG(UG_NAME_NORMAL, "Cannot start wlan_manager");
+
 		__COMMON_FUNC_EXIT__;
 		return ugd->base;
 	}
 
-	char profile_name[NET_PROFILE_NAME_LEN_MAX+1] = "";
-	switch (wlan_manager_state_get(profile_name)) {
+	state = wlan_manager_state_get();
+	switch (state) {
 	case WLAN_MANAGER_OFF:
-		ERROR_LOG(UG_NAME_NORMAL, "current state is wifi-off\n");
-		viewer_manager_header_mode_set(HEADER_MODE_OFF);
-		viewer_manager_show(VIEWER_WINSET_SEARCHING);
-		viewer_manager_hide(VIEWER_WINSET_SUB_CONTENTS);
+		if (ug_app_state->ug_type == UG_VIEW_SETUP_WIZARD) {
+			viewer_manager_header_mode_set(HEADER_MODE_ACTIVATING);
+			power_control();
+		} else {
+			viewer_manager_hide(VIEWER_WINSET_SUB_CONTENTS);
+			viewer_manager_header_mode_set(HEADER_MODE_OFF);
+		}
 		break;
+
 	case WLAN_MANAGER_CONNECTING:
 	case WLAN_MANAGER_UNCONNECTED:
 	case WLAN_MANAGER_CONNECTED:
-		connman_request_scan_mode_set(WIFI_BGSCAN_MODE_PERIODIC);
-		viewer_manager_header_mode_set(HEADER_MODE_SEARCHING);
 		viewer_manager_hide(VIEWER_WINSET_SEARCHING);
 		viewer_manager_show(VIEWER_WINSET_SUB_CONTENTS);
+		viewer_manager_header_mode_set(HEADER_MODE_SEARCHING);
 		break;
+
 	case WLAN_MANAGER_ERROR:
 	default:
-		winset_popup_mode_set(ug_app_state->popup_manager, POPUP_OPTION_ETC_WLAN_STATE_GET_ERROR, NULL);
-		break;
+		return ugd->base;
 	}
 
-	motion_create(ug_app_state->win_main);
+	evas_object_show(layout_main);
 
 	__COMMON_FUNC_EXIT__;
 	return ugd->base;
 }
 
-static Eina_Bool load_initial_ap_list(void *data)
-{
-	wlan_manager_scanned_profile_refresh_with_count((int)data);
-	return ECORE_CALLBACK_CANCEL;
-}
-
-static void on_start(ui_gadget_h ug, service_h service, void *priv)
+static gboolean load_initial_ap_list(gpointer data)
 {
 	__COMMON_FUNC_ENTER__;
-	ecore_idler_add(load_initial_ap_list, (void *)8);
 
-	motion_start();
+	/* Because of transition effect performance,
+	 * Wi-Fi lists might be better to be updated at maximum delayed
+	 */
+	wlan_manager_scanned_profile_refresh();
 
 	__COMMON_FUNC_EXIT__;
-	return;
+	return FALSE;
 }
 
-static void on_pause(ui_gadget_h ug, service_h service, void *priv)
+static void on_start(ui_gadget_h ug, app_control_h app_control, void *priv)
 {
 	__COMMON_FUNC_ENTER__;
-	motion_stop();
 
-	if (connman_request_scan_mode_set(WIFI_BGSCAN_MODE_EXPONENTIAL) == WLAN_MANAGER_ERR_NONE) {
-		DEBUG_LOG(UG_NAME_REQ, "Set BG scan mode - EXPONENTIAL");
-	}
+	common_util_managed_idle_add(load_initial_ap_list, NULL);
 
-	if (wifi_setting_value_set(VCONFKEY_WIFI_UG_RUN_STATE, VCONFKEY_WIFI_UG_RUN_STATE_ON_BACKGROUND) < 0) {
-		INFO_LOG(UG_NAME_NORMAL, "Failed to set vconf - VCONFKEY_WIFI_UG_RUN_STATE_ON_BACKGROUND");
-	}
+	connman_request_scan_mode_set(WIFI_BGSCAN_MODE_PERIODIC);
+
 	__COMMON_FUNC_EXIT__;
 }
 
-static void on_resume(ui_gadget_h ug, service_h service, void *priv)
+static void on_pause(ui_gadget_h ug, app_control_h app_control, void *priv)
 {
 	__COMMON_FUNC_ENTER__;
-	motion_start();
 
-	if (connman_request_scan_mode_set(WIFI_BGSCAN_MODE_PERIODIC) == WLAN_MANAGER_ERR_NONE) {
-		DEBUG_LOG(UG_NAME_REQ, "Set BG scan mode - PERIODIC");
-	}
+	INFO_LOG(UG_NAME_NORMAL, "Wi-Fi UG paused");
 
-	if (wifi_setting_value_set(VCONFKEY_WIFI_UG_RUN_STATE, VCONFKEY_WIFI_UG_RUN_STATE_ON_FOREGROUND) < 0) {
-		INFO_LOG(UG_NAME_NORMAL, "Failed to set vconf - VCONFKEY_WIFI_UG_RUN_STATE_ON_FOREGROUND");
-	}
+	connman_request_scan_mode_set(WIFI_BGSCAN_MODE_EXPONENTIAL);
+
+	common_util_set_system_registry(VCONFKEY_WIFI_UG_RUN_STATE,
+			VCONFKEY_WIFI_UG_RUN_STATE_ON_BACKGROUND);
+
 	__COMMON_FUNC_EXIT__;
 }
 
-static void on_destroy(ui_gadget_h ug, service_h service, void *priv)
+static void on_resume(ui_gadget_h ug, app_control_h app_control, void *priv)
 {
 	__COMMON_FUNC_ENTER__;
-	if (wifi_setting_value_set(VCONFKEY_WIFI_UG_RUN_STATE, VCONFKEY_WIFI_UG_RUN_STATE_OFF) < 0) {
-		INFO_LOG(UG_NAME_NORMAL, "Failed to set vconf - VCONFKEY_WIFI_UG_RUN_STATE_OFF");
+
+	INFO_LOG(UG_NAME_NORMAL, "Wi-Fi UG resumed");
+
+	connman_request_scan_mode_set(WIFI_BGSCAN_MODE_PERIODIC);
+
+	common_util_set_system_registry(VCONFKEY_WIFI_UG_RUN_STATE,
+			VCONFKEY_WIFI_UG_RUN_STATE_ON_FOREGROUND);
+
+	view_manager_view_type_t top_viewID = viewer_manager_view_type_get();
+	if (top_viewID == VIEW_MANAGER_VIEW_TYPE_MAIN) {
+		viewer_manager_request_scan();
+		is_scan_reqd = false;
+	} else {
+		is_scan_reqd = true;
 	}
+
+	__COMMON_FUNC_EXIT__;
+}
+
+static void on_destroy(ui_gadget_h ug, app_control_h app_control, void *priv)
+{
+	__COMMON_FUNC_ENTER__;
+
+	int ret;
+	struct ug_data* ugd = priv;
+
+	common_util_set_system_registry(VCONFKEY_WIFI_UG_RUN_STATE,
+			VCONFKEY_WIFI_UG_RUN_STATE_OFF);
+
 	if (!ug || !priv){
 		__COMMON_FUNC_EXIT__;
 		return;
 	}
 
-	motion_destroy();
+	/*Added to handle incase of force closure*/
+	passwd_popup_free(ug_app_state->passpopup);
+	ug_app_state->passpopup = NULL;
 
-	wifi_exit();
-	struct ug_data* ugd = priv;
-	if(ugd->base){
+	if (ug_app_state->timeout) {
+		g_source_remove(ug_app_state->timeout);
+		ug_app_state->timeout = 0;
+	}
+
+#if defined TIZEN_TETHERING_ENABLE
+	winset_popup_manager_destroy(ug_app_state->popup_manager);
+	ug_app_state->popup_manager = NULL;
+	DEBUG_LOG(UG_NAME_NORMAL, "* popup manager destroy complete");
+#endif
+
+	if (wifi_exit_end == FALSE) {
+		connman_request_scan_mode_set(WIFI_BGSCAN_MODE_EXPONENTIAL);
+
+		common_util_managed_idle_cleanup();
+		common_util_managed_ecore_scan_update_timer_del();
+
+		ret = wlan_manager_destroy();
+		if (ret != WLAN_MANAGER_ERR_NONE) {
+			ERROR_LOG(UG_NAME_NORMAL, "Failed to destroy wlan manager: %d",ret);
+		} else {
+			INFO_LOG(UG_NAME_NORMAL, "* wlan manager destroy complete");
+		}
+	}
+
+	viewer_manager_destroy();
+	INFO_LOG(UG_NAME_NORMAL, "* viewer manager destroy complete");
+
+	if (ug_app_state->rbutton_setup_wizard_next != NULL) {
+		g_free(ug_app_state->rbutton_setup_wizard_next);
+		ug_app_state->rbutton_setup_wizard_next = NULL;
+	}
+
+	if (ug_app_state->rbutton_setup_wizard_skip != NULL) {
+		g_free(ug_app_state->rbutton_setup_wizard_skip);
+		ug_app_state->rbutton_setup_wizard_skip = NULL;
+	}
+
+	if (ug_app_state->lbutton_setup_wizard_prev != NULL) {
+		g_free(ug_app_state->lbutton_setup_wizard_prev);
+		ug_app_state->lbutton_setup_wizard_prev = NULL;
+	}
+
+	if (ug_app_state != NULL) {
+		g_free(ug_app_state);
+		ug_app_state = NULL;
+	}
+
+	if (ugd->base != NULL) {
 		evas_object_del(ugd->base);
 		ugd->base = NULL;
 	}
+
+	__COMMON_FUNC_EXIT__;
 }
 
-static void on_message(ui_gadget_h ug, service_h msg, service_h service, void *priv)
+static void on_message(ui_gadget_h ug, app_control_h msg, app_control_h app_control, void *priv)
 {
 }
 
-static void on_event(ui_gadget_h ug, enum ug_event event, service_h service, void *priv)
+static void _language_changed(void)
 {
-	switch (event) {
-		case UG_EVENT_LOW_MEMORY:
-			break;
-		case UG_EVENT_LOW_BATTERY:
-			break;
-		case UG_EVENT_LANG_CHANGE:
-			break;
-		case UG_EVENT_ROTATE_PORTRAIT:
-			break;
-		case UG_EVENT_ROTATE_PORTRAIT_UPSIDEDOWN:
-			break;
-		case UG_EVENT_ROTATE_LANDSCAPE:
-			break;
-		case UG_EVENT_ROTATE_LANDSCAPE_UPSIDEDOWN:
-			break;
-		default:
-			break;
+
+	__COMMON_FUNC_ENTER__;
+
+	if (NULL != ug_app_state->rbutton_setup_wizard_next) {
+		g_free(ug_app_state->rbutton_setup_wizard_next);
+		ug_app_state->rbutton_setup_wizard_next = NULL;
 	}
+
+	if (NULL != ug_app_state->rbutton_setup_wizard_skip) {
+		g_free(ug_app_state->rbutton_setup_wizard_skip);
+		ug_app_state->rbutton_setup_wizard_skip = NULL;
+	}
+
+	if (NULL != ug_app_state->lbutton_setup_wizard_prev) {
+		g_free(ug_app_state->lbutton_setup_wizard_prev);
+		ug_app_state->lbutton_setup_wizard_prev = NULL;
+	}
+
+	ug_app_state->rbutton_setup_wizard_next = g_strdup(sc(PACKAGE, I18N_TYPE_Next));
+	ug_app_state->rbutton_setup_wizard_skip = g_strdup(sc(PACKAGE, I18N_TYPE_Skip));
+	ug_app_state->lbutton_setup_wizard_prev = g_strdup(sc(PACKAGE, I18N_TYPE_Prev));
+
+	viewer_manager_setup_wizard_button_controller();
+
+	language_changed_refresh();
+
+	__COMMON_FUNC_EXIT__;
 }
 
-static void on_key_event(ui_gadget_h ug, enum ug_key_event event, service_h service, void *priv)
+static void on_event(ui_gadget_h ug, enum ug_event event, app_control_h app_control, void *priv)
+{
+	__COMMON_FUNC_ENTER__;
+
+	switch (event) {
+	case UG_EVENT_LOW_MEMORY:
+		break;
+	case UG_EVENT_LOW_BATTERY:
+		break;
+	case UG_EVENT_LANG_CHANGE:
+		INFO_LOG(UG_NAME_NORMAL, "LANGUAGE");
+		if (UG_VIEW_SETUP_WIZARD == ug_app_state->ug_type)
+			_language_changed();
+		break;
+	case UG_EVENT_ROTATE_PORTRAIT:
+	case UG_EVENT_ROTATE_PORTRAIT_UPSIDEDOWN:
+		INFO_LOG(UG_NAME_NORMAL, "PORTRAIT");
+		viewer_manager_rotate_top_setupwizard_layout();
+		break;
+	case UG_EVENT_ROTATE_LANDSCAPE:
+	case UG_EVENT_ROTATE_LANDSCAPE_UPSIDEDOWN:
+		INFO_LOG(UG_NAME_NORMAL, "LANSCAPE");
+		viewer_manager_rotate_top_setupwizard_layout();
+		break;
+	default:
+		break;
+	}
+
+	__COMMON_FUNC_EXIT__;
+}
+
+static void on_key_event(ui_gadget_h ug, enum ug_key_event event, app_control_h app_control, void *priv)
 {
 	__COMMON_FUNC_ENTER__;
 
 	if (!ug) {
+		__COMMON_FUNC_EXIT__;
 		return;
 	}
 
 	switch (event) {
-		case UG_KEY_EVENT_END:
-			INFO_LOG(UG_NAME_NORMAL, "UG_KEY_EVENT_END");
+	case UG_KEY_EVENT_END:
+		INFO_LOG(UG_NAME_NORMAL, "UG_KEY_EVENT_END");
 
-			/* popup key event determine */
-			winset_popup_hide_popup(ug_app_state->popup_manager);
+#if defined TIZEN_TETHERING_ENABLE
+		/* popup key event determine */
+		winset_popup_hide_popup(ug_app_state->popup_manager);
+#endif
+		view_manager_view_type_t top_view_id = viewer_manager_view_type_get();
+		if (top_view_id == VIEW_MANAGER_VIEW_TYPE_MAIN) {
+			INFO_LOG(UG_NAME_NORMAL, "same");
+		} else {
+			INFO_LOG(UG_NAME_NORMAL, "differ");
+			elm_naviframe_item_pop(viewer_manager_get_naviframe());
 
-			Evas_Object* navi_frame = viewer_manager_get_naviframe();
-			view_manager_view_type_t top_view_id = (view_manager_view_type_t)evas_object_data_get(navi_frame, SCREEN_TYPE_ID_KEY);
-			if(VIEW_MANAGER_VIEW_TYPE_MAIN == top_view_id) {
-				INFO_LOG(UG_NAME_NORMAL, "same");
-			} else {
-				INFO_LOG(UG_NAME_NORMAL, "differ");
-				elm_naviframe_item_pop(viewer_manager_get_naviframe());
-				return;
-			}
+			__COMMON_FUNC_EXIT__;
+			return;
+		}
 
-			wifi_exit();
-			break;
-		default:
-			INFO_LOG(UG_NAME_NORMAL, "UG_KEY_EVENT [%d]", event);
-			break;
+		wifi_exit();
+		break;
+	default:
+		INFO_LOG(UG_NAME_NORMAL, "UG_KEY_EVENT [%d]", event);
+		break;
 	}
+
 	__COMMON_FUNC_EXIT__;
 }
 
@@ -300,7 +530,7 @@ UG_MODULE_API int UG_MODULE_INIT(struct ug_module_ops *ops)
 
 	wifi_exit_end = FALSE;
 
-	assertm_if(NULL == ops, "Err!! ug_module_ops == NULL");
+	retvm_if(NULL == ops, 0);
 
 	struct ug_data *ugd;
 	ugd = calloc(1, sizeof(struct ug_data));
@@ -325,62 +555,128 @@ UG_MODULE_API int UG_MODULE_INIT(struct ug_module_ops *ops)
 UG_MODULE_API void UG_MODULE_EXIT(struct ug_module_ops *ops)
 {
 	__COMMON_FUNC_ENTER__;
-	assertm_if(NULL == ops, "Err!! ug_module_ops == NULL");
+
+	retm_if(NULL == ops);
 
 	struct ug_data *ugd;
 
 	ugd = ops->priv;
 
-	if (ugd)
+	if (ugd) {
 		free(ugd);
+	}
+
 	__COMMON_FUNC_EXIT__;
+}
+
+static bool setting_plugin_wifi_found_ap_cb(wifi_ap_h ap, void* user_data)
+{
+	bool favorite = false;
+
+	wifi_ap_is_favorite(ap, &favorite);
+
+	if (true == favorite) {
+		wlan_manager_forget(ap);
+	}
+
+	return true;
 }
 
 UG_MODULE_API int setting_plugin_reset(bundle *data, void *priv)
 {
 	__COMMON_FUNC_ENTER__;
-	INFO_LOG(UG_NAME_NORMAL, "setting_plugin_reset");
-	return 0;
+
+	int return_value = 0;
+
+	return_value = wlan_manager_start();
+	if (return_value != WLAN_MANAGER_ERR_NONE) {
+		ERROR_LOG(UG_NAME_NORMAL, "Failed to register : %d",return_value);
+		return_value = -1;
+		goto error;
+	}
+
+	wifi_foreach_found_aps(setting_plugin_wifi_found_ap_cb, NULL);
+	return_value = wlan_manager_power_off();
+	if (return_value != WLAN_MANAGER_ERR_NONE) {
+		ERROR_LOG(UG_NAME_NORMAL, "Failed to power_off: %d",return_value);
+		return_value = -1;
+		goto error;
+	}
+
+	common_util_set_system_registry(VCONFKEY_WIFI_ENABLE_QS,
+									VCONFKEY_WIFI_QS_ENABLE);
+
+error:
+	wlan_manager_destroy();
+
 	__COMMON_FUNC_EXIT__;
+	return return_value;
 }
 
-int wifi_exit()
+int wifi_exit(void)
 {
 	__COMMON_FUNC_ENTER__;
-	if(wifi_exit_end == TRUE) {
+
+	if (wifi_exit_end == TRUE) {
 		__COMMON_FUNC_EXIT__;
 		return FALSE;
 	}
 	wifi_exit_end = TRUE;
 
-	if (connman_request_scan_mode_set(WIFI_BGSCAN_MODE_EXPONENTIAL) == WLAN_MANAGER_ERR_NONE) {
-		DEBUG_LOG(UG_NAME_REQ, "Set BG scan mode - EXPONENTIAL");
-	}
-
-	DEBUG_LOG(UG_NAME_NORMAL, "* popup manager destroying...");
-	winset_popup_manager_destroy(ug_app_state->popup_manager);
-	ug_app_state->popup_manager = NULL;
-	DEBUG_LOG(UG_NAME_NORMAL, "* wlan manager destroying...");
-	wlan_manager_destroy();
-	DEBUG_LOG(UG_NAME_NORMAL, "* view_main destroying...");
-	viewer_manager_destroy();
-	DEBUG_LOG(UG_NAME_NORMAL, "* manager destroy complete");
-
+	int ret = WLAN_MANAGER_ERR_NONE;
 	struct ug_data *ugd;
 	ugd = ug_app_state->gadget;
 	ug_app_state->bAlive = EINA_FALSE;
 
-	if(g_pending_call.is_handled == FALSE)
-	{
-		dbus_g_proxy_cancel_call(g_pending_call.proxy, g_pending_call.pending_call);
-		g_pending_call.is_handled = TRUE;
-		memset(&g_pending_call, 0, sizeof(wifi_pending_call_info_t));
+	connman_request_scan_mode_set(WIFI_BGSCAN_MODE_EXPONENTIAL);
+
+	common_util_managed_idle_cleanup();
+	common_util_managed_ecore_scan_update_timer_del();
+
+	ret = wlan_manager_destroy();
+	if (ret != WLAN_MANAGER_ERR_NONE) {
+		ERROR_LOG(UG_NAME_NORMAL, "Failed to destroy wlan manager: %d",ret);
+	} else {
+		DEBUG_LOG(UG_NAME_NORMAL, "* wlan manager destroy complete");
 	}
 
 	DEBUG_LOG(UG_NAME_NORMAL, "* ug_destroying...");
 	ug_destroy_me(ugd->ug);
 
 	__COMMON_FUNC_EXIT__;
-
 	return TRUE;
 }
+
+bool wifi_is_scan_required(void)
+{
+	return is_scan_reqd;
+}
+#if 0
+UG_MODULE_API int setting_plugin_search_init(app_control_h app_control, void *priv, char **domainname)
+{
+	void *node = NULL;
+	*domainname = strdup(PACKAGE);
+	Eina_List **pplist = (Eina_List **)priv;
+
+	node = setting_plugin_search_item_add("IDS_ST_BODY_NETWORK_NOTIFICATION",
+		"viewtype:advancedsetting", NULL, 5, NULL);
+	*pplist = eina_list_append(*pplist, node);
+	node = setting_plugin_search_item_add("IDS_WIFI_TMBODY_SMART_NETWORK_SWITCH",
+		"viewtype:mainview", NULL, 5, NULL);
+	*pplist = eina_list_append(*pplist, node);
+	node = setting_plugin_search_item_add("IDS_WIFI_HEADER_PASSPOINT",
+		"viewtype:advancedsetting", NULL, 5, NULL);
+	*pplist = eina_list_append(*pplist, node);
+	node = setting_plugin_search_item_add("IDS_ST_BODY_KEEP_WI_FI_ON_DURING_SLEEP",
+		"viewtype:advancedsetting", NULL, 5, NULL);
+	*pplist = eina_list_append(*pplist, node);
+	node = setting_plugin_search_item_add("IDS_ST_MBODY_ALWAYS_ALLOW_SCANNING",
+		"viewtype:advancedsetting", NULL, 5, NULL);
+	*pplist = eina_list_append(*pplist, node);
+	node = setting_plugin_search_item_add("IDS_WIFI_BODY_ADVANCED_SETTINGS",
+		"viewtype:advancedsetting", NULL, 5, NULL);
+	*pplist = eina_list_append(*pplist, node);
+
+	return 0;
+}
+#endif

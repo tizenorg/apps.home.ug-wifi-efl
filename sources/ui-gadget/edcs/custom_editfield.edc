@@ -1,0 +1,643 @@
+#define WPS_POPUP_PADDING_LEFT_MIN_INC 15 0
+#define WPS_POPUP_TEXT_SLIDER_PADDING 15 27
+#define PBC_POPUP_TEXT_SLIDER_TEXT_DISCRIPTION_MIN_INC 266 90
+#define WPS_POPUP_TEXT_SLIDER_BG_MIN_INC 266 42
+#define WPS_POPUP_SLIDER_VIEW_LAYOUT_PADDING_TOP_MIN_INC 266 28
+#define WPS_POPUP_SLIDER_VIEW_LAYOUT_SWALLOW_MIN_INC 266 10
+
+#define BUTTON_BG_SIZE 96 96
+#define BUTTON_CIRCLE_SIZE 46 46
+
+#define RESOURCE_IMAGE( INPUT_FILE_NAME ) \
+	group { \
+		name: INPUT_FILE_NAME; \
+		images.image: INPUT_FILE_NAME COMP; \
+		parts { \
+			part { name: "image"; \
+				repeat_events: 1; \
+				description { \
+					state: "default" 0.0; \
+					image.normal: INPUT_FILE_NAME; \
+					aspect: 1 1; \
+					aspect_preference: BOTH; \
+				} \
+			} \
+		} \
+	}
+
+externals {
+	external: "elm";
+	external: "feedback";
+}
+
+collections {
+RESOURCE_IMAGE("A01-3_icon_00.png");
+RESOURCE_IMAGE("A01-3_icon_01.png");
+RESOURCE_IMAGE("A01-3_icon_02.png");
+RESOURCE_IMAGE("A01-3_icon_03.png");
+RESOURCE_IMAGE("A01-3_icon_lock_00.png");
+RESOURCE_IMAGE("A01-3_icon_lock_01.png");
+RESOURCE_IMAGE("A01-3_icon_lock_02.png");
+RESOURCE_IMAGE("A01-3_icon_lock_03.png");
+RESOURCE_IMAGE("wifi_icon_wps.png");
+RESOURCE_IMAGE("wifi_icon_badge_container.png");
+RESOURCE_IMAGE("wifi_icon_badge_info.png");
+RESOURCE_IMAGE("core_button_effect_normal.#.png");
+RESOURCE_IMAGE("core_button_effect_pressed.#.png");
+
+	base_scale: 1.8;
+	plugins {
+		plugin {
+			name: "touch_sound";
+			source: "feedback";
+			param: "FEEDBACK_TYPE_SOUND FEEDBACK_PATTERN_TAP";
+		}
+	}
+
+group {
+	name: "popup_pbc_button_layout";
+	styles {
+		style { name: "popup_processing_style";
+			base: "font=Tizen:style=Regular align=left font_size=30 color=#000000 color_class=T123 wrap=mixed ellipsis=1.0 text_class=T123";
+			tag:  "br" "\n";
+			tag:  "tab" "\t";
+		}
+	}
+
+	parts {
+		 part {
+			name: "base";
+			type: SPACER;
+			scale: 1;
+			description {
+				state: "default" 0.0;
+				min: 480 210;
+				max: 480 210;
+				fixed: 1 0;
+			}
+		}
+		part {
+			name: "pad_top_left";
+			type: SPACER;
+			scale: 1;
+			description {
+				state: "default" 0.0;
+				align: 0.0 0.0;
+				min: WPS_POPUP_TEXT_SLIDER_PADDING;
+				max: WPS_POPUP_TEXT_SLIDER_PADDING;
+				fixed: 1 1;
+				rel1 {
+					relative: 0.0 0.0;
+					to: "base";
+				}
+				rel2 {
+					relative: 0.0 0.0;
+					to: "base";
+				}
+			}
+		}
+		part {
+			name: "pad_left";
+			type: SPACER;
+			scale: 1;
+			description {
+				state: "default" 0.0;
+				min: WPS_POPUP_PADDING_LEFT_MIN_INC 0;
+				fixed: 1 0;
+				rel1 {
+					to: "base";
+					relative: 0.0 0.0;
+				}
+				rel2 {
+					to: "base";
+					relative: 0.0 1.0;
+				}
+				align: 0.0 0.0;
+			}
+		}
+		part {
+			name: "pad_right_bottom";
+			type: SPACER;
+			scale: 1;
+			description {
+				state: "default" 0.0;
+				min: WPS_POPUP_TEXT_SLIDER_PADDING;
+				max: WPS_POPUP_TEXT_SLIDER_PADDING;
+				fixed: 1 1;
+				rel1 {
+					relative: 1.0 1.0;
+					to: "base";
+				}
+				rel2 {
+					to: "base";
+					relative: 1.0 1.0;
+				}
+				align: 1.0 1.0;
+			}
+		}
+		part { name: "elm.text.description";
+			type: TEXTBLOCK;
+			scale: 1;
+			description { state: "default" 0.0;
+				fixed: 0 1;
+				min: PBC_POPUP_TEXT_SLIDER_TEXT_DISCRIPTION_MIN_INC;
+				rel1 {
+					relative: 1.0 1.0;
+					to: "pad_top_left";
+				}
+				rel2 {
+				relative: 0.0 1.0;
+					to_x: "pad_right_bottom";
+					to_y: "pad_top_left";
+				}
+				text {
+					style: "popup_processing_style";
+					min: 0 1;
+				}
+				align: 0.0 0.0;
+			}
+		}
+		part { name: "slider_bg";
+			type: SWALLOW;
+			scale: 1;
+			description { state: "default" 0.0;
+				fixed: 0 1;
+				min: WPS_POPUP_TEXT_SLIDER_BG_MIN_INC;
+				rel1 {
+					relative: 0.0 1.0;
+					to_y: "elm.text.description";
+				}
+				rel2 {
+					relative: 1.0 1.0;
+					to_y: "elm.text.description";
+				}
+				align: 0.0 0.0;
+			}
+		}
+		part { name: "slider_top_pad";
+			type: SPACER;
+			scale: 1;
+			description { state: "default" 0.0;
+				min: WPS_POPUP_SLIDER_VIEW_LAYOUT_PADDING_TOP_MIN_INC;
+				fixed: 0 1;
+				rel1 {
+					relative: 1.0 0.0;
+					to_x: "pad_top_left";
+					to_y: "slider_bg";
+				}
+				rel2 {
+					relative: 0.0 0.0;
+					to_x: "pad_right_bottom";
+					to_y: "slider_bg";
+				}
+				align: 0.5 0.0;
+			}
+		}
+		part { name: "slider";
+			type: SWALLOW;
+			scale: 1;
+			description { state: "default" 0.0;
+				fixed: 0 1;
+				min: WPS_POPUP_SLIDER_VIEW_LAYOUT_SWALLOW_MIN_INC;
+				rel1 {
+					relative: 0.0 1.0;
+					to: "slider_top_pad";
+				}
+				rel2.to: "slider_top_pad";
+			}
+		}
+		part { name: "timer_bg";
+			type: SWALLOW;
+			scale: 1;
+			description { state: "default" 0.0;
+				fixed: 0 1;
+				min: 266 60;
+				rel1 {
+				relative: 0.0 1.0;
+					to_y: "slider";
+				}
+				rel2 {
+					relative: 1.0 1.0;
+					to_y: "slider";
+				}
+				align: 0.0 0.0;
+			}
+		}
+		part { name: "timer_top_pad";
+			type: SPACER;
+			scale: 1;
+			description { state: "default" 0.0;
+				min: 0 7;
+				fixed: 0 1;
+				rel1 {
+				relative: 1.0 0.0;
+					to_x: "pad_top_left";
+					to_y: "timer_bg";
+				}
+				rel2 {
+					relative: 0.0 0.0;
+					to_x: "pad_right_bottom";
+					to_y: "timer_bg";
+				}
+				align: 0.5 0.0;
+			}
+		}
+		part {
+			name: "timer_label";
+			type: SWALLOW;
+			scale: 1;
+			description {
+				state: "default" 0.0;
+				fixed: 0 1;
+				min: 100 40;
+				max: 100 40;
+				rel1 {
+					relative: 0.0 1.0;
+					to: "timer_top_pad";
+					offset: 0 40;
+				}
+				rel2.to: "timer_top_pad";
+			}
+		}
+	}
+}
+
+	group {
+		name: "popup_wps_pin_layout";
+		inherit: "popup_pbc_button_layout";
+		parts {
+			 part {
+				name: "base";
+				type: RECT;
+				scale: 1;
+				description {
+					state: "default" 0.0;
+					visible: 0;
+					min: 480 260;
+					max: 480 260;
+					fixed: 1 0;
+				}
+			}
+			part { name: "elm.text.description";
+				type: TEXTBLOCK;
+				scale: 1;
+				description { state: "default" 0.0;
+					fixed: 0 1;
+					min: 266 120;
+					rel1 {
+						relative: 1.0 1.0;
+						to: "pad_top_left";
+					}
+					rel2 {
+						relative: 0.0 1.0;
+						to_x: "pad_right_bottom";
+						to_y: "pad_top_left";
+					}
+					text {
+						style: "popup_processing_style";
+						min: 0 1;
+					}
+					align: 0.0 0.0;
+				}
+			}
+		}
+	}
+
+	group {
+		name: "eap_dropdown_button";
+		parts {
+			part {
+				name: "bg";
+				type: SPACER;
+				scale: 1;
+				description {
+					state: "default" 0.0;
+					rel1.relative: 0.0 0.0;
+					rel2.relative: 1.0 1.0;
+				}
+			}
+			part {
+				name: "pad_l";
+				type: SPACER;
+				scale: 1;
+				description {
+					state: "default" 0.0;
+					min: 15 0;
+					fixed: 1 0;
+					align: 0.0 0.0;
+					rel1 {
+						relative: 0.0 0.0;
+						to: "bg";
+					}
+					rel2 {
+						relative: 0.0 1.0;
+						to: "bg";
+					}
+				 }
+			}
+			part {
+				name: "pad_r";
+				type: SPACER;
+				scale: 1;
+				description {
+					state: "default" 0.0;
+					min: 15 0;
+					fixed: 1 0;
+					align: 1.0 0.0;
+					rel1 {
+						relative: 1.0 0.0;
+					}
+					rel2 {
+						relative: 1.0 1.0;
+					}
+				}
+			}
+			part {
+				name: "btn";
+				type: SWALLOW;
+				scale: 1;
+				description {
+					state: "default" 0.0;
+					min: 0 58;
+					max: -1 58;
+					fixed: 1 1;
+					rel1 {relative: 1.0 0.0; to: "pad_l";}
+					rel2 {relative: 0.0 1.0; to: "pad_r";}
+					}
+			}
+		}
+	}
+
+	group { name: "elm/button/base/circle_custom";
+      script {
+         public mouse_down = 0;
+         public multi_down = 0;
+      }
+      images {
+         image: "wifi_icon_badge_container.png" COMP;
+      }
+      parts {
+         part { name: "background";
+            type: SPACER;
+            scale: 1;
+            description { state: "default" 0.0;
+               min: BUTTON_BG_SIZE;
+            }
+         }
+         part { name: "top_padding";
+            type: SPACER;
+            scale: 1;
+            description { state: "default" 0.0;
+               min: 0 0;
+               fixed: 0 1;
+               align: 0.5 0.0;
+               rel1.to : "background";
+               rel2.relative: 1.0 0.0;
+            }
+         }
+         part { name: "left_padding";
+            type: SPACER;
+            scale: 1;
+            description { state: "default" 0.0;
+               min: 0 0;
+               fixed: 1 0;
+               align: 0.0 0.0;
+               rel1.to: "background";
+               rel2 {
+                  to: "background";
+                  relative: 0.0 1.0;
+               }
+            }
+         }
+         part{ name: "right_padding";
+            type: SPACER;
+            scale: 1;
+            description { state: "default" 0.0;
+               min: 0 0;
+               fixed: 1 0;
+               align: 1.0 0.0;
+               rel1 {
+                  to: "background";
+                  relative: 1.0 0.0;
+               }
+               rel2.to: "background";
+            }
+         }
+         part { name: "base";
+            scale: 1;
+            description { state: "default" 0.0;
+               min: BUTTON_CIRCLE_SIZE;
+               max: BUTTON_CIRCLE_SIZE;
+               image.normal: "wifi_icon_badge_container.png";
+               color_class: "W015L6E1";
+               rel1 {
+                 relative: 0.0 1.0;
+                 to_y: "top_padding";
+               }
+               align: 0.75 0.5;
+            }
+            description { state: "pressed" 0.0;
+               inherit: "default" 0.0;
+               visible: 0 ;
+            }
+         }
+         part { name: "bg";
+            scale: 1;
+            description { state: "default" 0.0;
+               rel1.to: "base";
+               rel2.to: "base";
+               image.normal: "wifi_icon_badge_container.png";
+               color_class: "AO002";
+            }
+            description { state: "pressed" 0.0;
+               inherit: "default" 0.0;
+               color_class: "AO002P";
+            }
+            description { state: "disabled" 0.0;
+               inherit: "default" 0.0;
+               color_class: "AO002D";
+            }
+         }
+         /* part { name: "bg_effect";
+            scale: 1;
+            description { state: "default" 0.0;
+               rel1.to: "bg";
+               rel2.to: "bg";
+               image.normal: "core_button_effect_normal.#.png";
+            }
+            description { state: "pressed" 0.0;
+               inherit: "default" 0.0;
+               image.normal: "core_button_effect_pressed.#.png";
+            }
+             description { state: "disabled" 0.0;
+               inherit: "default" 0.0;
+               visible: 0;
+            }
+         } */
+         part { name: "elm.swallow.content";
+            type: SWALLOW;
+            scale: 1;
+            description { state: "default" 0.0;
+               min: BUTTON_CIRCLE_SIZE;
+               max: BUTTON_CIRCLE_SIZE;
+               rel1.to: "bg";
+               rel2.to: "bg";
+               color_class: "AO003";
+            }
+            description { state: "visible" 0.0;
+               inherit: "default" 0.0;
+               color_class: "AO003";
+            }
+            description { state: "disabled" 0.0;
+               inherit: "default" 0.0;
+               color_class: "AO003D";
+            }
+         }
+         part { name: "mid_padding";
+            type: SPACER;
+            scale: 1;
+            description { state: "default" 0.0;
+               min: 0 0;
+               max: -1 0;
+               fixed: 0 1;
+               rel1 {
+                 to_y : "base";
+                 relative: 0.0 1.0;
+               }
+               align: 0.5 0.0;
+            }
+         }
+          part { name: "bottom_padding";
+            type: SPACER;
+            scale: 1;
+            description { state: "default" 0.0;
+               min: 0 0;
+               rel2.to : "background";
+               rel1.relative: 0.0 1.0;
+               fixed: 0 1;
+               align: 0.0 1.0;
+            }
+         }
+         part { name: "event";
+            scale: 1;
+            type: RECT;
+            description { state: "default" 0.0;
+              rel1.to:"background";
+              rel2.to:"background";
+              color: 0 0 0 0;
+            }
+         }
+      }
+      programs {
+         program { name: "pressed";
+            signal: "mouse,down,1";
+            source: "event";
+            script {
+               if ((get_int(multi_down) == 0) && (get_int(mouse_down) == 0))
+                 {
+                     set_int(mouse_down, 1);
+                     run_program(PROGRAM:"button_press1");
+                 }
+            }
+         }
+         program { name: "button_press1";
+            script {
+               new st[31];
+               new Float:vl;
+               get_state(PART:"bg", st, 30, vl);
+               if (strcmp(st, "disabled")) {
+                  set_state(PART:"base", "pressed", 0.0);
+                  set_state(PART:"bg", "pressed", 0.0);
+                  //set_state(PART:"bg_effect", "pressed", 0.0);
+                  set_state(PART:"elm.swallow.content", "pressed", 0.0);
+                  emit("elm,action,press", "");
+               }
+            }
+         }
+         program { name: "unpressed";
+            signal: "mouse,up,1";
+            source: "event";
+            script {
+               if (get_int(mouse_down) == 1) {
+                 set_int(mouse_down, 0);
+                 run_program(PROGRAM:"button_unpress1");
+               }
+            }
+         }
+         program { name: "button_unpress1";
+            script {
+               new st[31];
+               new Float:vl;
+               get_state(PART:"bg", st, 30, vl);
+               if (strcmp(st, "disabled")) {
+                  set_state(PART:"base", "default", 0.0);
+                  set_state(PART:"bg", "default", 0.0);
+                  //set_state(PART:"bg_effect", "default", 0.0);
+                  set_state(PART:"elm.swallow.content", "default", 0.0);
+                  emit("elm,action,unpress", "");
+               }
+            }
+         }
+         program { name: "touch_snd";
+            signal: "mouse,clicked,1";
+            source: "event";
+            script {
+               new st[31];
+               new Float:vl;
+               if (get_int(multi_down) == 0) {
+                  get_state(PART:"bg", st, 30, vl);
+                  if (strcmp(st, "disabled")) {
+                     run_program(PROGRAM:"touch_sound");
+                     emit("elm,action,click", "");
+                  }
+               }
+            }
+         }
+         program { name: "touch_sound";
+            action: RUN_PLUGIN "touch_sound";
+         }
+         program { name: "icon_show";
+            signal: "elm,state,icon,visible";
+            source: "elm";
+            action: STATE_SET "visible" 0.0;
+            target: "elm.swallow.content";
+         }
+         program { name: "icon_hide";
+            signal: "elm,state,icon,hidden";
+            source: "elm";
+            action: STATE_SET "default" 0.0;
+            target: "elm.swallow.content";
+         }
+         program { name: "disable";
+            signal: "elm,state,disabled";
+            source: "elm";
+            action: STATE_SET "disabled" 0.0;
+            target: "bg";
+            //target: "bg_effect";
+            target: "elm.swallow.content";
+         }
+         program { name: "enable";
+            signal: "elm,state,enabled";
+            source: "elm";
+            action: STATE_SET "default" 0.0;
+            target: "bg";
+            //target: "bg_effect";
+            target: "elm.swallow.content";
+         }
+         program { name: "multi_down";
+            signal: "elm,action,multi,down";
+            source: "elm";
+            script {
+               set_int(multi_down, 1);
+            }
+         }
+         program { name: "multi_up";
+            signal: "elm,action,multi,up";
+            source: "elm";
+            script {
+               set_int(multi_down, 0);
+            }
+         }
+      }
+   }
+}

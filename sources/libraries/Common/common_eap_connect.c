@@ -1,41 +1,61 @@
 /*
-*  Wi-Fi syspopup
-*
-* Copyright 2012  Samsung Electronics Co., Ltd
+ * Wi-Fi
+ *
+ * Copyright 2012 Samsung Electronics Co., Ltd
+ *
+ * Licensed under the Flora License, Version 1.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.tizenopensource.org/license
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ */
 
-* Licensed under the Flora License, Version 1.0 (the "License");
-* you may not use this file except in compliance with the License.
-* You may obtain a copy of the License at
-
-* http://www.tizenopensource.org/license
-
-* Unless required by applicable law or agreed to in writing, software
-* distributed under the License is distributed on an "AS IS" BASIS,
-* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-* See the License for the specific language governing permissions and
-* limitations under the License.
-*
-*/
-
+#include <openssl/x509.h>
+#include <openssl/pem.h>
+#include <cert-service.h>
+#include <cert-svc/cpkcs12.h>
+#include <cert-svc/cprimitives.h>
+#include <ui-gadget.h>
+#include <efl_assist.h>
+#include <utilX.h>
+#include <Ecore_X.h>
+#include <vconf-keys.h>
+#include <glib/gstdio.h>
 
 #include "common.h"
+#include "ug_wifi.h"
 #include "common_eap_connect.h"
 #include "i18nmanager.h"
 #include "common_utils.h"
 #include "common_ip_info.h"
-#include "common_datamodel.h"
 
-#define COMMON_EAP_CONNECT_POPUP_W			656
-#define COMMON_EAP_CONNECT_POPUP_H			918
+#define GENLIST_ITEM_HEIGHT				96
 
-#define EAP_CONNECT_POPUP			"popup_view"
+#define EAP_TLS_PATH			"/tmp/"
+#define EAP_TLS_CA_CERT_PATH		"ca_cert.pem"
+#define EAP_TLS_USER_CERT_PATH		"user_cert.pem"
+#define EAP_TLS_PRIVATEKEY_PATH		"privatekey.pem"
 
-#define MAX_EAP_PROVISION_NUMBER			3
+#define EAP_TYPE_UNKNOWN		"UNKNOWN"
+#define EAP_TYPE_PEAP			"PEAP"
+#define EAP_TYPE_TLS				"TLS"
+#define EAP_TYPE_TTLS			"TTLS"
+#define EAP_TYPE_SIM				"SIM"
+#define EAP_TYPE_AKA				"AKA"
 
-#define EAP_METHOD_EXP_MENU_ID				0
-#define EAP_PROVISION_EXP_MENU_ID			1
-#define EAP_AUTH_TYPE_EXP_MENU_ID			2
-
+#define EAP_AUTH_TYPE_PAP			"PAP"
+#define EAP_AUTH_TYPE_MSCHAP				"MSCHAP"
+#define EAP_AUTH_TYPE_MSCHAPV2			"MSCHAPV2"
+#define EAP_AUTH_TYPE_GTC				"GTC"
+#define EAP_AUTH_TYPE_MD5				"MD5"
+#define VCONF_TELEPHONY_DEFAULT_DATA_SERVICE	"db/telephony/dualsim/default_data_service"
 
 typedef enum {
 	EAP_SEC_TYPE_UNKNOWN  = 0,
@@ -44,7 +64,6 @@ typedef enum {
 	EAP_SEC_TYPE_TTLS,
 	EAP_SEC_TYPE_SIM,
 	EAP_SEC_TYPE_AKA,
-	EAP_SEC_TYPE_FAST,
 	EAP_SEC_TYPE_NULL
 } eap_type_t;
 
@@ -58,382 +77,779 @@ typedef enum {
 	EAP_SEC_AUTH_NULL
 } eap_auth_t;
 
+typedef enum {
+	EAP_TYPE_BTN = 0,
+	EAP_AUTH_BTN,
+	EAP_CERT_BTN,
+} eap_btn_t;
 
 typedef struct {
-	char depth;
 	char *name;
 	Elm_Genlist_Item_Type flags;
 } _Expand_List_t;
 
+typedef struct {
+	int btn_click[3];
+	Evas_Object *btn_obj[3];
+} _Btn_click_t;
+
 struct eap_info_list {
-	view_datamodel_eap_info_t *data_object;
+	wifi_ap_h ap;
+	eap_type_t eap_type;
+	Elm_Object_Item *eap_method_item;
+	Elm_Object_Item *eap_auth_item;
+	Elm_Object_Item *user_cert_item;
+	Elm_Object_Item *id_item;
 	Elm_Object_Item *pswd_item;
 };
 
 static const _Expand_List_t list_eap_type[] = {
-	{1, "UNKNOWN", ELM_GENLIST_ITEM_NONE},
-	{1, "PEAP", ELM_GENLIST_ITEM_NONE},
-	{1, "TLS", ELM_GENLIST_ITEM_NONE},
-	{1, "TTLS", ELM_GENLIST_ITEM_NONE},
-	{1, "SIM", ELM_GENLIST_ITEM_NONE},
-	{1, "AKA", ELM_GENLIST_ITEM_NONE},
-	{1, "FAST", ELM_GENLIST_ITEM_NONE},
-	{1, NULL, ELM_GENLIST_ITEM_NONE}
+	{"UNKNOWN", ELM_GENLIST_ITEM_NONE},
+	{"PEAP", ELM_GENLIST_ITEM_NONE},
+	{"TLS", ELM_GENLIST_ITEM_NONE},
+	{"TTLS", ELM_GENLIST_ITEM_NONE},
+	{"SIM", ELM_GENLIST_ITEM_NONE},
+	{"AKA", ELM_GENLIST_ITEM_NONE},
+	{NULL, ELM_GENLIST_ITEM_NONE}
 };
 
 static const _Expand_List_t list_eap_auth[] = {
-	{1, "NONE", ELM_GENLIST_ITEM_NONE},
-	{1, "PAP", ELM_GENLIST_ITEM_NONE},
-	{1, "MSCHAP", ELM_GENLIST_ITEM_NONE},
-	{1, "MSCHAPV2", ELM_GENLIST_ITEM_NONE},
-	{1, "GTC", ELM_GENLIST_ITEM_NONE},
-	{1, "MD5", ELM_GENLIST_ITEM_NONE},
-	{1, NULL, ELM_GENLIST_ITEM_NONE}
+	{"IDS_ST_BODY_NONE", ELM_GENLIST_ITEM_NONE},
+	{"PAP", ELM_GENLIST_ITEM_NONE},
+	{"MSCHAP", ELM_GENLIST_ITEM_NONE},
+	{"MSCHAPV2", ELM_GENLIST_ITEM_NONE},
+	{"GTC", ELM_GENLIST_ITEM_NONE},
+	{NULL, ELM_GENLIST_ITEM_NONE}
 };
 
-static Evas_Object *radio_main = NULL;
+static unsigned short selected_cert = 0;
 
 struct common_eap_connect_data {
-	int expandable_list_index;
-
-	Elm_Genlist_Item_Class *eap_type_itc;
-	Elm_Genlist_Item_Class *eap_type_sub_itc;
-	Elm_Genlist_Item_Class *eap_provision_itc;
-	Elm_Genlist_Item_Class *eap_provision_sub_itc;
-	Elm_Genlist_Item_Class *eap_auth_itc;
-	Elm_Genlist_Item_Class *eap_ca_cert_itc;
-	Elm_Genlist_Item_Class *eap_user_cert_itc;
-	Elm_Genlist_Item_Class *eap_auth_sub_itc;
-
 	Elm_Object_Item *eap_type_item;
-	Elm_Object_Item *eap_provision_item;
 	Elm_Object_Item *eap_auth_item;
-	Elm_Object_Item *eap_ca_cert_item;
 	Elm_Object_Item *eap_user_cert_item;
 	Elm_Object_Item *eap_id_item;
-	Elm_Object_Item *eap_anonyid_item;
 	Elm_Object_Item *eap_pw_item;
+	Elm_Object_Item *eap_chkbox_item;
 	Evas_Object *popup;
-
+	Evas_Object *sub_popup;
+	Evas_Object *info_popup;
 	Evas_Object *genlist;
 	Eina_Bool eap_done_ok;
 	Evas_Object *win;
+	Evas_Object *conf;
 	const char *str_pkg_name;
-	view_datamodel_eap_info_t *data_object;
-	ip_info_list_t *ip_info_list;
-	void (*eap_closed_cb)(void);
-	Elm_Object_Item* navi_it;
+	wifi_ap_h ap;
+	char *cert_alias;
+	char *ca_cert_path;
+	char *user_cert_path;
+	char *privatekey_path;
+	GSList *cert_candidates;
+	Evas_Object *confirm;
+	char *ssid;
+
+	int key_status;
+
+	bool is_hidden;
 };
 
-static void _gl_eap_provision_sel(void *data, Evas_Object *obj, void *event_info);
-static void _gl_eap_auth_sel(void *data, Evas_Object *obj, void *event_info);
-static void _create_and_update_list_items_based_on_rules(eap_type_t new_type, common_eap_connect_data_t *eap_data);
-static void _delete_eap_entry_items(common_eap_connect_data_t *eap_data);
-static eap_type_t __common_eap_connect_popup_get_eap_type(view_datamodel_eap_info_t *data_object);
-static wlan_eap_type_t __common_eap_connect_popup_get_wlan_eap_type(eap_type_t eap_type);
-static eap_auth_t __common_eap_connect_popup_get_auth_type(view_datamodel_eap_info_t *data_object);
-static wlan_eap_auth_type_t __common_eap_connect_popup_get_wlan_auth_type(eap_auth_t auth_type);
+static Elm_Genlist_Item_Class g_eap_type_itc;
+static Elm_Genlist_Item_Class g_eap_auth_itc;
+static Elm_Genlist_Item_Class g_eap_user_cert_itc;
+static Elm_Genlist_Item_Class g_eap_entry_itc;
+static Elm_Genlist_Item_Class g_eap_chkbox_itc;
+static Evas_Object *g_pwd_entry = NULL;
+static gboolean keypad_state = FALSE;
+static _Btn_click_t click;
 
-static void _gl_eap_type_sel(void *data, Evas_Object *obj, void *event_info)
+static void (*_eap_view_deref_cb)(void) = NULL;
+
+static void _create_and_update_list_items_based_on_rules(eap_type_t new_type, eap_connect_data_t *eap_data);
+static void _update_eap_id_item_enter_key(eap_connect_data_t *eap_data);
+static void _delete_eap_auth_item(eap_connect_data_t *eap_data);
+static void _delete_eap_user_cert_item(eap_connect_data_t *eap_data);
+static void _delete_eap_id_item(eap_connect_data_t *eap_data);
+static void _delete_eap_pw_items(eap_connect_data_t *eap_data);
+static void _delete_eap_entry_items(eap_connect_data_t *eap_data);
+static eap_type_t __common_eap_connect_popup_get_eap_type(wifi_ap_h ap);
+static eap_auth_t __common_eap_connect_popup_get_auth_type(wifi_ap_h ap);
+static wifi_eap_type_e __common_eap_connect_popup_get_wlan_eap_type(eap_type_t eap_type);
+static wifi_eap_auth_type_e __common_eap_connect_popup_get_wlan_auth_type(eap_auth_t auth_type);
+static void _info_popup_ok_cb(void *data, Evas_Object *obj, void *event_info);
+static gboolean __cert_extract_files(const char *cert_alias,eap_connect_data_t *eap_data);
+static void _eap_popup_keypad_off_cb(void *data, Evas_Object *obj,
+		void *event_info);
+static void _eap_popup_keypad_on_cb(void *data, Evas_Object *obj,
+		void *event_info);
+
+static void ctxpopup_dismissed_cb(void *data, Evas_Object *obj,
+		void *event_info)
 {
-	common_eap_connect_data_t *eap_data = (common_eap_connect_data_t *) data;
-	Elm_Object_Item *item = (Elm_Object_Item *)event_info;
-	Eina_Bool expanded = EINA_FALSE;
-	if (item)
-		elm_genlist_item_selected_set(item, EINA_FALSE);
+	eap_connect_data_t *eap_data = (eap_connect_data_t *)data;
 
-	expanded = elm_genlist_item_expanded_get(item);
-	if (expanded == FALSE) {
-		eap_data->expandable_list_index = EAP_METHOD_EXP_MENU_ID;
+	if (eap_data->sub_popup != NULL) {
+		evas_object_del(eap_data->sub_popup);
+		eap_data->sub_popup = NULL;
+	}
+}
+
+static void cert_ctxpopup_dismissed_cb(void *data, Evas_Object *obj,
+		void *event_info)
+{
+	eap_connect_data_t *eap_data = (eap_connect_data_t *)data;
+
+	if (eap_data->sub_popup != NULL) {
+		evas_object_del(eap_data->sub_popup);
+		eap_data->sub_popup = NULL;
 	}
 
-	/* Expand/Contract the sub items list */
-	elm_genlist_item_expanded_set(item, !expanded);
+	if (eap_data->cert_candidates != NULL) {
+		g_slist_free_full(eap_data->cert_candidates, g_free);
+		eap_data->cert_candidates = NULL;
+	}
+}
+
+static void move_dropdown(eap_connect_data_t *eap_data, Evas_Object *obj)
+{
+	Evas_Coord x, y, w , h;
+
+	evas_object_geometry_get(obj, &x, &y, &w, &h);
+	evas_object_move(eap_data->sub_popup, x + (w / 2), y + h);
+}
+
+static void _gl_editbox_sel_cb(void *data, Evas_Object *obj, void *event_info)
+{
+	Elm_Object_Item *item = (Elm_Object_Item *)event_info;
+	elm_genlist_item_selected_set(item, FALSE);
+}
+
+static void _select_confirm_popup_ok_cb(void *data, Evas_Object *obj, void *event_info)
+{
+	eap_connect_data_t *eap_data = (eap_connect_data_t *)data;
+	retm_if(eap_data == NULL);
+
+	if (eap_data->confirm != NULL) {
+		evas_object_del(eap_data->confirm);
+		eap_data->confirm = NULL;
+	}
+}
+
+static void __gl_eap_type_sub_sel_language_changed_cb(void *data, Evas_Object *obj, void *event_info)
+{
+	__COMMON_FUNC_ENTER__;
+	retm_if(obj == NULL);
+
+	int val = (int)data;
+	char str[1024];
+	char *txt = NULL;
+
+	g_snprintf(str, 1024, sc(PACKAGE,I18N_TYPE_SIM_method_desc_popup),
+			(val == 1) ? "SIM2" : "SIM1");
+	txt = evas_textblock_text_utf8_to_markup(NULL, str);
+	elm_object_domain_translatable_text_set(obj, PACKAGE, txt);
+	g_free(txt);
+	__COMMON_FUNC_EXIT__;
 }
 
 static void _gl_eap_type_sub_sel(void *data, Evas_Object *obj, void *event_info)
 {
-	common_eap_connect_data_t *eap_data = (common_eap_connect_data_t *) data;
-	Elm_Object_Item *item = (Elm_Object_Item *)event_info;
-	Elm_Object_Item *parent_item = elm_genlist_item_parent_get(item);
+	eap_connect_data_t *eap_data = (eap_connect_data_t *) data;
+	eap_type_t sel_index = EAP_SEC_TYPE_UNKNOWN;
+	char buf[1024] = {'\0'};
 
-	eap_type_t pre_index = __common_eap_connect_popup_get_eap_type(eap_data->data_object);
-	eap_type_t selected_item_index = elm_genlist_item_index_get(item) - elm_genlist_item_index_get(parent_item);
+	eap_type_t pre_index = __common_eap_connect_popup_get_eap_type(eap_data->ap);
+	const char *label = elm_object_item_text_get((Elm_Object_Item *) event_info);
 
-	DEBUG_LOG( UG_NAME_NORMAL, "previous index = %d; selected index = %d;", pre_index, selected_item_index);
+	if(label != NULL){
+		if (strcmp(label, EAP_TYPE_UNKNOWN) == 0)
+			sel_index = EAP_SEC_TYPE_UNKNOWN;
+		else if (strcmp(label, EAP_TYPE_PEAP) == 0)
+			sel_index = EAP_SEC_TYPE_PEAP;
+		else if (strcmp(label, EAP_TYPE_TLS) == 0)
+			sel_index = EAP_SEC_TYPE_TLS;
+		else if (strcmp(label, EAP_TYPE_TTLS) == 0)
+			sel_index = EAP_SEC_TYPE_TTLS;
+		else if (strcmp(label, EAP_TYPE_SIM) == 0)
+			sel_index = EAP_SEC_TYPE_SIM;
+		else if (strcmp(label, EAP_TYPE_AKA) == 0)
+			sel_index = EAP_SEC_TYPE_AKA;
+	}
 
-	/* Contract the sub items list */
-	elm_genlist_item_expanded_set(parent_item, EINA_FALSE);
+	DEBUG_LOG(UG_NAME_NORMAL, "previous index = %d; selected index = %d;",
+			pre_index, sel_index);
+	if ((pre_index != EAP_SEC_TYPE_SIM && sel_index == EAP_SEC_TYPE_SIM) ||
+			(pre_index != EAP_SEC_TYPE_AKA && sel_index == EAP_SEC_TYPE_AKA)) {
+		popup_btn_info_t popup_data;
+		int value = -1;
+		value = common_util_get_system_registry(
+				VCONF_TELEPHONY_DEFAULT_DATA_SERVICE);
 
-	if (pre_index != selected_item_index) {
-//		selected_item_index = __common_eap_connect_popup_get_eap_type(__common_eap_connect_popup_get_wlan_eap_type(selected_item_index));
-		_create_and_update_list_items_based_on_rules(selected_item_index, data);
-		view_detail_datamodel_eap_method_set(eap_data->data_object, __common_eap_connect_popup_get_wlan_eap_type(selected_item_index));
-		DEBUG_LOG( UG_NAME_NORMAL, "set to new index = %d", view_detail_datamodel_eap_method_get(eap_data->data_object));
-		elm_genlist_item_update(parent_item);
+		memset(&popup_data, 0, sizeof(popup_data));
+		g_snprintf(buf, sizeof(buf),
+				sc(PACKAGE, I18N_TYPE_SIM_method_desc_popup),
+				(value == 1) ? "SIM2" : "SIM1");
+		popup_data.title_txt = "IDS_WIFI_BODY_EAP_METHOD";
+		popup_data.info_txt = evas_textblock_text_utf8_to_markup(NULL, buf);
+		popup_data.btn1_txt = "IDS_WIFI_SK2_OK";
+		popup_data.btn1_cb = _select_confirm_popup_ok_cb;
+		popup_data.btn1_data = eap_data;
+
+		eap_data->confirm = common_utils_show_info_popup(eap_data->win,
+				&popup_data);
+		g_free(popup_data.info_txt);
+		evas_object_smart_callback_add(eap_data->confirm, "language,changed",
+				__gl_eap_type_sub_sel_language_changed_cb, (void *)value);
+
+		_create_and_update_list_items_based_on_rules(sel_index, data);
+		wifi_eap_type_e type;
+		wifi_ap_set_eap_type(eap_data->ap,
+				__common_eap_connect_popup_get_wlan_eap_type(sel_index));
+		wifi_ap_get_eap_type(eap_data->ap, &type);
+		DEBUG_LOG(UG_NAME_NORMAL, "set to new index = %d", type);
+	}
+
+	if (eap_data->sub_popup != NULL) {
+		evas_object_del(eap_data->sub_popup);
+		eap_data->sub_popup = NULL;
+	}
+
+	if (pre_index != sel_index) {
+		wifi_eap_type_e type;
+		wifi_ap_set_eap_type(eap_data->ap,
+				__common_eap_connect_popup_get_wlan_eap_type(sel_index));
+		wifi_ap_get_eap_type(eap_data->ap, &type);
+		DEBUG_LOG(UG_NAME_NORMAL, "set to new index = %d", type);
+		_create_and_update_list_items_based_on_rules(sel_index, eap_data);
+
+		if (sel_index == EAP_SEC_TYPE_PEAP) {
+			/* If previous auth type was PAP or MSCHAP & when PEAP
+			 * EAP method is selected, then set back MSCHAPV2
+			 */
+			eap_auth_t auth_type;
+
+			auth_type = __common_eap_connect_popup_get_auth_type(eap_data->ap);
+			if (auth_type == EAP_SEC_AUTH_PAP ||
+					auth_type == EAP_SEC_AUTH_MSCHAP) {
+				wifi_ap_set_eap_auth_type(eap_data->ap,
+						WIFI_EAP_AUTH_TYPE_MSCHAPV2);
+
+				if(eap_data->eap_auth_item != NULL)
+					elm_genlist_item_update(eap_data->eap_auth_item);
+			}
+		}
 	} else {
-		DEBUG_LOG( UG_NAME_NORMAL, "pre_index == selected_item_index[%d]", selected_item_index);
+		DEBUG_LOG(UG_NAME_NORMAL, "pre_index == sel_index[%d]",
+				sel_index);
+	}
+
+	if(eap_data->eap_type_item != NULL)
+		elm_genlist_item_update(eap_data->eap_type_item);
+}
+
+static CertSvcStringList stringList;
+static CertSvcInstance instance;
+
+static void _gl_eap_user_cert_sel(void *data, Evas_Object *obj,
+		void *event_info)
+{
+	eap_connect_data_t *eap_data = (eap_connect_data_t *) data;
+	const char *cert_alias = elm_object_item_text_get((Elm_Object_Item *) event_info);
+
+	if (!eap_data)
+		return;
+
+	if (eap_data->sub_popup != NULL) {
+		evas_object_del(eap_data->sub_popup);
+		eap_data->sub_popup = NULL;
+	}
+
+	if (eap_data->ca_cert_path) {
+		g_unlink(eap_data->ca_cert_path);
+		eap_data->ca_cert_path = NULL;
+	}
+	if (eap_data->user_cert_path) {
+		g_unlink(eap_data->user_cert_path);
+		eap_data->user_cert_path = NULL;
+	}
+	if (eap_data->privatekey_path) {
+		g_unlink(eap_data->privatekey_path);
+		eap_data->privatekey_path = NULL;
+	}
+
+	if(cert_alias != NULL){
+		if (strcmp(cert_alias, sc(PACKAGE, I18N_TYPE_None)) == 0) {
+			if (eap_data->cert_alias != NULL) {
+				g_free(eap_data->cert_alias);
+				eap_data->cert_alias = NULL;
+			}
+		} else if (__cert_extract_files(cert_alias, eap_data)) {
+			if (eap_data->cert_alias != NULL) {
+				g_free(eap_data->cert_alias);
+				eap_data->cert_alias = NULL;
+			}
+			eap_data->cert_alias = g_strdup(cert_alias);
+		}
+	}
+
+	if(eap_data->eap_user_cert_item != NULL)
+		elm_genlist_item_update(eap_data->eap_user_cert_item);
+
+	if (eap_data->cert_candidates != NULL) {
+		g_slist_free_full(eap_data->cert_candidates, g_free);
+		eap_data->cert_candidates = NULL;
 	}
 }
 
-static void _gl_eap_provision_sel(void *data, Evas_Object *obj, void *event_info)
+static void _create_eap_cert_list(eap_connect_data_t *eap_data,
+		Evas_Object *btn)
 {
-	common_eap_connect_data_t *eap_data = (common_eap_connect_data_t *) data;
+	int list_length = 0;
+	int index = 0;
+	Evas_Object *ctxpopup;
+	Elm_Object_Item *it = NULL;
+
+	if (!eap_data)
+		return;
+
+	if (eap_data->sub_popup != NULL) {
+		evas_object_del(eap_data->sub_popup);
+		eap_data->sub_popup = NULL;
+	}
+
+	ctxpopup = elm_ctxpopup_add(eap_data->win);
+	eap_data->sub_popup = ctxpopup;
+	elm_object_style_set(ctxpopup, "dropdown/list");
+	ea_object_event_callback_add(ctxpopup, EA_CALLBACK_BACK,
+			cert_ctxpopup_dismissed_cb, NULL);
+	evas_object_smart_callback_add(ctxpopup,"dismissed",
+			cert_ctxpopup_dismissed_cb, eap_data);
+	elm_ctxpopup_direction_priority_set(ctxpopup,
+			ELM_CTXPOPUP_DIRECTION_DOWN,
+			ELM_CTXPOPUP_DIRECTION_UNKNOWN,
+			ELM_CTXPOPUP_DIRECTION_UNKNOWN,
+			ELM_CTXPOPUP_DIRECTION_UNKNOWN);
+
+	if (certsvc_instance_new(&instance) == CERTSVC_FAIL) {
+		INFO_LOG(UG_NAME_ERR, "Failed to create new instance");
+		return;
+	}
+
+	certsvc_pkcs12_get_id_list(instance, &stringList);
+	certsvc_string_list_get_length(stringList, &list_length);
+
+	if (eap_data->cert_candidates) {
+		g_slist_free_full(eap_data->cert_candidates, g_free);
+		eap_data->cert_candidates = NULL;
+	}
+
+	it = elm_ctxpopup_item_append(ctxpopup, "IDS_ST_BODY_NONE", NULL,
+			_gl_eap_user_cert_sel, eap_data);
+	elm_object_item_domain_text_translatable_set(it,
+			PACKAGE, EINA_TRUE);
+
+	for (index = 0; index < list_length; index++) {
+		char *char_buffer = NULL;
+		CertSvcString buffer;
+		int ret = certsvc_string_list_get_one(stringList, index, &buffer);
+		if (ret == CERTSVC_SUCCESS) {
+			char_buffer = g_strndup(buffer.privateHandler, buffer.privateLength);
+			if (char_buffer == NULL)
+				goto exit;
+
+			elm_ctxpopup_item_append(ctxpopup, char_buffer, NULL,
+					_gl_eap_user_cert_sel, eap_data);
+			eap_data->cert_candidates =
+					g_slist_prepend(eap_data->cert_candidates, char_buffer);
+
+			certsvc_string_free(buffer);
+		} else
+			ERROR_LOG(UG_NAME_NORMAL, "Failed to get certificates");
+	}
+
+	move_dropdown(eap_data, btn);
+	evas_object_show(ctxpopup);
+
+exit:
+	certsvc_instance_free(instance);
+}
+
+static void _gl_eap_cert_list_btn_cb(void *data, Evas_Object *obj,
+		void *event_info)
+{
 	Elm_Object_Item *item = (Elm_Object_Item *)event_info;
-	Eina_Bool expanded = EINA_FALSE;
+	eap_connect_data_t *eap_data = (eap_connect_data_t *) data;
+
 	if (item)
 		elm_genlist_item_selected_set(item, EINA_FALSE);
 
-	expanded = elm_genlist_item_expanded_get(item);
-	if (expanded == FALSE) {
-		eap_data->expandable_list_index = EAP_PROVISION_EXP_MENU_ID;
+	if (keypad_state == FALSE) {
+		_create_eap_cert_list(eap_data, obj);
+
+		click.btn_click[EAP_CERT_BTN] = FALSE;
+		click.btn_obj[EAP_CERT_BTN] = NULL;
+	} else {
+		click.btn_click[EAP_CERT_BTN] = TRUE;
+		click.btn_obj[EAP_CERT_BTN] = obj;
+	}
+}
+
+static char *_gl_eap_user_cert_text_get(void *data, Evas_Object *obj, const char *part)
+{
+	eap_connect_data_t *eap_data = (eap_connect_data_t *)data;
+
+	if (!g_strcmp0(part, "elm.text.main")) {
+		return g_strdup(sc(eap_data->str_pkg_name,
+				I18N_TYPE_User_Certificate));
 	}
 
-	/* Expand/Contract the sub items list */
-	elm_genlist_item_expanded_set(item, !expanded);
+	return NULL;
 }
 
-static void _gl_eap_provision_sub_sel(void *data, Evas_Object *obj, void *event_info)
+static Evas_Object *_gl_eap_user_cert_content_get(void *data,
+		Evas_Object *obj, const char *part)
 {
-	common_eap_connect_data_t *eap_data = (common_eap_connect_data_t *) data;
-	Elm_Object_Item *item = (Elm_Object_Item *)event_info;
-	Elm_Object_Item *parent_item = elm_genlist_item_parent_get(item);
-	int selected_item_index = elm_genlist_item_index_get(item) - elm_genlist_item_index_get(parent_item) - 1;
+	eap_connect_data_t *eap_data = (eap_connect_data_t *)data;
+	Evas_Object *btn = NULL;
+	Evas_Object *ly = NULL;
+	char buf[100];
 
-	view_detail_datamodel_eap_provision_set(eap_data->data_object, selected_item_index);
+	if (!strcmp(part, "elm.icon.entry")) {
+		ly = elm_layout_add(obj);
+		elm_layout_file_set(ly, CUSTOM_EDITFIELD_PATH,
+				"eap_dropdown_button");
+		btn = elm_button_add(obj);
 
-	/* Contract the sub items list */
-	elm_genlist_item_expanded_set(parent_item, EINA_FALSE);
+		if (eap_data->cert_alias == NULL) {
+			g_snprintf(buf, sizeof(buf), "<align=left>%s</align>",
+					sc(eap_data->str_pkg_name, I18N_TYPE_None));
+		} else {
+			g_snprintf(buf, sizeof(buf), "<align=left>%s</align>",
+					eap_data->cert_alias);
+		}
 
-	elm_genlist_item_update(parent_item);
+		elm_object_domain_translatable_text_set(btn, PACKAGE, buf);
+		elm_object_style_set(btn, "dropdown/label");
+		evas_object_propagate_events_set(btn, EINA_FALSE);
+		evas_object_size_hint_weight_set(btn, EVAS_HINT_EXPAND,
+				EVAS_HINT_EXPAND);
+		evas_object_size_hint_align_set(btn, EVAS_HINT_FILL,
+				EVAS_HINT_FILL);
+		evas_object_smart_callback_add(btn, "clicked",
+				_gl_eap_cert_list_btn_cb, eap_data);
+
+		elm_layout_content_set(ly, "btn", btn);
+		return ly;
+	}
+	return NULL;
 }
 
-static void _gl_eap_auth_sel(void *data, Evas_Object *obj, void *event_info)
+static void _gl_eap_item_sel_cb(void *data, Evas_Object *obj, void *event_info)
 {
-	common_eap_connect_data_t *eap_data = (common_eap_connect_data_t *) data;
 	Elm_Object_Item *item = (Elm_Object_Item *)event_info;
-	Eina_Bool expanded = EINA_FALSE;
+
+	if (item) {
+		elm_genlist_item_selected_set(item, EINA_FALSE);
+	}
+}
+
+static void _create_eap_type_list(eap_connect_data_t *eap_data,
+		Evas_Object *btn)
+{
+	Evas_Object *ctxpopup = NULL;
+	int i = EAP_SEC_TYPE_PEAP;
+	int sim_state = VCONFKEY_TELEPHONY_SIM_UNKNOWN;
+	Elm_Object_Item *it = NULL;
+
+	sim_state = common_utils_get_sim_state();
+
+	if (eap_data->sub_popup != NULL) {
+		evas_object_del(eap_data->sub_popup);
+	}
+
+	ctxpopup = elm_ctxpopup_add(eap_data->win);
+	eap_data->sub_popup = ctxpopup;
+	elm_object_style_set(ctxpopup, "dropdown/list");
+	ea_object_event_callback_add(ctxpopup, EA_CALLBACK_BACK,
+			ea_ctxpopup_back_cb, NULL);
+	evas_object_smart_callback_add(ctxpopup,"dismissed",
+			ctxpopup_dismissed_cb, eap_data);
+	elm_ctxpopup_direction_priority_set(ctxpopup,
+			ELM_CTXPOPUP_DIRECTION_DOWN,
+			ELM_CTXPOPUP_DIRECTION_UNKNOWN,
+			ELM_CTXPOPUP_DIRECTION_UNKNOWN,
+			ELM_CTXPOPUP_DIRECTION_UNKNOWN);
+
+	/* eap_type = __common_eap_connect_popup_get_eap_type(eap_data->ap); */
+	while (list_eap_type[i].name != NULL) {
+		it = elm_ctxpopup_item_append(ctxpopup, list_eap_type[i].name,
+				NULL, _gl_eap_type_sub_sel, eap_data);
+
+		if ((i == EAP_SEC_TYPE_SIM || i == EAP_SEC_TYPE_AKA) &&
+				sim_state != VCONFKEY_TELEPHONY_SIM_INSERTED) {
+			elm_object_item_disabled_set(it, EINA_TRUE);
+		}
+
+		i++;
+	}
+	move_dropdown(eap_data, btn);
+	evas_object_show(ctxpopup);
+}
+
+static void _gl_eap_type_btn_cb(void *data, Evas_Object *obj, void *event_info)
+{
+	Elm_Object_Item *item = (Elm_Object_Item *)event_info;
+	eap_connect_data_t *eap_data = (eap_connect_data_t *) data;
+
 	if (item)
 		elm_genlist_item_selected_set(item, EINA_FALSE);
 
-	expanded = elm_genlist_item_expanded_get(item);
-	if (expanded == FALSE) {
-		eap_data->expandable_list_index = EAP_AUTH_TYPE_EXP_MENU_ID;
+	if (keypad_state == FALSE) {
+		_create_eap_type_list(eap_data, obj);
+
+		click.btn_click[EAP_TYPE_BTN] = FALSE;
+		click.btn_obj[EAP_TYPE_BTN] = NULL;
+	} else {
+		click.btn_click[EAP_TYPE_BTN] = TRUE;
+		click.btn_obj[EAP_TYPE_BTN] = obj;
 	}
-	/* Expand/Contract the sub items list */
-	elm_genlist_item_expanded_set(item, !expanded);
-}
-
-static void _gl_eap_auth_sub_sel(void *data, Evas_Object *obj, void *event_info)
-{
-	common_eap_connect_data_t *eap_data = (common_eap_connect_data_t *) data;
-	Elm_Object_Item *item = (Elm_Object_Item *)event_info;
-	Elm_Object_Item *parent_item = elm_genlist_item_parent_get(item);
-	eap_auth_t selected_item_index = elm_genlist_item_index_get(item) - elm_genlist_item_index_get(parent_item) - 1;
-
-	view_detail_datamodel_eap_auth_set(eap_data->data_object, __common_eap_connect_popup_get_wlan_auth_type(selected_item_index));
-
-	/* Contract the sub items list */
-	elm_genlist_item_expanded_set(parent_item, EINA_FALSE);
-
-	elm_genlist_item_update(parent_item);
 }
 
 static char *_gl_eap_type_text_get(void *data, Evas_Object *obj, const char *part)
 {
-	common_eap_connect_data_t *eap_data = (common_eap_connect_data_t *)data;
-	eap_type_t sel_sub_item_id = __common_eap_connect_popup_get_eap_type(eap_data->data_object);
-	DEBUG_LOG(UG_NAME_NORMAL, "current selected subitem = %d", sel_sub_item_id);
+	eap_connect_data_t *eap_data = (eap_connect_data_t *)data;
 
-	if (!strcmp(part, "elm.text.1")) {
-		return g_strdup(list_eap_type[sel_sub_item_id].name);
-	} else if (!strcmp(part, "elm.text.2")) {
+	if (!g_strcmp0(part, "elm.text.main")) {
 		return g_strdup(sc(eap_data->str_pkg_name, I18N_TYPE_EAP_method));
 	}
 
 	return NULL;
 }
 
-static char *_gl_eap_subtext_get(void *data, Evas_Object *obj, const char *part)
+static Evas_Object *_gl_eap_type_content_get(void *data,
+		Evas_Object *obj, const char *part)
 {
-	wlan_eap_type_t eap_type  = (wlan_eap_type_t)elm_radio_state_value_get(data);
-	if (!strcmp(part, "elm.text")) {
-		return g_strdup(list_eap_type[eap_type].name);
-	}
+	eap_connect_data_t *eap_data = (eap_connect_data_t *)data;
+	eap_type_t sel_sub_item_id = __common_eap_connect_popup_get_eap_type(eap_data->ap);
+	Evas_Object *btn = NULL;
+	Evas_Object *ly = NULL;
+	char buf[100];
 
+	if (!strcmp(part, "elm.icon.entry")) {
+		ly = elm_layout_add(obj);
+		elm_layout_file_set(ly, CUSTOM_EDITFIELD_PATH,
+				"eap_dropdown_button");
+		btn = elm_button_add(obj);
+
+		g_snprintf(buf, sizeof(buf), "<align=left>%s</align>",
+				list_eap_type[sel_sub_item_id].name);
+
+		elm_object_text_set(btn, buf);
+		elm_object_style_set(btn, "dropdown/label");
+		evas_object_propagate_events_set(btn, EINA_FALSE);
+		evas_object_size_hint_weight_set(btn, EVAS_HINT_EXPAND,
+				EVAS_HINT_EXPAND);
+		evas_object_size_hint_align_set(btn, EVAS_HINT_FILL,
+				EVAS_HINT_FILL);
+		evas_object_smart_callback_add(btn, "clicked",
+				_gl_eap_type_btn_cb, eap_data);
+
+		elm_layout_content_set(ly, "btn", btn);
+		return ly;
+	}
 	return NULL;
 }
 
-static Evas_Object *_gl_eap_content_get(void *data, Evas_Object *obj, const char *part)
+static void _gl_eap_auth_sub_sel(void *data, Evas_Object *obj, void *event_info)
 {
-	if (!strcmp(part, "elm.icon") || !strcmp(part, "elm.swallow.icon")) {
-		return data;
+	eap_connect_data_t *eap_data = (eap_connect_data_t *) data;
+	eap_auth_t sel_index = EAP_SEC_AUTH_NONE;
+
+	const char *label = elm_object_item_text_get((Elm_Object_Item *) event_info);
+
+	if(label != NULL){
+		if (strcmp(label, sc(PACKAGE, I18N_TYPE_None)) == 0)
+			sel_index = EAP_SEC_AUTH_NONE;
+		else if (strcmp(label, EAP_AUTH_TYPE_PAP) == 0)
+			sel_index = EAP_SEC_AUTH_PAP;
+		else if (strcmp(label, EAP_AUTH_TYPE_MSCHAP) == 0)
+			sel_index = EAP_SEC_AUTH_MSCHAP;
+		else if (strcmp(label, EAP_AUTH_TYPE_MSCHAPV2) == 0)
+			sel_index = EAP_SEC_AUTH_MSCHAPV2;
+		else if (strcmp(label, EAP_AUTH_TYPE_GTC) == 0)
+			sel_index = EAP_SEC_AUTH_GTC;
+		else if (strcmp(label, EAP_AUTH_TYPE_MD5) == 0)
+			sel_index = EAP_SEC_AUTH_MD5;
 	}
 
-	return NULL;
-}
+	wifi_ap_set_eap_auth_type(eap_data->ap,
+		__common_eap_connect_popup_get_wlan_auth_type(sel_index));
 
-static void _gl_eap_type_sub_menu_item_del(void *data, Evas_Object *obj)
-{
-	evas_object_unref(data);
-	return;
-}
-
-static char *_gl_eap_provision_text_get(void *data, Evas_Object *obj, const char *part)
-{
-	common_eap_connect_data_t *eap_data = (common_eap_connect_data_t *)data;
-	int sel_sub_item_id = view_detail_datamodel_eap_provision_get(eap_data->data_object);
-	DEBUG_LOG(UG_NAME_NORMAL, "current selected subitem = %d", sel_sub_item_id);
-
-	if (!strcmp(part, "elm.text.1")) {
-		return g_strdup_printf("%d", sel_sub_item_id);
-	} else if (!strcmp(part, "elm.text.2")) {
-		return g_strdup(sc(eap_data->str_pkg_name, I18N_TYPE_Provisioning));
+	if (eap_data->sub_popup != NULL) {
+		evas_object_del(eap_data->sub_popup);
+		eap_data->sub_popup = NULL;
 	}
 
-	return NULL;
+	if(eap_data->eap_auth_item != NULL)
+		elm_genlist_item_update(eap_data->eap_auth_item);
 }
 
-static char *_gl_eap_provision_subtext_get(void *data, Evas_Object *obj, const char *part)
+static void _create_eap_auth_list(eap_connect_data_t *eap_data,
+		Evas_Object *btn)
 {
-	if (!strcmp(part, "elm.text")) {
-		return g_strdup_printf("%d", (int)elm_radio_state_value_get(data));
+	Elm_Object_Item *it = NULL;
+	eap_type_t eap_type = EAP_SEC_TYPE_UNKNOWN;
+	Evas_Object *ctxpopup;
+	int i = 0;
+
+	eap_type = __common_eap_connect_popup_get_eap_type(eap_data->ap);
+
+	if (eap_data->sub_popup != NULL) {
+		evas_object_del(eap_data->sub_popup);
 	}
 
-	return NULL;
-}
+	ctxpopup = elm_ctxpopup_add(eap_data->win);
+	eap_data->sub_popup = ctxpopup;
+	elm_object_style_set(ctxpopup, "dropdown/list");
+	ea_object_event_callback_add(ctxpopup, EA_CALLBACK_BACK, ea_ctxpopup_back_cb, NULL);
+	evas_object_smart_callback_add(ctxpopup,"dismissed", ctxpopup_dismissed_cb, eap_data);
+	elm_ctxpopup_direction_priority_set(ctxpopup,
+			ELM_CTXPOPUP_DIRECTION_DOWN,
+			ELM_CTXPOPUP_DIRECTION_UNKNOWN,
+			ELM_CTXPOPUP_DIRECTION_UNKNOWN,
+			ELM_CTXPOPUP_DIRECTION_UNKNOWN);
 
-static Evas_Object *_gl_eap_provision_content_get(void *data, Evas_Object *obj, const char *part)
-{
-	if (!strcmp(part, "elm.icon") || !strcmp(part, "elm.swallow.icon")) {
-		return data;
+	while (list_eap_auth[i].name != NULL) {
+		if ((eap_type != EAP_SEC_TYPE_PEAP) ||
+				(eap_type == EAP_SEC_TYPE_PEAP && i != 1 &&
+						i != 2)) {
+			it = elm_ctxpopup_item_append(ctxpopup, list_eap_auth[i].name,
+				NULL, _gl_eap_auth_sub_sel, eap_data);
+			if (i == 0) {
+				elm_object_item_domain_text_translatable_set(it,
+						PACKAGE, EINA_TRUE);
+			}
+		}
+		i++;
 	}
-
-	return NULL;
+	move_dropdown(eap_data, btn);
+	evas_object_show(ctxpopup);
 }
 
-static void _gl_eap_provision_sub_menu_item_del(void *data, Evas_Object *obj)
+static void _gl_eap_auth_btn_cb(void *data, Evas_Object *obj, void *event_info)
 {
-	evas_object_unref(data);
-	return;
+	Elm_Object_Item *item = (Elm_Object_Item *)event_info;
+	eap_connect_data_t *eap_data = (eap_connect_data_t *) data;
+
+	if (item)
+		elm_genlist_item_selected_set(item, EINA_FALSE);
+
+	if (keypad_state == FALSE) {
+		_create_eap_auth_list(eap_data, obj);
+
+		click.btn_click[EAP_AUTH_BTN] = FALSE;
+		click.btn_obj[EAP_AUTH_BTN] = NULL;
+	} else {
+		click.btn_click[EAP_AUTH_BTN] = TRUE;
+		click.btn_obj[EAP_AUTH_BTN] = obj;
+	}
 }
 
 static char *_gl_eap_auth_text_get(void *data, Evas_Object *obj, const char *part)
 {
-	common_eap_connect_data_t *eap_data = (common_eap_connect_data_t *)data;
-	eap_auth_t sel_sub_item_id = __common_eap_connect_popup_get_auth_type(eap_data->data_object);
-	if (!strcmp(part, "elm.text.1")) {
-		return g_strdup(list_eap_auth[sel_sub_item_id].name);
-	} else if (!strcmp(part, "elm.text.2")) {
-		return g_strdup(sc(eap_data->str_pkg_name, I18N_TYPE_Phase_2_authentication));
+	eap_connect_data_t *eap_data = (eap_connect_data_t *)data;
+
+	if (!g_strcmp0(part, "elm.text.main")) {
+		return g_strdup(sc(eap_data->str_pkg_name,
+				I18N_TYPE_Phase_2_authentication));
 	}
 
 	return NULL;
 }
 
-static char *_gl_eap_auth_subtext_get(void *data, Evas_Object *obj, const char *part)
+static Evas_Object *_gl_eap_auth_content_get(void *data,
+		Evas_Object *obj, const char *part)
 {
-	wlan_eap_auth_type_t eap_auth = (wlan_eap_auth_type_t)elm_radio_state_value_get(data);
-	if (!strcmp(part, "elm.text")) {
-		return g_strdup(list_eap_auth[eap_auth].name);
-	}
+	eap_connect_data_t *eap_data = (eap_connect_data_t *)data;
+	eap_auth_t sel_sub_item_id = __common_eap_connect_popup_get_auth_type(eap_data->ap);
+	Evas_Object *btn = NULL;
+	Evas_Object *ly = NULL;
+	char buf[100];
 
+	if (!strcmp(part, "elm.icon.entry")) {
+		ly = elm_layout_add(obj);
+		elm_layout_file_set(ly, CUSTOM_EDITFIELD_PATH,
+				"eap_dropdown_button");
+		btn = elm_button_add(obj);
+
+		if (sel_sub_item_id == EAP_SEC_AUTH_NONE) {
+			g_snprintf(buf, sizeof(buf), "<align=left>%s</align>",
+					sc(PACKAGE, I18N_TYPE_None));
+		} else {
+			g_snprintf(buf, sizeof(buf), "<align=left>%s</align>",
+					list_eap_auth[sel_sub_item_id].name);
+		}
+
+		elm_object_domain_translatable_text_set(btn, PACKAGE, buf);
+		elm_object_style_set(btn, "dropdown/label");
+		evas_object_propagate_events_set(btn, EINA_FALSE);
+		evas_object_size_hint_weight_set(btn, EVAS_HINT_EXPAND,
+				EVAS_HINT_EXPAND);
+		evas_object_size_hint_align_set(btn, EVAS_HINT_FILL,
+				EVAS_HINT_FILL);
+		evas_object_smart_callback_add(btn, "clicked",
+				_gl_eap_auth_btn_cb, eap_data);
+
+		elm_layout_content_set(ly, "btn", btn);
+		return ly;
+	}
 	return NULL;
 }
 
-static Evas_Object *_gl_eap_auth_content_get(void *data, Evas_Object *obj, const char *part)
+static void _gl_eap_entry_key_enter_cb(void *data, Evas_Object *obj, void *event_info)
 {
-	if (!strcmp(part, "elm.icon") || !strcmp(part, "elm.swallow.icon")) {
-		return data;
-	}
-
-	return NULL;
-}
-
-static void _gl_eap_auth_sub_menu_item_del(void *data, Evas_Object *obj)
-{
-	evas_object_unref(data);
-	return;
-}
-
-static char *_gl_eap_ca_cert_text_get(void *data, Evas_Object *obj, const char *part)
-{
-	common_eap_connect_data_t *eap_data = (common_eap_connect_data_t *)data;
-	if (!strcmp(part, "elm.text.2")) {
-		return g_strdup(sc(eap_data->str_pkg_name, I18N_TYPE_Ca_Certificate));
-	} else if (!strcmp(part, "elm.text.1")) {
-		return g_strdup(sc(eap_data->str_pkg_name, I18N_TYPE_Unspecified));
-	}
-
-	return NULL;
-}
-
-static char *_gl_eap_user_cert_text_get(void *data, Evas_Object *obj, const char *part)
-{
-	common_eap_connect_data_t *eap_data = (common_eap_connect_data_t *)data;
-	if (!strcmp(part, "elm.text.2")) {
-		return g_strdup(sc(eap_data->str_pkg_name, I18N_TYPE_User_Certificate));
-	} else if (!strcmp(part, "elm.text.1")) {
-		return g_strdup(sc(eap_data->str_pkg_name, I18N_TYPE_Unspecified));
-	}
-
-	return NULL;
-}
-
-static void _gl_exp(void *data, Evas_Object *obj, void *event_info)
-{
-	Evas_Object *radio;
-	common_eap_connect_data_t *eap_data = (common_eap_connect_data_t *)data;
-	Elm_Object_Item *item = (Elm_Object_Item *)event_info;
-	Elm_Object_Item *sub_item = NULL;
-	Evas_Object *gl = elm_object_item_widget_get(item);
-	if (gl == NULL) {
-		ERROR_LOG(UG_NAME_NORMAL, "gl is NULL");
+	common_utils_entry_info_t *entry_info = (common_utils_entry_info_t *)data;
+	if (!entry_info) {
 		return;
 	}
 
-	evas_object_focus_set(gl, EINA_TRUE);
+	Evas_Object *entry = NULL;
+	Elm_Object_Item *next_item = NULL;
+	eap_type_t eap_type;
 
-	int i = 0;
-	INFO_LOG(UG_NAME_RESP, "depth = %d", eap_data->expandable_list_index);
-	switch (eap_data->expandable_list_index) {
-	case EAP_METHOD_EXP_MENU_ID:
-		i = EAP_SEC_TYPE_PEAP;
-		while(list_eap_type[i].name != NULL) {
-			radio = common_utils_create_radio_button(obj, i);
-			elm_radio_group_add(radio, radio_main);
-			evas_object_ref(radio);
-			if (i == __common_eap_connect_popup_get_eap_type(eap_data->data_object))
-				elm_radio_value_set(radio, i);
-			sub_item = elm_genlist_item_append(gl, eap_data->eap_type_sub_itc, (void*)radio, item, list_eap_type[i].flags, _gl_eap_type_sub_sel, eap_data);
-#ifdef DISABLE_FAST_EAP_METHOD
-			if (!g_strcmp0(list_eap_type[i].name, "FAST")) {
-				elm_object_item_disabled_set(sub_item, TRUE);
+	switch (entry_info->entry_id) {
+	case ENTRY_TYPE_USER_ID:
+		eap_type = __common_eap_connect_popup_get_eap_type(
+				entry_info->ap);
+
+		if (eap_type == EAP_SEC_TYPE_TLS) {
+			entry = elm_object_item_part_content_get(entry_info->item,
+					"elm.icon.entry");
+			if (entry) {
+				elm_object_focus_set(entry, EINA_FALSE);
 			}
-#endif
-			i++;
+		} else {
+			next_item = elm_genlist_item_next_get(entry_info->item);
+			while (next_item) {
+				if (elm_object_item_disabled_get(next_item) == EINA_FALSE &&
+					elm_genlist_item_select_mode_get(next_item) !=
+							ELM_OBJECT_SELECT_MODE_DISPLAY_ONLY) {
+					entry = elm_object_item_part_content_get(
+							next_item, "elm.icon.entry");
+					if (entry) {
+						elm_object_focus_set(entry, EINA_TRUE);
+						return;
+					}
+				}
+
+				next_item = elm_genlist_item_next_get(next_item);
+			}
 		}
 		break;
-	case EAP_PROVISION_EXP_MENU_ID:
-		while(i <= MAX_EAP_PROVISION_NUMBER) {
-			radio = common_utils_create_radio_button(obj, i);
-			elm_radio_group_add(radio, radio_main);
-			evas_object_ref(radio);
-			if (i == view_detail_datamodel_eap_provision_get(eap_data->data_object))
-				elm_radio_value_set(radio, i);
-			elm_genlist_item_append(gl, eap_data->eap_provision_sub_itc, (void*)radio, item, ELM_GENLIST_ITEM_NONE, _gl_eap_provision_sub_sel, eap_data);
-			i++;
-		}
-		break;
-	case EAP_AUTH_TYPE_EXP_MENU_ID:
-		while(list_eap_auth[i].name != NULL) {
-			radio = common_utils_create_radio_button(obj, i);
-			elm_radio_group_add(radio, radio_main);
-			evas_object_ref(radio);
-			if (i == __common_eap_connect_popup_get_auth_type(eap_data->data_object))
-				elm_radio_value_set(radio, i);
-			elm_genlist_item_append(gl, eap_data->eap_auth_sub_itc, (void*)radio, item, list_eap_auth[i].flags, _gl_eap_auth_sub_sel, eap_data);
-			i++;
+	case ENTRY_TYPE_PASSWORD:
+		entry = elm_object_item_part_content_get(entry_info->item,
+				"elm.icon.entry");
+		if (entry) {
+			elm_object_focus_set(entry, EINA_FALSE);
 		}
 		break;
 	default:
@@ -441,191 +857,740 @@ static void _gl_exp(void *data, Evas_Object *obj, void *event_info)
 	}
 }
 
-static void _gl_con(void *data, Evas_Object *obj, void *event_info)
+static void _gl_eap_entry_cursor_changed_cb(void* data, Evas_Object* obj, void* event_info)
 {
-	Elm_Object_Item *item = (Elm_Object_Item *)event_info;
+	common_utils_entry_info_t *entry_info = (common_utils_entry_info_t *)data;
+	if (!entry_info) {
+		return;
+	}
 
-	elm_genlist_item_subitems_clear(item);
+	if (elm_object_focus_get(obj)) {
+		if (elm_entry_is_empty(obj)) {
+			elm_object_item_signal_emit(entry_info->item, "elm,state,eraser,hide", "");
+		} else {
+			elm_object_item_signal_emit(entry_info->item, "elm,state,eraser,show", "");
+		}
+	}
+
+	if (entry_info->entry_txt) {
+		g_free(entry_info->entry_txt);
+		entry_info->entry_txt = NULL;
+	}
+
+	char *entry_text = elm_entry_markup_to_utf8(elm_entry_entry_get(obj));
+
+	if (entry_text != NULL && entry_text[0] != '\0') {
+		entry_info->entry_txt = elm_entry_markup_to_utf8(elm_entry_entry_get(obj));
+	}
+
+	g_free(entry_text);
+}
+
+static void _gl_eap_entry_changed_cb(void* data, Evas_Object* obj, void* event_info)
+{
+	common_utils_entry_info_t *entry_info = (common_utils_entry_info_t *)data;
+	if (!entry_info) {
+		return;
+	}
+
+	if (obj == NULL) {
+		return;
+	}
+
+	if (elm_object_focus_get(obj)) {
+		if (elm_entry_is_empty(obj)) {
+			elm_object_item_signal_emit(entry_info->item, "elm,state,eraser,hide", "");
+		} else {
+			elm_object_item_signal_emit(entry_info->item, "elm,state,eraser,show", "");
+		}
+	}
+}
+
+static void _gl_eap_entry_focused_cb(void *data, Evas_Object *obj, void *event_info)
+{
+	common_utils_entry_info_t *entry_info = (common_utils_entry_info_t *)data;
+	if (!entry_info) {
+		return;
+	}
+
+	if (!elm_entry_is_empty(obj)) {
+		elm_object_item_signal_emit(entry_info->item, "elm,state,eraser,show", "");
+	}
+
+	elm_object_item_signal_emit(entry_info->item, "elm,state,rename,hide", "");
+}
+
+static void _gl_eap_entry_unfocused_cb(void *data, Evas_Object *obj, void *event_info)
+{
+	common_utils_entry_info_t *entry_info = (common_utils_entry_info_t *)data;
+	if (!entry_info) {
+		return;
+	}
+
+	if (entry_info->entry_txt) {
+		g_free(entry_info->entry_txt);
+		entry_info->entry_txt = NULL;
+	}
+
+	char *entry_text = elm_entry_markup_to_utf8(elm_entry_entry_get(obj));
+	if (entry_text != NULL && entry_text[0] != '\0')
+		entry_info->entry_txt = elm_entry_markup_to_utf8(elm_entry_entry_get(obj));
+
+	g_free(entry_text);
+
+	elm_object_item_signal_emit(entry_info->item, "elm,state,eraser,hide", "");
+	elm_object_item_signal_emit(entry_info->item, "elm,state,rename,show", "");
+}
+
+static void _gl_eap_entry_maxlength_reached(void *data, Evas_Object *obj,
+		void *event_info)
+{
+	common_utils_send_message_to_net_popup("Password length",
+			"Lengthy Password", "notification", NULL);
+}
+
+static void _gl_eap_entry_eraser_clicked_cb(void *data, Evas_Object *obj, void *event_info)
+{
+	common_utils_entry_info_t *entry_info = (common_utils_entry_info_t *)data;
+	if (!entry_info) {
+		return;
+	}
+
+	Evas_Object *entry = elm_object_item_part_content_get(entry_info->item, "elm.icon.entry");
+	if (entry) {
+		elm_object_focus_set(entry, EINA_TRUE);
+		elm_entry_entry_set(entry, "");
+	}
+}
+
+static char *_gl_eap_entry_item_text_get(void *data, Evas_Object *obj, const char *part)
+{
+	common_utils_entry_info_t *entry_info = (common_utils_entry_info_t *)data;
+	if (!entry_info) {
+		return NULL;
+	}
+
+	if (!g_strcmp0(part, "elm.text.main")) {
+		return g_strdup(dgettext(PACKAGE, entry_info->title_txt));
+	}
+
+	return NULL;
+}
+
+static Evas_Object *_gl_eap_entry_item_content_get(void *data, Evas_Object *obj, const char *part)
+{
+	common_utils_entry_info_t *entry_info = (common_utils_entry_info_t *)data;
+	if (!entry_info) {
+		return NULL;
+	}
+
+	if (g_strcmp0(part, "elm.icon.entry") == 0) {
+		Evas_Object *entry = NULL;
+		char *guide_txt = NULL;
+		char *accepted = NULL;
+		Eina_Bool hide_entry_txt = EINA_FALSE;
+		Elm_Input_Panel_Layout panel_type;
+		int return_key_type;
+		eap_type_t eap_type;
+
+		eap_type = __common_eap_connect_popup_get_eap_type(entry_info->ap);
+
+		static Elm_Entry_Filter_Limit_Size limit_filter_data;
+
+		switch (entry_info->entry_id)
+		{
+		case ENTRY_TYPE_USER_ID:
+			panel_type = ELM_INPUT_PANEL_LAYOUT_NORMAL;
+			guide_txt = entry_info->guide_txt;
+
+			if (eap_type == EAP_SEC_TYPE_TLS) {
+				return_key_type = ECORE_IMF_INPUT_PANEL_RETURN_KEY_TYPE_DONE;
+			} else {
+				return_key_type = ECORE_IMF_INPUT_PANEL_RETURN_KEY_TYPE_NEXT;
+			}
+			break;
+		case ENTRY_TYPE_PASSWORD:
+			panel_type = ELM_INPUT_PANEL_LAYOUT_PASSWORD;
+			guide_txt = entry_info->guide_txt;
+			hide_entry_txt = EINA_TRUE;
+			return_key_type = ECORE_IMF_INPUT_PANEL_RETURN_KEY_TYPE_DONE;
+			break;
+		default:
+			return NULL;
+		}
+
+		entry = ea_editfield_add(obj, EA_EDITFIELD_SCROLL_SINGLELINE);
+		retvm_if(NULL == entry, NULL);
+
+		elm_entry_password_set(entry, hide_entry_txt);
+		elm_entry_prediction_allow_set(entry, EINA_FALSE);
+		elm_entry_autocapital_type_set(entry, ELM_AUTOCAPITAL_TYPE_NONE);
+
+		elm_object_domain_translatable_part_text_set(entry, "elm.guide",
+				PACKAGE, guide_txt);
+		if (entry_info->entry_txt && (strlen(entry_info->entry_txt) > 0)) {
+			elm_entry_entry_set(entry, entry_info->entry_txt);
+		}
+
+		elm_entry_input_panel_layout_set(entry, panel_type);
+		elm_entry_input_panel_return_key_type_set(entry, return_key_type);
+
+		limit_filter_data.max_char_count = 200;
+		elm_entry_markup_filter_append(entry, elm_entry_filter_limit_size, &limit_filter_data);
+
+		Elm_Entry_Filter_Accept_Set digits_filter_data;
+		memset(&digits_filter_data, 0, sizeof(Elm_Entry_Filter_Accept_Set));
+		digits_filter_data.accepted = accepted;
+		elm_entry_markup_filter_append(entry, elm_entry_filter_accept_set, &digits_filter_data);
+
+		Ecore_IMF_Context *imf_ctxt = elm_entry_imf_context_get(entry);
+		if (imf_ctxt && entry_info->input_panel_cb) {
+			ecore_imf_context_input_panel_event_callback_add(imf_ctxt,
+					ECORE_IMF_INPUT_PANEL_STATE_EVENT,
+					entry_info->input_panel_cb,
+					entry_info->input_panel_cb_data);
+			DEBUG_LOG(UG_NAME_NORMAL, "set the imf ctxt cbs");
+		}
+
+		evas_object_smart_callback_add(entry, "activated", _gl_eap_entry_key_enter_cb, entry_info);
+		evas_object_smart_callback_add(entry, "cursor,changed", _gl_eap_entry_cursor_changed_cb, entry_info);
+		evas_object_smart_callback_add(entry, "changed", _gl_eap_entry_changed_cb, entry_info);
+		evas_object_smart_callback_add(entry, "focused", _gl_eap_entry_focused_cb, entry_info);
+		evas_object_smart_callback_add(entry, "unfocused", _gl_eap_entry_unfocused_cb, entry_info);
+		evas_object_smart_callback_add(entry, "maxlength,reached", _gl_eap_entry_maxlength_reached, NULL);
+
+		if (entry_info->entry_id == ENTRY_TYPE_PASSWORD) {
+			g_pwd_entry = entry;
+		}
+
+		return entry;
+	} else if (g_strcmp0(part, "elm.icon.eraser") == 0) {
+		Evas_Object *btn = elm_button_add(obj);
+		elm_object_style_set(btn, "editfield_clear");
+		evas_object_smart_callback_add(btn, "clicked", _gl_eap_entry_eraser_clicked_cb, entry_info);
+		return btn;
+	}
+
+	return NULL;
+}
+
+static void _gl_eap_entry_item_del(void *data, Evas_Object *obj)
+{
+	common_utils_entry_info_t *entry_info = (common_utils_entry_info_t *)data;
+	if (entry_info == NULL) {
+		return;
+	}
+
+	if (entry_info->entry_txt) {
+		g_free(entry_info->entry_txt);
+	}
+
+	g_free(entry_info);
+}
+
+static void _chk_changed_cb(void *data, Evas_Object *obj, void *ei)
+{
+	if (obj == NULL || g_pwd_entry == NULL) {
+		return;
+	}
+
+	Eina_Bool state = elm_check_state_get(obj);
+	if (state) {
+		elm_entry_password_set(g_pwd_entry, EINA_FALSE);
+	} else {
+		elm_entry_password_set(g_pwd_entry, EINA_TRUE);
+	}
+}
+
+static char *_gl_eap_chkbox_item_text_get(void *data, Evas_Object *obj,
+		const char *part)
+{
+	char *str_pkg_name = (char *)data;
+
+	if (!g_strcmp0(part, "elm.text.main.left")) {
+		char buf[1024];
+		snprintf(buf, 1023, "%s", sc(str_pkg_name, I18N_TYPE_Show_password));
+		return strdup(buf);
+	}
+	return NULL;
+
+}
+
+static Evas_Object *_gl_eap_chkbox_item_content_get(void *data,
+		Evas_Object *obj, const char *part)
+{
+	Evas_Object *check = NULL;
+
+	if(!g_strcmp0(part, "elm.icon.right")) {
+		check = elm_check_add(obj);
+		evas_object_propagate_events_set(check, EINA_FALSE);
+
+		evas_object_size_hint_align_set(check, EVAS_HINT_FILL, EVAS_HINT_FILL);
+		evas_object_size_hint_weight_set(check, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
+		evas_object_smart_callback_add(check, "changed",
+				_chk_changed_cb, NULL);
+
+		elm_object_focus_allow_set(check, EINA_FALSE);
+
+		return check;
+	}
+	return NULL;
+}
+
+static void _gl_eap_chkbox_sel(void *data, Evas_Object *obj, void *ei)
+{
+	Elm_Object_Item *item = NULL;
+
+	item = (Elm_Object_Item *)ei;
+	if (item == NULL) {
+		return;
+	}
+
+	Evas_Object *ck = elm_object_item_part_content_get(ei, "elm.icon.right");
+
+	elm_genlist_item_selected_set(item, EINA_FALSE);
+
+	Eina_Bool state = elm_check_state_get(ck);
+	elm_check_state_set(ck, !state);
+
+	_chk_changed_cb(NULL, ck, NULL);
+}
+
+static void gl_lang_changed(void *data, Evas_Object *obj, void *event_info)
+{
+	elm_genlist_realized_items_update(obj);
 }
 
 static void __common_eap_connect_popup_init_item_class(void *data)
 {
-	common_eap_connect_data_t *eap_data = (common_eap_connect_data_t *)data;
-	eap_data->eap_type_itc = elm_genlist_item_class_new();
-	eap_data->eap_type_sub_itc = elm_genlist_item_class_new();
-	eap_data->eap_provision_itc = elm_genlist_item_class_new();
-	eap_data->eap_provision_sub_itc = elm_genlist_item_class_new();
-	eap_data->eap_auth_itc = elm_genlist_item_class_new();
-	eap_data->eap_auth_sub_itc = elm_genlist_item_class_new();
-	eap_data->eap_ca_cert_itc = elm_genlist_item_class_new();
-	eap_data->eap_user_cert_itc = elm_genlist_item_class_new();
+	g_eap_type_itc.item_style = "entry.main";
+	g_eap_type_itc.func.text_get = _gl_eap_type_text_get;
+	g_eap_type_itc.func.content_get = _gl_eap_type_content_get;
+	g_eap_type_itc.func.state_get = NULL;
+	g_eap_type_itc.func.del = NULL;
 
-	eap_data->eap_type_itc->item_style = "dialogue/2text.2/expandable";
-	eap_data->eap_type_itc->func.text_get = _gl_eap_type_text_get;
-	eap_data->eap_type_itc->func.content_get = NULL;
-	eap_data->eap_type_itc->func.state_get = NULL;
-	eap_data->eap_type_itc->func.del = NULL;
+	g_eap_auth_itc.item_style = "entry.main";
+	g_eap_auth_itc.func.text_get = _gl_eap_auth_text_get;
+	g_eap_auth_itc.func.content_get = _gl_eap_auth_content_get;
+	g_eap_auth_itc.func.state_get = NULL;
+	g_eap_auth_itc.func.del = NULL;
 
-	eap_data->eap_type_sub_itc->item_style = "dialogue/1text.1icon.2/expandable2";
-	eap_data->eap_type_sub_itc->func.text_get = _gl_eap_subtext_get;
-	eap_data->eap_type_sub_itc->func.content_get = _gl_eap_content_get;
-	eap_data->eap_type_sub_itc->func.state_get = NULL;
-	eap_data->eap_type_sub_itc->func.del = _gl_eap_type_sub_menu_item_del;
+	g_eap_user_cert_itc.item_style = "entry.main";
+	g_eap_user_cert_itc.func.text_get = _gl_eap_user_cert_text_get;
+	g_eap_user_cert_itc.func.content_get = _gl_eap_user_cert_content_get;
+	g_eap_user_cert_itc.func.state_get = NULL;
+	g_eap_user_cert_itc.func.del = NULL;
 
-	eap_data->eap_provision_itc->item_style = "dialogue/2text.2/expandable";
-	eap_data->eap_provision_itc->func.text_get = _gl_eap_provision_text_get;
-	eap_data->eap_provision_itc->func.content_get = NULL;
-	eap_data->eap_provision_itc->func.state_get = NULL;
-	eap_data->eap_provision_itc->func.del = NULL;
+	g_eap_entry_itc.item_style = "entry.main";
+	g_eap_entry_itc.func.text_get = _gl_eap_entry_item_text_get;
+	g_eap_entry_itc.func.content_get = _gl_eap_entry_item_content_get;
+	g_eap_entry_itc.func.state_get = NULL;
+	g_eap_entry_itc.func.del = _gl_eap_entry_item_del;
 
-	eap_data->eap_provision_sub_itc->item_style = "dialogue/1text.1icon.2/expandable2";
-	eap_data->eap_provision_sub_itc->func.text_get = _gl_eap_provision_subtext_get;
-	eap_data->eap_provision_sub_itc->func.content_get = _gl_eap_provision_content_get;
-	eap_data->eap_provision_sub_itc->func.state_get = NULL;
-	eap_data->eap_provision_sub_itc->func.del = _gl_eap_provision_sub_menu_item_del;
-
-	eap_data->eap_auth_itc->item_style = "dialogue/2text.2/expandable";
-	eap_data->eap_auth_itc->func.text_get = _gl_eap_auth_text_get;
-	eap_data->eap_auth_itc->func.content_get = NULL;
-	eap_data->eap_auth_itc->func.state_get = NULL;
-	eap_data->eap_auth_itc->func.del = NULL;
-
-	eap_data->eap_auth_sub_itc->item_style = "dialogue/1text.1icon.2/expandable2";
-	eap_data->eap_auth_sub_itc->func.text_get = _gl_eap_auth_subtext_get;
-	eap_data->eap_auth_sub_itc->func.content_get = _gl_eap_auth_content_get;
-	eap_data->eap_auth_sub_itc->func.state_get = NULL;
-	eap_data->eap_auth_sub_itc->func.del = _gl_eap_auth_sub_menu_item_del;
-
-	eap_data->eap_ca_cert_itc->item_style = "dialogue/2text.2";
-	eap_data->eap_ca_cert_itc->func.text_get = _gl_eap_ca_cert_text_get;
-	eap_data->eap_ca_cert_itc->func.content_get = NULL;
-	eap_data->eap_ca_cert_itc->func.state_get = NULL;
-	eap_data->eap_ca_cert_itc->func.del = NULL;
-
-	eap_data->eap_user_cert_itc->item_style = "dialogue/2text.2";
-	eap_data->eap_user_cert_itc->func.text_get = _gl_eap_user_cert_text_get;
-	eap_data->eap_user_cert_itc->func.content_get = NULL;
-	eap_data->eap_user_cert_itc->func.state_get = NULL;
-	eap_data->eap_user_cert_itc->func.del = NULL;
-
-	return;
+	g_eap_chkbox_itc.item_style = "1line";
+	g_eap_chkbox_itc.func.text_get = _gl_eap_chkbox_item_text_get;
+	g_eap_chkbox_itc.func.content_get = _gl_eap_chkbox_item_content_get;
+	g_eap_chkbox_itc.func.state_get = NULL;
+	g_eap_chkbox_itc.func.del = NULL;
 }
 
-static void __common_eap_connect_popup_deinit_item_class(void *data)
+static gboolean __cert_extract_files(const char *cert_alias,
+		eap_connect_data_t *eap_data)
 {
-	common_eap_connect_data_t *eap_data = (common_eap_connect_data_t *)data;
+	int ret;
+	int validity;
+	int cert_counts = 0;
+	int cert_index;
+	gchar *ca_cert_path = NULL;
+	gchar *user_cert_path = NULL;
+	gchar *privatekey_path = NULL;
+	FILE *fp;
+	CertSvcInstance cert_instance;
+	CertSvcString cert_alias_str;
+	CertSvcCertificateList cert_list;
+	CertSvcCertificate user_certificate;
+	CertSvcCertificate ca_certificate;
+	CertSvcCertificate *selected_certificate = NULL;
+	X509 *x509 = NULL;
+	EVP_PKEY *privatekey = NULL;
 
-	elm_genlist_item_class_free(eap_data->eap_type_itc);
-	elm_genlist_item_class_free(eap_data->eap_type_sub_itc);
-	elm_genlist_item_class_free(eap_data->eap_provision_itc);
-	elm_genlist_item_class_free(eap_data->eap_provision_sub_itc);
-	elm_genlist_item_class_free(eap_data->eap_auth_itc);
-	elm_genlist_item_class_free(eap_data->eap_auth_sub_itc);
-	elm_genlist_item_class_free(eap_data->eap_ca_cert_itc);
-	elm_genlist_item_class_free(eap_data->eap_user_cert_itc);
+	ret = certsvc_instance_new(&cert_instance);
+	if (ret != CERTSVC_SUCCESS) {
+		ERROR_LOG(UG_NAME_NORMAL, "failed to certsvc_instance_new");
+		goto error;
+	}
+	ret = certsvc_string_new(cert_instance, cert_alias, strlen(cert_alias), &cert_alias_str);
+	if (ret != CERTSVC_SUCCESS) {
+		ERROR_LOG(UG_NAME_NORMAL, "failed to certsvc_string_new");
+		goto error;
+	}
+	ret = certsvc_pkcs12_load_certificate_list(cert_instance, cert_alias_str, &cert_list);
+	if (ret != CERTSVC_SUCCESS) {
+		ERROR_LOG(UG_NAME_NORMAL, "failed to certsvc_pkcs12_load_certificate_list");
+		goto error;
+	}
+	ret = certsvc_certificate_list_get_length(cert_list, &cert_counts);
+	if (cert_counts < 1) {
+		ERROR_LOG(UG_NAME_NORMAL, "there is no certificates");
+		goto error;
+	}
+	INFO_LOG(UG_NAME_NORMAL, "cert counts: %d", cert_counts);
+	selected_certificate = g_try_new0(CertSvcCertificate, cert_counts);
+	if (selected_certificate == NULL) {
+		ERROR_LOG(UG_NAME_NORMAL, "failed to allocate memory");
+		goto error;
+	}
+	ret = certsvc_certificate_list_get_one(cert_list, 0, &user_certificate);
+	if (ret != CERTSVC_SUCCESS) {
+		ERROR_LOG(UG_NAME_NORMAL, "failed to certsvc_certificate_list_get_one");
+		goto error;
+	}
+	cert_index = cert_counts - 1;
 
-	eap_data->eap_type_itc = NULL;
-	eap_data->eap_type_sub_itc = NULL;
-	eap_data->eap_provision_itc = NULL;
-	eap_data->eap_provision_sub_itc = NULL;
-	eap_data->eap_auth_itc = NULL;
-	eap_data->eap_auth_sub_itc = NULL;
-	eap_data->eap_ca_cert_itc = NULL;
-	eap_data->eap_user_cert_itc = NULL;
+	selected_certificate[0] = user_certificate;
+
+	ret = certsvc_certificate_dup_x509(user_certificate, &x509);
+
+	user_cert_path = g_strdup_printf("%s%s_%s", EAP_TLS_PATH,
+				cert_alias, EAP_TLS_USER_CERT_PATH);
+	if ((fp = fopen(user_cert_path, "w")) == NULL) {
+		goto error;
+	}
+	ret = PEM_write_X509(fp, x509);
+	fclose(fp);
+	certsvc_certificate_free_x509(x509);
+	INFO_LOG(UG_NAME_NORMAL, "success to save user_cert file");
+
+	ca_cert_path = g_strdup_printf("%s%s_%s", EAP_TLS_PATH, cert_alias,
+				EAP_TLS_CA_CERT_PATH);
+	while (cert_index) {
+		ret = certsvc_certificate_list_get_one(cert_list, cert_index, &ca_certificate);
+		if (ret != CERTSVC_SUCCESS) {
+			ERROR_LOG(UG_NAME_NORMAL, "failed to certsvc_certificate_list_get_one");
+			goto error;
+		}
+
+		selected_certificate[cert_counts-cert_index] = ca_certificate;
+		cert_index--;
+
+		ret = certsvc_certificate_dup_x509(ca_certificate, &x509);
+		if ((fp = fopen(ca_cert_path, "a")) == NULL) {
+			goto error;
+		}
+		ret = PEM_write_X509(fp, x509);
+		fclose(fp);
+		certsvc_certificate_free_x509(x509);
+	}
+	INFO_LOG(UG_NAME_NORMAL, "success to save ca_cert file");
+	ret = certsvc_certificate_verify(selected_certificate[0], selected_certificate, cert_counts, NULL, 0, &validity);
+	if (ret != CERTSVC_SUCCESS) {
+		ERROR_LOG(UG_NAME_NORMAL, "failed to verify ca_certificate");
+		goto error;
+	}
+	if (validity == 0) {
+		ERROR_LOG(UG_NAME_NORMAL, "Invalid certificate");
+		goto error;
+	}
+
+	ret = certsvc_pkcs12_dup_evp_pkey(cert_instance, cert_alias_str, &privatekey);
+
+	privatekey_path = g_strdup_printf("%s%s_%s", EAP_TLS_PATH,
+				cert_alias, EAP_TLS_PRIVATEKEY_PATH);
+
+	if ((fp = fopen(privatekey_path, "w")) == NULL) {
+		goto error;
+	}
+	ret = PEM_write_PrivateKey(fp, privatekey, NULL, NULL, 0, NULL, NULL);
+	fclose(fp);
+	certsvc_pkcs12_free_evp_pkey(privatekey);
+	INFO_LOG(UG_NAME_NORMAL, "success to save privatekey file");
+
+	g_free(selected_certificate);
+	certsvc_instance_free(cert_instance);
+
+	eap_data->ca_cert_path = ca_cert_path;
+	eap_data->user_cert_path = user_cert_path;
+	eap_data->privatekey_path = privatekey_path;
+
+	return TRUE;
+
+error:
+	g_free(ca_cert_path);
+	g_free(user_cert_path);
+	g_free(privatekey_path);
+
+	if (selected_certificate) {
+		g_free(selected_certificate);
+	}
+
+	certsvc_instance_free(cert_instance);
+	return FALSE;
 }
 
-/* 
- * This creates EAP type, Auth type, CA certificate, User certificate, User Id, Anonymous Id and Password items.
+/* This creates EAP type, Auth type, CA certificate, User certificate,
+ * User Id, Anonymous Id and Password items.
  */
-static void _create_and_update_list_items_based_on_rules(eap_type_t new_type, common_eap_connect_data_t *eap_data)
+static void _create_and_update_list_items_based_on_rules(eap_type_t new_type,
+		eap_connect_data_t *eap_data)
 {
 	__COMMON_FUNC_ENTER__;
 	Evas_Object* view_list = eap_data->genlist;
 	Elm_Object_Item *insert_after_item = NULL;
-	eap_type_t pre_type;
+	Elm_Object_Item *prev_item = NULL;
+	common_utils_entry_info_t *edit_box_details;
+	Eina_Bool auth_reqd = EINA_FALSE;
+	Eina_Bool user_cert_reqd = EINA_FALSE;
+	Eina_Bool id_reqd = EINA_FALSE;
+	Eina_Bool pw_reqd = EINA_FALSE;
 
 	if (NULL == eap_data->eap_type_item) {
 		/* Create EAP method/type */
-		pre_type = EAP_SEC_TYPE_SIM;
-		eap_data->eap_type_item = elm_genlist_item_append(view_list, eap_data->eap_type_itc, eap_data, NULL, ELM_GENLIST_ITEM_TREE, _gl_eap_type_sel, eap_data);
-	} else {
-		pre_type = __common_eap_connect_popup_get_eap_type(eap_data->data_object);
+		eap_data->eap_type_item = elm_genlist_item_append(
+						view_list, &g_eap_type_itc,
+						eap_data, NULL,
+						ELM_GENLIST_ITEM_NONE,
+						_gl_eap_item_sel_cb, eap_data);
 	}
 
 	switch (new_type) {
 	case EAP_SEC_TYPE_PEAP:
+		insert_after_item = eap_data->eap_type_item;
+		auth_reqd = EINA_TRUE;
+		user_cert_reqd = EINA_FALSE;
+		id_reqd = EINA_TRUE;
+		pw_reqd = EINA_TRUE;
+		break;
 	case EAP_SEC_TYPE_TLS:
+		insert_after_item = eap_data->eap_type_item;
+		auth_reqd = EINA_FALSE;
+		user_cert_reqd = EINA_TRUE;
+		id_reqd = EINA_TRUE;
+		pw_reqd = EINA_FALSE;
+		break;
 	case EAP_SEC_TYPE_TTLS:
-		if (EAP_SEC_TYPE_UNKNOWN == pre_type || EAP_SEC_TYPE_SIM == pre_type || EAP_SEC_TYPE_AKA == pre_type) {
-			insert_after_item = eap_data->eap_type_item;
-		} else if (EAP_SEC_TYPE_FAST == pre_type) {
-			elm_object_item_del(eap_data->eap_provision_item);
-			eap_data->eap_provision_item = NULL;
-		}
+		insert_after_item = eap_data->eap_type_item;
+		auth_reqd = EINA_TRUE;
+		user_cert_reqd = EINA_FALSE;
+		id_reqd = EINA_TRUE;
+		pw_reqd = EINA_TRUE;
 		break;
 	case EAP_SEC_TYPE_SIM:
 	case EAP_SEC_TYPE_AKA:
-		if (EAP_SEC_TYPE_PEAP == pre_type || EAP_SEC_TYPE_TLS == pre_type || EAP_SEC_TYPE_TTLS == pre_type) {
-			_delete_eap_entry_items(eap_data);
-		} else if (EAP_SEC_TYPE_FAST == pre_type) {
-			elm_object_item_del(eap_data->eap_provision_item);
-			eap_data->eap_provision_item = NULL;
-			_delete_eap_entry_items(eap_data);
-		}
-		break;
-	case EAP_SEC_TYPE_FAST:
-		/* Add EAP provision */
-		eap_data->eap_provision_item = elm_genlist_item_insert_after(view_list, eap_data->eap_provision_itc, eap_data, NULL, eap_data->eap_type_item, ELM_GENLIST_ITEM_TREE, _gl_eap_provision_sel, eap_data);
-		DEBUG_LOG(UG_NAME_NORMAL, "current selected provision = %d", view_detail_datamodel_eap_provision_get(eap_data->data_object));
-		if (EAP_SEC_TYPE_UNKNOWN == pre_type || EAP_SEC_TYPE_SIM == pre_type || EAP_SEC_TYPE_AKA == pre_type) {
-			insert_after_item = eap_data->eap_provision_item;
-		}
+		_delete_eap_entry_items(eap_data);
+		auth_reqd = EINA_FALSE;
+		user_cert_reqd = EINA_FALSE;
+		id_reqd = EINA_FALSE;
+		pw_reqd = EINA_FALSE;
 		break;
 	default:
 		break;
 	}
 
-	if (insert_after_item) {
-		/* Add EAP phase2 authentication */
-		eap_data->eap_auth_item = elm_genlist_item_insert_after(view_list, eap_data->eap_auth_itc, eap_data, NULL, insert_after_item, ELM_GENLIST_ITEM_TREE, _gl_eap_auth_sel, eap_data);
-
-		/* Add CA certificate */
-		eap_data->eap_ca_cert_item = elm_genlist_item_insert_after(view_list, eap_data->eap_ca_cert_itc, eap_data, NULL, eap_data->eap_auth_item, ELM_GENLIST_ITEM_NONE, NULL, NULL);
-		elm_genlist_item_select_mode_set(eap_data->eap_ca_cert_item, ELM_OBJECT_SELECT_MODE_DISPLAY_ONLY);
-
-		/* Add User certificate */
-		eap_data->eap_user_cert_item = elm_genlist_item_insert_after(view_list, eap_data->eap_user_cert_itc, eap_data, NULL, eap_data->eap_ca_cert_item, ELM_GENLIST_ITEM_NONE, NULL, NULL);
-		elm_genlist_item_select_mode_set(eap_data->eap_user_cert_item, ELM_OBJECT_SELECT_MODE_DISPLAY_ONLY);
-
-		/* Add EAP ID */
-		eap_data->eap_id_item = common_utils_add_edit_box_to_list(view_list, eap_data->eap_user_cert_item, sc(eap_data->str_pkg_name, I18N_TYPE_Identity), "", sc(eap_data->str_pkg_name, I18N_TYPE_Enter_Identity), ELM_INPUT_PANEL_LAYOUT_URL);
-
-		/* Add EAP Anonymous Identity */
-		eap_data->eap_anonyid_item = common_utils_add_edit_box_to_list(view_list, eap_data->eap_id_item, sc(eap_data->str_pkg_name, I18N_TYPE_Anonymous_Identity), "", sc(eap_data->str_pkg_name, I18N_TYPE_Enter_Anonymous_Identity), ELM_INPUT_PANEL_LAYOUT_URL);
-
-		/* Add EAP Password */
-		eap_data->eap_pw_item = common_utils_add_edit_box_to_list(view_list, eap_data->eap_anonyid_item, sc(eap_data->str_pkg_name, I18N_TYPE_Password), "", sc(eap_data->str_pkg_name, I18N_TYPE_Enter_password), ELM_INPUT_PANEL_LAYOUT_URL);
-		common_utils_entry_password_set(elm_object_item_data_get(eap_data->eap_pw_item), TRUE);
+	if (auth_reqd == EINA_TRUE) {
+		if (eap_data->eap_auth_item == NULL) {
+			/* Add EAP phase2 authentication */
+			eap_data->eap_auth_item = elm_genlist_item_insert_after(
+					view_list, &g_eap_auth_itc, eap_data, NULL,
+					insert_after_item, ELM_GENLIST_ITEM_NONE,
+					_gl_eap_item_sel_cb, eap_data);
+		}
+	} else {
+		_delete_eap_auth_item(eap_data);
 	}
+
+	if (user_cert_reqd == EINA_TRUE) {
+		if (eap_data->eap_user_cert_item == NULL) {
+			prev_item = eap_data->eap_type_item;
+
+			/* Add User certificate */
+			eap_data->eap_user_cert_item = elm_genlist_item_insert_after(
+					view_list, &g_eap_user_cert_itc, eap_data, NULL,
+					prev_item, ELM_GENLIST_ITEM_NONE,
+					_gl_eap_item_sel_cb, eap_data);
+		}
+	} else {
+		_delete_eap_user_cert_item(eap_data);
+	}
+
+	if (id_reqd == EINA_TRUE) {
+		if (eap_data->eap_id_item == NULL) {
+			if (new_type == EAP_SEC_TYPE_PEAP ||
+					new_type == EAP_SEC_TYPE_TTLS) {
+				prev_item = eap_data->eap_auth_item;
+			} else {
+				prev_item = eap_data->eap_user_cert_item;
+			}
+
+			/* Add EAP ID */
+			edit_box_details = g_try_new0(common_utils_entry_info_t, 1);
+			if (edit_box_details == NULL) {
+				return;
+			}
+
+			edit_box_details->ap = eap_data->ap;
+			edit_box_details->entry_id = ENTRY_TYPE_USER_ID;
+			edit_box_details->title_txt = "IDS_WIFI_BODY_IDENTITY";
+			edit_box_details->guide_txt = "IDS_WIFI_BODY_ENTER_IDENTITY";
+			edit_box_details->item = elm_genlist_item_insert_after(
+					view_list, &g_eap_entry_itc, edit_box_details,
+					NULL, prev_item,
+					ELM_GENLIST_ITEM_NONE, _gl_editbox_sel_cb, NULL);
+			eap_data->eap_id_item = edit_box_details->item;
+		}
+	} else {
+		_delete_eap_id_item(eap_data);
+	}
+
+	if (pw_reqd == EINA_TRUE) {
+		if (eap_data->eap_pw_item == NULL) {
+			/* Add EAP Password */
+			edit_box_details = g_try_new0(common_utils_entry_info_t, 1);
+			if (edit_box_details == NULL) {
+				return;
+			}
+
+			edit_box_details->ap = eap_data->ap;
+			edit_box_details->entry_id = ENTRY_TYPE_PASSWORD;
+			edit_box_details->title_txt = "IDS_WIFI_HEADER_PASSWORD";
+			edit_box_details->guide_txt = "IDS_WIFI_HEADER_ENTER_PASSWORD";
+			edit_box_details->item = elm_genlist_item_insert_after(
+					view_list, &g_eap_entry_itc,
+					edit_box_details, NULL,
+					eap_data->eap_id_item,
+					ELM_GENLIST_ITEM_NONE,
+					_gl_editbox_sel_cb, NULL);
+			eap_data->eap_pw_item = edit_box_details->item;
+
+			_update_eap_id_item_enter_key(eap_data);
+		}
+
+		if (eap_data->eap_chkbox_item == NULL) {
+			/* Add Show Password checkbox */
+			eap_data->eap_chkbox_item = elm_genlist_item_insert_after(
+					view_list, &g_eap_chkbox_itc,
+					eap_data->str_pkg_name, NULL,
+					eap_data->eap_pw_item,
+					ELM_GENLIST_ITEM_NONE,
+					_gl_eap_chkbox_sel, NULL);
+		}
+	} else {
+		_delete_eap_pw_items(eap_data);
+	}
+
 	__COMMON_FUNC_EXIT__;
 	return;
 }
 
-void _delete_eap_entry_items(common_eap_connect_data_t *eap_data)
+static void _update_eap_id_item_enter_key(eap_connect_data_t *eap_data)
+{
+	if (eap_data->eap_id_item == NULL)
+		return;
+
+	Evas_Object *entry = NULL;
+	eap_type_t eap_type;
+
+	eap_type = __common_eap_connect_popup_get_eap_type(eap_data->ap);
+	entry = elm_object_item_part_content_get(eap_data->eap_id_item,
+			"elm.icon.entry");
+	if (entry) {
+		if (eap_type == EAP_SEC_TYPE_TLS) {
+			elm_entry_input_panel_return_key_type_set(entry,
+					ECORE_IMF_INPUT_PANEL_RETURN_KEY_TYPE_DONE);
+		} else {
+			elm_entry_input_panel_return_key_type_set(entry,
+					ECORE_IMF_INPUT_PANEL_RETURN_KEY_TYPE_NEXT);
+		}
+	}
+}
+
+static void _delete_eap_auth_item(eap_connect_data_t *eap_data)
 {
 	__COMMON_FUNC_ENTER__;
-	elm_object_item_del(eap_data->eap_auth_item);
-	eap_data->eap_auth_item = NULL;
-	elm_object_item_del(eap_data->eap_ca_cert_item);
-	eap_data->eap_ca_cert_item = NULL;
-	elm_object_item_del(eap_data->eap_user_cert_item);
-	eap_data->eap_user_cert_item = NULL;
-	elm_object_item_del(eap_data->eap_id_item);
-	eap_data->eap_id_item = NULL;
-	elm_object_item_del(eap_data->eap_anonyid_item);
-	eap_data->eap_anonyid_item = NULL;
-	elm_object_item_del(eap_data->eap_pw_item);
-	eap_data->eap_pw_item = NULL;
+
+	if (eap_data->eap_auth_item != NULL) {
+		elm_object_item_del(eap_data->eap_auth_item);
+		eap_data->eap_auth_item = NULL;
+	}
+
+	__COMMON_FUNC_EXIT__;
+	return;
+}
+
+static void _delete_eap_user_cert_item(eap_connect_data_t *eap_data)
+{
+	__COMMON_FUNC_ENTER__;
+
+	if (eap_data->eap_user_cert_item != NULL) {
+		elm_object_item_del(eap_data->eap_user_cert_item);
+		eap_data->eap_user_cert_item = NULL;
+	}
+
+	__COMMON_FUNC_EXIT__;
+	return;
+}
+
+static void _delete_eap_id_item(eap_connect_data_t *eap_data)
+{
+	__COMMON_FUNC_ENTER__;
+
+	if (eap_data->eap_id_item != NULL) {
+		elm_object_item_del(eap_data->eap_id_item);
+		eap_data->eap_id_item = NULL;
+	}
+
+	__COMMON_FUNC_EXIT__;
+	return;
+}
+
+static void _delete_eap_pw_items(eap_connect_data_t *eap_data)
+{
+	__COMMON_FUNC_ENTER__;
+
+	_update_eap_id_item_enter_key(eap_data);
+
+	if (eap_data->eap_pw_item != NULL) {
+		elm_object_item_del(eap_data->eap_pw_item);
+		eap_data->eap_pw_item = NULL;
+	}
+
+	if (eap_data->eap_chkbox_item) {
+		elm_object_item_del(eap_data->eap_chkbox_item);
+		eap_data->eap_chkbox_item = NULL;
+	}
+
+	__COMMON_FUNC_EXIT__;
+	return;
+}
+
+void _delete_eap_entry_items(eap_connect_data_t *eap_data)
+{
+	__COMMON_FUNC_ENTER__;
+
+	if (eap_data->eap_auth_item != NULL) {
+		elm_object_item_del(eap_data->eap_auth_item);
+		eap_data->eap_auth_item = NULL;
+	}
+
+	if (eap_data->eap_user_cert_item != NULL) {
+		elm_object_item_del(eap_data->eap_user_cert_item);
+		eap_data->eap_user_cert_item = NULL;
+	}
+
+	if (eap_data->eap_id_item != NULL) {
+		elm_object_item_del(eap_data->eap_id_item);
+		eap_data->eap_id_item = NULL;
+	}
+
+	if (eap_data->eap_pw_item != NULL) {
+		elm_object_item_del(eap_data->eap_pw_item);
+		eap_data->eap_pw_item = NULL;
+	}
+
+	if (eap_data->eap_chkbox_item != NULL) {
+		elm_object_item_del(eap_data->eap_chkbox_item);
+		eap_data->eap_chkbox_item = NULL;
+	}
+
 	__COMMON_FUNC_EXIT__;
 	return;
 }
@@ -635,125 +1600,468 @@ static Evas_Object* _create_list(Evas_Object* parent, void *data)
 	__COMMON_FUNC_ENTER__;
 	assertm_if(NULL == parent, "NULL!!");
 
-	const char* parent_view_name = evas_object_name_get(parent);
+	eap_connect_data_t *eap_data = (eap_connect_data_t *)data;
+	Evas_Object* view_list = NULL;
+	eap_type_t eap_type = EAP_SEC_TYPE_UNKNOWN;
+	retvm_if(eap_data == NULL, NULL);
 
-	Evas_Object* view_list = elm_genlist_add(parent);
+	__common_eap_connect_popup_init_item_class(eap_data);
 
-	if (g_strcmp0(EAP_CONNECT_POPUP, parent_view_name) != 0)
-		elm_object_style_set(view_list, "dialogue");
+	eap_data->eap_done_ok = FALSE;
+	eap_data->genlist = view_list = elm_genlist_add(parent);
+	elm_genlist_realization_mode_set(view_list, TRUE);
+	elm_genlist_mode_set(view_list, ELM_LIST_COMPRESS);
+	elm_scroller_content_min_limit(view_list, EINA_FALSE, EINA_TRUE);
 
-	common_eap_connect_data_t *eap_data = (common_eap_connect_data_t *)data;
-
-	assertm_if(NULL == view_list, "NULL!!");
 	evas_object_size_hint_weight_set(view_list, EVAS_HINT_EXPAND,
 			EVAS_HINT_EXPAND);
 	evas_object_size_hint_align_set(view_list, EVAS_HINT_FILL, EVAS_HINT_FILL);
 
-	eap_data->eap_done_ok = FALSE;
+	/* Set default values. eap type = PEAP, auth type = MSCHAPv2 */
+	eap_type = __common_eap_connect_popup_get_eap_type(eap_data->ap);
+	wifi_ap_set_eap_type(eap_data->ap,
+			(eap_type == EAP_SEC_TYPE_UNKNOWN) ?
+			WIFI_EAP_TYPE_PEAP :
+			__common_eap_connect_popup_get_wlan_eap_type(eap_type));
 
-	__common_eap_connect_popup_init_item_class(eap_data);
+	wifi_ap_set_eap_auth_type(eap_data->ap,
+					WIFI_EAP_AUTH_TYPE_MSCHAPV2);
 
-	eap_data->genlist = view_list;
-
-	if (!radio_main) {
-		radio_main = elm_radio_add(view_list);
-		elm_radio_state_value_set(radio_main, 0);
-		elm_radio_value_set(radio_main, 0);
-	}
-
-	if (g_strcmp0(EAP_CONNECT_POPUP, parent_view_name) != 0)
-		common_utils_add_dialogue_separator(view_list, "dialogue/separator");
+	selected_cert = 0;
 
 	/* Create the entry items */
-	_create_and_update_list_items_based_on_rules(view_detail_datamodel_eap_method_get(eap_data->data_object), eap_data);
+	_create_and_update_list_items_based_on_rules(eap_type, eap_data);
 
-	evas_object_smart_callback_add(view_list, "expanded", _gl_exp, eap_data);
-	evas_object_smart_callback_add(view_list, "contracted", _gl_con, view_list);
+	evas_object_smart_callback_add(view_list, "language,changed",
+			gl_lang_changed, NULL);
 
 	__COMMON_FUNC_EXIT__;
 	return view_list;
 }
 
-static void __common_eap_connect_destroy(void *data,  Evas_Object *obj, void *event_info)
+static Eina_Bool _enable_scan_updates_cb(void *data)
 {
-	__COMMON_FUNC_ENTER__;
+	/* Lets enable the scan updates */
+	wlan_manager_enable_scan_result_update();
 
-	common_eap_connect_data_t *eap_data = (common_eap_connect_data_t *) data;
+	/* Reset the ecore timer handle */
+	common_util_manager_ecore_scan_update_timer_reset();
 
-	if (eap_data  != NULL) {
-		evas_object_del(eap_data->genlist);
-		__common_eap_connect_popup_deinit_item_class(eap_data);
+	return ECORE_CALLBACK_CANCEL;
+}
+
+static void __common_eap_connect_cleanup(eap_connect_data_t *eap_data)
+{
+	if (eap_data == NULL) {
+		return;
+	}
+
+	if (eap_data->conf != NULL) {
+		evas_object_smart_callback_del(eap_data->conf,
+				"virtualkeypad,state,on",
+				_eap_popup_keypad_on_cb);
+		evas_object_smart_callback_del(eap_data->conf,
+				"virtualkeypad,state,off",
+				_eap_popup_keypad_off_cb);
+	}
+
+	if (eap_data->ssid != NULL) {
+		g_free(eap_data->ssid);
+		eap_data->ssid = NULL;
+	}
+
+	if (eap_data->cert_alias) {
+		g_free(eap_data->cert_alias);
+		eap_data->cert_alias = NULL;
+	}
+
+	if (eap_data->ca_cert_path) {
+		g_free(eap_data->ca_cert_path);
+		eap_data->ca_cert_path = NULL;
+	}
+
+	if (eap_data->user_cert_path) {
+		g_free(eap_data->user_cert_path);
+		eap_data->user_cert_path = NULL;
+	}
+
+	if (eap_data->privatekey_path) {
+		g_free(eap_data->privatekey_path);
+		eap_data->privatekey_path = NULL;
+	}
+
+	wifi_ap_destroy(eap_data->ap);
+	eap_data->ap = NULL;
+
+	if(eap_data->info_popup){
+		evas_object_del(eap_data->info_popup);
+		eap_data->info_popup = NULL;
+	}
+
+	if (eap_data->popup != NULL) {
+		evas_object_hide(eap_data->popup);
 		evas_object_del(eap_data->popup);
-		ip_info_remove(eap_data->ip_info_list);
-		eap_data->ip_info_list = NULL;
-		view_detail_datamodel_eap_info_destroy(eap_data->data_object);
-		eap_data->data_object = NULL;
-		evas_object_del(radio_main);
-		radio_main = NULL;
-		if (eap_data->eap_closed_cb)
-			eap_data->eap_closed_cb();
-		g_free(eap_data);
+	}
 
-		/* Lets enable the scan updates */
-		wlan_manager_enable_scan_result_update();
+	if(_eap_view_deref_cb != NULL) {
+		_eap_view_deref_cb();
+		_eap_view_deref_cb = NULL;
+	}
+
+	/* A delay is needed to get the smooth Input panel closing animation effect */
+	common_util_managed_ecore_scan_update_timer_add(0.1,
+			_enable_scan_updates_cb, NULL);
+}
+
+static void __common_eap_connect_destroy_cb(void *data,  Evas_Object *obj,
+		void *event_info)
+{
+	__common_eap_connect_cleanup((eap_connect_data_t *)data);
+}
+
+static void _info_popup_ok_cb(void *data, Evas_Object *obj, void *event_info)
+{
+	eap_connect_data_t *eap_data = (eap_connect_data_t *)data;
+
+	if (eap_data->info_popup != NULL) {
+		evas_object_del(eap_data->info_popup);
+		eap_data->info_popup = NULL;
+	}
+}
+
+static void __common_eap_connect_done_cb(void *data, Evas_Object *obj,
+		void *event_info)
+{
+	char *str_id = NULL;
+	char *str_pw = NULL;
+	bool favorite = FALSE;
+	wifi_eap_type_e eap_type;
+	wifi_eap_auth_type_e eap_auth_type;
+	eap_connect_data_t *eap_data = (eap_connect_data_t *)data;
+	popup_btn_info_t popup_data;
+
+	__COMMON_FUNC_ENTER__;
+	if (eap_data->eap_done_ok == TRUE) {
+		__COMMON_FUNC_EXIT__;
+		return;
+	}
+
+	eap_data->eap_done_ok = TRUE;
+
+	wifi_ap_get_eap_type(eap_data->ap, &eap_type);
+	wifi_ap_get_eap_auth_type(eap_data->ap, &eap_auth_type);
+
+	wifi_ap_is_favorite(eap_data->ap, &favorite);
+	if (favorite == TRUE) {
+		wlan_manager_forget(eap_data->ap);
+		wifi_ap_refresh(eap_data->ap);
+
+		wifi_ap_set_eap_type(eap_data->ap, eap_type);
+		wifi_ap_set_eap_auth_type(eap_data->ap, eap_auth_type);
+	}
+
+	wifi_ap_set_eap_ca_cert_file(eap_data->ap, "");
+	wifi_ap_set_eap_client_cert_file(eap_data->ap, "");
+	wifi_ap_set_eap_private_key_info(eap_data->ap, "", "");
+
+	switch (eap_type) {
+	case WIFI_EAP_TYPE_PEAP:
+	case WIFI_EAP_TYPE_TTLS:
+
+		str_id = common_utils_get_list_item_entry_txt(eap_data->eap_id_item);
+		if (str_id == NULL || str_id[0] == '\0') {
+			memset(&popup_data, 0, sizeof(popup_data));
+			popup_data.title_txt = eap_data->ssid;
+			popup_data.btn1_txt = "IDS_WIFI_SK2_OK";
+			popup_data.btn1_cb = _info_popup_ok_cb;
+			popup_data.btn1_data = eap_data;
+			popup_data.info_txt = "IDS_WIFI_BODY_ENTER_IDENTITY";
+			eap_data->eap_done_ok = FALSE;
+			eap_data->info_popup = common_utils_show_info_popup(eap_data->win,
+						&popup_data);
+			if(str_id) {
+				g_free(str_id);
+				str_id = NULL;
+			}
+			return;
+		}
+
+		str_pw = common_utils_get_list_item_entry_txt(eap_data->eap_pw_item);
+		if (str_pw == NULL || str_pw[0] == '\0') {
+			memset(&popup_data, 0, sizeof(popup_data));
+			popup_data.title_txt = eap_data->ssid;
+			popup_data.btn1_txt = "IDS_WIFI_SK2_OK";
+			popup_data.btn1_cb = _info_popup_ok_cb;
+			popup_data.btn1_data = eap_data;
+			popup_data.info_txt = "IDS_WIFI_HEADER_ENTER_PASSWORD";
+			eap_data->eap_done_ok = FALSE;
+			eap_data->info_popup = common_utils_show_info_popup(eap_data->win,
+						&popup_data);
+			if(str_id) {
+				g_free(str_id);
+				str_id = NULL;
+			}
+			if(str_pw) {
+				g_free(str_pw);
+				str_pw = NULL;
+			}
+			return;
+		}
+
+		wifi_ap_set_eap_type(eap_data->ap, eap_type);
+		wifi_ap_set_eap_auth_type(eap_data->ap, eap_auth_type);
+		wifi_ap_set_eap_passphrase(eap_data->ap, str_id, str_pw);
+		break;
+
+	case WIFI_EAP_TYPE_TLS:
+		str_id = common_utils_get_list_item_entry_txt(eap_data->eap_id_item);
+		str_pw = common_utils_get_list_item_entry_txt(eap_data->eap_pw_item);
+
+		wifi_ap_set_eap_type(eap_data->ap, eap_type);
+		wifi_ap_set_eap_auth_type(eap_data->ap, eap_auth_type);
+		wifi_ap_set_eap_passphrase(eap_data->ap, str_id, str_pw);
+		wifi_ap_set_eap_ca_cert_file(eap_data->ap, eap_data->ca_cert_path);
+		wifi_ap_set_eap_client_cert_file(eap_data->ap, eap_data->user_cert_path);
+		wifi_ap_set_eap_private_key_info(eap_data->ap,
+				eap_data->privatekey_path, NULL);
+		break;
+
+	case WIFI_EAP_TYPE_SIM:
+	case WIFI_EAP_TYPE_AKA:
+		break;
+
+	default:
+		ERROR_LOG(UG_NAME_NORMAL, "Unknown EAP method %d", eap_type);
+		break;
+	}
+
+	if (eap_data->is_hidden) {
+		wifi_ap_h hidden_ap;
+		char *ssid;
+		wifi_ap_get_essid(eap_data->ap, &ssid);
+		wifi_ap_hidden_create(ssid, &hidden_ap);
+		g_free(ssid);
+
+		switch (eap_type) {
+			case WIFI_EAP_TYPE_PEAP:
+			case WIFI_EAP_TYPE_TTLS:
+				wifi_ap_set_eap_type(hidden_ap, eap_type);
+				wifi_ap_set_eap_auth_type(hidden_ap, eap_auth_type);
+				wifi_ap_set_eap_passphrase(hidden_ap, str_id, str_pw);
+				break;
+			case WIFI_EAP_TYPE_TLS:
+			wifi_ap_set_eap_type(hidden_ap, eap_type);
+			wifi_ap_set_eap_auth_type(hidden_ap, eap_auth_type);
+			wifi_ap_set_eap_passphrase(hidden_ap, str_id, str_pw);
+			wifi_ap_set_eap_ca_cert_file(hidden_ap, eap_data->ca_cert_path);
+			wifi_ap_set_eap_client_cert_file(hidden_ap,eap_data->user_cert_path);
+			wifi_ap_set_eap_private_key_info(hidden_ap, eap_data->privatekey_path, NULL);
+				break;
+			case WIFI_EAP_TYPE_SIM:
+			case WIFI_EAP_TYPE_AKA:
+				break;
+		}
+		wlan_manager_connect(hidden_ap);
+	} else
+		wlan_manager_connect(eap_data->ap);
+
+	__common_eap_connect_cleanup(eap_data);
+
+	if(str_id){
+		g_free(str_id);
+		str_id = NULL;
+	}
+	if(str_pw){
+		g_free(str_pw);
+		str_pw = NULL;
 	}
 
 	__COMMON_FUNC_EXIT__;
 }
 
-static wlan_eap_type_t __common_eap_connect_popup_get_wlan_eap_type(eap_type_t eap_type)
+static gboolean delay_create_context_popup(gpointer data)
 {
-	wlan_eap_type_t wlan_eap_type = WLAN_SEC_EAP_TYPE_PEAP;
+	eap_connect_data_t *eap_data = (eap_connect_data_t *)data;
+
+	if (click.btn_click[EAP_CERT_BTN] == TRUE) {
+		_create_eap_cert_list(eap_data, click.btn_obj[EAP_CERT_BTN]);
+
+		click.btn_click[EAP_CERT_BTN] = FALSE;
+		click.btn_obj[EAP_CERT_BTN] = NULL;
+	} else if (click.btn_click[EAP_AUTH_BTN] == TRUE) {
+		_create_eap_auth_list(eap_data, click.btn_obj[EAP_AUTH_BTN]);
+
+		click.btn_click[EAP_AUTH_BTN] = FALSE;
+		click.btn_obj[EAP_AUTH_BTN] = NULL;
+	} else if (click.btn_click[EAP_TYPE_BTN] == TRUE) {
+		_create_eap_type_list(eap_data, click.btn_obj[EAP_TYPE_BTN]);
+
+		click.btn_click[EAP_TYPE_BTN] = FALSE;
+		click.btn_obj[EAP_TYPE_BTN] = NULL;
+	}
+	return FALSE;
+}
+
+static void _eap_popup_keypad_off_cb(void *data, Evas_Object *obj,
+		void *event_info)
+{
+	if (data == NULL) {
+		return;
+	}
+
+	eap_connect_data_t *eap_data = (eap_connect_data_t *)data;
+
+	keypad_state = FALSE;
+
+	common_util_managed_idle_add(delay_create_context_popup,
+			(gpointer)eap_data);
+
+	INFO_LOG(UG_NAME_NORMAL,"Keypad is down");
+}
+
+static void _eap_popup_keypad_on_cb(void *data, Evas_Object *obj,
+		void *event_info)
+{
+	if (data == NULL) {
+		return;
+	}
+
+	keypad_state = TRUE;
+	INFO_LOG(UG_NAME_NORMAL,"Keypad is up");
+}
+
+eap_connect_data_t *create_eap_view(Evas_Object *layout_main, Evas_Object *win,
+		Evas_Object *conf, const char *pkg_name,
+		wifi_device_info_t *device_info, void (*deref_func)(void))
+{
+	__COMMON_FUNC_ENTER__;
+
+	Evas_Object *popup = NULL;
+	Evas_Object *list = NULL;
+
+	if (layout_main == NULL || device_info == NULL || pkg_name == NULL) {
+		return NULL;
+	}
+
+	eap_connect_data_t *eap_data = g_try_new0(eap_connect_data_t, 1);
+	if (eap_data == NULL) {
+		return NULL;
+	}
+
+	eap_data->str_pkg_name = pkg_name;
+	eap_data->win = win;
+	eap_data->conf = conf;
+	eap_data->ssid = g_strdup(device_info->ssid);
+
+	if (device_info->is_hidden == true) {
+		/* Hidden Wi-Fi network */
+		char *ssid = NULL;
+
+		wifi_ap_get_essid(device_info->ap, &ssid);
+		if (ssid == NULL)
+			return NULL;
+
+		wifi_ap_hidden_create(ssid, &(eap_data->ap));
+		g_free(ssid);
+
+		eap_data->is_hidden = TRUE;
+	} else {
+		/* Clone the Wi-Fi AP handle */
+		wifi_ap_clone(&(eap_data->ap), device_info->ap);
+	}
+
+	/* Lets disable the scan updates so that the UI is not refreshed unnecessarily */
+	wlan_manager_disable_scan_result_update();
+
+	_eap_view_deref_cb = deref_func;
+	click.btn_click[EAP_TYPE_BTN] = FALSE;
+	click.btn_obj[EAP_TYPE_BTN] = NULL;
+	click.btn_click[EAP_AUTH_BTN] = FALSE;
+	click.btn_obj[EAP_AUTH_BTN] = NULL;
+	click.btn_click[EAP_CERT_BTN] = FALSE;
+	click.btn_obj[EAP_CERT_BTN] = NULL;
+	keypad_state = FALSE;
+
+	popup_btn_info_t popup_btn_data;
+	memset(&popup_btn_data, 0, sizeof(popup_btn_data));
+
+	popup_btn_data.title_txt = device_info->ssid;
+	popup_btn_data.btn1_cb = __common_eap_connect_destroy_cb;
+	popup_btn_data.btn1_data = eap_data;
+	popup_btn_data.btn1_txt = "IDS_WIFI_SK_CANCEL";
+	popup_btn_data.btn2_cb = __common_eap_connect_done_cb;
+	popup_btn_data.btn2_data = eap_data;
+	popup_btn_data.btn2_txt = "IDS_WIFI_BODY_CONNECT";
+
+	popup = common_utils_show_info_popup(layout_main,
+			&popup_btn_data);
+	eap_data->popup = popup;
+	evas_object_show(popup);
+	elm_object_focus_set(popup, EINA_TRUE);
+
+	/* Create an EAP connect view list */
+	list = _create_list(popup, eap_data);
+	elm_object_content_set(popup, list);
+
+	evas_object_smart_callback_add(eap_data->conf,
+			"virtualkeypad,state,on", _eap_popup_keypad_on_cb,
+			eap_data);
+	evas_object_smart_callback_add(eap_data->conf,
+			"virtualkeypad,state,off", _eap_popup_keypad_off_cb,
+			eap_data);
+
+	__COMMON_FUNC_EXIT__;
+	return eap_data;
+}
+
+static wifi_eap_type_e __common_eap_connect_popup_get_wlan_eap_type(eap_type_t eap_type)
+{
+	wifi_eap_type_e wlan_eap_type = WLAN_SEC_EAP_TYPE_PEAP;
 	switch (eap_type) {
 	case EAP_SEC_TYPE_PEAP:
-		wlan_eap_type = WLAN_SEC_EAP_TYPE_PEAP;
+		wlan_eap_type = WIFI_EAP_TYPE_PEAP;
 		break;
 	case EAP_SEC_TYPE_TLS:
-		wlan_eap_type = WLAN_SEC_EAP_TYPE_TLS;
+		wlan_eap_type = WIFI_EAP_TYPE_TLS;
 		break;
 	case EAP_SEC_TYPE_TTLS:
-		wlan_eap_type = WLAN_SEC_EAP_TYPE_TTLS;
+		wlan_eap_type = WIFI_EAP_TYPE_TTLS;
 		break;
 	case EAP_SEC_TYPE_SIM:
-		wlan_eap_type = WLAN_SEC_EAP_TYPE_SIM;
+		wlan_eap_type = WIFI_EAP_TYPE_SIM;
 		break;
 	case EAP_SEC_TYPE_AKA:
-		wlan_eap_type = WLAN_SEC_EAP_TYPE_AKA;
+		wlan_eap_type = WIFI_EAP_TYPE_AKA;
 		break;
-#ifndef DISABLE_FAST_EAP_METHOD
-	/*	Replace 6 with WLAN_SEC_EAP_TYPE_FAST, when libnet supports WLAN_SEC_EAP_TYPE_FAST enum */
-	case EAP_SEC_TYPE_FAST:
-		wlan_eap_type = 6;
-#endif
 	default:
-		/* This case should never occur */
-		ERROR_LOG(UG_NAME_NORMAL, "Err!");
+		ERROR_LOG(UG_NAME_NORMAL, "Err! This case should never occur");
 		break;
 	}
+
 	return wlan_eap_type;
 }
 
-static wlan_eap_auth_type_t __common_eap_connect_popup_get_wlan_auth_type(eap_auth_t auth_type)
+static wifi_eap_auth_type_e __common_eap_connect_popup_get_wlan_auth_type(eap_auth_t auth_type)
 {
-	wlan_eap_auth_type_t wlan_auth_type = WLAN_SEC_EAP_AUTH_NONE;
+	wifi_eap_auth_type_e wlan_auth_type = WIFI_EAP_AUTH_TYPE_NONE;
 	switch (auth_type) {
 	case EAP_SEC_AUTH_NONE:
-		wlan_auth_type = WLAN_SEC_EAP_AUTH_NONE;
+		wlan_auth_type = WIFI_EAP_AUTH_TYPE_NONE;
 		break;
 	case EAP_SEC_AUTH_PAP:
-		wlan_auth_type = WLAN_SEC_EAP_AUTH_PAP;
+		wlan_auth_type = WIFI_EAP_AUTH_TYPE_PAP;
 		break;
 	case EAP_SEC_AUTH_MSCHAP:
-		wlan_auth_type = WLAN_SEC_EAP_AUTH_MSCHAP;
+		wlan_auth_type = WIFI_EAP_AUTH_TYPE_MSCHAP;
 		break;
 	case EAP_SEC_AUTH_MSCHAPV2:
-		wlan_auth_type = WLAN_SEC_EAP_AUTH_MSCHAPV2;
+		wlan_auth_type = WIFI_EAP_AUTH_TYPE_MSCHAPV2;
 		break;
 	case EAP_SEC_AUTH_GTC:
-		wlan_auth_type = WLAN_SEC_EAP_AUTH_GTC;
+		wlan_auth_type = WIFI_EAP_AUTH_TYPE_GTC;
 		break;
 	case EAP_SEC_AUTH_MD5:
-		wlan_auth_type = WLAN_SEC_EAP_AUTH_MD5;
+		wlan_auth_type = WIFI_EAP_AUTH_TYPE_MD5;
 		break;
 	default:
 		/* This case should never occur */
@@ -763,300 +2071,71 @@ static wlan_eap_auth_type_t __common_eap_connect_popup_get_wlan_auth_type(eap_au
 	return wlan_auth_type;
 }
 
-static void __common_eap_connect_done_cb(void *data,  Evas_Object *obj, void *event_info)
+static eap_type_t __common_eap_connect_popup_get_eap_type(wifi_ap_h ap)
 {
-	__COMMON_FUNC_ENTER__;
-	common_eap_connect_data_t *eap_data = (common_eap_connect_data_t *)data;
-
-	if(eap_data->eap_done_ok == TRUE) {
-		return;
-	}
-	eap_data->eap_done_ok = TRUE;
-
-	char* str_id = NULL;
-	char* str_pw = NULL;
-
-	wlan_eap_type_t eap_type;
-	wlan_eap_auth_type_t auth_type;
-	net_wifi_connection_info_t *p_conn_info = NULL;
-	p_conn_info = g_malloc0(sizeof(net_wifi_connection_info_t));
-	p_conn_info->wlan_mode = NETPM_WLAN_CONNMODE_INFRA;
-	p_conn_info->security_info.sec_mode = WLAN_SEC_MODE_IEEE8021X;
-
-	eap_type = view_detail_datamodel_eap_method_get(eap_data->data_object);
-	switch (eap_type) {
-	case WLAN_SEC_EAP_TYPE_PEAP:
-	case WLAN_SEC_EAP_TYPE_TTLS:
-		str_id = common_utils_get_list_item_entry_txt(eap_data->eap_id_item);
-		if (strlen(str_id) <= 0) {
-			common_utils_show_info_ok_popup(eap_data->win, eap_data->str_pkg_name, EAP_CHECK_YOUR_ID_STR);
-			eap_data->eap_done_ok = FALSE;
-			goto eap_done_cleanup;
-		}
-
-		str_pw = common_utils_get_list_item_entry_txt(eap_data->eap_pw_item);
-		if (strlen(str_pw) <= 0) {
-			common_utils_show_info_ok_popup(eap_data->win, eap_data->str_pkg_name, EAP_CHECK_YOUR_PASWD_STR);
-			eap_data->eap_done_ok = FALSE;
-			goto eap_done_cleanup;
-		}
-
-		char *temp_str = common_utils_get_list_item_entry_txt(eap_data->eap_anonyid_item);
-		view_detail_datamodel_eap_anonymous_id_set(eap_data->data_object, temp_str);
-		g_free(temp_str);
-
-		p_conn_info->security_info.authentication.eap.eap_type = eap_type;
-
-		auth_type = view_detail_datamodel_eap_auth_get(eap_data->data_object);
-		p_conn_info->security_info.authentication.eap.eap_auth = auth_type;//__common_eap_connect_popup_get_authentication_type(auth_type);
-		g_strlcpy(p_conn_info->security_info.authentication.eap.username, str_id, NETPM_WLAN_USERNAME_LEN);
-		g_strlcpy(p_conn_info->security_info.authentication.eap.password, str_pw, NETPM_WLAN_PASSWORD_LEN);
-		view_detail_datamodel_eap_user_id_set(eap_data->data_object, str_id);
-		view_detail_datamodel_eap_pswd_set(eap_data->data_object, str_pw);
-		break;
-
-	case WLAN_SEC_EAP_TYPE_TLS:
-		p_conn_info->security_info.authentication.eap.eap_type = eap_type;
-		auth_type = view_detail_datamodel_eap_auth_get(eap_data->data_object);
-		p_conn_info->security_info.authentication.eap.eap_auth = auth_type;//__common_eap_connect_popup_get_authentication_type(auth_type);
-
-//		g_strlcpy(p_conn_info->security_info.authentication.eap.username, str_id, NETPM_WLAN_USERNAME_LEN);
-//		g_strlcpy(p_conn_info->security_info.authentication.eap.password, str_pw, NETPM_WLAN_USERNAME_LEN);
-		g_strlcpy(p_conn_info->security_info.authentication.eap.ca_cert_filename, "/mnt/ums/Certification/ca2.pem", NETPM_WLAN_CA_CERT_FILENAME_LEN);
-		g_strlcpy(p_conn_info->security_info.authentication.eap.client_cert_filename, "/mnt/ums/Certification/user2.pem", NETPM_WLAN_CLIENT_CERT_FILENAME_LEN);
-		g_strlcpy(p_conn_info->security_info.authentication.eap.private_key_filename, "/mnt/ums/Certification/user2.prv", NETPM_WLAN_PRIVATE_KEY_FILENAME_LEN);
-		g_strlcpy(p_conn_info->security_info.authentication.eap.private_key_passwd, "wifi", NETPM_WLAN_PRIVATE_KEY_PASSWD_LEN);
-		break;
-
-	case WLAN_SEC_EAP_TYPE_SIM:
-		p_conn_info->security_info.sec_mode = WLAN_SEC_MODE_IEEE8021X;
-		p_conn_info->security_info.authentication.eap.eap_type = eap_type;
-		break;
-
-	case WLAN_SEC_EAP_TYPE_AKA:
-		p_conn_info->security_info.sec_mode = WLAN_SEC_MODE_IEEE8021X;
-		p_conn_info->security_info.authentication.eap.eap_type = eap_type;
-		break;
-
-	default:
-		/* This case should never occur */
-		ERROR_LOG(UG_NAME_NORMAL, "Err!");
-		break;
+	wifi_eap_type_e wlan_eap_type = 0;
+	int ret = wifi_ap_get_eap_type(ap, &wlan_eap_type);
+	if (WIFI_ERROR_OPERATION_FAILED == ret) {
+		ret = wifi_ap_set_eap_type(ap, WIFI_EAP_TYPE_PEAP);
 	}
 
-	/* Before we proceed to make a connection, lets save the entered IP data */
-	ip_info_save_data(eap_data->ip_info_list, TRUE);
-	view_detail_datamodel_save_eap_info_if_modified(eap_data->data_object);
-
-	char *temp_str = view_detail_datamodel_eap_ap_name_get(eap_data->data_object);
-	g_strlcpy(p_conn_info->essid, temp_str, NET_WLAN_ESSID_LEN);
-	g_free(temp_str);
-
-	if (WLAN_MANAGER_ERR_NONE != connman_request_connection_open_hidden_ap(p_conn_info)) {
-		ERROR_LOG(UG_NAME_NORMAL, "EAP connect request failed!!!");
-	}
-
-	if (eap_data->navi_it) {
-		eap_view_close(eap_data);
-	} else {
-		Evas_Object *cancel_btn = elm_object_part_content_get(eap_data->popup, "button2");
-		evas_object_smart_callback_call(cancel_btn, "clicked", NULL);
-	}
-
-eap_done_cleanup:
-	g_free(p_conn_info);
-	g_free(str_id);
-	g_free(str_pw);
-
-	__COMMON_FUNC_EXIT__;
-}
-
-common_eap_connect_data_t *create_eap_connect(Evas_Object *win_main, Evas_Object *navi_frame, const char *pkg_name, wifi_device_info_t *device_info, eap_view_close_cb_t cb)
-{
-	__COMMON_FUNC_ENTER__;
-
-	Evas_Object *list = NULL;
-	if (!win_main || !device_info || !pkg_name)
-		return NULL;
-
-	common_eap_connect_data_t *eap_data = (common_eap_connect_data_t *)g_malloc0(sizeof(common_eap_connect_data_t));
-	eap_data->str_pkg_name = pkg_name;
-	eap_data->win = win_main;
-
-	/* Create the MVC object */
-	eap_data->data_object = view_detail_datamodel_eap_info_create(device_info->profile_name);
-
-	if (!device_info->profile_name) {
-		/* This means a dummy eap data object has been created. */
-		/* This situation can occur during hidden ap case. */
-		/* Lets set the ssid */
-		view_detail_datamodel_eap_ap_name_set(eap_data->data_object, device_info->ssid);
-	}
-
-	if (navi_frame) {	/* Create eap connect view */
-		Evas_Object *layout;
-		Evas_Object *conform;
-		Elm_Object_Item* navi_it;
-		Evas_Object* toolbar;
-		Evas_Object* button_back;
-
-		layout = common_utils_create_conformant_layout(navi_frame);
-		conform = elm_object_part_content_get(layout, "elm.swallow.content");
-
-		/* Create an EAP connect view list */
-		list = _create_list(conform, eap_data);
-
-		/* Append ip info items */
-		eap_data->ip_info_list = ip_info_append_items(device_info->profile_name, pkg_name, list);
-
-		/* Add a separator */
-		common_utils_add_dialogue_separator(list, "dialogue/separator/end");
-
-		elm_object_content_set(conform, list);
-
-		eap_data->navi_it = navi_it = elm_naviframe_item_push(navi_frame, device_info->ssid, NULL, NULL, layout, NULL);
-		evas_object_data_set(navi_frame, SCREEN_TYPE_ID_KEY, (void *)VIEW_MANAGER_VIEW_TYPE_EAP);
-		eap_data->eap_closed_cb = cb;
-		toolbar = elm_toolbar_add(navi_frame);
-		elm_toolbar_shrink_mode_set(toolbar, ELM_TOOLBAR_SHRINK_EXPAND);
-
-		elm_toolbar_item_append(toolbar,
-								NULL,
-								sc(pkg_name, I18N_TYPE_Connect),
-								__common_eap_connect_done_cb,
-								eap_data);
-		/* Add a dummy item */
-		elm_object_item_disabled_set(elm_toolbar_item_append(toolbar, NULL, NULL, NULL, NULL), EINA_TRUE);
-
-		/* Add the control bar to the naviframe */
-		elm_object_item_part_content_set(navi_it, "controlbar", toolbar);
-
-		button_back = elm_object_item_part_content_get(navi_it, "prev_btn");
-		elm_object_focus_allow_set(button_back, EINA_TRUE);
-		evas_object_smart_callback_add(button_back, "clicked", __common_eap_connect_destroy, eap_data);
-
-	} else {	/* Create eap connect popup */
-		Evas_Object *popup;
-		Evas_Object *box;
-		Evas_Object *layout;
-		Evas_Object *btn;
-		Evas_Object *conformant;
-
-		/* Lets disable the scan updates so that the UI is not refreshed un necessarily */
-		wlan_manager_disable_scan_result_update();
-
-		conformant = elm_conformant_add(win_main);
-		assertm_if(NULL == conformant, "conformant is NULL!!");
-		elm_win_conformant_set(win_main, EINA_TRUE);
-		elm_win_resize_object_add(win_main, conformant);
-		evas_object_size_hint_weight_set(conformant, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
-		evas_object_size_hint_align_set(conformant, EVAS_HINT_FILL, EVAS_HINT_FILL);
-
-		layout = elm_layout_add(conformant);
-
-		eap_data->popup = popup = elm_popup_add(layout);
-		elm_object_style_set(popup, "content_expand");
-		elm_object_part_text_set(popup, "title,text", device_info->ssid);
-		evas_object_size_hint_weight_set(popup, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
-		evas_object_size_hint_align_set(popup, EVAS_HINT_FILL, EVAS_HINT_FILL);
-
-		btn = elm_button_add(popup);
-		elm_object_text_set(btn, sc(pkg_name, I18N_TYPE_Connect));
-		elm_object_part_content_set(popup, "button1", btn);
-		evas_object_smart_callback_add(btn, "clicked", __common_eap_connect_done_cb, eap_data);
-
-		btn = elm_button_add(popup);
-		elm_object_text_set(btn, sc(pkg_name, I18N_TYPE_Cancel));
-		elm_object_part_content_set(popup, "button2", btn);
-		evas_object_smart_callback_add(btn, "clicked", __common_eap_connect_destroy, eap_data);
-
-		/* Create and add a box into the layout. */
-		box = elm_box_add(popup);
-		evas_object_size_hint_weight_set(box, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
-		evas_object_size_hint_align_set(box, EVAS_HINT_FILL, EVAS_HINT_FILL);
-		evas_object_size_hint_min_set(box, COMMON_EAP_CONNECT_POPUP_W * elm_config_scale_get(), COMMON_EAP_CONNECT_POPUP_H * elm_config_scale_get());
-
-		evas_object_name_set(box, EAP_CONNECT_POPUP);
-
-		/* Create an EAP connect view list */
-		list = _create_list(box, eap_data);
-
-		/* Append ip info items */
-		eap_data->ip_info_list = ip_info_append_items(device_info->profile_name, pkg_name, list);
-
-		/* Add a separator */
-		common_utils_add_dialogue_separator(list, "dialogue/separator/end");
-
-		/* Pack the list into the box */
-		elm_box_pack_end(box, list);
-		elm_object_content_set(popup, box);
-		elm_object_content_set(layout, popup);
-		elm_object_content_set(conformant, layout);
-		evas_object_show(list);
-		evas_object_show(box);
-		evas_object_show(popup);
-		evas_object_show(layout);
-		evas_object_show(conformant);
-	}
-
-	__COMMON_FUNC_EXIT__;
-
-	return eap_data;
-}
-
-static eap_type_t __common_eap_connect_popup_get_eap_type(view_datamodel_eap_info_t *data_object)
-{
-	wlan_eap_type_t wlan_eap_type;
-	wlan_eap_type = view_detail_datamodel_eap_method_get(data_object);
-	switch (wlan_eap_type) {
-	case WLAN_SEC_EAP_TYPE_PEAP:
-		return EAP_SEC_TYPE_PEAP;
-
-	case WLAN_SEC_EAP_TYPE_TLS:
-		return EAP_SEC_TYPE_TLS;
-
-	case WLAN_SEC_EAP_TYPE_TTLS:
-		return EAP_SEC_TYPE_TTLS;
-
-	case WLAN_SEC_EAP_TYPE_SIM:
-		return EAP_SEC_TYPE_SIM;
-
-	case WLAN_SEC_EAP_TYPE_AKA:
-		return EAP_SEC_TYPE_AKA;
-
-#ifndef DISABLE_FAST_EAP_METHOD
-	/*	Replace 6 with WLAN_SEC_EAP_TYPE_FAST, when libnet supports WLAN_SEC_EAP_TYPE_FAST enum */
-	case 6:
-		return EAP_SEC_TYPE_FAST;
-#endif
-
-	default:
+	if (WIFI_ERROR_NONE != ret) {
+		ERROR_LOG(UG_NAME_ERR, "Unable to get the eap type. err = %d", ret);
 		return EAP_SEC_TYPE_UNKNOWN;
 	}
-	return EAP_SEC_TYPE_UNKNOWN;
+
+	switch (wlan_eap_type) {
+	case WIFI_EAP_TYPE_PEAP:  /**< EAP PEAP type */
+		return EAP_SEC_TYPE_PEAP;
+
+	case WIFI_EAP_TYPE_TLS:  /**< EAP TLS type */
+		return EAP_SEC_TYPE_TLS;
+
+	case WIFI_EAP_TYPE_TTLS:  /**< EAP TTLS type */
+		return EAP_SEC_TYPE_TTLS;
+
+	case WIFI_EAP_TYPE_SIM:  /**< EAP SIM type */
+		return EAP_SEC_TYPE_SIM;
+
+	case WIFI_EAP_TYPE_AKA:  /**< EAP AKA type */
+		return EAP_SEC_TYPE_AKA;
+
+	default:
+		return EAP_SEC_TYPE_PEAP;
+	}
+	return EAP_SEC_TYPE_PEAP;
 }
 
-static eap_auth_t __common_eap_connect_popup_get_auth_type(view_datamodel_eap_info_t *data_object)
+static eap_auth_t __common_eap_connect_popup_get_auth_type(wifi_ap_h ap)
 {
-	wlan_eap_auth_type_t wlan_auth_type;
-	wlan_auth_type = view_detail_datamodel_eap_auth_get(data_object);
+	wifi_eap_auth_type_e wlan_auth_type = 0;
+	int ret = wifi_ap_get_eap_auth_type(ap, &wlan_auth_type);
+	if (WIFI_ERROR_OPERATION_FAILED == ret) {
+		ret = wifi_ap_set_eap_auth_type(ap, EAP_SEC_AUTH_NONE);
+	}
+
+	if (WIFI_ERROR_NONE != ret) {
+		ERROR_LOG(UG_NAME_ERR, "Unable to get the eap auth type. err = %d", ret);
+		return EAP_SEC_AUTH_NONE;
+	}
+
 	switch (wlan_auth_type) {
-	case WLAN_SEC_EAP_AUTH_NONE:
+	case WIFI_EAP_AUTH_TYPE_NONE:  /**< EAP phase2 authentication none */
 		return EAP_SEC_AUTH_NONE;
 
-	case WLAN_SEC_EAP_AUTH_PAP:
+	case WIFI_EAP_AUTH_TYPE_PAP:  /**< EAP phase2 authentication PAP */
 		return EAP_SEC_AUTH_PAP;
 
-	case WLAN_SEC_EAP_AUTH_MSCHAP:
+	case WIFI_EAP_AUTH_TYPE_MSCHAP:  /**< EAP phase2 authentication MSCHAP */
 		return EAP_SEC_AUTH_MSCHAP;
 
-	case WLAN_SEC_EAP_AUTH_MSCHAPV2:
+	case WIFI_EAP_AUTH_TYPE_MSCHAPV2:  /**< EAP phase2 authentication MSCHAPv2 */
 		return EAP_SEC_AUTH_MSCHAPV2;
 
-	case WLAN_SEC_EAP_AUTH_GTC:
+	case WIFI_EAP_AUTH_TYPE_GTC:  /**< EAP phase2 authentication GTC */
 		return EAP_SEC_AUTH_GTC;
 
-	case WLAN_SEC_EAP_AUTH_MD5:
+	case WIFI_EAP_AUTH_TYPE_MD5:  /**< EAP phase2 authentication MD5 */
 		return EAP_SEC_AUTH_MD5;
 
 	default:
@@ -1065,47 +2144,103 @@ static eap_auth_t __common_eap_connect_popup_get_auth_type(view_datamodel_eap_in
 	return EAP_SEC_AUTH_NONE;
 }
 
+static char *_eap_info_get_user_cert_alias(wifi_ap_h ap)
+{
+	char *path = NULL;
+	char *alias = NULL;
+	char *filename = NULL;
+	char *cert_name = NULL;
+	int alias_len = 0;
+	int filename_len = 0;
+
+	wifi_ap_get_eap_client_cert_file(ap, &path);
+	if (path == NULL)
+		return NULL;
+
+	filename = strrchr(path, '/');
+	if (filename == NULL) {
+		ERROR_LOG(UG_NAME_ERR, "Invalid file name");
+		goto EXIT;
+	}
+
+	filename++;
+	cert_name = strstr(filename, EAP_TLS_USER_CERT_PATH);
+	if (cert_name == NULL) {
+		/* For truncated path, available filename will be followed
+		 * with ellipsis(...) & excluding any remaining part of
+		 * "_user_cert.pem" - 14 chars (-14+3+1=10)*/
+		filename_len = strlen(filename);
+		alias = g_try_malloc0(filename_len - 10);
+		if (alias == NULL) {
+			ERROR_LOG(UG_NAME_ERR, "malloc fail");
+			goto EXIT;
+		}
+		g_strlcpy(alias, filename, filename_len - 13);
+		g_strlcat(alias, "...", filename_len - 10);
+		INFO_LOG(UG_NAME_NORMAL, "Truncated alias [%s]", alias);
+		goto EXIT;
+	}
+
+	cert_name--;
+	alias_len = cert_name - filename;
+
+	alias = g_try_malloc0(alias_len + 1);
+	if (alias == NULL) {
+		ERROR_LOG(UG_NAME_ERR, "malloc fail");
+		goto EXIT;
+	}
+
+	g_strlcpy(alias, filename, alias_len + 1);
+	INFO_LOG(UG_NAME_NORMAL, "Alias [%s] length [%d]", alias, alias_len);
+
+EXIT:
+	g_free(path);
+
+	return alias;
+}
+
 /* This creates Auth type, ID, Anonymous Id and Password items
  * This function should be called after creating the EAP type item
  */
-eap_info_list_t *eap_info_append_items(const char *profile_name, Evas_Object* view_list, const char *str_pkg_name)
+eap_info_list_t *eap_info_append_items(wifi_ap_h ap, Evas_Object* view_list,
+		const char *str_pkg_name, imf_ctxt_panel_cb_t input_panel_cb,
+		void *input_panel_cb_data)
 {
 	__COMMON_FUNC_ENTER__;
+
 	eap_type_t eap_type;
 	eap_auth_t auth_type;
 	char *temp_str = NULL;
 	Eina_Bool append_continue = TRUE;
-	Elm_Object_Item *password_entry_item = NULL;
 	eap_info_list_t *eap_info_list_data = NULL;
-	view_datamodel_eap_info_t *data_object = NULL;
-	if (!view_list || !str_pkg_name || !profile_name) {
+	Elm_Object_Item* item = NULL;
+	if (!view_list || !str_pkg_name || !ap) {
 		ERROR_LOG(UG_NAME_ERR, "Invalid params passed!");
 		return NULL;
 	}
 
-	eap_info_list_data = (eap_info_list_t *)g_malloc0(sizeof(eap_info_list_t));
+	eap_info_list_data = g_try_new0(eap_info_list_t, 1);
+	if (eap_info_list_data == NULL) {
+		return NULL;
+	}
 
-	eap_info_list_data->data_object = data_object = view_detail_datamodel_eap_info_create(profile_name);
-	eap_type = __common_eap_connect_popup_get_eap_type(data_object);
-	auth_type = __common_eap_connect_popup_get_auth_type(data_object);
+	eap_info_list_data->ap = ap;
+	eap_type = __common_eap_connect_popup_get_eap_type(ap);
+	auth_type = __common_eap_connect_popup_get_auth_type(ap);
 
-	common_utils_add_dialogue_separator(view_list, "dialogue/separator");
+	item = common_utils_add_2_line_txt_disabled_item(view_list,
+			"2line.top",
+			sc(str_pkg_name, I18N_TYPE_EAP_method),
+			list_eap_type[eap_type].name);
+	eap_info_list_data->eap_method_item = item;
 
-	common_utils_add_2_line_txt_disabled_item(view_list, "dialogue/2text.2", sc(str_pkg_name, I18N_TYPE_EAP_method), list_eap_type[eap_type].name);
+	eap_info_list_data->eap_type = eap_type;
 
 	switch (eap_type) {
 	case EAP_SEC_TYPE_UNKNOWN:
 	case EAP_SEC_TYPE_PEAP:
 	case EAP_SEC_TYPE_TLS:
 	case EAP_SEC_TYPE_TTLS:
-		break;
-	case EAP_SEC_TYPE_FAST:
-		/* Add EAP provision */
-		temp_str = g_strdup_printf("%d", view_detail_datamodel_eap_provision_get(data_object));
-		common_utils_add_2_line_txt_disabled_item(view_list, "dialogue/2text.2", sc(str_pkg_name, I18N_TYPE_Provisioning), temp_str);
-
-		g_free(temp_str);
-		temp_str = NULL;
 		break;
 	case EAP_SEC_TYPE_SIM:
 	case EAP_SEC_TYPE_AKA:
@@ -1115,43 +2250,81 @@ eap_info_list_t *eap_info_append_items(const char *profile_name, Evas_Object* vi
 	}
 
 	if (append_continue) {
-		/* Add EAP phase2 authentication */
-		common_utils_add_2_line_txt_disabled_item(view_list, "dialogue/2text.2", sc(str_pkg_name, I18N_TYPE_Phase_2_authentication), list_eap_auth[auth_type].name);
+		if (eap_type == EAP_SEC_TYPE_PEAP ||
+				eap_type == EAP_SEC_TYPE_TTLS) {
+			/* Add EAP phase2 authentication */
+			item = common_utils_add_2_line_txt_disabled_item(
+					view_list, "2line.top",
+					sc(str_pkg_name, I18N_TYPE_Phase_2_authentication),
+					list_eap_auth[auth_type].name);
+			eap_info_list_data->eap_auth_item = item;
+		}
 
-		/* Add CA certificate */
-		temp_str = view_detail_datamodel_ca_cert_get(data_object);
-		temp_str = temp_str? temp_str : g_strdup(sc(str_pkg_name, I18N_TYPE_Unspecified));
-		common_utils_add_2_line_txt_disabled_item(view_list, "dialogue/2text.2", sc(str_pkg_name, I18N_TYPE_Ca_Certificate), temp_str);
-		g_free(temp_str);
+		if (eap_type == EAP_SEC_TYPE_TLS) {
+			/* Add User certificate */
+			temp_str = _eap_info_get_user_cert_alias(ap);
 
-		/* Add User certificate */
-		temp_str = view_detail_datamodel_user_cert_get(data_object);
-		temp_str = temp_str? temp_str : g_strdup(sc(str_pkg_name, I18N_TYPE_Unspecified));
-		common_utils_add_2_line_txt_disabled_item(view_list, "dialogue/2text.2", sc(str_pkg_name, I18N_TYPE_User_Certificate),temp_str);
-		g_free(temp_str);
+			if (temp_str == NULL || strlen(temp_str) == 0) {
+				if (temp_str != NULL) {
+					g_free(temp_str);
+				}
+				temp_str = g_strdup(sc(str_pkg_name,
+						I18N_TYPE_Unspecified));
+			}
+
+			item = common_utils_add_2_line_txt_disabled_item(
+					view_list, "2line.top",
+					sc(str_pkg_name, I18N_TYPE_User_Certificate),
+					temp_str);
+			eap_info_list_data->user_cert_item = item;
+			g_free(temp_str);
+		}
 
 		/* Add EAP ID */
-		temp_str = view_detail_datamodel_user_id_get(data_object);
-		common_utils_add_2_line_txt_disabled_item(view_list, "dialogue/2text.2", sc(str_pkg_name, I18N_TYPE_Identity), temp_str);
+		bool is_paswd_set;
+		temp_str = NULL;
+		wifi_ap_get_eap_passphrase(ap, &temp_str, &is_paswd_set);
+		item = common_utils_add_2_line_txt_disabled_item(view_list, "2line.top",
+				sc(str_pkg_name, I18N_TYPE_Identity), temp_str);
+		eap_info_list_data->id_item = item;
 		g_free(temp_str);
 
-		/* Add EAP Anonymous Identity */
-		temp_str = view_detail_datamodel_anonymous_id_get(data_object);
-		common_utils_add_2_line_txt_disabled_item(view_list, "dialogue/2text.2", sc(str_pkg_name, I18N_TYPE_Anonymous_Identity), temp_str);
-		g_free(temp_str);
+#if 0
+		common_utils_entry_info_t *edit_box_details;
 
 		/* Add EAP Password */
-		temp_str = view_detail_datamodel_pswd_get(data_object);
-		password_entry_item = common_utils_add_edit_box_to_list(view_list, NULL, sc(str_pkg_name, I18N_TYPE_Password), temp_str, sc(str_pkg_name, I18N_TYPE_Enter_password), ELM_INPUT_PANEL_LAYOUT_URL);
-		g_free(temp_str);
-		common_utils_entry_password_set(elm_object_item_data_get(password_entry_item), TRUE);
-		eap_info_list_data->pswd_item = password_entry_item;
+		g_eap_entry_itc.item_style = "entry.main";
+		g_eap_entry_itc.func.text_get = _gl_eap_entry_item_text_get;
+		g_eap_entry_itc.func.content_get = _gl_eap_entry_item_content_get;
+		g_eap_entry_itc.func.state_get = NULL;
+		g_eap_entry_itc.func.del = _gl_eap_entry_item_del;
+
+		edit_box_details = g_try_new0(common_utils_entry_info_t, 1);
+		if (edit_box_details == NULL) {
+			g_free(eap_info_list_data);
+			return NULL;
+		}
+
+		edit_box_details->entry_id = ENTRY_TYPE_PASSWORD;
+		edit_box_details->title_txt = sc(str_pkg_name, I18N_TYPE_Password);
+		edit_box_details->entry_txt = NULL;
+		edit_box_details->guide_txt = sc(str_pkg_name, I18N_TYPE_Enter_password);
+		edit_box_details->input_panel_cb = input_panel_cb;
+		edit_box_details->input_panel_cb_data = input_panel_cb_data;
+		edit_box_details->item = elm_genlist_item_append(view_list,
+				&g_eap_entry_itc, edit_box_details, NULL,
+				ELM_GENLIST_ITEM_NONE, _gl_editbox_sel_cb, NULL);
+		elm_genlist_item_select_mode_set(edit_box_details->item,
+				ELM_OBJECT_SELECT_MODE_NONE);
+		eap_info_list_data->pswd_item = edit_box_details->item;
+#endif
 	}
 
 	__COMMON_FUNC_EXIT__;
 	return eap_info_list_data;
 }
 
+#if 0
 void eap_info_save_data(eap_info_list_t *eap_info_list_data)
 {
 	if (!eap_info_list_data) {
@@ -1159,13 +2332,12 @@ void eap_info_save_data(eap_info_list_t *eap_info_list_data)
 		return;
 	}
 	char *txt = common_utils_get_list_item_entry_txt(eap_info_list_data->pswd_item);
-	DEBUG_LOG(UG_NAME_NORMAL, "Password [%s]", txt);
-	view_detail_datamodel_eap_pswd_set(eap_info_list_data->data_object, txt);
-	g_free(txt);
 
-	view_detail_datamodel_save_eap_info_if_modified(eap_info_list_data->data_object);
+	wifi_ap_set_eap_passphrase(eap_info_list_data->ap, NULL, txt);
+	g_free(txt);
 	return;
 }
+#endif
 
 void eap_info_remove(eap_info_list_t *eap_info_list_data)
 {
@@ -1174,18 +2346,10 @@ void eap_info_remove(eap_info_list_t *eap_info_list_data)
 		return;
 	}
 
-	view_detail_datamodel_eap_info_destroy(eap_info_list_data->data_object);
 	g_free(eap_info_list_data);
-
-	return;
 }
 
-void eap_view_close(common_eap_connect_data_t *eap_data)
+void eap_connect_data_free(eap_connect_data_t *eap_data)
 {
-	if (NULL == eap_data) {
-		return;
-	}
-	Evas_Object *button_back = elm_object_item_part_content_get(eap_data->navi_it, "prev_btn");
-	evas_object_smart_callback_call(button_back, "clicked", NULL);
-	return;
+	__common_eap_connect_cleanup(eap_data);
 }
