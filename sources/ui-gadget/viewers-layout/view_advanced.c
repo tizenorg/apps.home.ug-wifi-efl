@@ -19,7 +19,8 @@
 
 #include <vconf.h>
 #include <vconf-keys.h>
-#include <efl_assist.h>
+#include <app_control_internal.h>
+#include <efl_extension.h>
 
 #include "ug_wifi.h"
 #include "view_advanced.h"
@@ -56,54 +57,58 @@ struct _private_data {
 struct _private_data g_pd;
 
 /* Prototype */
-static char *_gl_text_get(void *data, Evas_Object *obj,	const char *part);
 static char *_gl_network_notification_text_get(void *data, Evas_Object *obj,	const char *part);
 static char *_gl_sort_by_text_get(void *data, Evas_Object *obj, const char *part);
 static char *_gl_sort_by_sub_text_get(void *data, Evas_Object *obj, const char *part);
-static char *_gl_never_text_get(void *data, Evas_Object *obj,const char *part);
-static char *_gl_keep_wifi_on_during_sleep_text_get(void *data, Evas_Object *obj,const char *part);
 static Evas_Object *_gl_content_get_network_noti(void *data, Evas_Object *obj, const char *part);
-static Evas_Object *_gl_content_get_keep_wifi_sub(void *data, Evas_Object *obj, const char *part);
 static Evas_Object *_gl_content_get_sort_by_sub(void *data,	Evas_Object *obj, const char *part);
 static char *_gl_install_certificate_text_get(void *data, Evas_Object *obj, const char *part);
+#if TIZEN_SLEEP_POLICY
+static char *_gl_text_get(void *data, Evas_Object *obj,	const char *part);
+static char *_gl_never_text_get(void *data, Evas_Object *obj,const char *part);
+static char *_gl_keep_wifi_on_during_sleep_text_get(void *data, Evas_Object *obj,const char *part);
+static Evas_Object *_gl_content_get_keep_wifi_sub(void *data, Evas_Object *obj, const char *part);
+#endif
 
 /* Global variables for elm_genlist itc */
 static Elm_Genlist_Item_Class itc_network_noti = {
-		.item_style = "multiline_sub.main.1icon",
+		.item_style = WIFI_GENLIST_MULTILINE_TEXT_STYLE,
 		.func.text_get = _gl_network_notification_text_get,
 		.func.content_get = _gl_content_get_network_noti
 };
 
+#if TIZEN_SLEEP_POLICY
 static Elm_Genlist_Item_Class itc_keep_wifi = {
-		.item_style = "2line.top",
+		.item_style = WIFI_GENLIST_2LINE_TOP_TEXT_STYLE,
 		.func.text_get = _gl_keep_wifi_on_during_sleep_text_get,
 };
 
 static Elm_Genlist_Item_Class itc_keep_wifi_sub = {
-		.item_style = "1line",
+		.item_style = WIFI_GENLIST_1LINE_TEXT_ICON_STYLE,
 		.func.text_get = _gl_text_get,
 		.func.content_get = _gl_content_get_keep_wifi_sub,
 };
 
 static Elm_Genlist_Item_Class itc_keep_wifi_sub_never = {
-		.item_style = "2line.top",
+		.item_style = WIFI_GENLIST_2LINE_TOP_TEXT_ICON_STYLE,
 		.func.text_get = _gl_never_text_get,
 		.func.content_get = _gl_content_get_keep_wifi_sub,
 };
+#endif
 
 static Elm_Genlist_Item_Class itc_sort_by = {
-		.item_style = "2line.top",
+		.item_style = WIFI_GENLIST_2LINE_TOP_TEXT_STYLE,
 		.func.text_get = _gl_sort_by_text_get,
 };
 
 static Elm_Genlist_Item_Class itc_sort_by_sub = {
-		.item_style = "1line",
+		.item_style = WIFI_GENLIST_1LINE_TEXT_ICON_STYLE,
 		.func.text_get = _gl_sort_by_sub_text_get,
 		.func.content_get = _gl_content_get_sort_by_sub,
 };
 
 static Elm_Genlist_Item_Class itc_install_cert = {
-		.item_style = "1line",
+		.item_style = WIFI_GENLIST_1LINE_TEXT_STYLE,
 		.func.text_get = _gl_install_certificate_text_get,
 };
 
@@ -112,7 +117,7 @@ static char *_gl_install_certificate_text_get(void *data, Evas_Object *obj,
 {
 	char buf[1024];
 
-	if (!g_strcmp0(part, "elm.text.main.left")) {
+	if (!strcmp("elm.text", part)) {
 		snprintf(buf, 1023, "%s", sc(PACKAGE, I18N_TYPE_Install_certificate));
 		return strdup(buf);
 	}
@@ -146,6 +151,7 @@ static void _gl_cert_sel_cb(void *data, Evas_Object *obj, void *event_info)
 	elm_genlist_item_selected_set(g_pd.item_install_cert, EINA_FALSE);
 }
 
+#if TIZEN_SLEEP_POLICY
 static int _convert_wifi_keep_value_to_vconf(int i18n_key)
 {
 	switch (i18n_key) {
@@ -177,6 +183,7 @@ static int _convert_vconf_to_wifi_keep_value(int vconf_value)
 
 	return -1;
 }
+#endif
 
 int _convert_sort_by_value_to_vconf(int i18n_key)
 {
@@ -208,12 +215,12 @@ static char *_gl_sort_by_text_get(void *data, Evas_Object *obj,
 		const char *part)
 {
 	char buf[1024];
-	if (!g_strcmp0(part, "elm.text.main.left.top")||!g_strcmp0(part, "elm.text.main.left")) {
+	if (!strcmp("elm.text", part)) {
 		if ((int) data != 0) {
 			snprintf(buf, 1023, "%s", sc(PACKAGE, (int) data));
 			return strdup(buf);
 		}
-	} else if (!g_strcmp0(part, "elm.text.sub.left.bottom")) {
+	} else if (!strcmp("elm.text.sub", part)) {
 		int value;
 
 		value = _convert_vconf_to_sort_by_value(
@@ -230,7 +237,7 @@ static char *_gl_sort_by_text_get(void *data, Evas_Object *obj,
 static char *_gl_sort_by_sub_text_get(void *data, Evas_Object *obj, const char *part)
 {
 	char buf[1024];
-	if (!g_strcmp0(part, "elm.text.main.left")) {
+	if (!strcmp("elm.text", part)) {
 		if ((int) data != 0) {
 			snprintf(buf, 1023, "%s", sc(PACKAGE, (int) data));
 			return strdup(buf);
@@ -243,21 +250,23 @@ static char *_gl_network_notification_text_get(void *data, Evas_Object *obj, con
 {
 	char buf[1024];
 
-	if (!g_strcmp0(part, "elm.text.main")) {
+	if (!strcmp("elm.text", part)) {
 		snprintf(buf, 1023, "%s", sc(PACKAGE, I18N_TYPE_Network_notification));
 		return strdup(buf);
-	} else if (!g_strcmp0(part, "elm.text.multiline")) {
-		snprintf(buf, 1023, "%s", sc(PACKAGE, I18N_TYPE_Network_notify_me_later));
+	} else if (!strcmp("elm.text.multiline", part)) {
+		snprintf(buf, 1023, "<font_size=30>%s</font_size>",
+				sc(PACKAGE, I18N_TYPE_Network_notify_me_later));
 		return strdup(buf);
 	}
 	return NULL;
 }
 
+#if TIZEN_SLEEP_POLICY
 static char *_gl_text_get(void *data, Evas_Object *obj,
 		const char *part)
 {
 	char buf[1024];
-	if (!g_strcmp0(part, "elm.text.main.left")) {
+	if (!strcmp("elm.text", part)) {
 		if ((int) data != 0) {
 			snprintf(buf, 1023, "%s", sc(PACKAGE, (int) data));
 			return strdup(buf);
@@ -271,12 +280,10 @@ static char *_gl_keep_wifi_on_during_sleep_text_get(void *data, Evas_Object *obj
 {
 	char buf[1024];
 
-	if(!strcmp(part, "elm.text.main.left.top")) {
+	if (!strcmp("elm.text", part)) {
 		snprintf(buf, 1023, "%s", sc(PACKAGE, I18N_TYPE_Keep_WIFI_on_during_sleep));
 		return strdup(buf);
-	}
-
-	if(!strcmp(part, "elm.text.sub.left.bottom")) {
+	} else if (!strcmp("elm.text.sub", part)) {
 		int value;
 		value = _convert_vconf_to_wifi_keep_value(
 				common_util_get_system_registry(VCONF_SLEEP_POLICY));
@@ -292,17 +299,19 @@ static char *_gl_keep_wifi_on_during_sleep_text_get(void *data, Evas_Object *obj
 	}
 	return NULL;
 }
+
 static char *_gl_never_text_get(void *data, Evas_Object *obj,
 		const char *part)
 {
-	if (!g_strcmp0(part, "elm.text.main.left.top")) {
+	if (!strcmp("elm.text", part)) {
 		return g_strdup(sc(PACKAGE, I18N_TYPE_Donot_Use));
-	} else if (!g_strcmp0(part, "elm.text.sub.left.bottom")) {
+	} else if (!strcmp("elm.text.sub", part)) {
 		return g_strdup(sc(PACKAGE, I18N_TYPE_Increases_Data_Usage));
 	}
 
 	return NULL;
 }
+#endif
 
 static void _gl_changed_network_noti(void *data, Evas_Object *obj,
 		void *event_info)
@@ -351,8 +360,7 @@ static Evas_Object *_gl_content_get_network_noti(void *data,
 	Evas_Object *toggle_btn = NULL;
 	int ret;
 
-
-	if (!strncmp(part, "elm.icon", strlen(part))) {
+	if (!strcmp("elm.swallow.end", part)) {
 		toggle_btn = elm_check_add(obj);
 		evas_object_size_hint_align_set(toggle_btn, EVAS_HINT_FILL, EVAS_HINT_FILL);
 		evas_object_size_hint_weight_set(toggle_btn, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
@@ -401,6 +409,7 @@ static Evas_Object *_gl_content_get_network_noti(void *data,
 	return toggle_btn;
 }
 
+#if TIZEN_SLEEP_POLICY
 static void _gl_changed_keep_wifi_sub(void *data, Evas_Object *obj,
 		void *event_info)
 {
@@ -450,14 +459,16 @@ static Evas_Object *_gl_content_get_keep_wifi_sub(void *data,
 	__COMMON_FUNC_ENTER__;
 	Evas_Object *radio;
 	int value;
-	Evas_Object *content = elm_layout_add(obj);
+	Evas_Object *content = NULL;
 
 	if (!g_pd.keep_wifi_radio_group) {
 		g_pd.keep_wifi_radio_group = elm_radio_add(obj);
 		elm_radio_state_value_set (g_pd.keep_wifi_radio_group, -1);
 	}
 
-	if (!g_strcmp0(part, "elm.icon.2")) {
+	if (!strcmp("elm.swallow.end", part)) {
+		content = elm_layout_add(obj);
+
 		elm_layout_theme_set(content, "layout", "list/C/type.2", "default");
 		radio = elm_radio_add(content);
 #ifdef ACCESSIBLITY_FEATURE
@@ -480,6 +491,7 @@ static Evas_Object *_gl_content_get_keep_wifi_sub(void *data,
 	__COMMON_FUNC_EXIT__;
 	return content;
 }
+#endif
 
 static void _gl_changed_sort_by_sub(void *data, Evas_Object *obj,
 		void *event_info)
@@ -531,14 +543,16 @@ static Evas_Object *_gl_content_get_sort_by_sub(void *data,
 
 	Evas_Object *radio;
 	int value;
-	Evas_Object *content = elm_layout_add(obj);
+	Evas_Object *content = NULL;
 
 	if (!g_pd.sort_by_radio_group) {
 		g_pd.sort_by_radio_group = elm_radio_add(obj);
 		elm_radio_state_value_set (g_pd.sort_by_radio_group, -1);
 	}
 
-	if (!g_strcmp0(part, "elm.icon.2")) {
+	if (!strcmp("elm.swallow.end", part)) {
+		content = elm_layout_add(obj);
+
 		elm_layout_theme_set(content, "layout", "list/C/type.2", "default");
 		radio = elm_radio_add(content);
 #ifdef ACCESSIBLITY_FEATURE
@@ -574,15 +588,17 @@ static void _block_clicked_cb(void *data, Evas_Object *obj,
 	}
 }
 
+#if TIZEN_SLEEP_POLICY
 static void _gl_keep_wifi(void *data, Evas_Object *obj, void *event_info)
 {
 	__COMMON_FUNC_ENTER__;
 	Evas_Object *genlist;
 
 	g_pd.keep_wifi_popup = elm_popup_add(obj);
-	ea_object_event_callback_add(g_pd.keep_wifi_popup, EA_CALLBACK_BACK, ea_popup_back_cb, NULL);
+	eext_object_event_callback_add(g_pd.keep_wifi_popup, EEXT_CALLBACK_BACK, eext_popup_back_cb, NULL);
 	elm_object_domain_translatable_part_text_set(g_pd.keep_wifi_popup,
 			"title,text", PACKAGE, "IDS_ST_BODY_KEEP_WI_FI_ON_DURING_SLEEP");
+	elm_popup_align_set(g_pd.keep_wifi_popup, ELM_NOTIFY_ALIGN_FILL, 1.0);
 	evas_object_size_hint_weight_set(g_pd.keep_wifi_popup, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
 	evas_object_smart_callback_add(g_pd.keep_wifi_popup, "block,clicked",
 			_block_clicked_cb, g_pd.keep_wifi_popup);
@@ -617,6 +633,7 @@ static void _gl_keep_wifi(void *data, Evas_Object *obj, void *event_info)
 	elm_genlist_item_selected_set(g_pd.item_keep_wifi_switch, EINA_FALSE);
 	__COMMON_FUNC_EXIT__;
 }
+#endif
 
 static void _gl_sort_by(void *data, Evas_Object *obj, void *event_info)
 {
@@ -624,9 +641,10 @@ static void _gl_sort_by(void *data, Evas_Object *obj, void *event_info)
 	Evas_Object *genlist = NULL;
 
 	g_pd.sort_by_popup = elm_popup_add(obj);
-	ea_object_event_callback_add(g_pd.sort_by_popup, EA_CALLBACK_BACK, ea_popup_back_cb, NULL);
+	eext_object_event_callback_add(g_pd.sort_by_popup, EEXT_CALLBACK_BACK, eext_popup_back_cb, NULL);
 	elm_object_domain_translatable_part_text_set(g_pd.sort_by_popup,
 			"title,text", PACKAGE, "IDS_WIFI_BODY_SORT_BY");
+	elm_popup_align_set(g_pd.sort_by_popup, ELM_NOTIFY_ALIGN_FILL, 1.0);
 	evas_object_size_hint_weight_set(g_pd.sort_by_popup, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
 	evas_object_smart_callback_add(g_pd.sort_by_popup, "block,clicked",
 			_block_clicked_cb, g_pd.sort_by_popup);
@@ -682,10 +700,12 @@ static Evas_Object *_create_list(Evas_Object *parent)
 			(const void *) I18N_TYPE_Network_notification, NULL,
 			ELM_GENLIST_ITEM_NONE, _gl_changed_network_noti, NULL);
 
+#if TIZEN_SLEEP_POLICY
 	/* Keep WI-FI on during sleep */
 	g_pd.item_keep_wifi_switch = elm_genlist_item_append(gl, &itc_keep_wifi,
 			(const void *) I18N_TYPE_Keep_WIFI_on_during_sleep, NULL,
 			ELM_GENLIST_ITEM_NONE, _gl_keep_wifi, NULL);
+#endif
 
 	/* Sort By */
 	g_pd.item_sort_by= elm_genlist_item_append(gl, &itc_sort_by,

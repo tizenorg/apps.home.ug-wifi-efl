@@ -259,6 +259,9 @@ msgstr "Ugyldig handling. Prøv på nytt."
 msgid "IDS_ST_BODY_INSTALL_CERTIFICATE"
 msgstr "Installer sertifikat"
 
+msgid "IDS_WIFI_TMBODY_SMART_NETWORK_SWITCH"
+msgstr "Smart nettverksbytte"
+
 msgid "IDS_WIFI_HEADER_PASSPOINT"
 msgstr "Passpoint"
 

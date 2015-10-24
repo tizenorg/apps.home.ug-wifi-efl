@@ -18,7 +18,6 @@
  */
 
 #include <tethering.h>
-#include <efl_assist.h>
 
 #include "common.h"
 #include "ug_wifi.h"

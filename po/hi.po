@@ -86,7 +86,7 @@ msgid "IDS_WIFI_TPOP_FAILED_TO_OBTAIN_IP_ADDRESS"
 msgstr "IP पता प्राप्त करने में विफल।"
 
 msgid "IDS_WIFI_TPOP_CONNECTED_TO_WI_FI_NETWORK_PS"
-msgstr "Wi-Fi नेटवर्क %s से जोड़ा गया"
+msgstr "Wi-Fi नेटवर्क %s से जोड़ा गया।"
 
 msgid "IDS_WIFI_TMBODY_NEVER_M_ALWAYS_OFF"
 msgstr "कभी नहीं"
@@ -119,7 +119,7 @@ msgid "IDS_WIFI_POP_PRESS_WPS_ON_YOUR_WI_FI_ACCESS_POINT_WITHIN_PD_MINUTES"
 msgstr "%d मिनटों के अंदर आप के Wi-Fi एक्सेस पॉइंट पर WPS दबाएँ"
 
 msgid "IDS_WIFI_POP_OPEN"
-msgstr "खोलें"
+msgstr "ओपन"
 
 msgid "IDS_WIFI_POP_NO_WI_FI_AP_FOUND"
 msgstr "कोई Wi-Fi AP नहीं मिला।"
@@ -258,6 +258,9 @@ msgstr "अमान्य क्रिया। फिर से प्रय�
 
 msgid "IDS_ST_BODY_INSTALL_CERTIFICATE"
 msgstr "प्रमाणपत्र स्थापित करें"
+
+msgid "IDS_WIFI_TMBODY_SMART_NETWORK_SWITCH"
+msgstr "स्मार्ट नेटवर्क स्विच"
 
 msgid "IDS_WIFI_HEADER_PASSPOINT"
 msgstr "पासपॉइंट"

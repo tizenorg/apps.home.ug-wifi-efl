@@ -259,6 +259,9 @@ msgstr "Neveljavno dejanje. Poskusite znova."
 msgid "IDS_ST_BODY_INSTALL_CERTIFICATE"
 msgstr "Namesti certifikat"
 
+msgid "IDS_WIFI_TMBODY_SMART_NETWORK_SWITCH"
+msgstr "Pametni preklop omrežja"
+
 msgid "IDS_WIFI_HEADER_PASSPOINT"
 msgstr "Passpoint"
 

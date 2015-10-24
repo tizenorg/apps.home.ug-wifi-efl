@@ -31,7 +31,6 @@ pkg_check_modules(pkgs REQUIRED
 	ecore-input
 	appcore-efl
 	elementary
-	efl-assist
 	capi-ui-efl-util
 	glib-2.0
 	utilX
@@ -42,6 +41,7 @@ pkg_check_modules(pkgs REQUIRED
 	sensor
 	openssl
 	cert-svc-vcore
+	efl-extension
 #syspopup
 #syspopup-caller
 	feedback

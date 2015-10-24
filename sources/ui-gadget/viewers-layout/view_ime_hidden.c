@@ -18,7 +18,6 @@
  */
 
 #include <feedback.h>
-#include <efl_assist.h>
 
 #include "ug_wifi.h"
 #include "view_ime_hidden.h"
@@ -59,7 +58,7 @@ static void __popup_entry_changed_cb(void* data, Evas_Object* obj, void* event_i
 	hiddep_ap_popup_data_t *popup_data = g_hidden_ap_popup_data;
 	Evas_Object *ok_btn = popup_data->ok_btn;
 
-	if (elm_object_part_content_get(obj, "elm.swallow.clear")) {
+//	if (elm_object_part_content_get(obj, "elm.swallow.clear")) {
 		if (elm_object_focus_get(obj)) {
 			if (elm_entry_is_empty(obj)) {
 				elm_object_signal_emit(obj, "elm,state,clear,hidden", "");
@@ -71,7 +70,7 @@ static void __popup_entry_changed_cb(void* data, Evas_Object* obj, void* event_i
 				elm_entry_input_panel_return_key_disabled_set(obj, EINA_FALSE);
 			}
 		}
-	}
+//	}
 }
 
 static void __popup_entry_focused_cb(void *data, Evas_Object *obj, void *event_info)
@@ -183,9 +182,12 @@ static Evas_Object *_gl_entry_item_content_get(void *data,
 	static Elm_Entry_Filter_Limit_Size limit_filter_data;
 
 	if (!g_strcmp0(part, "elm.icon.entry")) {
-		entry = ea_editfield_add(obj, EA_EDITFIELD_SCROLL_SINGLELINE);
+		entry = elm_entry_add(obj);
+		elm_layout_theme_set(entry, "layout", "editfield", "singleline");
 		evas_object_size_hint_weight_set(entry, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
 		evas_object_size_hint_align_set(entry, EVAS_HINT_FILL, EVAS_HINT_FILL);
+		elm_entry_single_line_set(entry, EINA_TRUE);
+		elm_entry_scrollable_set(entry, EINA_TRUE);
 		if (!entry)
 			return NULL;
 
@@ -220,7 +222,7 @@ static Evas_Object *_gl_entry_item_content_get(void *data,
 		evas_object_smart_callback_add(entry, "maxlength,reached",
 				__popup_entry_maxlength_reached, NULL);
 
-		elm_entry_input_panel_show_on_demand_set(entry, EINA_TRUE);
+		elm_entry_input_panel_show(entry);
 
 		return entry;
 	}
@@ -236,7 +238,6 @@ static void popup_animation_finish_cb(void *data, Evas_Object *obj, void *event_
 
 	entry = elm_object_item_part_content_get(item, "elm.icon.entry");
 	elm_entry_input_panel_show(entry);
-	elm_entry_input_panel_show_on_demand_set(entry, EINA_FALSE);
 	elm_object_focus_set(entry, EINA_TRUE);
 
 	__COMMON_FUNC_EXIT__;

@@ -23,11 +23,11 @@
 #include <cert-svc/cpkcs12.h>
 #include <cert-svc/cprimitives.h>
 #include <ui-gadget.h>
-#include <efl_assist.h>
 #include <utilX.h>
 #include <Ecore_X.h>
 #include <vconf-keys.h>
 #include <glib/gstdio.h>
+#include <efl_extension.h>
 
 #include "common.h"
 #include "ug_wifi.h"
@@ -260,20 +260,18 @@ static void _gl_eap_type_sub_sel(void *data, Evas_Object *obj, void *event_info)
 	eap_type_t pre_index = __common_eap_connect_popup_get_eap_type(eap_data->ap);
 	const char *label = elm_object_item_text_get((Elm_Object_Item *) event_info);
 
-	if(label != NULL){
-		if (strcmp(label, EAP_TYPE_UNKNOWN) == 0)
-			sel_index = EAP_SEC_TYPE_UNKNOWN;
-		else if (strcmp(label, EAP_TYPE_PEAP) == 0)
-			sel_index = EAP_SEC_TYPE_PEAP;
-		else if (strcmp(label, EAP_TYPE_TLS) == 0)
-			sel_index = EAP_SEC_TYPE_TLS;
-		else if (strcmp(label, EAP_TYPE_TTLS) == 0)
-			sel_index = EAP_SEC_TYPE_TTLS;
-		else if (strcmp(label, EAP_TYPE_SIM) == 0)
-			sel_index = EAP_SEC_TYPE_SIM;
-		else if (strcmp(label, EAP_TYPE_AKA) == 0)
-			sel_index = EAP_SEC_TYPE_AKA;
-	}
+	if (strcmp(label, EAP_TYPE_UNKNOWN) == 0)
+		sel_index = EAP_SEC_TYPE_UNKNOWN;
+	else if (strcmp(label, EAP_TYPE_PEAP) == 0)
+		sel_index = EAP_SEC_TYPE_PEAP;
+	else if (strcmp(label, EAP_TYPE_TLS) == 0)
+		sel_index = EAP_SEC_TYPE_TLS;
+	else if (strcmp(label, EAP_TYPE_TTLS) == 0)
+		sel_index = EAP_SEC_TYPE_TTLS;
+	else if (strcmp(label, EAP_TYPE_SIM) == 0)
+		sel_index = EAP_SEC_TYPE_SIM;
+	else if (strcmp(label, EAP_TYPE_AKA) == 0)
+		sel_index = EAP_SEC_TYPE_AKA;
 
 	DEBUG_LOG(UG_NAME_NORMAL, "previous index = %d; selected index = %d;",
 			pre_index, sel_index);
@@ -376,19 +374,17 @@ static void _gl_eap_user_cert_sel(void *data, Evas_Object *obj,
 		eap_data->privatekey_path = NULL;
 	}
 
-	if(cert_alias != NULL){
-		if (strcmp(cert_alias, sc(PACKAGE, I18N_TYPE_None)) == 0) {
-			if (eap_data->cert_alias != NULL) {
-				g_free(eap_data->cert_alias);
-				eap_data->cert_alias = NULL;
-			}
-		} else if (__cert_extract_files(cert_alias, eap_data)) {
-			if (eap_data->cert_alias != NULL) {
-				g_free(eap_data->cert_alias);
-				eap_data->cert_alias = NULL;
-			}
-			eap_data->cert_alias = g_strdup(cert_alias);
+	if (strcmp(cert_alias, sc(PACKAGE, I18N_TYPE_None)) == 0) {
+		if (eap_data->cert_alias != NULL) {
+			g_free(eap_data->cert_alias);
+			eap_data->cert_alias = NULL;
 		}
+	} else if (__cert_extract_files(cert_alias, eap_data)) {
+		if (eap_data->cert_alias != NULL) {
+			g_free(eap_data->cert_alias);
+			eap_data->cert_alias = NULL;
+		}
+		eap_data->cert_alias = g_strdup(cert_alias);
 	}
 
 	if(eap_data->eap_user_cert_item != NULL)
@@ -419,7 +415,7 @@ static void _create_eap_cert_list(eap_connect_data_t *eap_data,
 	ctxpopup = elm_ctxpopup_add(eap_data->win);
 	eap_data->sub_popup = ctxpopup;
 	elm_object_style_set(ctxpopup, "dropdown/list");
-	ea_object_event_callback_add(ctxpopup, EA_CALLBACK_BACK,
+	eext_object_event_callback_add(ctxpopup, EEXT_CALLBACK_BACK,
 			cert_ctxpopup_dismissed_cb, NULL);
 	evas_object_smart_callback_add(ctxpopup,"dismissed",
 			cert_ctxpopup_dismissed_cb, eap_data);
@@ -569,8 +565,8 @@ static void _create_eap_type_list(eap_connect_data_t *eap_data,
 	ctxpopup = elm_ctxpopup_add(eap_data->win);
 	eap_data->sub_popup = ctxpopup;
 	elm_object_style_set(ctxpopup, "dropdown/list");
-	ea_object_event_callback_add(ctxpopup, EA_CALLBACK_BACK,
-			ea_ctxpopup_back_cb, NULL);
+	eext_object_event_callback_add(ctxpopup, EEXT_CALLBACK_BACK,
+			eext_ctxpopup_back_cb, NULL);
 	evas_object_smart_callback_add(ctxpopup,"dismissed",
 			ctxpopup_dismissed_cb, eap_data);
 	elm_ctxpopup_direction_priority_set(ctxpopup,
@@ -666,20 +662,18 @@ static void _gl_eap_auth_sub_sel(void *data, Evas_Object *obj, void *event_info)
 
 	const char *label = elm_object_item_text_get((Elm_Object_Item *) event_info);
 
-	if(label != NULL){
-		if (strcmp(label, sc(PACKAGE, I18N_TYPE_None)) == 0)
-			sel_index = EAP_SEC_AUTH_NONE;
-		else if (strcmp(label, EAP_AUTH_TYPE_PAP) == 0)
-			sel_index = EAP_SEC_AUTH_PAP;
-		else if (strcmp(label, EAP_AUTH_TYPE_MSCHAP) == 0)
-			sel_index = EAP_SEC_AUTH_MSCHAP;
-		else if (strcmp(label, EAP_AUTH_TYPE_MSCHAPV2) == 0)
-			sel_index = EAP_SEC_AUTH_MSCHAPV2;
-		else if (strcmp(label, EAP_AUTH_TYPE_GTC) == 0)
-			sel_index = EAP_SEC_AUTH_GTC;
-		else if (strcmp(label, EAP_AUTH_TYPE_MD5) == 0)
-			sel_index = EAP_SEC_AUTH_MD5;
-	}
+	if (strcmp(label, sc(PACKAGE, I18N_TYPE_None)) == 0)
+		sel_index = EAP_SEC_AUTH_NONE;
+	else if (strcmp(label, EAP_AUTH_TYPE_PAP) == 0)
+		sel_index = EAP_SEC_AUTH_PAP;
+	else if (strcmp(label, EAP_AUTH_TYPE_MSCHAP) == 0)
+		sel_index = EAP_SEC_AUTH_MSCHAP;
+	else if (strcmp(label, EAP_AUTH_TYPE_MSCHAPV2) == 0)
+		sel_index = EAP_SEC_AUTH_MSCHAPV2;
+	else if (strcmp(label, EAP_AUTH_TYPE_GTC) == 0)
+		sel_index = EAP_SEC_AUTH_GTC;
+	else if (strcmp(label, EAP_AUTH_TYPE_MD5) == 0)
+		sel_index = EAP_SEC_AUTH_MD5;
 
 	wifi_ap_set_eap_auth_type(eap_data->ap,
 		__common_eap_connect_popup_get_wlan_auth_type(sel_index));
@@ -710,7 +704,7 @@ static void _create_eap_auth_list(eap_connect_data_t *eap_data,
 	ctxpopup = elm_ctxpopup_add(eap_data->win);
 	eap_data->sub_popup = ctxpopup;
 	elm_object_style_set(ctxpopup, "dropdown/list");
-	ea_object_event_callback_add(ctxpopup, EA_CALLBACK_BACK, ea_ctxpopup_back_cb, NULL);
+	eext_object_event_callback_add(ctxpopup, EEXT_CALLBACK_BACK, eext_ctxpopup_back_cb, NULL);
 	evas_object_smart_callback_add(ctxpopup,"dismissed", ctxpopup_dismissed_cb, eap_data);
 	elm_ctxpopup_direction_priority_set(ctxpopup,
 			ELM_CTXPOPUP_DIRECTION_DOWN,
@@ -1019,9 +1013,11 @@ static Evas_Object *_gl_eap_entry_item_content_get(void *data, Evas_Object *obj,
 			return NULL;
 		}
 
-		entry = ea_editfield_add(obj, EA_EDITFIELD_SCROLL_SINGLELINE);
+		entry = elm_entry_add(obj);
 		retvm_if(NULL == entry, NULL);
 
+		elm_entry_single_line_set(entry, EINA_TRUE);
+		elm_entry_scrollable_set(entry, EINA_TRUE);
 		elm_entry_password_set(entry, hide_entry_txt);
 		elm_entry_prediction_allow_set(entry, EINA_FALSE);
 		elm_entry_autocapital_type_set(entry, ELM_AUTOCAPITAL_TYPE_NONE);
@@ -1107,7 +1103,7 @@ static char *_gl_eap_chkbox_item_text_get(void *data, Evas_Object *obj,
 {
 	char *str_pkg_name = (char *)data;
 
-	if (!g_strcmp0(part, "elm.text.main.left")) {
+	if (!strcmp("elm.text", part)) {
 		char buf[1024];
 		snprintf(buf, 1023, "%s", sc(str_pkg_name, I18N_TYPE_Show_password));
 		return strdup(buf);
@@ -1121,7 +1117,7 @@ static Evas_Object *_gl_eap_chkbox_item_content_get(void *data,
 {
 	Evas_Object *check = NULL;
 
-	if(!g_strcmp0(part, "elm.icon.right")) {
+	if (!strcmp("elm.swallow.end", part)) {
 		check = elm_check_add(obj);
 		evas_object_propagate_events_set(check, EINA_FALSE);
 
@@ -1187,7 +1183,7 @@ static void __common_eap_connect_popup_init_item_class(void *data)
 	g_eap_entry_itc.func.state_get = NULL;
 	g_eap_entry_itc.func.del = _gl_eap_entry_item_del;
 
-	g_eap_chkbox_itc.item_style = "1line";
+	g_eap_chkbox_itc.item_style = WIFI_GENLIST_1LINE_TEXT_ICON_STYLE;
 	g_eap_chkbox_itc.func.text_get = _gl_eap_chkbox_item_text_get;
 	g_eap_chkbox_itc.func.content_get = _gl_eap_chkbox_item_content_get;
 	g_eap_chkbox_itc.func.state_get = NULL;
@@ -1609,7 +1605,7 @@ static Evas_Object* _create_list(Evas_Object* parent, void *data)
 
 	eap_data->eap_done_ok = FALSE;
 	eap_data->genlist = view_list = elm_genlist_add(parent);
-	elm_genlist_realization_mode_set(view_list, TRUE);
+	elm_genlist_realization_mode_set(view_list, EINA_TRUE);
 	elm_genlist_mode_set(view_list, ELM_LIST_COMPRESS);
 	elm_scroller_content_min_limit(view_list, EINA_FALSE, EINA_TRUE);
 
@@ -1779,10 +1775,6 @@ static void __common_eap_connect_done_cb(void *data, Evas_Object *obj,
 			eap_data->eap_done_ok = FALSE;
 			eap_data->info_popup = common_utils_show_info_popup(eap_data->win,
 						&popup_data);
-			if(str_id) {
-				g_free(str_id);
-				str_id = NULL;
-			}
 			return;
 		}
 
@@ -1797,14 +1789,6 @@ static void __common_eap_connect_done_cb(void *data, Evas_Object *obj,
 			eap_data->eap_done_ok = FALSE;
 			eap_data->info_popup = common_utils_show_info_popup(eap_data->win,
 						&popup_data);
-			if(str_id) {
-				g_free(str_id);
-				str_id = NULL;
-			}
-			if(str_pw) {
-				g_free(str_pw);
-				str_pw = NULL;
-			}
 			return;
 		}
 
@@ -1866,15 +1850,6 @@ static void __common_eap_connect_done_cb(void *data, Evas_Object *obj,
 		wlan_manager_connect(eap_data->ap);
 
 	__common_eap_connect_cleanup(eap_data);
-
-	if(str_id){
-		g_free(str_id);
-		str_id = NULL;
-	}
-	if(str_pw){
-		g_free(str_pw);
-		str_pw = NULL;
-	}
 
 	__COMMON_FUNC_EXIT__;
 }
@@ -2229,7 +2204,7 @@ eap_info_list_t *eap_info_append_items(wifi_ap_h ap, Evas_Object* view_list,
 	auth_type = __common_eap_connect_popup_get_auth_type(ap);
 
 	item = common_utils_add_2_line_txt_disabled_item(view_list,
-			"2line.top",
+			WIFI_GENLIST_2LINE_TOP_TEXT_STYLE,
 			sc(str_pkg_name, I18N_TYPE_EAP_method),
 			list_eap_type[eap_type].name);
 	eap_info_list_data->eap_method_item = item;
@@ -2253,8 +2228,8 @@ eap_info_list_t *eap_info_append_items(wifi_ap_h ap, Evas_Object* view_list,
 		if (eap_type == EAP_SEC_TYPE_PEAP ||
 				eap_type == EAP_SEC_TYPE_TTLS) {
 			/* Add EAP phase2 authentication */
-			item = common_utils_add_2_line_txt_disabled_item(
-					view_list, "2line.top",
+			item = common_utils_add_2_line_txt_disabled_item(view_list,
+					WIFI_GENLIST_2LINE_TOP_TEXT_STYLE,
 					sc(str_pkg_name, I18N_TYPE_Phase_2_authentication),
 					list_eap_auth[auth_type].name);
 			eap_info_list_data->eap_auth_item = item;
@@ -2272,8 +2247,8 @@ eap_info_list_t *eap_info_append_items(wifi_ap_h ap, Evas_Object* view_list,
 						I18N_TYPE_Unspecified));
 			}
 
-			item = common_utils_add_2_line_txt_disabled_item(
-					view_list, "2line.top",
+			item = common_utils_add_2_line_txt_disabled_item(view_list,
+					WIFI_GENLIST_2LINE_TOP_TEXT_STYLE,
 					sc(str_pkg_name, I18N_TYPE_User_Certificate),
 					temp_str);
 			eap_info_list_data->user_cert_item = item;
@@ -2284,8 +2259,10 @@ eap_info_list_t *eap_info_append_items(wifi_ap_h ap, Evas_Object* view_list,
 		bool is_paswd_set;
 		temp_str = NULL;
 		wifi_ap_get_eap_passphrase(ap, &temp_str, &is_paswd_set);
-		item = common_utils_add_2_line_txt_disabled_item(view_list, "2line.top",
-				sc(str_pkg_name, I18N_TYPE_Identity), temp_str);
+		item = common_utils_add_2_line_txt_disabled_item(view_list,
+				WIFI_GENLIST_2LINE_TOP_TEXT_STYLE,
+				sc(str_pkg_name, I18N_TYPE_Identity),
+				temp_str);
 		eap_info_list_data->id_item = item;
 		g_free(temp_str);
 

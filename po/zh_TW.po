@@ -206,7 +206,7 @@ msgid "IDS_WIFI_BODY_RECEIVE_NOTIFICATIONS_WHEN_NETWORKS_ARE_AVAILABLE"
 msgstr "網路可用時接收通知"
 
 msgid "IDS_WIFI_BODY_NAME"
-msgstr "姓名"
+msgstr "名稱"
 
 msgid "IDS_WIFI_BODY_MAC_ADDRESS"
 msgstr "MAC 位址"
@@ -258,6 +258,9 @@ msgstr "動作無效。請重試。"
 
 msgid "IDS_ST_BODY_INSTALL_CERTIFICATE"
 msgstr "安裝憑證"
+
+msgid "IDS_WIFI_TMBODY_SMART_NETWORK_SWITCH"
+msgstr "智慧網路切換"
 
 msgid "IDS_WIFI_HEADER_PASSPOINT"
 msgstr "Passpoint"

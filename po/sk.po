@@ -259,6 +259,9 @@ msgstr "Neplatná akcia. Skúste to znova."
 msgid "IDS_ST_BODY_INSTALL_CERTIFICATE"
 msgstr "Inštalovať certifikát"
 
+msgid "IDS_WIFI_TMBODY_SMART_NETWORK_SWITCH"
+msgstr "Inteligentné prepínanie sietí"
+
 msgid "IDS_WIFI_HEADER_PASSPOINT"
 msgstr "Passpoint"
 

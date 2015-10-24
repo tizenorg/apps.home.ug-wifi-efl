@@ -259,6 +259,9 @@ msgstr "操作が正しくありません。再度お試しください。"
 msgid "IDS_ST_BODY_INSTALL_CERTIFICATE"
 msgstr "証明書をインストールしてください。"
 
+msgid "IDS_WIFI_TMBODY_SMART_NETWORK_SWITCH"
+msgstr "スマートネットワーク切り替え"
+
 msgid "IDS_WIFI_HEADER_PASSPOINT"
 msgstr "Passpoint"
 

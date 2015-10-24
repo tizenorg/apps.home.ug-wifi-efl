@@ -5,7 +5,6 @@ net.wifi-qs isf rwx
 net.wifi-qs dbus rwx
 net.wifi-qs connman rw
 net.wifi-qs net-config rw
-net.wifi-qs ail::db rw
 net.wifi-qs mdm-server::admin r
 net.wifi-qs mdm-server::wifi r
 net.wifi-qs csc-manager x
@@ -14,16 +13,7 @@ net.wifi-qs cert-svc::pkcs12 rwx
 net.wifi-qs sound_server rw
 net.wifi-qs pulseaudio rwxat
 net.wifi-qs syspopup::db rw
-net.wifi-qs system::vconf rwxat
-net.wifi-qs system::vconf_inhouse rw
-net.wifi-qs system::vconf_misc rw
-net.wifi-qs system::vconf_setting rw
-net.wifi-qs system::vconf_system rw
-net.wifi-qs system::vconf_network rl
-net.wifi-qs system::vconf_multimedia rl
-net.wifi-qs ug-setting-call-efl::vconf rl
 net.wifi-qs com.samsung.indicator rwx
-net.wifi-qs starter::vconf rw
 net.wifi-qs system::media::root rwxat
 net.wifi-qs system::media rwxat
 net.wifi-qs system::share rwxat
@@ -35,5 +25,9 @@ net.wifi-qs system::use_internet r
 net.wifi-qs aul::launch rx
 net.wifi-qs e17::notification rw
 net.wifi-qs ecore::lock rwx
+net.wifi-qs tizen::vconf::setting::admin rwx
+net.wifi-qs tizen::vconf::tethering::admin rwx
+net.wifi-qs tizen::vconf::public::r rwx
+net.wifi-qs tizen::vconf::platform::rw rwx
 com.samsung.app-tray net.wifi-qs rx
 com.samsung.quickpanel net.wifi-qs rwx

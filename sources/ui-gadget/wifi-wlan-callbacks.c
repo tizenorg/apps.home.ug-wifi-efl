@@ -263,7 +263,7 @@ void wlan_engine_callback(wlan_mgr_event_info_t *event_info, void *user_data)
 
 	case WLAN_MANAGER_RESPONSE_TYPE_CONNECTION_INVALID_KEY:
 		common_utils_send_message_to_net_popup(
-				"Network connection popup", "unable to connect",
+				"Network connection popup", "wrong password",
 				"toast_popup", NULL);
 
 		if (gdata) {

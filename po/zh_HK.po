@@ -259,6 +259,9 @@ msgstr "動作無效。請重試。"
 msgid "IDS_ST_BODY_INSTALL_CERTIFICATE"
 msgstr "安裝證書"
 
+msgid "IDS_WIFI_TMBODY_SMART_NETWORK_SWITCH"
+msgstr "智能網絡切換"
+
 msgid "IDS_WIFI_HEADER_PASSPOINT"
 msgstr "Passpoint"
 

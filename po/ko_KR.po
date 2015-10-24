@@ -259,6 +259,9 @@ msgstr "동작이 바르지 않습니다. 다시 시도하세요."
 msgid "IDS_ST_BODY_INSTALL_CERTIFICATE"
 msgstr "인증서 설치"
 
+msgid "IDS_WIFI_TMBODY_SMART_NETWORK_SWITCH"
+msgstr "스마트 네트워크 전환"
+
 msgid "IDS_WIFI_HEADER_PASSPOINT"
 msgstr "패스포인트"
 

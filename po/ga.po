@@ -259,6 +259,9 @@ msgstr "Gníomh neamhbhailí. Triail arís."
 msgid "IDS_ST_BODY_INSTALL_CERTIFICATE"
 msgstr "Suiteálaí deimhniú"
 
+msgid "IDS_WIFI_TMBODY_SMART_NETWORK_SWITCH"
+msgstr "Aistriú líonra cliste"
+
 msgid "IDS_WIFI_HEADER_PASSPOINT"
 msgstr "Passpoint"
 

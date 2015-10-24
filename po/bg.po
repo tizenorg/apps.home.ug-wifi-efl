@@ -259,6 +259,9 @@ msgstr "Невалидно действие. Опитайте отново."
 msgid "IDS_ST_BODY_INSTALL_CERTIFICATE"
 msgstr "Инсталиране на сертификат"
 
+msgid "IDS_WIFI_TMBODY_SMART_NETWORK_SWITCH"
+msgstr "Превключване на умна мрежа"
+
 msgid "IDS_WIFI_HEADER_PASSPOINT"
 msgstr "Passpoint"
 

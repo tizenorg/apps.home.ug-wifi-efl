@@ -86,7 +86,9 @@ void viewer_manager_ctxpopup_cleanup(void);
 void viewer_manager_cleanup_views(void);
 void viewer_manager_rotate_top_setupwizard_layout(void);
 Evas_Object *viewer_manager_naviframe_power_item_get(void);
+#if 0 /* not used */
 Evas_Object *viewer_manager_create_bg(Evas_Object *parent, char *style);
+#endif
 void viewer_manager_update_hidden_btn(void);
 int viewer_manager_create_scan_btn(void);
 void viewer_manager_setup_wizard_btns_color_set(bool state);

@@ -134,10 +134,10 @@ msgid "IDS_WIFI_OPT_SHOW_PASSWORD"
 msgstr "Mostrar palavra-passe"
 
 msgid "IDS_WIFI_OPT_MOBILEACCESSSERVICEATCIVATION_ON"
-msgstr "Ligar"
+msgstr "Ligado"
 
 msgid "IDS_WIFI_OPT_MOBILEACCESSSERVICEATCIVATION_OFF"
-msgstr "Desligar"
+msgstr "Desligado"
 
 msgid "IDS_WIFI_OPT_FORGET_NETWORK"
 msgstr "Esquecer rede"
@@ -258,6 +258,9 @@ msgstr "Acção inválida. Tente novamente."
 
 msgid "IDS_ST_BODY_INSTALL_CERTIFICATE"
 msgstr "Instalar certificado"
+
+msgid "IDS_WIFI_TMBODY_SMART_NETWORK_SWITCH"
+msgstr "Mudança de rede inteligente"
 
 msgid "IDS_WIFI_HEADER_PASSPOINT"
 msgstr "Passpoint"

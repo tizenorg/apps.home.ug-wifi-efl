@@ -77,10 +77,8 @@ static void _bg_scan_status_callback(GDBusConnection *conn,
 		if (g_strcmp0(key, "Scanning") == 0) {
 			value = g_variant_get_boolean(var);
 			if (value) {
-				if (header_mode != HEADER_MODE_CONNECTING) {
-					viewer_manager_show(VIEWER_WINSET_SEARCHING_GRP_TITLE);
-					viewer_manager_header_mode_set(HEADER_MODE_SEARCHING);
-				}
+				viewer_manager_header_mode_set(HEADER_MODE_SEARCHING);
+				viewer_manager_show(VIEWER_WINSET_SEARCHING);
 			}
 
 			g_variant_unref(var);
@@ -96,13 +94,13 @@ static void _bg_scan_status_callback(GDBusConnection *conn,
 
 static void _set_rotation(Evas_Object *win)
 {
-	int rots[1] = { 0 };
+	int rots[4] = { 0, 90, 180, 270 };
 
 	if (!elm_win_wm_rotation_supported_get(win)) {
 		return;
 	}
 
-	elm_win_wm_rotation_available_rotations_set(win, rots, 1);
+	elm_win_wm_rotation_available_rotations_set(win, (const int *)(&rots), 4);
 }
 
 static void *on_create(ui_gadget_h ug, enum ug_mode mode,
@@ -220,12 +218,6 @@ static void *on_create(ui_gadget_h ug, enum ug_mode mode,
 			zorder = NULL;
 		}
 	}
-
-	/* Enablee Changeable UI feature */
-	ea_theme_changeable_ui_enabled_set(EINA_TRUE);
-
-	ug_app_state->color_table = common_utils_color_table_set();
-	ug_app_state->font_table = common_utils_font_table_set();
 
 #if defined TIZEN_TETHERING_ENABLE
 	ug_app_state->popup_manager = winset_popup_manager_create(layout_main, PACKAGE);

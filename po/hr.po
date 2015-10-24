@@ -101,7 +101,7 @@ msgid "IDS_WIFI_SK_CANCEL"
 msgstr "Prekid"
 
 msgid "IDS_WIFI_SK2_OK"
-msgstr "OK"
+msgstr "U redu"
 
 msgid "IDS_WIFI_SBODY_CONNECTED_M_STATUS"
 msgstr "Spojen"
@@ -155,7 +155,7 @@ msgid "IDS_WIFI_HEADER_SELECT_WPS_METHOD_ABB"
 msgstr "Odaberite WPS-način"
 
 msgid "IDS_WIFI_HEADER_PASSWORD"
-msgstr "Šifra"
+msgstr "Lozinka"
 
 msgid "IDS_WIFI_HEADER_ENTER_PASSWORD"
 msgstr "Unesite lozinku."
@@ -258,6 +258,9 @@ msgstr "Neispravna radnja. Ponovite."
 
 msgid "IDS_ST_BODY_INSTALL_CERTIFICATE"
 msgstr "Instaliraj potvrdu"
+
+msgid "IDS_WIFI_TMBODY_SMART_NETWORK_SWITCH"
+msgstr "Pametna promjena mreže"
 
 msgid "IDS_WIFI_HEADER_PASSPOINT"
 msgstr "Passpoint"

@@ -62,7 +62,7 @@ msgid "IDS_ST_BODY_NETWORK_NOTIFICATION"
 msgstr "Notificação de rede"
 
 msgid "IDS_ST_BODY_KEEP_WI_FI_ON_DURING_SLEEP"
-msgstr "Manter Wi-Fi ligado durante suspensão"
+msgstr "Manter Wi-Fi ligado na tela desligada"
 
 msgid "IDS_ST_BODY_GOOD_M_BATTERY"
 msgstr "Bom"
@@ -107,13 +107,13 @@ msgid "IDS_WIFI_SBODY_CONNECTED_M_STATUS"
 msgstr "Conectado"
 
 msgid "IDS_WIFI_SBODY_AUTOMATICALLY_SWITCH_BETWEEN_WI_FI_AND_MOBILE_NETWORKS_TO_MAINTAIN_A_STABLE_INTERNET_CONNECTION"
-msgstr "Alternar automaticamente entre Wi-Fi e redes móveis para manter uma conexão estável com a Internet."
+msgstr "Alterna automaticamente entre Wi-Fi e redes móveis para manter uma conexão estável com a Internet."
 
 msgid "IDS_WIFI_SBODY_AUTHENTICATION_ERROR_OCCURRED_M_STATUS"
 msgstr "Ocorreu um erro de autenticação"
 
 msgid "IDS_WIFI_POP_SMART_NETWORK_SWITCH_HAS_BEEN_ENABLED_MSG"
-msgstr "A Troca de rede inteligente foi ativada. Esta função ajuda a manter uma conexão estável com a Internet alterando entre redes móveis e Wi-Fi. Isto pode aumentar o uso de dados."
+msgstr "A Troca de rede inteligente foi ativada. Esta função ajuda a manter uma conexão estável com a Internet alternando entre redes móveis e Wi-Fi. Isto pode aumentar o uso de dados."
 
 msgid "IDS_WIFI_POP_PRESS_WPS_ON_YOUR_WI_FI_ACCESS_POINT_WITHIN_PD_MINUTES"
 msgstr "Pressione WPS no seu ponto de acesso Wi-Fi dentro de %d minutos."
@@ -258,6 +258,9 @@ msgstr "Ação inválida. Tente novamente."
 
 msgid "IDS_ST_BODY_INSTALL_CERTIFICATE"
 msgstr "Instalar certificado"
+
+msgid "IDS_WIFI_TMBODY_SMART_NETWORK_SWITCH"
+msgstr "Troca de rede inteligente"
 
 msgid "IDS_WIFI_HEADER_PASSPOINT"
 msgstr "Passpoint"

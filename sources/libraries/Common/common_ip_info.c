@@ -18,7 +18,6 @@
  */
 
 #include <glib.h>
-#include <efl_assist.h>
 
 #include "common.h"
 #include "ug_wifi.h"
@@ -117,7 +116,9 @@ static Evas_Object *_ip_info_detail_description_content_get(void *data,
 	if (g_strcmp0(part, "elm.icon.entry") == 0) {
 		Evas_Object *entry = NULL;
 
-		entry = ea_editfield_add(obj, EA_EDITFIELD_SCROLL_SINGLELINE);
+		entry = elm_entry_add(obj);
+		elm_entry_single_line_set(entry, EINA_TRUE);
+		elm_entry_scrollable_set(entry, EINA_TRUE);
 		elm_object_domain_translatable_part_text_set(entry, "elm.guide",
 				PACKAGE, det->description);
 
@@ -451,7 +452,10 @@ static Evas_Object *_ip_info_entry_item_content_get(void *data, Evas_Object *obj
 			return NULL;
 		}
 
-		entry = ea_editfield_add(obj, EA_EDITFIELD_SCROLL_SINGLELINE);
+		entry = elm_entry_add(obj);
+		elm_entry_single_line_set(entry, EINA_TRUE);
+		elm_entry_scrollable_set(entry, EINA_TRUE);
+
 		if (!g_strcmp0(entry_info->str_pkg_name, "wifi-qs")) {
 			elm_entry_input_panel_imdata_set(entry, "type=systempopup", 16);
 		}
@@ -527,15 +531,16 @@ static void _create_static_ip_table(full_ip_info_t *ip_data)
 	ip_info_list_t *ip_info_list_data = ip_data->ip_info_list;
 	prev_ip_info_t *prev_ip_info = ip_data->prev_ip_info;
 	common_utils_entry_info_t *edit_box_details;
+	wifi_ip_config_type_e ip_type;
 
 	retm_if(NULL == ip_data || NULL == prev_ip_info || NULL == ip_info_list_data);
 	wifi_ap_h ap = ip_info_list_data->ap;
 	__COMMON_FUNC_ENTER__;
 
 	/* IP Address */
-	int ret = wifi_ap_get_ip_address(ap, WIFI_ADDRESS_FAMILY_IPV4, &txt);
+	int ret = wifi_ap_get_ip_config_type(ap, WIFI_ADDRESS_FAMILY_IPV4, &ip_type);
 	if (ret != WIFI_ERROR_NONE)
-		INFO_LOG(UG_NAME_ERR, "Failed to get IP Address! [%d]", ret);
+		INFO_LOG(UG_NAME_ERR, "Failed to get IP config_type! [%d]", ret);
 
 	edit_box_details = g_try_new0(common_utils_entry_info_t, 1);
 	if (edit_box_details == NULL) {
@@ -544,7 +549,15 @@ static void _create_static_ip_table(full_ip_info_t *ip_data)
 
 	edit_box_details->entry_id = ENTRY_TYPE_IP_ADDR;
 	edit_box_details->title_txt = "IDS_WIFI_BODY_IP_ADDRESS";
-	edit_box_details->entry_txt = txt;
+	if(ip_type == WIFI_IP_CONFIG_TYPE_DYNAMIC) {
+		edit_box_details->entry_txt = g_strdup(DEFAULT_GUIDE_IP);
+	}
+	else {
+		ret = wifi_ap_get_ip_address(ap, WIFI_ADDRESS_FAMILY_IPV4, &txt);
+		if (ret != WIFI_ERROR_NONE)
+			INFO_LOG(UG_NAME_ERR, "Failed to get IP Address! [%d]", ret);
+		edit_box_details->entry_txt = txt;
+	}
 	edit_box_details->guide_txt = DEFAULT_GUIDE_IP;
 	edit_box_details->str_pkg_name = ip_info_list_data->str_pkg_name;
 	edit_box_details->input_panel_cb = ip_info_list_data->input_panel_cb;
@@ -564,10 +577,6 @@ static void _create_static_ip_table(full_ip_info_t *ip_data)
 	}
 
 	/* Subnet Mask */
-	ret = wifi_ap_get_subnet_mask(ap, WIFI_ADDRESS_FAMILY_IPV4, &txt);
-	if (ret != WIFI_ERROR_NONE)
-		INFO_LOG(UG_NAME_ERR, "Failed to get subnet mask! [%d]", ret);
-
 	edit_box_details = g_try_new0(common_utils_entry_info_t, 1);
 	if (edit_box_details == NULL) {
 		return;
@@ -575,7 +584,15 @@ static void _create_static_ip_table(full_ip_info_t *ip_data)
 
 	edit_box_details->entry_id = ENTRY_TYPE_SUBNET_MASK;
 	edit_box_details->title_txt = "IDS_WIFI_BODY_SUBNET_MASK";
-	edit_box_details->entry_txt = txt;
+	if(ip_type == WIFI_IP_CONFIG_TYPE_DYNAMIC) {
+		edit_box_details->entry_txt = g_strdup(DEFAULT_GUIDE_IP);
+	}
+	else {
+		ret = wifi_ap_get_subnet_mask(ap, WIFI_ADDRESS_FAMILY_IPV4, &txt);
+		if (ret != WIFI_ERROR_NONE)
+			INFO_LOG(UG_NAME_ERR, "Failed to get subnet mask! [%d]", ret);
+		edit_box_details->entry_txt = txt;
+	}
 	edit_box_details->guide_txt = DEFAULT_GUIDE_IP;
 	edit_box_details->str_pkg_name = ip_info_list_data->str_pkg_name;
 	edit_box_details->input_panel_cb = ip_info_list_data->input_panel_cb;
@@ -745,7 +762,7 @@ static char* _ip_info_iptoggle_text_get(void *data, Evas_Object *obj,
 	retvm_if(NULL == data || NULL == part, NULL);
 	full_ip_info_t *ip_data = (full_ip_info_t *) data;
 
-	if (!strncmp(part, "elm.text.main.left", strlen(part))) {
+	if (!strcmp("elm.text", part)) {
 		ip_info_list_t *ip_info_list_data = ip_data->ip_info_list;
 #ifdef ACCESSIBLITY_FEATURE
 		char buf[100];
@@ -890,9 +907,9 @@ static Evas_Object *_ip_info_iptoggle_content_get(void *data,
 	Evas_Object *ic = NULL;
 	Evas_Object *toggle_btn = NULL;
 
-	ic = elm_layout_add(obj);
+	if (!strcmp("elm.swallow.end", part)) {
+		ic = elm_layout_add(obj);
 
-	if (!g_strcmp0(part, "elm.icon.2")) {
 		elm_layout_theme_set(ic, "layout", "list/C/type.3", "default");
 
 		toggle_btn = elm_check_add(ic);
@@ -1051,7 +1068,7 @@ full_ip_info_t *ip_info_append_items(wifi_ap_h ap, const char *pkg_name,
 	ip_info_list_data->input_panel_cb = input_panel_cb;
 	ip_info_list_data->input_panel_cb_data = input_panel_cb_data;
 
-	ip_toggle_itc.item_style = "1line";
+	ip_toggle_itc.item_style = WIFI_GENLIST_1LINE_TEXT_ICON_STYLE;
 	ip_toggle_itc.func.text_get = _ip_info_iptoggle_text_get;
 	ip_toggle_itc.func.content_get = _ip_info_iptoggle_content_get;
 	ip_toggle_itc.func.state_get = NULL;

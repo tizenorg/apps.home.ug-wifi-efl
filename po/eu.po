@@ -113,7 +113,7 @@ msgid "IDS_WIFI_SBODY_AUTHENTICATION_ERROR_OCCURRED_M_STATUS"
 msgstr "Autentifikazio errorea gertatu da"
 
 msgid "IDS_WIFI_POP_SMART_NETWORK_SWITCH_HAS_BEEN_ENABLED_MSG"
-msgstr "Sare adimendunaren tekla gaitu da. Funtzio horrek Internet konexio egonkorrari eusten laguntzen du, sare mugikorren eta Wi-Fi sareen artean aldatuz. Baliteke datu erabilera handitzea."
+msgstr "Smart network switch gaitu da. Funtzio horrek Internet konexio egonkorrari eusten laguntzen du, sare mugikorren eta Wi-Fi sareen artean aldatuz. Baliteke datu erabilera handitzea."
 
 msgid "IDS_WIFI_POP_PRESS_WPS_ON_YOUR_WI_FI_ACCESS_POINT_WITHIN_PD_MINUTES"
 msgstr "Sakatu WPS Wi-Fi sargunean %d minutu igaro baino lehen"
@@ -143,7 +143,7 @@ msgid "IDS_WIFI_OPT_FORGET_NETWORK"
 msgstr "Ahaztu sarea"
 
 msgid "IDS_WIFI_MBODY_SMART_NETWORK_SWITCH"
-msgstr "Sare adimendunaren tekla"
+msgstr "Smart network switch"
 
 msgid "IDS_WIFI_MBODY_SIGNAL_STRENGTH_KOR_SKT"
 msgstr "Seinale indarra"
@@ -258,6 +258,9 @@ msgstr "Ekintza baliogabea. Saiatu berriz."
 
 msgid "IDS_ST_BODY_INSTALL_CERTIFICATE"
 msgstr "Instalatu ziurtagiria"
+
+msgid "IDS_WIFI_TMBODY_SMART_NETWORK_SWITCH"
+msgstr "Smart network switch"
 
 msgid "IDS_WIFI_HEADER_PASSPOINT"
 msgstr "Passpoint"

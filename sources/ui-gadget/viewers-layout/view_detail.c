@@ -16,6 +16,7 @@
  * limitations under the License.
  *
  */
+#include <efl_extension.h>
 
 #include "ug_wifi.h"
 #include "view_detail.h"
@@ -79,9 +80,9 @@ static void _create_ctxpopup_forget_btn_cb(void *data, Evas_Object *obj, void *e
 
 	elm_ctxpopup_auto_hide_disabled_set(_detail_data->ctxpopup, EINA_TRUE);
 	elm_object_style_set(_detail_data->ctxpopup, "more/default");
-	ea_object_event_callback_add(_detail_data->ctxpopup, EA_CALLBACK_BACK,
+	eext_object_event_callback_add(_detail_data->ctxpopup, EEXT_CALLBACK_BACK,
 			_ctxpopup_del_cb, NULL);
-	ea_object_event_callback_add(_detail_data->ctxpopup, EA_CALLBACK_MORE,
+	eext_object_event_callback_add(_detail_data->ctxpopup, EEXT_CALLBACK_MORE,
 			_ctxpopup_del_cb, NULL);
 	evas_object_smart_callback_add(_detail_data->ctxpopup, "dismissed",
 			_ctxpopup_dismissed_cb, NULL);
@@ -255,10 +256,7 @@ static char *_view_detail_grouptitle_text_get(void *data,
 	char *tmp = NULL;
 	char *txt = NULL;
 
-	if (!strncmp(part, "elm.text.sub.left.top", strlen(part))) {
-		ret = (char*) g_strdup(dgettext(PACKAGE, "IDS_WIFI_BODY_NAME"));
-	} else if (!strncmp(part, "elm.text.main.left.bottom", strlen(part))) {
-//		view_detail_data *_detail_data = (view_detail_data *)data;
+	if (!strcmp("elm.text", part)) {
 		_detail_data = (view_detail_data *)data;
 		retvm_if(NULL == _detail_data, NULL);
 
@@ -285,7 +283,7 @@ static Evas_Object *_view_detail_grouptitle_content_get(void *data, Evas_Object 
 	Evas_Object* icon = NULL;
 	Evas_Object* ic = NULL;
 
-	if (!strncmp(part, "elm.icon.2", strlen(part))) {
+	if (!strcmp("elm.swallow.end", part)) {
 		char *temp_str = NULL;
 
 		ic = elm_layout_add(obj);
@@ -301,7 +299,7 @@ static Evas_Object *_view_detail_grouptitle_content_get(void *data, Evas_Object 
 			 * So use a default image */
 			temp_str = g_strdup_printf("%s.png", "A01-3_icon_lock_00");
 		}
-		ea_theme_object_color_set(icon,"AO001");
+		evas_object_color_set(icon, 2, 61, 132, 204);
 
 		elm_image_file_set(icon, CUSTOM_EDITFIELD_PATH, temp_str);
 		g_free(temp_str);
@@ -649,7 +647,7 @@ void view_detail(wifi_device_info_t *device_info, Evas_Object *win_main,
 
 	detailview_list = elm_genlist_add(layout);
 	assertm_if(NULL == detailview_list, "NULL!!");
-	elm_genlist_realization_mode_set(detailview_list, TRUE);
+	elm_genlist_realization_mode_set(detailview_list, EINA_TRUE);
 
 	elm_object_style_set(detailview_list, "dialogue");
 	_detail_data->view_detail_list = detailview_list;
@@ -657,7 +655,7 @@ void view_detail(wifi_device_info_t *device_info, Evas_Object *win_main,
 	evas_object_smart_callback_add(detailview_list, "language,changed",
 			gl_lang_changed, NULL);
 
-	grouptitle_itc.item_style = "2line.bottom";
+	grouptitle_itc.item_style = WIFI_GENLIST_2LINE_BOTTOM_TEXT_ICON_STYLE;
 	grouptitle_itc.func.text_get = _view_detail_grouptitle_text_get;
 	grouptitle_itc.func.content_get = _view_detail_grouptitle_content_get;
 	grouptitle_itc.func.state_get = NULL;

@@ -259,6 +259,9 @@ msgstr "Geçersiz eylem. Yeniden deneyin."
 msgid "IDS_ST_BODY_INSTALL_CERTIFICATE"
 msgstr "Sertifika yükle"
 
+msgid "IDS_WIFI_TMBODY_SMART_NETWORK_SWITCH"
+msgstr "Akıllı ağ anahtarı"
+
 msgid "IDS_WIFI_HEADER_PASSPOINT"
 msgstr "Passpoint"
 

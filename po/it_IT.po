@@ -20,7 +20,7 @@ msgid "IDS_COM_BODY_FIND"
 msgstr "Trova"
 
 msgid "IDS_STU_BUTTON_PREVIOUS"
-msgstr "Indietro"
+msgstr "Precedente"
 
 msgid "IDS_STU_BUTTON_NEXT"
 msgstr "Avanti"
@@ -258,6 +258,9 @@ msgstr "Azione non valida. Riprovare."
 
 msgid "IDS_ST_BODY_INSTALL_CERTIFICATE"
 msgstr "Installa certificato"
+
+msgid "IDS_WIFI_TMBODY_SMART_NETWORK_SWITCH"
+msgstr "Rete Intelligente"
 
 msgid "IDS_WIFI_HEADER_PASSPOINT"
 msgstr "Passpoint"

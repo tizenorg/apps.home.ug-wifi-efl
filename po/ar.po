@@ -1,5 +1,5 @@
 msgid "IDS_ST_BODY_NONE"
-msgstr "لا شيء"
+msgstr "لاشيء"
 
 msgid "IDS_BT_BODY_CONNECT_TO_DEVICE"
 msgstr "توصيل الجهاز"
@@ -258,6 +258,9 @@ msgstr "إجراء غير صالح. حاول مرة أخرى."
 
 msgid "IDS_ST_BODY_INSTALL_CERTIFICATE"
 msgstr "تثبيت الشهادة"
+
+msgid "IDS_WIFI_TMBODY_SMART_NETWORK_SWITCH"
+msgstr "تبديل الشبكة الذكي"
 
 msgid "IDS_WIFI_HEADER_PASSPOINT"
 msgstr "Passpoint"

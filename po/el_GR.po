@@ -259,6 +259,9 @@ msgstr "Μη έγκυρη ενέργεια. Δοκιμάστε ξανά."
 msgid "IDS_ST_BODY_INSTALL_CERTIFICATE"
 msgstr "Εγκατάσταση πιστοποιητικού"
 
+msgid "IDS_WIFI_TMBODY_SMART_NETWORK_SWITCH"
+msgstr "Έξυπνη εναλλαγή δικτύου"
+
 msgid "IDS_WIFI_HEADER_PASSPOINT"
 msgstr "Passpoint"
 

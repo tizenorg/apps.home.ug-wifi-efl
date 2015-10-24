@@ -34,7 +34,6 @@ extern "C"
 #undef _
 #endif
 #include <appcore-common.h>
-#include <efl_assist.h>
 
 #include "wlan_manager.h"
 
@@ -128,8 +127,6 @@ void common_util_manager_ecore_scan_update_timer_reset(void);
 
 gboolean common_util_subscribe_scanning_signal(GDBusSignalCallback callback);
 gboolean common_util_unsubscribe_scanning_signal(void);
-Ea_Theme_Color_Table *common_utils_color_table_set(void);
-Ea_Theme_Font_Table *common_utils_font_table_set(void);
 int common_utils_get_sim_state(void);
 
 #ifdef __cplusplus

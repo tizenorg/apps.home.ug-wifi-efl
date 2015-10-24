@@ -259,6 +259,9 @@ msgstr "Neteisingas veiksmas. Bandykite dar kartą."
 msgid "IDS_ST_BODY_INSTALL_CERTIFICATE"
 msgstr "Įdiegti sertifikatą"
 
+msgid "IDS_WIFI_TMBODY_SMART_NETWORK_SWITCH"
+msgstr "Išmanusis tinklo jungiklis"
+
 msgid "IDS_WIFI_HEADER_PASSPOINT"
 msgstr "Passpoint"
 

@@ -259,6 +259,9 @@ msgstr "Acción no válida. Vuelva a intentarlo."
 msgid "IDS_ST_BODY_INSTALL_CERTIFICATE"
 msgstr "Instalar certificado"
 
+msgid "IDS_WIFI_TMBODY_SMART_NETWORK_SWITCH"
+msgstr "Smart network switch"
+
 msgid "IDS_WIFI_HEADER_PASSPOINT"
 msgstr "Passpoint"
 

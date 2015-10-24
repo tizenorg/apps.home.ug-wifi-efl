@@ -1,17 +1,21 @@
 %define _unpackaged_files_terminate_build 0
 Name:		wifi-efl-ug
 Summary:	Wi-Fi UI Gadget for TIZEN
-Version:	1.0.131
+Version:	1.0.158
 Release:	1
 Group:		App/Network
-License:	Flora-1.0
+License:	Flora-1.1
 Source0:	%{name}-%{version}.tar.gz
+
+%if "%{?tizen_profile_name}" == "wearable"
+ExcludeArch: %{arm} %ix86 x86_64
+%endif
+
 BuildRequires:	pkgconfig(ecore)
 BuildRequires:	pkgconfig(ecore-imf)
 BuildRequires:	pkgconfig(ecore-input)
 BuildRequires:	pkgconfig(appcore-efl)
 BuildRequires:	pkgconfig(elementary)
-BuildRequires:	pkgconfig(efl-assist)
 BuildRequires:	pkgconfig(glib-2.0)
 BuildRequires:	pkgconfig(openssl)
 BuildRequires:	pkgconfig(cert-svc-vcore)
@@ -25,6 +29,7 @@ BuildRequires:	pkgconfig(capi-network-tethering)
 BuildRequires:	pkgconfig(capi-ui-efl-util)
 BuildRequires:	pkgconfig(network)
 BuildRequires:	pkgconfig(feedback)
+BuildRequires:	pkgconfig(efl-extension)
 #BuildRequires:  pkgconfig(setting-common-internal)
 #BuildRequires:  pkgconfig(setting-lite-common-internal)
 BuildRequires:	cmake
@@ -58,9 +63,7 @@ cmake -DCMAKE_INSTALL_PREFIX=%{PREFIX} \
 %if ! 0%{?model_build_feature_network_tethering_disable}
 	-DTIZEN_TETHERING_ENABLE=1 \
 %endif
-%if 0%{?model_build_feature_wlan_concurrent_mode} == 1
 	-DMODEL_BUILD_FEATURE_WLAN_CONCURRENT_MODE=1 \
-%endif
 	.
 
 make %{?_smp_mflags}
@@ -82,13 +85,13 @@ cp LICENSE %{buildroot}%{_datadir}/license/net.wifi-qs
 
 mkdir -p %{PREFIX}/bin/
 
-vconftool set -t int memory/wifi/ug_run_state 3 -i -g 6519 -s system::vconf_setting
+vconftool set -t int memory/wifi/ug_run_state 3 -i -g 6519 -s tizen::vconf::platform::rw
 
-vconftool set -t int memory/wifi/wifi_qs_exit 0 -g 6519 -i -s system::vconf_inhouse
-vconftool set -t int db/wifi/enable_quick_start 1 -g 6519 -i -s system::vconf_setting
+vconftool set -t int memory/wifi/wifi_qs_exit 0 -g 6519 -i -s tizen::vconf::platform::rw
+vconftool set -t int db/wifi/enable_quick_start 1 -g 6519 -i -s tizen::vconf::setting::admin
 
-vconftool set -t int file/private/wifi/network_bonding 0 -g 6519 -s system::vconf_setting
-vconftool set -t int file/private/wifi/sort_by 1 -g 6519 -s system::vconf_setting
+vconftool set -t int file/private/wifi/network_bonding 0 -g 6519 -s tizen::vconf::setting::admin
+vconftool set -t int file/private/wifi/sort_by 1 -g 6519 -s tizen::vconf::setting::admin
 
 %postun -p /sbin/ldconfig
 

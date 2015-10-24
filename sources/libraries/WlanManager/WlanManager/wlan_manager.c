@@ -318,7 +318,13 @@ static void wlan_manager_network_event_cb(
 
 	case WLAN_MANAGER_REQ_TYPE_WPS_CONNECT:
 		event_info.ap = req_data->ap;
-		goto exit;
+
+		if (WIFI_ERROR_NONE != error_code) {
+			event_info.event_type = WLAN_MANAGER_RESPONSE_TYPE_WPS_ENROLL_FAIL;
+		} else {
+			goto exit;
+		}
+
 		break;
 
 	default:

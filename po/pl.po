@@ -259,6 +259,9 @@ msgstr "Nieprawidłowa akcja. Spróbuj ponownie."
 msgid "IDS_ST_BODY_INSTALL_CERTIFICATE"
 msgstr "Zainstaluj certyfikat"
 
+msgid "IDS_WIFI_TMBODY_SMART_NETWORK_SWITCH"
+msgstr "Inteligentne przełączanie sieci"
+
 msgid "IDS_WIFI_HEADER_PASSPOINT"
 msgstr "Passpoint"
 

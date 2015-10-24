@@ -259,6 +259,9 @@ msgstr "Acció no vàlida. Torni-ho a intentar."
 msgid "IDS_ST_BODY_INSTALL_CERTIFICATE"
 msgstr "Instal·lar certificat"
 
+msgid "IDS_WIFI_TMBODY_SMART_NETWORK_SWITCH"
+msgstr "Canvi Smart network"
+
 msgid "IDS_WIFI_HEADER_PASSPOINT"
 msgstr "Passpoint"
 

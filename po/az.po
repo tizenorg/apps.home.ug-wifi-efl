@@ -259,6 +259,9 @@ msgstr "Əməliyyat səhvdir. Yenidən cəhd edin."
 msgid "IDS_ST_BODY_INSTALL_CERTIFICATE"
 msgstr "Sertifikatı quraşdır"
 
+msgid "IDS_WIFI_TMBODY_SMART_NETWORK_SWITCH"
+msgstr "Smart şəbəkə keçidi"
+
 msgid "IDS_WIFI_HEADER_PASSPOINT"
 msgstr "Passpoint"
 

@@ -68,6 +68,16 @@ extern "C"
 /* Device-picker width for landscape mode */
 #define DEVICE_PICKER_POPUP_LN_W		600
 
+/* Genlist new style for Tizen 2.4 */
+#define WIFI_GENLIST_1LINE_TEXT_STYLE "type1"
+#define WIFI_GENLIST_1LINE_TEXT_ICON_STYLE "type1"
+#define WIFI_GENLIST_2LINE_TOP_TEXT_STYLE "type1"
+#define WIFI_GENLIST_2LINE_TOP_TEXT_ICON_STYLE "type1"
+#define WIFI_GENLIST_2LINE_BOTTOM_TEXT_STYLE "type2"
+#define WIFI_GENLIST_2LINE_BOTTOM_TEXT_ICON_STYLE "type2"
+#define WIFI_GENLIST_MULTILINE_TEXT_STYLE "multiline"
+#define WIFI_GENLIST_GROUP_INDEX_STYLE "group_index"
+
 typedef enum {
 	UG_VIEW_DEFAULT = 0,
 	UG_VIEW_SETUP_WIZARD

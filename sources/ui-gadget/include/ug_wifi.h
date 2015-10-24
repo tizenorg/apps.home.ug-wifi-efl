@@ -28,7 +28,6 @@ extern "C"
 #endif
 
 #include <ui-gadget-module.h>
-#include <efl_assist.h>
 
 #include "common.h"
 #include "common_pswd_popup.h"
@@ -39,7 +38,6 @@ extern "C"
 #include "viewer_manager.h"
 #include <Ecore_X.h>
 #include <utilX.h>
-#include <efl_assist.h>
 #include <efl_util.h>
 
 #define PACKAGE		"ug-wifi-efl-UG"
@@ -70,8 +68,6 @@ typedef struct {
 	popup_manager_object_t *popup_manager;
 #endif
 	eap_connect_data_t *eap_view;
-	Ea_Theme_Color_Table *color_table;
-	Ea_Theme_Font_Table *font_table;
 
 	bool is_hidden;
 	guint timeout;

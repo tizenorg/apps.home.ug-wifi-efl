@@ -259,6 +259,9 @@ msgstr "მოქმედება არასწორია. ისევ �
 msgid "IDS_ST_BODY_INSTALL_CERTIFICATE"
 msgstr "დააინსტალირეთ სერთიფიკატი"
 
+msgid "IDS_WIFI_TMBODY_SMART_NETWORK_SWITCH"
+msgstr "ქსელის ინტელექტუალური გადართვა"
+
 msgid "IDS_WIFI_HEADER_PASSPOINT"
 msgstr "Passpoint"
 

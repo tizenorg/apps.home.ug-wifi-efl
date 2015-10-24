@@ -134,10 +134,10 @@ msgid "IDS_WIFI_OPT_SHOW_PASSWORD"
 msgstr "Rādīt paroli"
 
 msgid "IDS_WIFI_OPT_MOBILEACCESSSERVICEATCIVATION_ON"
-msgstr "Ieslēgt"
+msgstr "Ieslēgts"
 
 msgid "IDS_WIFI_OPT_MOBILEACCESSSERVICEATCIVATION_OFF"
-msgstr "Izslēgt"
+msgstr "Izslēgts"
 
 msgid "IDS_WIFI_OPT_FORGET_NETWORK"
 msgstr "Aizmirst tīklu"
@@ -258,6 +258,9 @@ msgstr "Nederīga darbība. Mēģiniet vēlreiz."
 
 msgid "IDS_ST_BODY_INSTALL_CERTIFICATE"
 msgstr "Instalēt sertifikātu"
+
+msgid "IDS_WIFI_TMBODY_SMART_NETWORK_SWITCH"
+msgstr "Viedā tīkla pārslēgšana"
 
 msgid "IDS_WIFI_HEADER_PASSPOINT"
 msgstr "Passpoint"

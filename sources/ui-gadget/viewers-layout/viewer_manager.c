@@ -19,9 +19,10 @@
 
 #include <vconf.h>
 #include <utilX.h>
-#include <efl_assist.h>
 #include <vconf-keys.h>
 #include <ui-gadget.h>
+#include <app_control_internal.h>
+#include <efl_extension.h>
 
 #include "common.h"
 #include "ug_wifi.h"
@@ -329,7 +330,7 @@ static void __back_cb(void *data, Evas_Object *obj, void *event_info)
 
 	if ((view_manager_view_type_t)evas_object_data_get(obj, SCREEN_TYPE_ID_KEY) !=
 			VIEW_MANAGER_VIEW_TYPE_MAIN) {
-		ea_naviframe_back_cb(data, obj, event_info);
+		eext_naviframe_back_cb(data, obj, event_info);
 		__COMMON_FUNC_EXIT__;
 		return;
 	}
@@ -545,9 +546,9 @@ static void _more_button_cb(void *data, Evas_Object *obj, void *event_info)
 	manager_object->ctxpopup = elm_ctxpopup_add(parent);
 	elm_ctxpopup_auto_hide_disabled_set(manager_object->ctxpopup, EINA_TRUE);
 	elm_object_style_set(manager_object->ctxpopup, "more/default");
-	ea_object_event_callback_add(manager_object->ctxpopup, EA_CALLBACK_BACK,
+	eext_object_event_callback_add(manager_object->ctxpopup, EEXT_CALLBACK_BACK,
 			_ctxpopup_del_cb, NULL);
-	ea_object_event_callback_add(manager_object->ctxpopup, EA_CALLBACK_MORE,
+	eext_object_event_callback_add(manager_object->ctxpopup, EEXT_CALLBACK_MORE,
 			_ctxpopup_del_cb, NULL);
 	evas_object_smart_callback_add(manager_object->ctxpopup, "dismissed",
 			_ctxpopup_dismissed_cb, _win_main);
@@ -669,7 +670,7 @@ static char *_gl_wifi_onoff_text_get(void *data, Evas_Object *obj, const char *p
 
 	retvm_if(NULL == manager_object, NULL);
 
-	if (!strncmp(part, "elm.text.main.left", strlen(part))) {
+	if (!strcmp("elm.text", part)) {
 		det = g_strdup(manager_object->item_wifi_onoff_text);
 		assertm_if(NULL == det, "NULL!!");
 	}
@@ -690,7 +691,7 @@ static Evas_Object *_gl_wifi_onoff_content_get(void *data,
 	Evas_Object *ao = NULL;
 #endif
 
-	if (!strncmp(part, "elm.icon.2", strlen(part))) {
+	if (!strcmp("elm.swallow.end", part)) {
 		icon = elm_layout_add(obj);
 		elm_layout_theme_set(icon, "layout", "list/C/type.3", "default");
 
@@ -749,7 +750,7 @@ static void __viewer_manager_wifi_onoff_item_create(Evas_Object* genlist)
 
 	manager_object->item_wifi_onoff_text = g_strdup(sc(PACKAGE, I18N_TYPE_Wi_Fi));
 
-	wifi_onoff_itc.item_style = "1line";
+	wifi_onoff_itc.item_style = WIFI_GENLIST_1LINE_TEXT_ICON_STYLE;
 	wifi_onoff_itc.func.text_get = _gl_wifi_onoff_text_get;
 	wifi_onoff_itc.func.content_get = _gl_wifi_onoff_content_get;
 	wifi_onoff_itc.func.state_get = NULL;
@@ -793,7 +794,7 @@ void viewer_manager_setup_wizard_btns_color_set(bool state)
 	int bg_r, bg_g, bg_b, bg_a = 0;
 	int item_banded_a, bg_banded_a = 0;
 	int i = 0;
-	int item_color[3];
+	int item_color[3] = {0,};
 	Elm_Object_Item *item = NULL;
 
 	if (state == TRUE && is_on_color_set == TRUE) {
@@ -1013,7 +1014,7 @@ static void __ea_setup_wizard_back_cb(void *data, Evas_Object *obj,
 {
 	if ((view_manager_view_type_t)evas_object_data_get(obj, SCREEN_TYPE_ID_KEY) !=
 			VIEW_MANAGER_VIEW_TYPE_MAIN) {
-		ea_naviframe_back_cb(data, obj, event_info);
+		eext_naviframe_back_cb(data, obj, event_info);
 		return;
 	}
 
@@ -1035,7 +1036,7 @@ static void __viewer_manager_create_setup_wizard_content(Evas_Object *layout)
 	elm_object_domain_translatable_part_text_set(layout, "text.title",
 		PACKAGE, sc(PACKAGE, I18N_TYPE_Wi_Fi));
 
-	ea_object_event_callback_add(manager_object->nav, EA_CALLBACK_BACK,
+	eext_object_event_callback_add(manager_object->nav, EEXT_CALLBACK_BACK,
 			__ea_setup_wizard_back_cb, NULL);
 
 	__viewer_manager_wifi_onoff_item_create(manager_object->list);
@@ -1085,11 +1086,12 @@ static void __viewer_manager_create_wifi_ug_content(Evas_Object *layout,
 
 	elm_object_part_content_set(layout, "elm.swallow.content", manager_object->list);
 
-	ea_object_event_callback_add(manager_object->nav, EA_CALLBACK_BACK,
-			__back_cb, NULL);
+	eext_object_event_callback_add(manager_object->nav, EEXT_CALLBACK_BACK, eext_naviframe_back_cb, NULL);
 
 	back_btn = elm_button_add(manager_object->nav);
 	elm_object_style_set(back_btn, "naviframe/back_btn/default");
+	evas_object_smart_callback_add(back_btn, "clicked",__back_cb, _win_main);
+	elm_object_focus_allow_set(back_btn, EINA_FALSE);
 
 	manager_object->navi_it = navi_it = elm_naviframe_item_push(manager_object->nav,
 			sc(PACKAGE, I18N_TYPE_Wi_Fi), back_btn, NULL,
@@ -1110,6 +1112,7 @@ static void __viewer_manager_create_wifi_ug_content(Evas_Object *layout,
 	__COMMON_FUNC_EXIT__;
 }
 
+#if 0 /* not used */
 Evas_Object *viewer_manager_create_bg(Evas_Object *parent, char *style)
 {
 	Evas_Object *bg;
@@ -1126,6 +1129,7 @@ Evas_Object *viewer_manager_create_bg(Evas_Object *parent, char *style)
 
 	return bg;
 }
+#endif
 
 Evas_Object *viewer_manager_create(Evas_Object *_parent, Evas_Object *_win_main)
 {
@@ -1135,7 +1139,6 @@ Evas_Object *viewer_manager_create(Evas_Object *_parent, Evas_Object *_win_main)
 
 	Evas_Object *layout = NULL;
 	Evas_Object *view_content = NULL;
-	Evas_Object *bg = NULL;
 
 	manager_object = g_new0(viewer_manager_object, 1);
 	retvm_if(NULL == manager_object, NULL);
@@ -1160,8 +1163,8 @@ Evas_Object *viewer_manager_create(Evas_Object *_parent, Evas_Object *_win_main)
 	elm_object_part_content_set(layout,
 			"elm.swallow.content", manager_object->nav);
 	elm_naviframe_prev_btn_auto_pushed_set(manager_object->nav, EINA_FALSE);
-	ea_object_event_callback_add(manager_object->nav, EA_CALLBACK_MORE,
-			ea_naviframe_more_cb, NULL);
+	eext_object_event_callback_add(manager_object->nav, EEXT_CALLBACK_MORE,
+			eext_naviframe_more_cb, NULL);
 
 	/* Add layout for custom styles */
 	elm_theme_extension_add(NULL, CUSTOM_EDITFIELD_PATH);
@@ -1178,9 +1181,6 @@ Evas_Object *viewer_manager_create(Evas_Object *_parent, Evas_Object *_win_main)
 		__viewer_manager_create_setup_wizard_content(view_content);
 	} else {
 		__viewer_manager_create_wifi_ug_content(view_content, _win_main);
-
-		bg = viewer_manager_create_bg(_win_main, "group_list");
-		elm_object_part_content_set(view_content, "elm.swallow.bg", bg);
 	}
 
 	evas_object_show(layout);
@@ -1515,8 +1515,13 @@ void viewer_manager_header_mode_set(HEADER_MODES new_mode)
 	}
 
 	old_mode = manager_object->header_mode;
-	if (old_mode == new_mode)
+	if (old_mode == new_mode) {
+		if (new_mode == HEADER_MODE_OFF && manager_object->scan_button) {
+			evas_object_del(manager_object->scan_button);
+			manager_object->scan_button = NULL;
+		}
 		return;
+	}
 
 	DEBUG_LOG(UG_NAME_NORMAL, "Header mode %d --> %d", old_mode, new_mode);
 

@@ -113,7 +113,7 @@ msgid "IDS_WIFI_SBODY_AUTHENTICATION_ERROR_OCCURRED_M_STATUS"
 msgstr "Une erreur d'authentification est survenue"
 
 msgid "IDS_WIFI_POP_SMART_NETWORK_SWITCH_HAS_BEEN_ENABLED_MSG"
-msgstr "Réseau intelligent a été activé. Cette fonction permet de maintenir une connexion Internet stable en jonglant entre les réseaux mobiles et Wi-Fi. Ceci peut augmenter votre utilisation des données."
+msgstr "La fonction Réseau intelligent a été activée. Cette fonction permet de maintenir une connexion Internet stable en jonglant entre les réseaux mobiles et Wi-Fi. Ceci peut augmenter votre utilisation des données."
 
 msgid "IDS_WIFI_POP_PRESS_WPS_ON_YOUR_WI_FI_ACCESS_POINT_WITHIN_PD_MINUTES"
 msgstr "Appuyez sur la touche WPS de votre point d'accès Wi-Fi sous %d minutes."
@@ -143,7 +143,7 @@ msgid "IDS_WIFI_OPT_FORGET_NETWORK"
 msgstr "Oublier le réseau"
 
 msgid "IDS_WIFI_MBODY_SMART_NETWORK_SWITCH"
-msgstr "Bascul. réseau intellig."
+msgstr "Réseau intelligent"
 
 msgid "IDS_WIFI_MBODY_SIGNAL_STRENGTH_KOR_SKT"
 msgstr "Force du signal"
@@ -258,6 +258,9 @@ msgstr "Action non valide. Réessayez."
 
 msgid "IDS_ST_BODY_INSTALL_CERTIFICATE"
 msgstr "Installer le certificat"
+
+msgid "IDS_WIFI_TMBODY_SMART_NETWORK_SWITCH"
+msgstr "Réseau intelligent"
 
 msgid "IDS_WIFI_HEADER_PASSPOINT"
 msgstr "Passpoint"

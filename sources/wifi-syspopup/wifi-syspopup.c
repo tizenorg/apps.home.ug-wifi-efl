@@ -24,6 +24,7 @@
 #include <ui-gadget-module.h>
 #include <utilX.h>
 #include <Ecore_X.h>
+#include <efl_extension.h>
 
 #include "common.h"
 #include "view-main.h"
@@ -214,6 +215,8 @@ static void wifi_devpkr_rotate_cb(void *data, Evas_Object *obj, void *event)
 	INFO_LOG(SP_NAME_NORMAL, "rotate_angle: %d", rotate_angle);
 }
 
+/* Tizen 2.4's setting supports auto rotate mode */
+#if 0
 static void wifi_devpkr_set_rotation(Evas_Object *win)
 {
 	if (!elm_win_wm_rotation_supported_get(win)) {
@@ -222,6 +225,7 @@ static void wifi_devpkr_set_rotation(Evas_Object *win)
 
 	elm_win_wm_rotation_preferred_rotation_set(win, 0);
 }
+#endif
 
 static void _exit_cb(void *data, Evas_Object *obj, void *event_info)
 {
@@ -325,7 +329,7 @@ static int wifi_devpkr_create(void)
 		assertm_if(NULL == devpkr_app_state->popup, "syspopup is NULL!!");
 	}
 
-	ea_object_event_callback_add(devpkr_app_state->popup, EA_CALLBACK_BACK,
+	eext_object_event_callback_add(devpkr_app_state->popup, EEXT_CALLBACK_BACK,
 			__keydown_cb, NULL);
 
 	event_handler = ecore_event_handler_add(ECORE_EVENT_KEY_DOWN, __key_press_cb, NULL);
@@ -348,7 +352,10 @@ static int wifi_devpkr_create(void)
 
 	view_main_create_main_list();
 
+/* Tizen 2.4's setting supports auto rotate mode */
+#if 0
 	wifi_devpkr_set_rotation(devpkr_app_state->win_main);
+#endif
 	wifi_devpkr_redraw();
 
 	elm_win_indicator_mode_set(devpkr_app_state->win_main, ELM_WIN_INDICATOR_SHOW);
@@ -590,12 +597,6 @@ static void app_control(app_control_h request, void *data)
 	}
 
 	devpkr_app_state->popup = elm_popup_add(devpkr_app_state->win_main);
-
-	/* Enablee Changeable UI feature */
-	ea_theme_changeable_ui_enabled_set(EINA_TRUE);
-
-	devpkr_app_state->color_table = common_utils_color_table_set();
-	devpkr_app_state->font_table = common_utils_font_table_set();
 
 	evas_object_show(devpkr_app_state->win_main);
 	evas_object_show(devpkr_app_state->conformant);
