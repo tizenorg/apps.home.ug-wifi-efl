@@ -77,8 +77,10 @@ static void _bg_scan_status_callback(GDBusConnection *conn,
 		if (g_strcmp0(key, "Scanning") == 0) {
 			value = g_variant_get_boolean(var);
 			if (value) {
-				viewer_manager_header_mode_set(HEADER_MODE_SEARCHING);
-				viewer_manager_show(VIEWER_WINSET_SEARCHING);
+				if (header_mode != HEADER_MODE_CONNECTING) {
+					viewer_manager_show(VIEWER_WINSET_SEARCHING_GRP_TITLE);
+					viewer_manager_header_mode_set(HEADER_MODE_SEARCHING);
+				}
 			}
 
 			g_variant_unref(var);

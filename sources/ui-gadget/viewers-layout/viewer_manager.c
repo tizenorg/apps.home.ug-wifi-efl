@@ -1515,13 +1515,8 @@ void viewer_manager_header_mode_set(HEADER_MODES new_mode)
 	}
 
 	old_mode = manager_object->header_mode;
-	if (old_mode == new_mode) {
-		if (new_mode == HEADER_MODE_OFF && manager_object->scan_button) {
-			evas_object_del(manager_object->scan_button);
-			manager_object->scan_button = NULL;
-		}
+	if (old_mode == new_mode)
 		return;
-	}
 
 	DEBUG_LOG(UG_NAME_NORMAL, "Header mode %d --> %d", old_mode, new_mode);
 
